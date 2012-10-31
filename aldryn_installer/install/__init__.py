@@ -20,6 +20,7 @@ def check_install(config_data):
 
     # PIL tests
     try:
+        print("Testing PIL")
         from PIL import Image
 
         try:
@@ -59,4 +60,3 @@ def requirements(requirements, is_file=False):
         args = ['install', '-q', ]
         args.extend(requirements.split())
     command = pip.main(args)
-    print("requirements installed: %s" % ",".join(args))

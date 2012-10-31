@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import six
 import logging
 
 
@@ -30,5 +31,8 @@ def execute():
             print("Get into '%s' directory and type 'python manage.py runserver' "
                   "to start your project" % config_data.project_directory)
     except Exception as e:
-        tb = sys.exc_info()[2]
-        raise EnvironmentError("%s\nDocumentation available at http://aldryn-installer.rtfd.org" % e).with_traceback(tb)
+        if six.PY3:
+            tb = sys.exc_info()[2]
+            raise EnvironmentError("%s\nDocumentation available at http://aldryn-installer.rtfd.org" % e).with_traceback(tb)
+        else:
+            raise
