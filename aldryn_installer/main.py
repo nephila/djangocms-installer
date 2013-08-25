@@ -17,7 +17,9 @@ def execute():
         if config_data.requirements_file:
             install.requirements(config_data.requirements_file, True)
         else:
-            install.requirements(config_data.requirements)
+            #install.requirements(config_data.requirements)
+            pass
+        install.check_install(config_data)
         sys.exit(0)
         django.create_project(config)
         django.patch_settings(config)

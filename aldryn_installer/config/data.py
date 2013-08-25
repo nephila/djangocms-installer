@@ -22,6 +22,7 @@ DEFAULT_REQUIREMENTS = """
 django-classy-tags>=0.3.4.1
 south>=0.7.2
 html5lib
+Pillow>=2
 django-mptt>=0.5.1,<0.5.3
 django-sekizai>=0.7
 djangocms-admin-style

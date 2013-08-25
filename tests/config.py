@@ -9,6 +9,7 @@ Tests for `aldryn-installer` module.
 """
 import sys
 from aldryn_installer.config import data
+from aldryn_installer.install import check_install
 
 PY3 = sys.version > '3'
 
@@ -70,10 +71,12 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.db, "mysql://user:pwd@host/dbname")
         self.assertEqual(config.db_driver, "MySQL-python")
 
-    def test_invalud_choices(self):
+    def test_invalid_choices(self):
+        # discard the argparser errors
         saved_stderr = sys.stderr
         err = StringIO()
         sys.stderr = err
+
         with self.assertRaises(SystemExit) as error:
             config = aldryn_installer.config.parse([
                 "-q",
@@ -140,3 +143,38 @@ class TestConfig(unittest.TestCase):
 
         self.assertTrue(config.requirements.find(data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(config.requirements.find(data.DJANGO_DEVELOP) > -1)
+
+    def test_check_install(self):
+        # discard the argparser errors
+        saved_stderr = sys.stderr
+        err = StringIO()
+        sys.stderr = err
+
+        config = aldryn_installer.config.parse([
+            "-q",
+            "--db=mysql://user:pwd@host/dbname",
+            "--django-version=1.4",
+            "--i18n=no",
+            "-f",
+            "test_project"])
+
+        with self.assertRaises(EnvironmentError) as error:
+            check_install(config)
+
+            self.assertTrue(str(error.exception).find("Pillow is not installed") > -1)
+            self.assertTrue(str(error.exception).find("MySQL driver is not installed") > -1)
+
+        config = aldryn_installer.config.parse([
+            "-q",
+            "--db=postgres://user:pwd@host/dbname",
+            "--django-version=1.4",
+            "--i18n=no",
+            "-f",
+            "test_project"])
+
+        with self.assertRaises(EnvironmentError) as error:
+            check_install(config)
+
+            self.assertTrue(str(error.exception).find("PostgreSQL driver is not installed") > -1)
+
+        sys.stderr = saved_stderr

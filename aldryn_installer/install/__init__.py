@@ -1,10 +1,55 @@
 # -*- coding: utf-8 -*-
+import sys
+import os.path
+
 import pip
 
 
-def parse(config_data):
-    #reqs =
-    print config_data
+def check_install(config_data):
+    """
+    Here we do some **really* basic sanity check for the environment.
+
+    Bsically we test for the more delicate and failing-prone dependencies:
+     * database driver
+     * Pillow image format support
+
+    Many other errors will go undetected
+    """
+    errors = []
+    size = 128, 128
+
+    # PIL tests
+    try:
+        from PIL import Image
+
+        try:
+            im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.png"))
+            im.thumbnail(size)
+        except IOError:
+            errors.append("Pillow is not compiled with PNG support, please check your installation")
+        try:
+            im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.jpg"))
+            im.thumbnail(size)
+        except IOError:
+            errors.append("Pillow is not compiled with JPEG support, please check your installation")
+    except ImportError:
+        errors.append("Pillow is not installed check for installation errors")
+
+    # PostgreSQL test
+    if config_data.db_driver == 'psycopg2' and not config_data.no_db_driver:
+        try:
+            import psycopg2
+        except ImportError:
+            errors.append("PostgreSQL driver is not installed, but you configured a PostgreSQL database, please check your installation")
+
+    # MySQL test
+    if config_data.db_driver == 'MySQL-python' and not config_data.no_db_driver:
+        try:
+            import MySQLdb
+        except ImportError:
+            errors.append("MySQL driver is not installed, but you configured a MySQL database, please check your installation")
+    if errors:
+        raise EnvironmentError("\n".join(errors))
 
 
 def requirements(requirements, is_file=False):
@@ -13,8 +58,4 @@ def requirements(requirements, is_file=False):
     else:
         args = ['install']
         args.extend(requirements.split())
-    try:
-        command = pip.main(args)
-    except Exception, e:
-        print "ecc"
-        print e, type(e)
+    command = pip.main(args)
