@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
-                        '--reversion']
+                        '--reversion', '--languages', '--timezone', '--use-tz']
 
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms.git@develop#egg=django-cms'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta2.zip'
@@ -74,3 +74,8 @@ DRIVERS = {
     'django.db.backends.sqlite3': '',
 }
 
+DEFAULT_PROJECT_HEADER = """# -*- coding: utf-8 -*-
+import os
+gettext = lambda s: s
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+"""

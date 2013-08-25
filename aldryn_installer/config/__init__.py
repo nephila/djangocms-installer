@@ -19,20 +19,31 @@ def parse(args):
     parser.add_argument('--i18n', '-i', dest='i18n', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='Activate Django I18N / L10N setting')
+    parser.add_argument('--use-tz', '-z', dest='use_timezone', action='store',
+                        choices=('yes', 'no'),
+                        default='yes', help='Optional default time zone')
+    parser.add_argument('--timezone', '-t', dest='timezone',
+                        required=False, default='',
+                        action='store', help='Optional default time zone')
     parser.add_argument('--reversion', '-e', dest='reversion', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='Install and configure reversion support')
+    parser.add_argument('--languages', '-l', dest='languages', action='append',
+                        help='Languages to enable. Option can be provided multiple times, or as a comma separated list')
     parser.add_argument('--django-version', dest='django_version', action='store',
                         choices=('1.4', '1.5', 'latest', 'beta', 'develop'),
                         default='latest', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
                         choices=('2.4', 'latest', 'beta', 'develop'),
                         default='latest', help='django CMS version')
+    parser.add_argument('--parent-dir', '-p', dest='project_directory',
+                        required=False, default='',
+                        action='store', help='Optional project parent directory')
     parser.add_argument(dest='project_name', action='store',
                         help='Name of the project to be created')
 
     # Command that lists the supported plugins in verbose description
-    parser.add_argument('--list-plugins', '-l', dest='plugins', action='store_true',
+    parser.add_argument('--list-plugins', '-P', dest='plugins', action='store_true',
                         help="List plugins that's going to be installed and configured")
 
     # Advanced options. These have a predefined default and are not managed
@@ -61,7 +72,10 @@ def parse(args):
             if action.choices:
                 choices = " (choices: %s)" % ", ".join(action.choices)
             if input_value:
-                default = " [default %s]" % input_value
+                if type(input_value) == list:
+                    default = " [default %s]" % ", ".join(input_value)
+                else:
+                    default = " [default %s]" % input_value
 
             while not new_val:
                 prompt = "%s%s%s: " % (action.help, choices, default)
@@ -72,8 +86,10 @@ def parse(args):
                 new_val = compat.clean(new_val)
                 if not new_val and input_value:
                     new_val = input_value
+                if not new_val and not action.required:
+                    break
         else:
-            if not input_value:
+            if not input_value and action.required:
                 raise ValueError("Option %s is required when in no-input mode" % action.dest)
             new_val = input_value
         setattr(args, action.dest, new_val)
