@@ -11,4 +11,8 @@ else:
     input = raw_input
     iteritems = lambda d: d.iteritems()
 
-    def clean(value): return value.strip().decode("utf-8")
+    def clean(value):
+        if value:
+            return value.strip().decode("utf-8")
+        else:
+            return value

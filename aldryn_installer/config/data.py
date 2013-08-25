@@ -43,3 +43,11 @@ configuration):
  * cmsplugin_filer_teaser (Teaser plugin, replaces cms.plugins.teaser)
  * cmsplugin_filer_video (Video plugin, replaces cms.plugins.video)
 """
+
+DRIVERS = {
+    'django.db.backends.postgresql_psycopg2': 'psycopg2',
+    'django.db.backends.postgresql_postgis': 'postgis',
+    'django.db.backends.mysql': 'MySQL-python',
+    'django.db.backends.sqlite3': '',
+}
+

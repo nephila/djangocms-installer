@@ -36,7 +36,8 @@ class TestAldrynInstaller(unittest.TestCase):
 
 class TestConfig(unittest.TestCase):
     def test_default_config(self):
-        config = aldryn_installer.config.parse(["-q", "test_project"])
+        config = aldryn_installer.config.parse(["--db=mysql://user:pwd@host/dbname",
+                                                "-q", "test_project"])
 
         self.assertEqual(config.project_name, 'test_project')
 
@@ -44,7 +45,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.django_version, 'latest')
         self.assertEqual(config.south, 'yes')
         self.assertEqual(config.i18n, 'yes')
-        self.assertEqual(config.db, None)
+        self.assertEqual(config.db, "mysql://user:pwd@host/dbname")
 
         self.assertEqual(config.no_db_driver, False)
         self.assertEqual(config.no_deps, False)
@@ -68,7 +69,8 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.django_version, '1.5')
         self.assertEqual(config.south, 'no')
         self.assertEqual(config.i18n, 'no')
-        self.assertEqual(config.db, 'mysql://user:pwd@host/dbname')
+        self.assertEqual(config.db, "mysql://user:pwd@host/dbname")
+        self.assertEqual(config.db_driver, "MySQL-python")
 
     def test_invalud_choices(self):
         saved_stderr = sys.stderr

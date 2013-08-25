@@ -3,7 +3,7 @@ import pip
 
 
 def parse(config_data):
-    pass
+    print config_data
 
 
 def requirements(requirements, is_file=False):

@@ -14,8 +14,8 @@ def execute():
     if config_data.plugins:
         config.show_plugins()
     else:
-        sys.exit(0)
         requirements = install.parse(config_data)
+        sys.exit(0)
         install.requirements(requirements)
         django.create_project(config)
         django.patch_settings(config)

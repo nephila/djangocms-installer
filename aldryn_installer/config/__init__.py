@@ -6,6 +6,7 @@ import dj_database_url
 
 from .. import compat, utils
 from . import data
+from aldryn_installer.config.internal import DbAction
 
 
 def parse(args):
@@ -13,7 +14,7 @@ def parse(args):
     Define the available arguments
     """
     parser = argparse.ArgumentParser(description='Bootstrap a django CMS project.')
-    parser.add_argument('--db', '-d', dest='db', action='store',
+    parser.add_argument('--db', '-d', dest='db', action=DbAction,
                         help='Database configuration (in URL format)')
     parser.add_argument('--south', '-s', dest='south', action='store',
                         choices=('yes', 'no'),
@@ -51,39 +52,30 @@ def parse(args):
 
     args = parser.parse_args(args)
 
-    if not args.noinput:
-        for item in data.CONFIGURABLE_OPTIONS:
-            action = parser._option_string_actions[item]
-            choices = default = ""
-            input_value = getattr(args, action.dest)
-            new_val = None
+    for item in data.CONFIGURABLE_OPTIONS:
+        action = parser._option_string_actions[item]
+        choices = default = ""
+        input_value = getattr(args, action.dest)
+        new_val = None
+        if not args.noinput:
             if action.choices:
                 choices = " [choices: %s]" % ", ".join(action.choices)
             if input_value:
                 default = " default %s" % input_value
 
             while not new_val:
-                prompt = "%s%s%s: " % (action.help, choices, default)
-                if action.choices in ('yes', 'no'):
-                    new_val = utils.query_yes_no(prompt)
-                else:
-                    new_val = compat.input(prompt)
-                new_val = _validate(new_val, action)
+                    prompt = "%s%s%s: " % (action.help, choices, default)
+                    if action.choices in ('yes', 'no'):
+                        new_val = utils.query_yes_no(prompt)
+                    else:
+                        new_val = compat.input(prompt)
+                    new_val = compat.clean(new_val)
+        else:
+            if not input_value:
+                raise ValueError("Option %s is required when in no-input mode" % action.dest)
+            new_val = input_value
+        setattr(args, action.dest, new_val)
     return args
-
-
-def _validate(value, action):
-    cleaned = compat.clean(value)
-    if action.dest == 'db':
-        try:
-            return dj_database_url.parse(cleaned)
-        except Exception:
-            sys.out.write("Database URL not recognized, try again")
-            return False
-    else:
-        if not cleaned and action.default:
-            cleaned = action.default
-        return cleaned
 
 
 def write_default(config):
