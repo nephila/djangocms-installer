@@ -13,4 +13,8 @@ def requirements(requirements, is_file=False):
     else:
         args = ['install']
         args.extend(requirements.split())
-    command = pip.main(args)
+    try:
+        command = pip.main(args)
+    except Exception, e:
+        print "ecc"
+        print e, type(e)

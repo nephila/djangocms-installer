@@ -14,10 +14,10 @@ if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
     sys.exit()
 
-requirements = [
-    'pip',
-    'dj-database-url',
-]
+readme = open('README.rst').read()
+history = open('HISTORY.rst').read().replace('.. :changelog:', '')
+
+requirements = open('requirements.txt').readlines()
 test_requirements = []
 
 # Add Python 2.6-specific dependencies
@@ -28,8 +28,6 @@ if sys.version_info[:2] < (2, 7):
 if sys.version < '3':
     test_requirements.append('mock')
 
-readme = open('README.rst').read()
-history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='aldryn-installer',
