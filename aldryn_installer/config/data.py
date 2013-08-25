@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',]
+CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
+                        '--reversion']
 
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms.git@develop#egg=django-cms'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta2.zip'
@@ -33,6 +34,9 @@ djangocms-admin-style
 git+https://github.com/divio/djangocms-column.git#egg=djangocms-column
 git+https://github.com/divio/djangocms-style.git#egg=djangocms-style
 """
+
+DJANGO_15_REVERSION = "django-reversion>=1.7,<1.8"
+DJANGO_14_REVERSION = "django-reversion<1.7"
 
 FILER_REQUIREMENTS = """
 easy_thumbnails

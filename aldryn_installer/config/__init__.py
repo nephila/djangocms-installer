@@ -18,7 +18,10 @@ def parse(args):
                         help='Database configuration (in URL format)')
     parser.add_argument('--i18n', '-i', dest='i18n', action='store',
                         choices=('yes', 'no'),
-                        default='yes', help='activate Django I18N / L10N setting')
+                        default='yes', help='Activate Django I18N / L10N setting')
+    parser.add_argument('--reversion', '-e', dest='reversion', action='store',
+                        choices=('yes', 'no'),
+                        default='yes', help='Install and configure reversion support')
     parser.add_argument('--django-version', dest='django_version', action='store',
                         choices=('1.4', '1.5', 'latest', 'beta', 'develop'),
                         default='latest', help='Django version')
@@ -26,20 +29,20 @@ def parse(args):
                         choices=('2.4', 'latest', 'beta', 'develop'),
                         default='latest', help='django CMS version')
     parser.add_argument(dest='project_name', action='store',
-                        help='name of the project to be created')
+                        help='Name of the project to be created')
 
     # Command that lists the supported plugins in verbose description
     parser.add_argument('--list-plugins', '-l', dest='plugins', action='store_true',
-                        help="list plugins that's going to be installed and configured")
+                        help="List plugins that's going to be installed and configured")
 
     # Advanced options. These have a predefined default and are not managed
     # by config wizard.
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
-                        default=False, help="don't run the configuration wizard, just use the provided values")
+                        default=False, help="Don't run the configuration wizard, just use the provided values")
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
-                        default=False, help='install and configure django-filer plugins')
+                        default=False, help='Install and configure django-filer plugins')
     parser.add_argument('--requirements', '-r', dest='requirements_file', action='store',
-                        default=None, help='externally defined requirements file')
+                        default=None, help='Externally defined requirements file')
     parser.add_argument('--no-deps', '-n', dest='no_deps', action='store_true',
                         default=False, help="Don't install package dependencies")
     parser.add_argument('--no-db-driver', dest='no_db_driver', action='store_true',
@@ -56,17 +59,19 @@ def parse(args):
         new_val = None
         if not args.noinput:
             if action.choices:
-                choices = " [choices: %s]" % ", ".join(action.choices)
+                choices = " (choices: %s)" % ", ".join(action.choices)
             if input_value:
-                default = " default %s" % input_value
+                default = " [default %s]" % input_value
 
             while not new_val:
-                    prompt = "%s%s%s: " % (action.help, choices, default)
-                    if action.choices in ('yes', 'no'):
-                        new_val = utils.query_yes_no(prompt)
-                    else:
-                        new_val = compat.input(prompt)
-                    new_val = compat.clean(new_val)
+                prompt = "%s%s%s: " % (action.help, choices, default)
+                if action.choices in ('yes', 'no'):
+                    new_val = utils.query_yes_no(prompt)
+                else:
+                    new_val = compat.input(prompt)
+                new_val = compat.clean(new_val)
+                if not new_val and input_value:
+                    new_val = input_value
         else:
             if not input_value:
                 raise ValueError("Option %s is required when in no-input mode" % action.dest)
@@ -75,6 +80,7 @@ def parse(args):
         if not getattr(args, 'requirements_file'):
             requirements = [data.DEFAULT_REQUIREMENTS]
             cms_version = 3
+            django_version = 1.5
 
             if not args.no_db_driver:
                 requirements.append(args.db_driver)
@@ -91,6 +97,15 @@ def parse(args):
                     requirements.append("Django<%s" % data.less_than_version(data.DJANGO_LATEST))
                 else:
                     requirements.append("Django<%s" % data.less_than_version(args.django_version))
+                    if data.less_than_version(args.django_version) <= "1.5":
+                        django_version = 1.4
+
+            ## Reversion package version depends on django version
+            if args.reversion:
+                if django_version < 1.5:
+                    requirements.append(data.DJANGO_14_REVERSION)
+                else:
+                    requirements.append(data.DJANGO_15_REVERSION)
 
             ## Django cms version check
             if args.cms_version == 'develop':
@@ -103,7 +118,7 @@ def parse(args):
                 else:
                     requirements.append("django-cms<%s" % data.less_than_version(args.cms_version))
                 if(args.cms_version == 'latest' or
-                        data.less_than_version(args.cms_version) < '3.0'):
+                        data.less_than_version(args.cms_version) < "3.0"):
                     cms_version = 2.4
             if cms_version >= 3:
                 requirements.append(data.DJANGOCMS_3_REQUIREMENTS)

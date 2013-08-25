@@ -46,6 +46,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.cms_version, 'latest')
         self.assertEqual(config.django_version, 'latest')
         self.assertEqual(config.i18n, 'yes')
+        self.assertEqual(config.reversion, 'yes')
         self.assertEqual(config.db, "mysql://user:pwd@host/dbname")
 
         self.assertEqual(config.no_db_driver, False)
@@ -61,6 +62,7 @@ class TestConfig(unittest.TestCase):
             "--cms-version=2.4",
             "--django-version=1.5",
             "--i18n=no",
+            "--reversion=no",
             "test_project"])
 
         self.assertEqual(config.project_name, 'test_project')
@@ -68,6 +70,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.cms_version, '2.4')
         self.assertEqual(config.django_version, '1.5')
         self.assertEqual(config.i18n, 'no')
+        self.assertEqual(config.reversion, 'no')
         self.assertEqual(config.db, "mysql://user:pwd@host/dbname")
         self.assertEqual(config.db_driver, "MySQL-python")
 
@@ -107,6 +110,7 @@ class TestConfig(unittest.TestCase):
         self.assertTrue(config.requirements.find("Django<1.5") > -1)
         self.assertTrue(config.requirements.find("django-filer") > -1)
         self.assertTrue(config.requirements.find("cmsplugin_filer") > -1)
+        self.assertTrue(config.requirements.find("django-reversion<1.7") > -1)
         self.assertTrue(config.requirements.find("djangocms-text-ckeditor") == -1)
 
         config = aldryn_installer.config.parse([
@@ -122,6 +126,7 @@ class TestConfig(unittest.TestCase):
         self.assertTrue(config.requirements.find("Django<1.6") > -1)
         self.assertTrue(config.requirements.find("djangocms-text-ckeditor") == -1)
         self.assertTrue(config.requirements.find("djangocms-admin-style") == -1)
+        self.assertTrue(config.requirements.find("django-reversion>=1.7") > -1)
 
         config = aldryn_installer.config.parse([
             "-q",
@@ -165,7 +170,6 @@ class TestConfig(unittest.TestCase):
 
         with self.assertRaises(EnvironmentError) as error:
             check_install(config)
-
             self.assertTrue(str(error.exception).find("Pillow is not installed") > -1)
             self.assertTrue(str(error.exception).find("MySQL driver is not installed") > -1)
 

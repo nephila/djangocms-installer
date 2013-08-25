@@ -14,11 +14,11 @@ def execute():
     if config_data.plugins:
         config.show_plugins()
     else:
-        if config_data.requirements_file:
-            install.requirements(config_data.requirements_file, True)
-        else:
-            #install.requirements(config_data.requirements)
-            pass
+        if not config_data.no_deps:
+            if config_data.requirements_file:
+                install.requirements(config_data.requirements_file, True)
+            else:
+                install.requirements(config_data.requirements)
         install.check_install(config_data)
         sys.exit(0)
         django.create_project(config)
