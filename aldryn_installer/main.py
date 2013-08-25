@@ -20,8 +20,8 @@ def execute():
             else:
                 install.requirements(config_data.requirements)
         install.check_install(config_data)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
         sys.exit(0)
-        django.create_project(config)
-        django.patch_settings(config)
         django.setup_database(config)
         config.write_default(config)
