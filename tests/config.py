@@ -107,6 +107,7 @@ class TestConfig(unittest.TestCase):
         self.assertTrue(config.requirements.find("Django<1.5") > -1)
         self.assertTrue(config.requirements.find("django-filer") > -1)
         self.assertTrue(config.requirements.find("cmsplugin_filer") > -1)
+        self.assertTrue(config.requirements.find("djangocms-text-ckeditor") == -1)
 
         config = aldryn_installer.config.parse([
             "-q",
@@ -119,6 +120,8 @@ class TestConfig(unittest.TestCase):
 
         self.assertTrue(config.requirements.find("django-cms<2.5") > -1)
         self.assertTrue(config.requirements.find("Django<1.6") > -1)
+        self.assertTrue(config.requirements.find("djangocms-text-ckeditor") == -1)
+        self.assertTrue(config.requirements.find("djangocms-admin-style") == -1)
 
         config = aldryn_installer.config.parse([
             "-q",
@@ -143,6 +146,8 @@ class TestConfig(unittest.TestCase):
 
         self.assertTrue(config.requirements.find(data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(config.requirements.find(data.DJANGO_DEVELOP) > -1)
+        self.assertTrue(config.requirements.find("djangocms-text-ckeditor") > -1)
+        self.assertTrue(config.requirements.find("djangocms-admin-style") > -1)
 
     def test_check_install(self):
         # discard the argparser errors

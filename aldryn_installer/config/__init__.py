@@ -74,6 +74,7 @@ def parse(args):
         setattr(args, action.dest, new_val)
         if not getattr(args, 'requirements_file'):
             requirements = [data.DEFAULT_REQUIREMENTS]
+            cms_version = 3
 
             if not args.no_db_driver:
                 requirements.append(args.db_driver)
@@ -101,6 +102,11 @@ def parse(args):
                     requirements.append("django-cms<%s" % data.less_than_version(data.DJANGOCMS_LATEST))
                 else:
                     requirements.append("django-cms<%s" % data.less_than_version(args.cms_version))
+                if(args.cms_version == 'latest' or
+                        data.less_than_version(args.cms_version) < '3.0'):
+                    cms_version = 2.4
+            if cms_version >= 3:
+                requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
 
             setattr(args, "requirements", "\n".join(requirements).strip())
     return args

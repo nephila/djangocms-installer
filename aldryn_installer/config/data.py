@@ -25,9 +25,11 @@ html5lib
 Pillow>=2
 django-mptt>=0.5.1,<0.5.3
 django-sekizai>=0.7
+"""
+
+DJANGOCMS_3_REQUIREMENTS = """
+djangocms-text-ckeditor>=2
 djangocms-admin-style
-djangocms-text-ckeditor>=2.0
-git+https://github.com/KristianOellegaard/django-hvad.git#egg=hvad
 git+https://github.com/divio/djangocms-column.git#egg=djangocms-column
 git+https://github.com/divio/djangocms-style.git#egg=djangocms-style
 """
