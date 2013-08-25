@@ -5,7 +5,11 @@ if PY3:
     input = input
     iteritems = lambda d: iter(d.items())
 
-    def clean(value): return value.strip()
+    def clean(value):
+        if value:
+            return value.strip()
+        else:
+            return value
 
 else:
     input = raw_input

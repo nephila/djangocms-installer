@@ -16,17 +16,14 @@ def parse(args):
     parser = argparse.ArgumentParser(description='Bootstrap a django CMS project.')
     parser.add_argument('--db', '-d', dest='db', action=DbAction,
                         help='Database configuration (in URL format)')
-    parser.add_argument('--south', '-s', dest='south', action='store',
-                        choices=('yes', 'no'),
-                        default='yes', help='install south in the environment')
     parser.add_argument('--i18n', '-i', dest='i18n', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='activate Django I18N / L10N setting')
     parser.add_argument('--django-version', dest='django_version', action='store',
-                        choices=('1.4', '1.5', 'latest', 'beta'),
+                        choices=('1.4', '1.5', 'latest', 'beta', 'develop'),
                         default='latest', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
-                        choices=('2.4', '2.3', 'beta', 'latest', 'develop'),
+                        choices=('2.4', 'latest', 'beta', 'develop'),
                         default='latest', help='django CMS version')
     parser.add_argument(dest='project_name', action='store',
                         help='name of the project to be created')
@@ -41,7 +38,7 @@ def parse(args):
                         default=False, help="don't run the configuration wizard, just use the provided values")
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
                         default=False, help='install and configure django-filer plugins')
-    parser.add_argument('--requirements', '-r', dest='requirements', action='store',
+    parser.add_argument('--requirements', '-r', dest='requirements_file', action='store',
                         default=None, help='externally defined requirements file')
     parser.add_argument('--no-deps', '-n', dest='no_deps', action='store_true',
                         default=False, help="Don't install package dependencies")
@@ -75,6 +72,37 @@ def parse(args):
                 raise ValueError("Option %s is required when in no-input mode" % action.dest)
             new_val = input_value
         setattr(args, action.dest, new_val)
+        if not getattr(args, 'requirements_file'):
+            requirements = [data.DEFAULT_REQUIREMENTS]
+
+            if not args.no_db_driver:
+                requirements.append(args.db_driver)
+            if args.filer:
+                requirements.append(data.FILER_REQUIREMENTS)
+
+            ## Django version check
+            if args.django_version == 'develop':
+                requirements.append(data.DJANGO_DEVELOP)
+            elif args.django_version == 'beta':
+                requirements.append(data.DJANGO_BETA)
+            else:
+                if args.django_version == 'latest':
+                    requirements.append("Django<%s" % data.less_than_version(data.DJANGO_LATEST))
+                else:
+                    requirements.append("Django<%s" % data.less_than_version(args.django_version))
+
+            ## Django cms version check
+            if args.cms_version == 'develop':
+                requirements.append(data.DJANGOCMS_DEVELOP)
+            elif args.cms_version == 'beta':
+                requirements.append(data.DJANGOCMS_BETA)
+            else:
+                if args.cms_version == 'latest':
+                    requirements.append("django-cms<%s" % data.less_than_version(data.DJANGOCMS_LATEST))
+                else:
+                    requirements.append("django-cms<%s" % data.less_than_version(args.cms_version))
+
+            setattr(args, "requirements", "\n".join(requirements).strip())
     return args
 
 

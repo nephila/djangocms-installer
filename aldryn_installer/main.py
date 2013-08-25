@@ -14,9 +14,11 @@ def execute():
     if config_data.plugins:
         config.show_plugins()
     else:
-        requirements = install.parse(config_data)
+        if config_data.requirements_file:
+            install.requirements(config_data.requirements_file, True)
+        else:
+            install.requirements(config_data.requirements)
         sys.exit(0)
-        install.requirements(requirements)
         django.create_project(config)
         django.patch_settings(config)
         django.setup_database(config)

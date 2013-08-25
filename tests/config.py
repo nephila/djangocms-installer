@@ -8,6 +8,7 @@ test_aldryn-installer
 Tests for `aldryn-installer` module.
 """
 import sys
+from aldryn_installer.config import data
 
 PY3 = sys.version > '3'
 
@@ -43,7 +44,6 @@ class TestConfig(unittest.TestCase):
 
         self.assertEqual(config.cms_version, 'latest')
         self.assertEqual(config.django_version, 'latest')
-        self.assertEqual(config.south, 'yes')
         self.assertEqual(config.i18n, 'yes')
         self.assertEqual(config.db, "mysql://user:pwd@host/dbname")
 
@@ -51,7 +51,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.no_deps, False)
         self.assertEqual(config.no_sync, False)
         self.assertEqual(config.plugins, False)
-        self.assertEqual(config.requirements, None)
+        self.assertEqual(config.requirements_file, None)
 
     def test_cli_config(self):
         config = aldryn_installer.config.parse([
@@ -59,7 +59,6 @@ class TestConfig(unittest.TestCase):
             "--db=mysql://user:pwd@host/dbname",
             "--cms-version=2.4",
             "--django-version=1.5",
-            "--south=no",
             "--i18n=no",
             "test_project"])
 
@@ -67,7 +66,6 @@ class TestConfig(unittest.TestCase):
 
         self.assertEqual(config.cms_version, '2.4')
         self.assertEqual(config.django_version, '1.5')
-        self.assertEqual(config.south, 'no')
         self.assertEqual(config.i18n, 'no')
         self.assertEqual(config.db, "mysql://user:pwd@host/dbname")
         self.assertEqual(config.db_driver, "MySQL-python")
@@ -82,9 +80,63 @@ class TestConfig(unittest.TestCase):
                 "--db=mysql://user:pwd@host/dbname",
                 "--cms-version=2.6",
                 "--django-version=1.1",
-                "--south=no",
                 "--i18n=no",
                 "test_project"])
             self.assertTrue(str(error.exception).find("--cms-version/-v: invalid choice: '2.6'") > -1)
 
         sys.stderr = saved_stderr
+
+    def test_latest_version(self):
+        self.assertEqual(data.less_than_version('2.4'), "2.5")
+        self.assertEqual(data.less_than_version('3'), "3.1")
+        self.assertEqual(data.less_than_version('3.0.1'), "3.1.1")
+
+    def test_requirements(self):
+        config = aldryn_installer.config.parse([
+            "-q",
+            "--db=mysql://user:pwd@host/dbname",
+            "--django-version=1.4",
+            "--i18n=no",
+            "-f",
+            "test_project"])
+
+        self.assertTrue(config.requirements.find("django-cms<2.5") > -1)
+        self.assertTrue(config.requirements.find("Django<1.5") > -1)
+        self.assertTrue(config.requirements.find("django-filer") > -1)
+        self.assertTrue(config.requirements.find("cmsplugin_filer") > -1)
+
+        config = aldryn_installer.config.parse([
+            "-q",
+            "--db=mysql://user:pwd@host/dbname",
+            "--i18n=no",
+            "--cms-version=latest",
+            "--django-version=latest",
+            "-f",
+            "test_project"])
+
+        self.assertTrue(config.requirements.find("django-cms<2.5") > -1)
+        self.assertTrue(config.requirements.find("Django<1.6") > -1)
+
+        config = aldryn_installer.config.parse([
+            "-q",
+            "--db=mysql://user:pwd@host/dbname",
+            "--i18n=no",
+            "--cms-version=beta",
+            "--django-version=beta",
+            "-f",
+            "test_project"])
+
+        self.assertTrue(config.requirements.find(data.DJANGOCMS_BETA) > -1)
+        self.assertTrue(config.requirements.find(data.DJANGO_BETA) > -1)
+
+        config = aldryn_installer.config.parse([
+            "-q",
+            "--db=mysql://user:pwd@host/dbname",
+            "--i18n=no",
+            "--cms-version=develop",
+            "--django-version=develop",
+            "-f",
+            "test_project"])
+
+        self.assertTrue(config.requirements.find(data.DJANGOCMS_DEVELOP) > -1)
+        self.assertTrue(config.requirements.find(data.DJANGO_DEVELOP) > -1)
