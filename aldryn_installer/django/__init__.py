@@ -12,23 +12,23 @@ def create_project(config_data):
         if config_data.project_directory:
             if not os.path.exists(config_data.project_directory):
                 os.makedirs(config_data.project_directory)
-            out = subprocess.check_output(["django-admin.py", "startproject",
-                                           config_data.project_name,
-                                           config_data.project_directory])
+            subprocess.check_call(["django-admin.py", "startproject",
+                                   config_data.project_name,
+                                   config_data.project_directory])
         else:
-            out = subprocess.check_output(["django-admin.py", "startproject",
-                                           config_data.project_name])
+            subprocess.check_call(["django-admin.py", "startproject",
+                                   config_data.project_name])
         setattr(config_data, 'project_path',
                 os.path.join(config_data.project_directory, config_data.project_name))
         setattr(config_data, 'settings_path',
                 os.path.join(config_data.project_directory, config_data.project_name,
                              'settings.py'))
-    except subprocess.CalledProcessError, message:
+    except subprocess.CalledProcessError as message:
         raise EnvironmentError(message)
 
 
 def patch_settings(config_data):
-    print config_data
+    print(config_data)
     with open(config_data.settings_path, 'r') as fd_original:
         original = fd_original.read()
 
@@ -59,7 +59,8 @@ def patch_settings(config_data):
     installed = re.compile(r"^INSTALLED_APPS[^\)]+\)", re.DOTALL | re.MULTILINE)
     original = installed.sub('', original)
 
-    print original
+    with open("test.py", "w") as fd_dest:
+        fd_dest.write(original)
 
 
 def setup_database(config_data):
