@@ -20,18 +20,18 @@ else:
 
 class TestConfig(unittest.TestCase):
     def test_default_config(self):
-        conf_data = config.parse(["--db=mysql://user:pwd@host/dbname",
+        conf_data = config.parse(["--db=postgres://user:pwd@host/dbname",
                                   "-q", "test_project"])
 
         self.assertEqual(conf_data.project_name, 'test_project')
 
-        self.assertEqual(conf_data.cms_version, 'latest')
-        self.assertEqual(conf_data.django_version, 'latest')
+        self.assertEqual(conf_data.cms_version, 2.4)
+        self.assertEqual(conf_data.django_version, 1.5)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
         self.assertEqual(conf_data.permissions, 'yes')
         self.assertEqual(conf_data.use_timezone, 'yes')
-        self.assertEqual(conf_data.db, "mysql://user:pwd@host/dbname")
+        self.assertEqual(conf_data.db, "postgres://user:pwd@host/dbname")
 
         self.assertEqual(conf_data.no_db_driver, False)
         self.assertEqual(conf_data.no_deps, False)
@@ -42,22 +42,22 @@ class TestConfig(unittest.TestCase):
     def test_cli_config(self):
         conf_data = config.parse([
             "-q",
-            "--db=mysql://user:pwd@host/dbname",
-            "--cms-version=2.4",
-            "--django-version=1.5",
+            "--db=postgres://user:pwd@host/dbname",
+            "--cms-version=develop",
+            "--django-version=1.4",
             "--i18n=no",
             "--reversion=no",
             "--permissions=no",
-            "--use_timezone=no",
-            "-tEurope/Rome"
-            "-len -lde -lit"
+            "--use-tz=no",
+            "-tEurope/Rome",
+            "-len", "-lde", "-lit",
             "-p/tmp/test",
             "test_project"])
 
         self.assertEqual(conf_data.project_name, 'test_project')
 
-        self.assertEqual(conf_data.cms_version, '2.4')
-        self.assertEqual(conf_data.django_version, '1.5')
+        self.assertEqual(conf_data.cms_version, 3.0)
+        self.assertEqual(conf_data.django_version, 1.4)
         self.assertEqual(conf_data.i18n, 'no')
         self.assertEqual(conf_data.reversion, 'no')
         self.assertEqual(conf_data.permissions, 'no')
@@ -65,8 +65,8 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(conf_data.timezone, 'Europe/Rome')
         self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
         self.assertEqual(conf_data.project_directory, '/tmp/test')
-        self.assertEqual(conf_data.db, "mysql://user:pwd@host/dbname")
-        self.assertEqual(conf_data.db_driver, "MySQL-python")
+        self.assertEqual(conf_data.db, "postgres://user:pwd@host/dbname")
+        self.assertEqual(conf_data.db_driver, "psycopg2")
 
     def test_invalid_choices(self):
         # discard the argparser errors
@@ -77,7 +77,7 @@ class TestConfig(unittest.TestCase):
         with self.assertRaises(SystemExit) as error:
             conf_data = config.parse([
                 "-q",
-                "--db=mysql://user:pwd@host/dbname",
+                "--db=postgres://user:pwd@host/dbname",
                 "--cms-version=2.6",
                 "--django-version=1.1",
                 "--i18n=no",
@@ -94,7 +94,7 @@ class TestConfig(unittest.TestCase):
     def test_requirements(self):
         conf_data = config.parse([
             "-q",
-            "--db=mysql://user:pwd@host/dbname",
+            "--db=postgres://user:pwd@host/dbname",
             "--django-version=1.4",
             "--i18n=no",
             "-f",
@@ -109,7 +109,7 @@ class TestConfig(unittest.TestCase):
 
         conf_data = config.parse([
             "-q",
-            "--db=mysql://user:pwd@host/dbname",
+            "--db=postgres://user:pwd@host/dbname",
             "--i18n=no",
             "--cms-version=latest",
             "--django-version=latest",
@@ -124,7 +124,7 @@ class TestConfig(unittest.TestCase):
 
         conf_data = config.parse([
             "-q",
-            "--db=mysql://user:pwd@host/dbname",
+            "--db=postgres://user:pwd@host/dbname",
             "--i18n=no",
             "--cms-version=beta",
             "--django-version=beta",
@@ -136,7 +136,7 @@ class TestConfig(unittest.TestCase):
 
         conf_data = config.parse([
             "-q",
-            "--db=mysql://user:pwd@host/dbname",
+            "--db=postgres://user:pwd@host/dbname",
             "--i18n=no",
             "--cms-version=develop",
             "--django-version=develop",
@@ -150,22 +150,14 @@ class TestConfig(unittest.TestCase):
 
     def test_check_install(self):
         # discard the argparser errors
+        try:
+            import PIL
+            self.skipTest("Virtualenv installed, cannot run this test")
+        except ImportError:
+            pass
         saved_stderr = sys.stderr
         err = StringIO()
         sys.stderr = err
-
-        conf_data = config.parse([
-            "-q",
-            "--db=mysql://user:pwd@host/dbname",
-            "--django-version=1.4",
-            "--i18n=no",
-            "-f",
-            "test_project"])
-
-        with self.assertRaises(EnvironmentError) as error:
-            check_install(conf_data)
-        self.assertTrue(str(error.exception).find("Pillow is not installed") > -1)
-        self.assertTrue(str(error.exception).find("MySQL driver is not installed") > -1)
 
         conf_data = config.parse([
             "-q",
@@ -177,7 +169,20 @@ class TestConfig(unittest.TestCase):
 
         with self.assertRaises(EnvironmentError) as error:
             check_install(conf_data)
+        self.assertTrue(str(error.exception).find("Pillow is not installed") > -1)
+        self.assertTrue(str(error.exception).find("PostgreSQL driver is not installed") > -1)
 
-            self.assertTrue(str(error.exception).find("PostgreSQL driver is not installed") > -1)
+        conf_data = config.parse([
+            "-q",
+            "--db=mysql://user:pwd@host/dbname",
+            "--django-version=1.4",
+            "--i18n=no",
+            "-f",
+            "test_project"])
+
+        with self.assertRaises(EnvironmentError) as error:
+            check_install(conf_data)
+
+            self.assertTrue(str(error.exception).find("MySQL  driver is not installed") > -1)
 
         sys.stderr = saved_stderr

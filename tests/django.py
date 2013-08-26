@@ -4,7 +4,7 @@ import sys
 import os.path
 import tempfile
 
-from aldryn_installer import config, django
+from aldryn_installer import config, django, install
 
 PY3 = sys.version > '3'
 
@@ -22,7 +22,8 @@ else:
 class TestDjango(unittest.TestCase):
     def test_create_project(self):
         tmp_dir = tempfile.mkdtemp()
-        conf_data = config.parse(['--db=mysql://user:pwd@host/dbname',
+        conf_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                   '-q', '-p'+tmp_dir, 'test_project'])
+        install.requirements(conf_data.requirements)
         django.create_project(conf_data)
         self.assertTrue(os.path.exists(os.path.join(tmp_dir, 'test_project')))
