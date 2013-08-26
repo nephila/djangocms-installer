@@ -39,3 +39,43 @@ def query_yes_no(question, default=None):
         else:
             sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
+
+
+def supported_versions(django, cms):
+    """
+    Convert numeric and literal version information to numeric format
+    """
+    cms_version = 3
+    django_version = 1.5
+    try:
+        django_version = float(django)
+    except ValueError:
+        if django == 'latest':
+            django_version = 1.5
+        elif django == 'beta':
+            django_version = 1.6
+        elif django == 'develop':
+            django_version = 1.7
+
+    try:
+        cms_version = float(cms)
+    except ValueError:
+        if cms == 'latest':
+            cms_version = 2.4
+        elif django == 'beta':
+            django_version = 3.0
+        elif django == 'develop':
+            django_version = 3.0
+    return django_version, cms_version
+
+
+def less_than_version(value):
+    """
+    Converts the current version to the next one for inserting into requirements
+    in the ' < version' format
+    """
+    items = list(map(int, value.split(".")))
+    if len(items) == 1:
+        items.append(0)
+    items[1] += 1
+    return ".".join(map(str, items))

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import os.path
 import argparse
 
 import dj_database_url
@@ -7,6 +8,7 @@ import dj_database_url
 from .. import compat, utils
 from . import data
 from aldryn_installer.config.internal import DbAction
+from aldryn_installer.utils import less_than_version, supported_versions
 
 
 def parse(args):
@@ -28,6 +30,9 @@ def parse(args):
     parser.add_argument('--reversion', '-e', dest='reversion', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='Install and configure reversion support')
+    parser.add_argument('--permissions', dest='permissions', action='store',
+                        choices=('yes', 'no'),
+                        default='yes', help='Activate CMS permission management')
     parser.add_argument('--languages', '-l', dest='languages', action='append',
                         help='Languages to enable. Option can be provided multiple times, or as a comma separated list')
     parser.add_argument('--django-version', dest='django_version', action='store',
@@ -93,54 +98,65 @@ def parse(args):
                 raise ValueError("Option %s is required when in no-input mode" % action.dest)
             new_val = input_value
         setattr(args, action.dest, new_val)
-        if not getattr(args, 'requirements_file'):
-            requirements = [data.DEFAULT_REQUIREMENTS]
-            cms_version = 3
-            django_version = 1.5
 
-            if not args.no_db_driver:
-                requirements.append(args.db_driver)
-            if args.filer:
-                requirements.append(data.FILER_REQUIREMENTS)
+    # Convert version to numeric format for easier checking
+    django_version, cms_version = supported_versions(args.django_version,
+                                                     args.cms_version)
 
-            ## Django version check
-            if args.django_version == 'develop':
-                requirements.append(data.DJANGO_DEVELOP)
-            elif args.django_version == 'beta':
-                requirements.append(data.DJANGO_BETA)
+    if not getattr(args, 'requirements_file'):
+        requirements = [data.DEFAULT_REQUIREMENTS]
+
+        if not args.no_db_driver:
+            requirements.append(args.db_driver)
+        if args.filer:
+            requirements.append(data.FILER_REQUIREMENTS)
+
+        ## Django version check
+        if args.django_version == 'develop':
+            requirements.append(data.DJANGO_DEVELOP)
+        elif args.django_version == 'beta':
+            requirements.append(data.DJANGO_BETA)
+        else:
+            if args.django_version == 'latest':
+                requirements.append("Django<%s" % less_than_version(data.DJANGO_LATEST))
             else:
-                if args.django_version == 'latest':
-                    requirements.append("Django<%s" % data.less_than_version(data.DJANGO_LATEST))
-                else:
-                    requirements.append("Django<%s" % data.less_than_version(args.django_version))
-                    if data.less_than_version(args.django_version) <= "1.5":
-                        django_version = 1.4
+                requirements.append("Django<%s" % less_than_version(args.django_version))
 
-            ## Reversion package version depends on django version
-            if args.reversion:
-                if django_version < 1.5:
-                    requirements.append(data.DJANGO_14_REVERSION)
-                else:
-                    requirements.append(data.DJANGO_15_REVERSION)
-
-            ## Django cms version check
-            if args.cms_version == 'develop':
-                requirements.append(data.DJANGOCMS_DEVELOP)
-            elif args.cms_version == 'beta':
-                requirements.append(data.DJANGOCMS_BETA)
+        ## Reversion package version depends on django version
+        if args.reversion:
+            if django_version < 1.5:
+                requirements.append(data.DJANGO_14_REVERSION)
             else:
-                if args.cms_version == 'latest':
-                    requirements.append("django-cms<%s" % data.less_than_version(data.DJANGOCMS_LATEST))
-                else:
-                    requirements.append("django-cms<%s" % data.less_than_version(args.cms_version))
-                if(args.cms_version == 'latest' or
-                        data.less_than_version(args.cms_version) < "3.0"):
-                    cms_version = 2.4
-            if cms_version >= 3:
-                requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
+                requirements.append(data.DJANGO_15_REVERSION)
 
-            setattr(args, "requirements", "\n".join(requirements).strip())
+        ## Django cms version check
+        if args.cms_version == 'develop':
+            requirements.append(data.DJANGOCMS_DEVELOP)
+        elif args.cms_version == 'beta':
+            requirements.append(data.DJANGOCMS_BETA)
+        else:
+            if args.cms_version == 'latest':
+                requirements.append("django-cms<%s" % less_than_version(data.DJANGOCMS_LATEST))
+            else:
+                requirements.append("django-cms<%s" % less_than_version(args.cms_version))
+        if cms_version >= 3:
+            requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
+
+        setattr(args, "requirements", "\n".join(requirements).strip())
+    ## Convenient shortcuts
+    setattr(args, "cms_version", cms_version)
+    setattr(args, "django_version", django_version)
+    setattr(args, 'project_path',
+            os.path.join(args.project_directory, args.project_name))
+    setattr(args, 'settings_path',
+            os.path.join(args.project_directory, args.project_name, 'settings.py'))
+    setattr(args, 'urlconf_path',
+            os.path.join(args.project_directory, args.project_name, 'urls.py'))
     return args
+
+
+def get_settings():
+    return __import__('settings', globals(), locals())
 
 
 def write_default(config):

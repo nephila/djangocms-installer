@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
-                        '--reversion', '--languages', '--timezone', '--use-tz']
+                        '--reversion', '--languages', '--timezone', '--use-tz',
+                        '--permissions']
 
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms.git@develop#egg=django-cms'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta2.zip'
@@ -9,14 +10,6 @@ DJANGOCMS_LATEST = '2.4'
 DJANGO_DEVELOP = 'https://github.com/django/django.git@master#egg=django'
 DJANGO_BETA = 'https://github.com/django/django/archive/1.6b2.zip'
 DJANGO_LATEST = '1.5'
-
-
-def less_than_version(value):
-    items = list(map(int, value.split(".")))
-    if len(items) == 1:
-        items.append(0)
-    items[1] += 1
-    return ".".join(map(str, items))
 
 
 DEFAULT_REQUIREMENTS = """
@@ -55,7 +48,8 @@ aldryn_installer will install and configure the following plugins:
  * cms.plugins.picture (Picture plugin)
  * cms.plugins.teaser (Teaser plugin)
  * cms.plugins.video (Video plugin)
- * djangocms-style (Style plugin)
+ * djangocms_style (Style plugin)
+ * djangocms_column (Style plugin)
                      
 It will optionally install cmsplugin-filer plugins (if requested during
 configuration):

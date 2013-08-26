@@ -3,6 +3,7 @@
 import sys
 from aldryn_installer import config
 from aldryn_installer.install import check_install
+from aldryn_installer.utils import less_than_version
 
 PY3 = sys.version > '3'
 
@@ -28,6 +29,8 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(conf_data.django_version, 'latest')
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
+        self.assertEqual(conf_data.permissions, 'yes')
+        self.assertEqual(conf_data.use_timezone, 'yes')
         self.assertEqual(conf_data.db, "mysql://user:pwd@host/dbname")
 
         self.assertEqual(conf_data.no_db_driver, False)
@@ -44,6 +47,10 @@ class TestConfig(unittest.TestCase):
             "--django-version=1.5",
             "--i18n=no",
             "--reversion=no",
+            "--permissions=no",
+            "--use_timezone=no",
+            "-tEurope/Rome"
+            "-len -lde -lit"
             "-p/tmp/test",
             "test_project"])
 
@@ -53,6 +60,10 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(conf_data.django_version, '1.5')
         self.assertEqual(conf_data.i18n, 'no')
         self.assertEqual(conf_data.reversion, 'no')
+        self.assertEqual(conf_data.permissions, 'no')
+        self.assertEqual(conf_data.use_timezone, 'no')
+        self.assertEqual(conf_data.timezone, 'Europe/Rome')
+        self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
         self.assertEqual(conf_data.project_directory, '/tmp/test')
         self.assertEqual(conf_data.db, "mysql://user:pwd@host/dbname")
         self.assertEqual(conf_data.db_driver, "MySQL-python")
@@ -76,9 +87,9 @@ class TestConfig(unittest.TestCase):
         sys.stderr = saved_stderr
 
     def test_latest_version(self):
-        self.assertEqual(config.data.less_than_version('2.4'), "2.5")
-        self.assertEqual(config.data.less_than_version('3'), "3.1")
-        self.assertEqual(config.data.less_than_version('3.0.1'), "3.1.1")
+        self.assertEqual(less_than_version('2.4'), "2.5")
+        self.assertEqual(less_than_version('3'), "3.1")
+        self.assertEqual(less_than_version('3.0.1'), "3.1.1")
 
     def test_requirements(self):
         conf_data = config.parse([
