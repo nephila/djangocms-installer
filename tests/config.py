@@ -4,21 +4,10 @@ import sys
 from aldryn_installer import config
 from aldryn_installer.install import check_install
 from aldryn_installer.utils import less_than_version
-
-PY3 = sys.version > '3'
-
-if PY3:
-    from io import StringIO
-else:
-    from StringIO import StringIO
-
-if sys.version_info[:2] < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
+from . import BaseTestClass, PatchStd
 
 
-class TestConfig(unittest.TestCase):
+class TestConfig(BaseTestClass):
     def test_default_config(self):
         conf_data = config.parse(["--db=postgres://user:pwd@host/dbname",
                                   "-q", "test_project"])
@@ -69,22 +58,16 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(conf_data.db_driver, "psycopg2")
 
     def test_invalid_choices(self):
-        # discard the argparser errors
-        saved_stderr = sys.stderr
-        err = StringIO()
-        sys.stderr = err
-
-        with self.assertRaises(SystemExit) as error:
-            conf_data = config.parse([
-                "-q",
-                "--db=postgres://user:pwd@host/dbname",
-                "--cms-version=2.6",
-                "--django-version=1.1",
-                "--i18n=no",
-                "test_project"])
-            self.assertTrue(str(error.exception).find("--cms-version/-v: invalid choice: '2.6'") > -1)
-
-        sys.stderr = saved_stderr
+        with PatchStd(self.stdout, self.stderr):
+            with self.assertRaises(SystemExit) as error:
+                conf_data = config.parse([
+                    "-q",
+                    "--db=postgres://user:pwd@host/dbname",
+                    "--cms-version=2.6",
+                    "--django-version=1.1",
+                    "--i18n=no",
+                    "test_project"])
+                self.assertTrue(str(error.exception).find("--cms-version/-v: invalid choice: '2.6'") > -1)
 
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), "2.5")
@@ -149,40 +132,35 @@ class TestConfig(unittest.TestCase):
         self.assertTrue(conf_data.requirements.find("djangocms-admin-style") > -1)
 
     def test_check_install(self):
-        # discard the argparser errors
         try:
             import PIL
             self.skipTest("Virtualenv installed, cannot run this test")
         except ImportError:
             pass
-        saved_stderr = sys.stderr
-        err = StringIO()
-        sys.stderr = err
+        # discard the argparser errors
+        with PatchStd(self.stdout, self.stderr):
+            conf_data = config.parse([
+                "-q",
+                "--db=postgres://user:pwd@host/dbname",
+                "--django-version=1.4",
+                "--i18n=no",
+                "-f",
+                "test_project"])
 
-        conf_data = config.parse([
-            "-q",
-            "--db=postgres://user:pwd@host/dbname",
-            "--django-version=1.4",
-            "--i18n=no",
-            "-f",
-            "test_project"])
+            with self.assertRaises(EnvironmentError) as error:
+                check_install(conf_data)
+            self.assertTrue(str(error.exception).find("Pillow is not installed") > -1)
+            self.assertTrue(str(error.exception).find("PostgreSQL driver is not installed") > -1)
 
-        with self.assertRaises(EnvironmentError) as error:
-            check_install(conf_data)
-        self.assertTrue(str(error.exception).find("Pillow is not installed") > -1)
-        self.assertTrue(str(error.exception).find("PostgreSQL driver is not installed") > -1)
+            conf_data = config.parse([
+                "-q",
+                "--db=mysql://user:pwd@host/dbname",
+                "--django-version=1.4",
+                "--i18n=no",
+                "-f",
+                "test_project"])
 
-        conf_data = config.parse([
-            "-q",
-            "--db=mysql://user:pwd@host/dbname",
-            "--django-version=1.4",
-            "--i18n=no",
-            "-f",
-            "test_project"])
+            with self.assertRaises(EnvironmentError) as error:
+                check_install(conf_data)
 
-        with self.assertRaises(EnvironmentError) as error:
-            check_install(conf_data)
-
-            self.assertTrue(str(error.exception).find("MySQL  driver is not installed") > -1)
-
-        sys.stderr = saved_stderr
+                self.assertTrue(str(error.exception).find("MySQL  driver is not installed") > -1)
