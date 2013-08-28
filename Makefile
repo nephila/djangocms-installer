@@ -24,7 +24,7 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 lint:
-	flake8 aldryn-installer tests
+	flake8 aldryn_installer tests
 
 test:
 	python setup.py test
@@ -33,7 +33,7 @@ test-all:
 	tox
 
 coverage:
-	coverage run --source aldryn-installer setup.py test
+	coverage run --source aldryn_installer setup.py test
 	coverage report -m
 	coverage html
 	open htmlcov/index.html
@@ -41,7 +41,7 @@ coverage:
 docs:
 	rm docs/aldryn-installer.rst
 	rm docs/modules.rst
-	sphinx-apidoc -o docs/ aldryn-installer
+	sphinx-apidoc -o docs/ aldryn_installer
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	open docs/_build/html/index.html

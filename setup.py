@@ -6,9 +6,9 @@ import sys
 
 
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
-    from distutils.core import setup
+    from distutils.core import setup, find_packages
 
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
@@ -24,10 +24,6 @@ test_requirements = []
 if sys.version_info[:2] < (2, 7):
     requirements.append('argparse')
     test_requirements.append('unittest2')
-# Add Python 2.6 and 2.7-specific dependencies
-if sys.version < '3':
-    test_requirements.append('mock')
-
 
 setup(
     name='aldryn-installer',
@@ -37,15 +33,13 @@ setup(
     author='Iacopo Spalletti',
     author_email='i.spalletti@nephila.it',
     url='https://github.com/nephila/aldryn-installer',
-    packages=[
-        'aldryn_installer',
-    ],
+    packages=find_packages(),
     package_dir={'aldryn-installer': 'aldryn_installer'},
     include_package_data=True,
     install_requires=requirements,
     entry_points={
         'console_scripts': [
-            'aldryn-installer = aldrin_installer.main:execute',
+            'aldryn-installer = aldryn_installer.main:execute',
         ]
     },
     license="BSD",
