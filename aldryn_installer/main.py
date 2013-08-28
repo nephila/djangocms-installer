@@ -22,7 +22,7 @@ def execute():
         install.check_install(config_data)
         django.create_project(config_data)
         django.patch_settings(config_data)
-        django.patch_urlconf(config_data)
+        django.copy_files(config_data)
         if not config_data.no_sync:
             django.setup_database(config_data)
         print("All done!")

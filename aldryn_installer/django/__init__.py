@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-import shutil
-from copy import copy
 import sys
 import os
 import re
+
+import shutil
+import glob
 import subprocess
+from copy import copy
 
 from ..compat import iteritems
 from ..utils import chdir
@@ -29,13 +31,20 @@ def create_project(config_data):
         raise EnvironmentError(message)
 
 
-def patch_urlconf(config_data):
+def copy_files(config_data):
     """
     It's a little rude actually: it just overwrites the django-generated urls.py
-    with a custom version. This shouldn't be a problem as urlconf is quite stable.
+    with a custom version and put other files in the project directory.
     """
     urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls.py')
+    share_path = os.path.join(os.path.dirname(__file__), '../share')
+    template_path = os.path.join(config_data.project_path, 'templates')
+
     shutil.copy(urlconf_path, config_data.urlconf_path)
+    os.makedirs(template_path)
+    for filename in glob.glob(os.path.join(share_path, '*.html')):
+        if os.path.isfile(filename):
+            shutil.copy(filename, template_path)
 
 
 def patch_settings(config_data):
@@ -171,15 +180,15 @@ def _build_settings(config_data):
 def setup_database(config_data):
     with chdir(config_data.project_directory):
         try:
-            subprocess.check_call(["python", "-W", "ignore",
-                                   "manage.py", "syncdb", "--all", "--noinput", ])
             import south
+            subprocess.check_call(["python", "-W", "ignore",
+                                   "manage.py", "syncdb", "--all", "--noinput"])
             subprocess.check_call(["python", "-W", "ignore",
                                    "manage.py", "migrate", "--fake"])
         except ImportError:
             subprocess.check_call(["python", "-W", "ignore",
-                                   "manage.py", "syncdb", "--noinput", ])
-            sys.stdout.write("south not installed, migrations skipped")
+                                   "manage.py", "syncdb", "--noinput"])
+            print("south not installed, migrations skipped")
         if not config_data.no_user:
             print("\n\nCreating admin user")
             subprocess.check_call(["python", "-W", "ignore",

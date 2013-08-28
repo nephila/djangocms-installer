@@ -24,7 +24,7 @@ def parse(args):
                         default='yes', help='Activate Django I18N / L10N setting')
     parser.add_argument('--use-tz', '-z', dest='use_timezone', action='store',
                         choices=('yes', 'no'),
-                        default='yes', help='Optional default time zone')
+                        default='yes', help='Activate Django timezone support')
     parser.add_argument('--timezone', '-t', dest='timezone',
                         required=False, default='',
                         action='store', help='Optional default time zone')

@@ -102,7 +102,7 @@ REVERSION_APPLICATIONS = (
 
 CMS_TEMPLATES = (
     ('index.html', 'Home'),
-    ('other.html', 'Other'),
+    ('page.html', 'Other')
 )
 LANGUAGES = (
 )

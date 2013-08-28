@@ -28,7 +28,7 @@ class TestDjango(BaseTestClass):
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
-        django.patch_urlconf(config_data)
+        django.copy_files(config_data)
         settings = open(config_data.settings_path).read()
         urlconf = open(config_data.urlconf_path).read()
 
@@ -64,7 +64,7 @@ class TestDjango(BaseTestClass):
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
-        django.patch_urlconf(config_data)
+        django.copy_files(config_data)
         django.setup_database(config_data)
         project_db = sqlite3.connect(os.path.join(config_data.project_directory, 'test.db'))
 
