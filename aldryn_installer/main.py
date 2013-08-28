@@ -23,6 +23,8 @@ def execute():
         django.create_project(config_data)
         django.patch_settings(config_data)
         django.patch_urlconf(config_data)
-        sys.exit(0)
-        django.setup_database(config)
-        config.write_default(config)
+        if not config_data.no_sync:
+            django.setup_database(config_data)
+        print("All done!")
+        print("Get into '%s' directory and type 'python manage.py runserver' "
+              "to start your project" % config_data.project_directory)

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
+import shutil
 from copy import copy
 import sys
 import os
 import re
 import subprocess
-from aldryn_installer.compat import iteritems
 
+from ..compat import iteritems
+from ..utils import chdir
 from ..config import data, get_settings
 
 
@@ -29,10 +31,11 @@ def create_project(config_data):
 
 def patch_urlconf(config_data):
     """
-    Modify the urls.py file created by Django injecting the django CMS
-    configuration
+    It's a little rude actually: it just overwrites the django-generated urls.py
+    with a custom version. This shouldn't be a problem as urlconf is quite stable.
     """
-    pass
+    urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls.py')
+    shutil.copy(urlconf_path, config_data.urlconf_path)
 
 
 def patch_settings(config_data):
@@ -40,7 +43,7 @@ def patch_settings(config_data):
     Modify the settings file created by Django injecting the django CMS
     configuration
     """
-    overridden_settings = ('MIDDLEWARE_CLASSES', 'INSTALLED_APPS',
+    overridden_settings = ('MIDDLEWARE_CLASSES', 'INSTALLED_APPS', 'DATABASES',
                            'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS'
                            'TEMPLATE_DIRS', 'LANGUAGES')
 
@@ -104,11 +107,11 @@ def _build_settings(config_data):
         apps = list(vars.CMS_3_HEAD) + apps
         apps.extend(vars.CMS_3_APPLICATIONS)
 
-    if config_data.filer == 'yes':
+    if config_data.filer:
         apps.extend(vars.FILER_PLUGINS)
     else:
         apps.extend(vars.STANDARD_PLUGINS)
-    if config_data.reversion == 'yes':
+    if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
     text.append("INSTALLED_APPS = (\n%s%s\n)" % (
         spacer, (",\n" + spacer).join(["'%s'" % var for var in apps])))
@@ -154,8 +157,21 @@ def _build_settings(config_data):
     text.append("CMS_PERMISSION = %s" % vars.CMS_PERMISSION)
     text.append("CMS_PLACEHOLDER_CONF = %s" % vars.CMS_PLACEHOLDER_CONF)
 
+    text.append("DATABASES = {\n%s'default':\n%s%s\n}" % (spacer, spacer*2, config_data.db_parsed))
     return "\n\n".join(text)
 
 
 def setup_database(config_data):
-    pass
+    with chdir(config_data.project_directory):
+        subprocess.check_call(["python", "-W", "ignore",
+                               "manage.py", "syncdb", "--all", "--noinput", ])
+        try:
+            import south
+            subprocess.check_call(["python", "-W", "ignore",
+                                   "manage.py", "migrate", "--fake"])
+        except ImportError:
+            sys.stdout.write("south not installed, migrations skipped")
+        if not config_data.no_user:
+            print("\n\nCreating admin user")
+            subprocess.check_call(["python", "-W", "ignore",
+                                   "manage.py", "createsuperuser"])

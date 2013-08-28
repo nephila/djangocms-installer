@@ -65,6 +65,8 @@ def parse(args):
                         default=False, help="Don't install database package")
     parser.add_argument('--no-sync', '-m', dest='no_sync', action='store_true',
                         default=False, help="Don't run syncdb / migrate after bootstrapping")
+    parser.add_argument('--no-user', '-u', dest='no_user', action='store_true',
+                        default=False, help="Don't create the admin user")
 
     args = parser.parse_args(args)
 
@@ -97,6 +99,8 @@ def parse(args):
             if not input_value and action.required:
                 raise ValueError("Option %s is required when in no-input mode" % action.dest)
             new_val = input_value
+        if action.choices in ('yes', 'no'):
+            new_val = new_val == 'yes'
         setattr(args, action.dest, new_val)
 
     # Convert version to numeric format for easier checking
