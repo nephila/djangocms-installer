@@ -2,6 +2,7 @@
 import sys
 import os.path
 import argparse
+import locale
 
 import dj_database_url
 
@@ -103,6 +104,9 @@ def parse(args):
             new_val = new_val == 'yes'
         setattr(args, action.dest, new_val)
 
+    if not args.languages:
+        args.languages = [locale.getdefaultlocale()[0].split("_")[0]]
+
     # Convert version to numeric format for easier checking
     django_version, cms_version = supported_versions(args.django_version,
                                                      args.cms_version)
@@ -147,6 +151,7 @@ def parse(args):
             requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
 
         setattr(args, "requirements", "\n".join(requirements).strip())
+
     ## Convenient shortcuts
     setattr(args, "cms_version", cms_version)
     setattr(args, "django_version", django_version)

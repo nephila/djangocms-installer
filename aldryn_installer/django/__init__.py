@@ -158,18 +158,24 @@ def _build_settings(config_data):
     text.append("CMS_PLACEHOLDER_CONF = %s" % vars.CMS_PLACEHOLDER_CONF)
 
     text.append("DATABASES = {\n%s'default':\n%s%s\n}" % (spacer, spacer*2, config_data.db_parsed))
+
+    if config_data.filer:
+        text.append("THUMBNAIL_PROCESSORS = (\n%s%s\n)" % (
+        spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.THUMBNAIL_PROCESSORS])))
     return "\n\n".join(text)
 
 
 def setup_database(config_data):
     with chdir(config_data.project_directory):
-        subprocess.check_call(["python", "-W", "ignore",
-                               "manage.py", "syncdb", "--all", "--noinput", ])
         try:
+            subprocess.check_call(["python", "-W", "ignore",
+                                   "manage.py", "syncdb", "--all", "--noinput", ])
             import south
             subprocess.check_call(["python", "-W", "ignore",
                                    "manage.py", "migrate", "--fake"])
         except ImportError:
+            subprocess.check_call(["python", "-W", "ignore",
+                                   "manage.py", "syncdb", "--noinput", ])
             sys.stdout.write("south not installed, migrations skipped")
         if not config_data.no_user:
             print("\n\nCreating admin user")

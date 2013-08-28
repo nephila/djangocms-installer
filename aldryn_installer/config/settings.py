@@ -68,6 +68,8 @@ STANDARD_PLUGINS = (
 )
 
 FILER_PLUGINS = (
+    'filer',
+    'easy_thumbnails',
     'cmsplugin_filer_file',
     'cmsplugin_filer_folder',
     'cms.plugins.flash',
@@ -116,6 +118,13 @@ CMS_LANGUAGES = {
 }
 CMS_PERMISSION = True
 CMS_PLACEHOLDER_CONF = {}
+
+THUMBNAIL_PROCESSORS = (
+    'easy_thumbnails.processors.colorspace',
+    'easy_thumbnails.processors.autocrop',
+    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+    'easy_thumbnails.processors.filters',
+)
 
 URLCONF = {
 
