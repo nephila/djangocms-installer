@@ -43,8 +43,8 @@ def patch_settings(config_data):
     Modify the settings file created by Django injecting the django CMS
     configuration
     """
-    overridden_settings = ('MIDDLEWARE_CLASSES', 'INSTALLED_APPS', 'DATABASES',
-                           'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS'
+    overridden_settings = ('MIDDLEWARE_CLASSES', 'INSTALLED_APPS',
+                           'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS',
                            'TEMPLATE_DIRS', 'LANGUAGES')
 
     with open(config_data.settings_path, 'r') as fd_original:
@@ -72,8 +72,11 @@ def patch_settings(config_data):
         original = original.replace("TIME_ZONE = 'America/Chicago'", "TIME_ZONE = '%s'" % config_data.timezone)
 
     for item in overridden_settings:
-        item_re = re.compile(r"%s^[^\)]+\)" % item, re.DOTALL | re.MULTILINE)
+        item_re = re.compile(r"%s = [^\)]+\)" % item, re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
+    # DATABASES is a dictionary, so different regexp needed
+    item_re = re.compile(r"DATABASES = [^\}]+\}[^\}]+\}", re.DOTALL | re.MULTILINE)
+    original = item_re.sub('', original)
 
     original += _build_settings(config_data)
 
