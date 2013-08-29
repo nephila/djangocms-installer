@@ -3,11 +3,11 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
                         '--permissions']
 
-DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms.git@develop#egg=django-cms'
+DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta2.zip'
 DJANGOCMS_LATEST = '2.4'
 
-DJANGO_DEVELOP = 'https://github.com/django/django.git@master#egg=django'
+DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
 DJANGO_BETA = 'https://github.com/django/django/archive/1.6b2.zip'
 DJANGO_LATEST = '1.5'
 

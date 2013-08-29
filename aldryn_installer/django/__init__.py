@@ -130,7 +130,7 @@ def _build_settings(config_data):
 
     text.append("LANGUAGES = (\n%s%s\n%s%s\n)" % (
         spacer, "## Customize this",
-        spacer, (",\n" + spacer).join(["('%s', gettext('%s'))" % (item, item) for item in config_data.languages])))
+        spacer, ("\n" + spacer).join(["('%s', gettext('%s'))," % (item, item) for item in config_data.languages])))
 
     cms_langs = vars.CMS_LANGUAGES
     for lang in config_data.languages:
