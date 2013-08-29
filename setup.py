@@ -39,7 +39,7 @@ setup(
     install_requires=requirements,
     entry_points={
         'console_scripts': [
-            'aldryn-installer = aldryn_installer.main:execute',
+            'aldryn = aldryn_installer.main:execute',
         ]
     },
     license="BSD",
