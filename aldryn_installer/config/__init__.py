@@ -27,7 +27,7 @@ def parse(args):
                         choices=('yes', 'no'),
                         default='yes', help='Activate Django timezone support')
     parser.add_argument('--timezone', '-t', dest='timezone',
-                        required=False, default='',
+                        required=False, default='America/Chicago',
                         action='store', help='Optional default time zone')
     parser.add_argument('--reversion', '-e', dest='reversion', action='store',
                         choices=('yes', 'no'),
