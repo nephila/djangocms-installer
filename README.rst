@@ -25,7 +25,7 @@ Usage
 -----
 Call it with a project name and a directory path to install the project into::
 
-    aldryn_installer -p /path/whatever project_name
+    aldryn -p /path/whatever project_name
 
 HOWTO
 -----
@@ -44,7 +44,7 @@ HOWTO
 
 #. Execute the wizard::
 
-    aldryn_installer -p /path/whatever project_name
+    aldryn -p /path/whatever project_name
 
 #. Answer the questions; most of them already provide sane default, but you're
    free to adapt to your own needs.
