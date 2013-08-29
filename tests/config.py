@@ -94,8 +94,8 @@ class TestConfig(BaseTestClass):
             "-q",
             "--db=postgres://user:pwd@host/dbname",
             "--i18n=no",
-            "--cms-version=latest",
-            "--django-version=latest",
+            "--cms-version=stable",
+            "--django-version=stable",
             "-f",
             "test_project"])
 

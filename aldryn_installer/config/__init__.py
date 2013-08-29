@@ -38,11 +38,11 @@ def parse(args):
     parser.add_argument('--languages', '-l', dest='languages', action='append',
                         help='Languages to enable. Option can be provided multiple times, or as a comma separated list')
     parser.add_argument('--django-version', dest='django_version', action='store',
-                        choices=('1.4', '1.5', 'latest', 'beta', 'develop'),
-                        default='latest', help='Django version')
+                        choices=('1.4', '1.5', 'stable'), #, 'beta', 'develop' beta and develop currently not supported
+                        default='stable', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
-                        choices=('2.4', 'latest', 'beta', 'develop'),
-                        default='latest', help='django CMS version')
+                        choices=('2.4', 'stable', 'beta', 'develop'),
+                        default='stable', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
                         required=False, default='',
                         action='store', help='Optional project parent directory')
@@ -128,7 +128,7 @@ def parse(args):
         elif args.django_version == 'beta':
             requirements.append(data.DJANGO_BETA)
         else:
-            if args.django_version == 'latest':
+            if args.django_version == 'stable':
                 requirements.append("Django<%s" % less_than_version(data.DJANGO_LATEST))
             else:
                 requirements.append("Django<%s" % less_than_version(args.django_version))
@@ -146,7 +146,7 @@ def parse(args):
         elif args.cms_version == 'beta':
             requirements.append(data.DJANGOCMS_BETA)
         else:
-            if args.cms_version == 'latest':
+            if args.cms_version == 'stable':
                 requirements.append("django-cms<%s" % less_than_version(data.DJANGOCMS_LATEST))
             else:
                 requirements.append("django-cms<%s" % less_than_version(args.cms_version))
