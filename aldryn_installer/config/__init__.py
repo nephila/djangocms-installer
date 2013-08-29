@@ -18,6 +18,7 @@ def parse(args):
     """
     parser = argparse.ArgumentParser(description='Bootstrap a django CMS project.')
     parser.add_argument('--db', '-d', dest='db', action=DbAction,
+                        default='sqlite://locahost/project.db',
                         help='Database configuration (in URL format)')
     parser.add_argument('--i18n', '-i', dest='i18n', action='store',
                         choices=('yes', 'no'),
@@ -94,8 +95,10 @@ def parse(args):
                 new_val = compat.clean(new_val)
                 if not new_val and input_value:
                     new_val = input_value
-                if not new_val and not action.required:
-                    break
+                if new_val and action.dest == 'db':
+                    action(parser, args, new_val, action.option_strings)
+                    new_val = getattr(args, action.dest)
+
         else:
             if not input_value and action.required:
                 raise ValueError("Option %s is required when in no-input mode" % action.dest)
