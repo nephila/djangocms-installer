@@ -110,24 +110,20 @@ class TestConfig(BaseTestClass):
             "--db=postgres://user:pwd@host/dbname",
             "--i18n=no",
             "--cms-version=beta",
-            "--django-version=beta",
             "-f",
             "test_project"])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_BETA) > -1)
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGO_BETA) > -1)
 
         conf_data = config.parse([
             "-q",
             "--db=postgres://user:pwd@host/dbname",
             "--i18n=no",
             "--cms-version=develop",
-            "--django-version=develop",
             "-f",
             "test_project"])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGO_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor") > -1)
         self.assertTrue(conf_data.requirements.find("djangocms-admin-style") > -1)
 
