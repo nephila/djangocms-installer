@@ -8,7 +8,7 @@ import dj_database_url
 
 from .. import compat, utils
 from . import data
-from aldryn_installer.config.internal import DbAction
+from aldryn_installer.config.internal import DbAction, validate_project
 from aldryn_installer.utils import less_than_version, supported_versions
 
 
@@ -98,7 +98,6 @@ def parse(args):
                 if new_val and action.dest == 'db':
                     action(parser, args, new_val, action.option_strings)
                     new_val = getattr(args, action.dest)
-
         else:
             if not input_value and action.required:
                 raise ValueError("Option %s is required when in no-input mode" % action.dest)
@@ -159,11 +158,18 @@ def parse(args):
     setattr(args, "cms_version", cms_version)
     setattr(args, "django_version", django_version)
     setattr(args, 'project_path',
-            os.path.join(args.project_directory, args.project_name))
+            os.path.join(args.project_directory, args.project_name).strip())
     setattr(args, 'settings_path',
-            os.path.join(args.project_directory, args.project_name, 'settings.py'))
+            os.path.join(args.project_directory, args.project_name, 'settings.py').strip())
     setattr(args, 'urlconf_path',
-            os.path.join(args.project_directory, args.project_name, 'urls.py'))
+            os.path.join(args.project_directory, args.project_name, 'urls.py').strip())
+
+    if not validate_project(args.project_name):
+        sys.stdout.write("Project name '%s' is not valid\n" % args.project_name)
+        sys.exit(3)
+    if os.path.exists(args.project_path):
+        sys.stdout.write("Path '%s' already exists, please choose a different one\n" % args.project_path)
+        sys.exit(4)
     return args
 
 

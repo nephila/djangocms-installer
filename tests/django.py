@@ -39,7 +39,7 @@ class TestDjango(BaseTestClass):
         # checking for django options
         self.assertFalse(project.settings.USE_L10N)
         self.assertFalse(project.settings.USE_TZ)
-        self.assertEqual(project.settings.LANGUAGE_CODE,'en')
+        self.assertEqual(project.settings.LANGUAGE_CODE, 'en')
 
         # checking for standard CMS settings
         self.assertTrue('sekizai.context_processors.sekizai' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
@@ -60,7 +60,7 @@ class TestDjango(BaseTestClass):
         self.project_dir = tempfile.mkdtemp()
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-f', '-q', '-u',
-                                    '-p'+self.project_dir, 'test_project'])
+                                    '-p'+self.project_dir, 'aldryn_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)

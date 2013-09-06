@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
+import os
+import tempfile
+
 from aldryn_installer import config
 from aldryn_installer.install import check_install
 from aldryn_installer.utils import less_than_version
@@ -68,6 +71,60 @@ class TestConfig(BaseTestClass):
                     "--i18n=no",
                     "test_project"])
                 self.assertTrue(str(error.exception).find("--cms-version/-v: invalid choice: '2.6'") > -1)
+
+    def test_invalid_project_name(self):
+        with PatchStd(self.stdout, self.stderr):
+            with self.assertRaises(SystemExit) as error:
+                conf_data = config.parse([
+                    "-q",
+                    "--db=postgres://user:pwd@host/dbname",
+                    "-p/tmp/test_project",
+                    "test"])
+                self.assertTrue(str(error.exception).find("Project name 'test' is not valid") > -1)
+
+            with self.assertRaises(SystemExit) as error:
+                conf_data = config.parse([
+                    "-q",
+                    "--db=postgres://user:pwd@host/dbname",
+                    "-p/tmp/test_project",
+                    "assert"])
+                self.assertTrue(str(error.exception).find("Project name 'assert' is not valid") > -1)
+
+            with self.assertRaises(SystemExit) as error:
+                conf_data = config.parse([
+                    "-q",
+                    "--db=postgres://user:pwd@host/dbname",
+                    "-p/tmp/test_project",
+                    "values"])
+                self.assertTrue(str(error.exception).find("Project name 'assert' is not valid") > -1)
+
+    def test_invalid_project_path(self):
+        parent_dir = tempfile.mkdtemp()
+        prj_dir = "test_project"
+        existing_path = os.path.join(parent_dir, prj_dir)
+        os.makedirs(existing_path)
+        with PatchStd(self.stdout, self.stderr):
+            with self.assertRaises(SystemExit) as error:
+                conf_data = config.parse([
+                    "-q",
+                    "--db=postgres://user:pwd@host/dbname",
+                    "-p%s" % parent_dir,
+                    prj_dir])
+                self.assertTrue(str(error.exception).find("Path '%s' already exists" % existing_path) > -1)
+
+    def test_whitespace_project_path(self):
+        parent_dir = tempfile.mkdtemp()
+        prj_dir = "test_project"
+        existing_path = os.path.join(parent_dir, prj_dir)
+        os.makedirs(existing_path)
+        with PatchStd(self.stdout, self.stderr):
+            with self.assertRaises(SystemExit) as error:
+                conf_data = config.parse([
+                    "-q",
+                    "--db=postgres://user:pwd@host/dbname",
+                    "-p %s" % parent_dir,
+                    prj_dir])
+                self.assertEqual(conf_data.project_path, existing_path)
 
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), "2.5")
