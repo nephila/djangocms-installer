@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
+import tempfile
 import os.path
 
 import pip
@@ -54,8 +54,8 @@ def check_install(config_data):
 
 def requirements(requirements, is_file=False):
     if is_file:
-        args = ['install', '-r', requirements]
+        args = ['install', '-q', '-r', requirements]
     else:
-        args = ['install']
+        args = ['install', '-q', ]
         args.extend(requirements.split())
     command = pip.main(args)

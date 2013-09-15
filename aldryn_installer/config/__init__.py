@@ -164,17 +164,19 @@ def parse(args):
     setattr(args, 'urlconf_path',
             os.path.join(args.project_directory, args.project_name, 'urls.py').strip())
 
-    if not validate_project(args.project_name):
-        sys.stdout.write("Project name '%s' is not valid\n" % args.project_name)
-        sys.exit(3)
     if os.path.exists(args.project_path):
         sys.stdout.write("Path '%s' already exists, please choose a different one\n" % args.project_path)
         sys.exit(4)
+
+    if not validate_project(args.project_name):
+        sys.stdout.write("Project name '%s' is not valid\n" % args.project_name)
+        sys.exit(3)
     return args
 
 
 def get_settings():
-    return __import__('settings', globals(), locals())
+    module = __import__('aldryn_installer.config', globals(), locals(), ['settings'])
+    return module.settings
 
 
 def write_default(config):
@@ -185,5 +187,5 @@ def show_plugins():
     """
     Shows a descriptive text about supported plugins
     """
-    sys.stdout.write(data.PLUGIN_LIST_TEXT)
+    sys.stdout.write(unicode(data.PLUGIN_LIST_TEXT))
 

@@ -8,6 +8,8 @@ import glob
 import subprocess
 from copy import copy
 
+import six
+
 from ..compat import iteritems
 from ..utils import chdir
 from ..config import data, get_settings
@@ -55,6 +57,10 @@ def patch_settings(config_data):
     overridden_settings = ('MIDDLEWARE_CLASSES', 'INSTALLED_APPS',
                            'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS',
                            'TEMPLATE_DIRS', 'LANGUAGES')
+
+    if not os.path.exists(config_data.settings_path):
+        sys.stdout.write("Error while creating target project, please check the given configuration")
+        return sys.exit(5)
 
     with open(config_data.settings_path, 'r') as fd_original:
         original = fd_original.read()
@@ -157,14 +163,14 @@ def _build_settings(config_data):
                     else:
                         cms_text.append("%s'%s': %s," % (spacer*3, config_name, config_value))
                 cms_text.append("%s}," % (spacer*2))
-            cms_text.append("%s]" % spacer)
+            cms_text.append("%s]," % spacer)
     cms_text.append("}")
 
     text.append("\n".join(cms_text))
 
     text.append("CMS_TEMPLATES = (\n%s%s\n%s%s\n)" % (
         spacer, "## Customize this",
-        spacer, (",\n" + spacer).join([unicode(item) for item in vars.CMS_TEMPLATES])))
+        spacer, (",\n" + spacer).join(["('%s', '%s')" % item for item in vars.CMS_TEMPLATES])))
 
     text.append("CMS_PERMISSION = %s" % vars.CMS_PERMISSION)
     text.append("CMS_PLACEHOLDER_CONF = %s" % vars.CMS_PLACEHOLDER_CONF)
