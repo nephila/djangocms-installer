@@ -11,6 +11,9 @@ Aldryn Installer
 .. image:: https://pypip.in/d/aldryn-installer/badge.png
         :target: https://crate.io/packages/aldryn-installer?version=latest
 
+.. image:: https://coveralls.io/repos/nephila/aldryn-installer/badge.png?branch=master
+        :target: https://coveralls.io/r/nephila/aldryn-installer?branch=master
+
 Command to easily bootstrap django CMS projects
 
 * Free software: BSD license
