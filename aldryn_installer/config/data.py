@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import six
+
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
                         '--permissions']
@@ -11,15 +13,18 @@ DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
 DJANGO_BETA = 'https://github.com/django/django/archive/1.6b2.zip'
 DJANGO_LATEST = '1.5'
 
-
 DEFAULT_REQUIREMENTS = """
 django-classy-tags>=0.3.4.1
 south>=0.7.2
 html5lib
 Pillow>=2
-django-mptt>=0.5.1,<0.5.3
 django-sekizai>=0.7
 """
+if six.PY2:
+    DEFAULT_REQUIREMENTS += "django-mptt>=0.5.1,<0.5.3"
+else:
+    DEFAULT_REQUIREMENTS += "django-mptt>=0.6"
+
 
 DJANGOCMS_3_REQUIREMENTS = """
 djangocms-text-ckeditor>=2

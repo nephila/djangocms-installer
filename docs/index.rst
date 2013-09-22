@@ -12,11 +12,12 @@ Contents:
    :maxdepth: 2
 
    readme
-   installation
    usage
+   reference
    contributing
    authors
    history
+   autodoc
 
 Indices and tables
 ==================

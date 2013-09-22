@@ -1,2 +1,3 @@
 pip
 dj-database-url
+six
