@@ -37,7 +37,7 @@ Installation
 
    or::
 
-    pip install https://github.com/nephila/aldryn-installer/archive/master.zip
+    pip install -e git+https://github.com/nephila/aldryn-installer#egg=aldryn-installer
 
 Documentation
 -------------
