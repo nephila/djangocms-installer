@@ -1,0 +1,16 @@
+[run]
+source = aldryn_installer
+branch = True
+omit =
+    aldryn_installer/share/*
+    aldryn_installer/__main__.py
+    aldryn_installer/main.py
+    aldryn_installer/config/settings.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
