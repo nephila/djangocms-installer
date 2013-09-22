@@ -109,4 +109,4 @@ Tips
 
 To run a subset of tests::
 
-	$ python -m unittest tests.test_aldryn-installer
+	$ python setup.py test -s tests.main

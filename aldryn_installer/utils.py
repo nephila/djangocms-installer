@@ -38,7 +38,7 @@ def query_yes_no(question, default=None):
         elif choice in valid:
             return valid[choice]
         else:
-            sys.stdout.write("Please respond with 'yes' or 'no' "
+            sys.stdout.write("Please answer with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
 
 

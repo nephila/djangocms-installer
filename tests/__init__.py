@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
+import os
+import tempfile
 import shutil
 
 if sys.version_info[:2] < (2, 7):
@@ -8,10 +10,7 @@ if sys.version_info[:2] < (2, 7):
 else:
     import unittest
 
-if sys.version_info[0] > 2:
-    from io import StringIO
-else:
-    from StringIO import StringIO
+from six import StringIO
 
 
 class PatchStd(object):
@@ -41,12 +40,20 @@ class BaseTestClass(unittest.TestCase):
     stderr = None
     project_dir = None
 
+    def _remove_project_dir(self):
+        ##if self.project_dir:
+        #    shutil.rmtree(self.project_dir)
+        if 'USE_SHM' in os.environ:
+            self.project_dir = tempfile.mkdtemp(dir="/run/shm")
+        else:
+            self.project_dir = tempfile.mkdtemp()
+
     def tearDown(self):
-        if self.project_dir:
-            shutil.rmtree(self.project_dir)
+        self._remove_project_dir()
         self.stdout = None
         self.stderr = None
 
     def setUp(self):
         self.stdout = StringIO()
         self.stderr = StringIO()
+        self._remove_project_dir()
