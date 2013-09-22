@@ -5,6 +5,7 @@ omit =
     aldryn_installer/share/*
     aldryn_installer/__main__.py
     aldryn_installer/main.py
+    aldryn_installer/config/urls.py
     aldryn_installer/config/settings.py
 
 [report]
