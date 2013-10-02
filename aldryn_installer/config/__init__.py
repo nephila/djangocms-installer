@@ -3,8 +3,7 @@ import sys
 import os.path
 import argparse
 import locale
-
-import dj_database_url
+import six
 
 from .. import compat, utils
 from . import data
@@ -108,6 +107,8 @@ def parse(args):
 
     if not args.languages:
         args.languages = [locale.getdefaultlocale()[0].split("_")[0]]
+    elif isinstance(args.languages, six.string_types):
+        args.languages = args.languages.split(",")
 
     # Convert version to numeric format for easier checking
     django_version, cms_version = supported_versions(args.django_version,
