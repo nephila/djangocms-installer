@@ -30,4 +30,5 @@ def execute():
             print("Get into '%s' directory and type 'python manage.py runserver' "
                   "to start your project" % config_data.project_directory)
     except Exception as e:
-        raise EnvironmentError("%s\nDocumentation available at http://aldryn-installer.rtfd.org" % e)
+        tb = sys.exc_info()[2]
+        raise EnvironmentError("%s\nDocumentation available at http://aldryn-installer.rtfd.org" % e).with_traceback(tb)

@@ -59,3 +59,4 @@ def requirements(requirements, is_file=False):
         args = ['install', '-q', ]
         args.extend(requirements.split())
     command = pip.main(args)
+    print("requirements installed: %s" % ",".join(args))
