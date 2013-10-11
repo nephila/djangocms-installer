@@ -25,7 +25,8 @@ def create_project(config_data):
                 os.makedirs(config_data.project_directory)
             subprocess.check_call(["django-admin.py", "startproject",
                                    config_data.project_name,
-                                   config_data.project_directory], shell=True)
+                                   config_data.project_directory],
+                                   shell=True)
         else:
             subprocess.check_call(["django-admin.py", "startproject",
                                    config_data.project_name])
