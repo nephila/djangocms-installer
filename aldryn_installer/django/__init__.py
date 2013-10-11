@@ -29,7 +29,8 @@ def create_project(config_data):
                                    shell=True)
         else:
             subprocess.check_call(["django-admin.py", "startproject",
-                                   config_data.project_name])
+                                   config_data.project_name],
+                                   shell=True)
     except subprocess.CalledProcessError as message:
         raise EnvironmentError(message)
 
