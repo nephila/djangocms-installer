@@ -23,12 +23,27 @@ def create_project(config_data):
         if config_data.project_directory:
             if not os.path.exists(config_data.project_directory):
                 os.makedirs(config_data.project_directory)
-            subprocess.check_call(["django-admin.py", "startproject",
-                                   config_data.project_name,
-                                   config_data.project_directory])
+
+            if sys.platform == 'win32':
+                subprocess.check_call(["django-admin.py", "startproject",
+                                       config_data.project_name,
+                                       config_data.project_directory],
+                                      shell=True)
+            else:
+                subprocess.check_call(["django-admin.py", "startproject",
+                                       config_data.project_name,
+                                       config_data.project_directory])
+
         else:
-            subprocess.check_call(["django-admin.py", "startproject",
-                                   config_data.project_name])
+            if sys.platform == 'win32':
+                subprocess.check_call(["django-admin.py", "startproject",
+                                       config_data.project_name],
+                                      shell=True)
+
+            else:
+                subprocess.check_call(["django-admin.py", "startproject",
+                                       config_data.project_name])
+
     except subprocess.CalledProcessError as message:
         raise EnvironmentError(message)
 
