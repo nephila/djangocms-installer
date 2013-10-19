@@ -3,7 +3,7 @@
 History
 -------
 
-0.1.0 (2013-09-22)
+0.1.0 (2013-10-19)
 ++++++++++++++++++
 
-* Experimental release.
+* First public release.

@@ -10,4 +10,5 @@ Development Lead
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Kim Thoenen <kim@smuzey.ch>
+* Patrick Lauber <digi@treepy.com>
