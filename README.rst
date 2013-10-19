@@ -24,6 +24,9 @@ Features
 ``aldryn-installer`` is a console wizard to help bootstrapping a django CMS
 project.
 
+Refer to `django CMS Tutorial <http://slid.es/chive/djangocms/fullscreen>`_ on
+how to properly setup your first django CMS project.
+
 Installation
 ------------
 
@@ -43,3 +46,18 @@ Documentation
 -------------
 
 See http://aldryn-installer.readthedocs.org
+
+Caveats
+-------
+
+While this wizard try to handle most of the things for you, it doesn't check for
+all the proper native (non python) libraries to be installed.
+Before running this, please check you have the proper header and libraries
+installed and available for packages to be installed.
+
+Libraries you would want to check:
+
+* libjpeg (for JPEG support in ``Pillow``)
+* zlib (for PNG support in ``Pillow``)
+* postgresql (for ``psycopg``)
+* libmysqlclient (for ``Mysql-Python``)
