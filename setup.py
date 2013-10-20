@@ -3,6 +3,7 @@
 
 import os
 import sys
+import aldryn_installer
 
 
 try:
@@ -27,7 +28,7 @@ if sys.version_info[:2] < (2, 7):
 
 setup(
     name='aldryn-installer',
-    version='0.1.0',
+    version=aldryn_installer.__version__,
     description='Command to easily bootstrap django CMS projects',
     long_description=readme + '\n\n' + history,
     author='Iacopo Spalletti',

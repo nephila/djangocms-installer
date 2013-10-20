@@ -14,6 +14,7 @@ Contents:
    readme
    usage
    reference
+   libraries
    contributing
    authors
    history
