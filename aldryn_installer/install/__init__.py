@@ -26,28 +26,28 @@ def check_install(config_data):
             im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.png"))
             im.thumbnail(size)
         except IOError:
-            errors.append("Pillow is not compiled with PNG support, see documentation on how to fix this")
+            errors.append("Pillow is not compiled with PNG support, see 'Libraries installation issues' documentation section.")
         try:
             im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.jpg"))
             im.thumbnail(size)
         except IOError:
-            errors.append("Pillow is not compiled with JPEG support, see documentation on how to fix this")
+            errors.append("Pillow is not compiled with JPEG support, see 'Libraries installation issues' documentation section.")
     except ImportError:
-        errors.append("Pillow is not installed check for installation errors and see documentation on how to fix this")
+        errors.append("Pillow is not installed check for installation errors and see 'Libraries installation issues' documentation section.")
 
     # PostgreSQL test
     if config_data.db_driver == 'psycopg2' and not config_data.no_db_driver:
         try:
             import psycopg2
         except ImportError:
-            errors.append("PostgreSQL driver is not installed, but you configured a PostgreSQL database, please check your installation and see documentation on how to fix this")
+            errors.append("PostgreSQL driver is not installed, but you configured a PostgreSQL database, please check your installation and see 'Libraries installation issues' documentation section.")
 
     # MySQL test
     if config_data.db_driver == 'MySQL-python' and not config_data.no_db_driver:
         try:
             import MySQLdb
         except ImportError:
-            errors.append("MySQL driver is not installed, but you configured a MySQL database, please check your installation and see documentation on how to fix this")
+            errors.append("MySQL driver is not installed, but you configured a MySQL database, please check your installation and see 'Libraries installation issues' documentation section.")
     if errors:
         raise EnvironmentError("\n".join(errors))
 
