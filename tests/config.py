@@ -208,28 +208,24 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
 
-    def test_check_install(self):
+    def suspend_test_check_install(self):
         import pip
-        reinstall = []
         # discard the argparser errors
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 # clean the virtualenv
                 try:
                     pip.main(['uninstall', '-y', 'psycopg2'])
-                    reinstall.append('psycopg2')
                 except pip.exceptions.UninstallationError:
                     ## package not installed, all is fine
                     pass
                 try:
                     pip.main(['uninstall', '-y', 'pillow'])
-                    reinstall.append('pillow')
                 except pip.exceptions.UninstallationError:
                     ## package not installed, all is fine
                     pass
                 try:
                     pip.main(['uninstall', '-y', 'mysql-python'])
-                    reinstall.append('mysql-python')
                 except pip.exceptions.UninstallationError:
                     ## package not installed, all is fine
                     pass
@@ -260,9 +256,3 @@ class TestConfig(BaseTestClass):
                 with self.assertRaises(EnvironmentError) as context_error:
                     check_install(conf_data)
                 self.assertTrue(str(context_error.exception).find('MySQL driver is not installed') > -1)
-
-                if reinstall:
-                    reinstall.insert(0, 'install')
-                    reinstall.insert(1, '-q')
-                    pip.main(reinstall)
-                    print(reinstall)

@@ -20,7 +20,6 @@ def check_install(config_data):
 
     # PIL tests
     try:
-        print("Testing PIL")
         from PIL import Image
 
         try:
