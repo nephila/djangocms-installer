@@ -105,10 +105,20 @@ def parse(args):
             new_val = new_val == 'yes'
         setattr(args, action.dest, new_val)
 
+    # what do we want here?!
+    # * if languages are given as multiple arguments, let's use it as is
+    # * if no languages are given, use a default and stop handling it further
+    # * if languages are given as a comma-separated list, split it and use the
+    #   resulting list.
+
+    # TODO: On interactive command line, we might get the comma separated list
+    # with spaces, so we might want to remove the spaces, too!
+
     if not args.languages:
         args.languages = [locale.getdefaultlocale()[0].split("_")[0]]
-    elif isinstance(args.languages, six.string_types):
-        args.languages = args.languages.split(",")
+    elif len(args.languages) == 1 and isinstance(args.languages[0],
+                                                 six.string_types):
+        args.languages = args.languages[0].split(",")
 
     # Convert version to numeric format for easier checking
     django_version, cms_version = supported_versions(args.django_version,
