@@ -36,6 +36,7 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--cms-version=develop',
+            # FIXME: why just dj 1.4?!
             '--django-version=1.4',
             '--i18n=no',
             '--reversion=no',
@@ -59,6 +60,18 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.project_directory, self.project_dir)
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
         self.assertEqual(conf_data.db_driver, 'psycopg2')
+
+    def test_cli_config_commaseparated_languages(self):
+        self._remove_project_dir()
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '-len,de,it',
+            '-p'+self.project_dir,
+            'example_prj'
+            ])
+
+        self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
 
     def test_invalid_choices(self):
         with PatchStd(self.stdout, self.stderr):
