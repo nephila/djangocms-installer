@@ -36,7 +36,6 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--cms-version=develop',
-            # FIXME: why just dj 1.4?!
             '--django-version=1.4',
             '--i18n=no',
             '--reversion=no',
