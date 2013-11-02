@@ -12,7 +12,6 @@ from . import BaseTestClass, PatchStd
 
 class TestConfig(BaseTestClass):
     def test_default_config(self):
-        # FIXME: this shouldn't be necessary as it's done in baseclass setup
         self._remove_project_dir()
         conf_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                   '-q', '-p'+self.project_dir, 'example_prj'])
@@ -39,7 +38,6 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--cms-version=develop',
-            # FIXME: why just dj 1.4?!
             '--django-version=1.4',
             '--i18n=no',
             '--reversion=no',
