@@ -13,7 +13,6 @@ from . import BaseTestClass
 class TestDjango(BaseTestClass):
 
     def test_create_project(self):
-        self._remove_project_dir()
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                     '--cms-version=develop',
                                     '-q', '-p'+self.project_dir, 'example_prj'])
@@ -22,7 +21,6 @@ class TestDjango(BaseTestClass):
         self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'example_prj')))
 
     def test_patch(self):
-        self._remove_project_dir()
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--cms-version=develop',
@@ -62,13 +60,11 @@ class TestDjango(BaseTestClass):
         self.assertTrue('staticfiles_urlpatterns' in urlconf)
 
         sys.path.remove(config_data.project_directory)
-        self._remove_project_dir()
         del project
         del(sys.modules["%s.settings" % config_data.project_name])
 
     @unittest.skipIf(six.PY3, "Filer not compatible with Python 3, skipping")
     def test_setup_database_filer(self):
-        self._remove_project_dir()
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-f', '-q', '-u',
                                     '--cms-version=develop',
@@ -92,7 +88,6 @@ class TestDjango(BaseTestClass):
         self.assertTrue(query)
 
     def test_setup_database(self):
-        self._remove_project_dir()
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-q', '-u', '--cms-version=develop',
                                     '-p'+self.project_dir, 'aldryn_project'])
