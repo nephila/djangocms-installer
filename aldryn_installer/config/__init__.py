@@ -111,11 +111,10 @@ def parse(args):
     # * if languages are given as a comma-separated list, split it and use the
     #   resulting list.
 
-    # TODO: On interactive command line, we might get the comma separated list
-    # with spaces, so we might want to remove the spaces, too!
-
     if not args.languages:
         args.languages = [locale.getdefaultlocale()[0].split("_")[0]]
+    elif isinstance(args.languages, six.string_types):
+        args.languages = args.languages.split(",")
     elif len(args.languages) == 1 and isinstance(args.languages[0],
                                                  six.string_types):
         args.languages = args.languages[0].split(",")
