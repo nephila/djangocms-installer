@@ -67,6 +67,10 @@ Ready to contribute? Here's how to set up `aldryn-installer` for local developme
     $ mkvirtualenv aldryn-installer
     $ cd aldryn-installer/
     $ python setup.py develop
+    $ pip install requirements_dev.txt
+
+the last one is to get the requirements including testing and development
+tools installed.
 
 4. Create a branch for local development::
 
@@ -80,8 +84,6 @@ tests, including testing other Python versions with tox::
     $ flake8 aldryn-installer tests
 	$ python setup.py test
     $ tox
-
-To get flake8 and tox, just pip install them into your virtualenv. 
 
 6. Commit your changes and push your branch to GitHub::
 
