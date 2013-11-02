@@ -119,6 +119,8 @@ def parse(args):
                                                  six.string_types):
         args.languages = args.languages[0].split(",")
 
+    args.languages = [lang.strip() for lang in args.languages]
+
     # Convert version to numeric format for easier checking
     django_version, cms_version = supported_versions(args.django_version,
                                                      args.cms_version)
