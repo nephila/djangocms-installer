@@ -10,5 +10,6 @@ Development Lead
 Contributors
 ------------
 
+* Henning Sprang <henning.sprang@gmail.com>
 * Kim Thoenen <kim@smuzey.ch>
 * Patrick Lauber <digi@treepy.com>
