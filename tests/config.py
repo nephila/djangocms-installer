@@ -118,13 +118,12 @@ class TestConfig(BaseTestClass):
         existing_path = os.path.join(self.project_dir, prj_dir)
         os.makedirs(existing_path)
         with PatchStd(self.stdout, self.stderr):
-            with self.assertRaises(SystemExit) as error:
+            with self.assertRaises(SystemExit):
                 conf_data = config.parse([
                     '-q',
                     '--db=postgres://user:pwd@host/dbname',
                     '-p'+self.project_dir,
                     prj_dir])
-                self.assertEqual(conf_data.project_path, existing_path)
 
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), '2.5')
@@ -219,7 +218,5 @@ class TestConfig(BaseTestClass):
                 '-p'+self.project_dir,
                 'example_prj'])
 
-            with self.assertRaises(EnvironmentError) as error:
+            with self.assertRaises(EnvironmentError):
                 check_install(conf_data)
-
-                self.assertTrue(str(error.exception).find('MySQL  driver is not installed') > -1)
