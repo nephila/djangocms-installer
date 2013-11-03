@@ -3,12 +3,12 @@
 import sys
 import os
 import tempfile
+from mock import patch
 
 from aldryn_installer import config
 from aldryn_installer.install import check_install
 from aldryn_installer.utils import less_than_version
-from . import BaseTestClass, PatchStd
-
+from . import BaseTestClass
 
 class TestConfig(BaseTestClass):
     def test_default_config(self):
@@ -88,7 +88,7 @@ class TestConfig(BaseTestClass):
 
     def test_invalid_choices(self):
         self._remove_project_dir()
-        with PatchStd(self.stdout, self.stderr):
+        with patch('sys.stdout', self.stdout), patch('sys.stderr', self.stderr):
             with self.assertRaises(SystemExit) as error:
                 conf_data = config.parse([
                     '-q',
@@ -101,7 +101,7 @@ class TestConfig(BaseTestClass):
                 self.assertTrue(str(error.exception).find('--cms-version/-v: invalid choice: "2.6"') > -1)
 
     def test_invalid_project_name(self):
-        with PatchStd(self.stdout, self.stderr):
+        with patch('sys.stdout', self.stdout), patch('sys.stderr', self.stderr):
             with self.assertRaises(SystemExit) as error:
                 self._remove_project_dir()
                 conf_data = config.parse([
@@ -134,7 +134,7 @@ class TestConfig(BaseTestClass):
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
         os.makedirs(existing_path)
-        with PatchStd(self.stdout, self.stderr):
+        with patch('sys.stdout', self.stdout), patch('sys.stderr', self.stderr):
             with self.assertRaises(SystemExit) as error:
                 conf_data = config.parse([
                     '-q',
@@ -148,7 +148,7 @@ class TestConfig(BaseTestClass):
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
         os.makedirs(existing_path)
-        with PatchStd(self.stdout, self.stderr):
+        with patch('sys.stdout', self.stdout), patch('sys.stderr', self.stderr):
             with self.assertRaises(SystemExit) as error:
                 conf_data = config.parse([
                     '-q',
@@ -227,7 +227,7 @@ class TestConfig(BaseTestClass):
         except ImportError:
             pass
         # discard the argparser errors
-        with PatchStd(self.stdout, self.stderr):
+        with patch('sys.stdout', self.stdout), patch('sys.stderr', self.stderr):
             self._remove_project_dir()
             conf_data = config.parse([
                 '-q',
