@@ -5,7 +5,7 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
                         '--permissions']
 
-DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip'
+DJANGOCMS_DEVELOP = 'https://github.com/yakky/django-cms/archive/feature/fix_mptt_version.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta2.zip'
 DJANGOCMS_LATEST = '2.4'
 
@@ -20,13 +20,13 @@ html5lib
 Pillow>=2
 django-sekizai>=0.7
 """
-if six.PY2:
-    DEFAULT_REQUIREMENTS += "django-mptt>=0.5.1,<0.5.3"
-else:
-    DEFAULT_REQUIREMENTS += "django-mptt>=0.6"
 
+DJANGOCMS_2_REQUIREMENTS = """
+django-mptt>=0.5.1,<0.5.3
+"""
 
 DJANGOCMS_3_REQUIREMENTS = """
+django-mptt>=0.6
 djangocms-text-ckeditor>=2
 djangocms-admin-style
 git+https://github.com/divio/djangocms-column.git#egg=djangocms-column
