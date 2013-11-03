@@ -207,10 +207,8 @@ class TestConfig(BaseTestClass):
                 '-p'+self.project_dir,
                 'example_prj'])
 
-            with self.assertRaises(EnvironmentError) as error:
+            with self.assertRaises(EnvironmentError):
                 check_install(conf_data)
-            self.assertTrue(str(error.exception).find('Pillow is not installed') > -1)
-            self.assertTrue(str(error.exception).find('PostgreSQL driver is not installed') > -1)
 
             conf_data = config.parse([
                 '-q',
