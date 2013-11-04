@@ -12,7 +12,6 @@ from . import BaseTestClass, PatchStd
 
 class TestConfig(BaseTestClass):
     def test_default_config(self):
-        self._remove_project_dir()
         conf_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                   '-q', '-p'+self.project_dir, 'example_prj'])
 
@@ -33,7 +32,6 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.requirements_file, None)
 
     def test_cli_config(self):
-        self._remove_project_dir()
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -87,7 +85,6 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
 
     def test_invalid_choices(self):
-        self._remove_project_dir()
         with PatchStd(self.stdout, self.stderr):
             with self.assertRaises(SystemExit) as error:
                 conf_data = config.parse([
@@ -103,7 +100,6 @@ class TestConfig(BaseTestClass):
     def test_invalid_project_name(self):
         with PatchStd(self.stdout, self.stderr):
             with self.assertRaises(SystemExit) as error:
-                self._remove_project_dir()
                 conf_data = config.parse([
                     '-q',
                     '--db=postgres://user:pwd@host/dbname',
@@ -112,7 +108,6 @@ class TestConfig(BaseTestClass):
                 self.assertTrue(str(error.exception).find('Project name "test" is not valid') > -1)
 
             with self.assertRaises(SystemExit) as error:
-                self._remove_project_dir()
                 conf_data = config.parse([
                     '-q',
                     '--db=postgres://user:pwd@host/dbname',
@@ -121,7 +116,6 @@ class TestConfig(BaseTestClass):
                 self.assertTrue(str(error.exception).find('Project name "assert" is not valid') > -1)
 
             with self.assertRaises(SystemExit) as error:
-                self._remove_project_dir()
                 conf_data = config.parse([
                     '-q',
                     '--db=postgres://user:pwd@host/dbname',
@@ -130,7 +124,6 @@ class TestConfig(BaseTestClass):
                 self.assertTrue(str(error.exception).find('Project name "assert" is not valid') > -1)
 
     def test_invalid_project_path(self):
-        self._remove_project_dir()
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
         os.makedirs(existing_path)
@@ -144,7 +137,6 @@ class TestConfig(BaseTestClass):
                 self.assertTrue(str(error.exception).find('Path "%s" already exists' % existing_path) > -1)
 
     def test_whitespace_project_path(self):
-        self._remove_project_dir()
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
         os.makedirs(existing_path)
@@ -163,7 +155,6 @@ class TestConfig(BaseTestClass):
         self.assertEqual(less_than_version('3.0.1'), '3.1.1')
 
     def test_requirements(self):
-        self._remove_project_dir()
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -228,7 +219,6 @@ class TestConfig(BaseTestClass):
             pass
         # discard the argparser errors
         with PatchStd(self.stdout, self.stderr):
-            self._remove_project_dir()
             conf_data = config.parse([
                 '-q',
                 '--db=postgres://user:pwd@host/dbname',

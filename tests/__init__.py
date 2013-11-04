@@ -43,6 +43,9 @@ class BaseTestClass(unittest.TestCase):
     def _remove_project_dir(self):
         if self.project_dir:
             shutil.rmtree(self.project_dir)
+            self.project_dir = None
+
+    def _create_project_dir(self):
         if 'USE_SHM' in os.environ:
             self.project_dir = tempfile.mkdtemp(dir="/run/shm")
         else:
@@ -56,4 +59,4 @@ class BaseTestClass(unittest.TestCase):
     def setUp(self):
         self.stdout = StringIO()
         self.stderr = StringIO()
-        self._remove_project_dir()
+        self._create_project_dir()
