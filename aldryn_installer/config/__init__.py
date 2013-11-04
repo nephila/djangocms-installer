@@ -179,11 +179,11 @@ def parse(args):
             os.path.join(args.project_directory, args.project_name, 'urls.py').strip())
 
     if os.path.exists(args.project_path):
-        sys.stdout.write("Path '%s' already exists, please choose a different one\n" % args.project_path)
+        sys.stderr.write("Path '%s' already exists, please choose a different one\n" % args.project_path)
         sys.exit(4)
 
     if not validate_project(args.project_name):
-        sys.stdout.write("Project name '%s' is not valid\n" % args.project_name)
+        sys.stderr.write("Project name '%s' is not valid\n" % args.project_name)
         sys.exit(3)
     return args
 
