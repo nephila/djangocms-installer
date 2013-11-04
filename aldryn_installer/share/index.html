@@ -1,9 +1,13 @@
+{% load cms_tags sekizai_tags %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Bare template</title>
+    {% render_block "css" %}
 </head>
 <body>
-
+{% cms_toolbar %}
+{% placeholder "placeholder" %}
+{% render_block "js" %}
 </body>
 </html>
