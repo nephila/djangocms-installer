@@ -20,13 +20,13 @@ html5lib
 Pillow>=2
 django-sekizai>=0.7
 """
-if six.PY2:
-    DEFAULT_REQUIREMENTS += "django-mptt>=0.5.1,<0.5.3"
-else:
-    DEFAULT_REQUIREMENTS += "django-mptt>=0.6"
 
+DJANGOCMS_2_REQUIREMENTS = """
+django-mptt>=0.5.1,<0.5.3
+"""
 
 DJANGOCMS_3_REQUIREMENTS = """
+django-mptt>=0.6
 djangocms-text-ckeditor>=2
 djangocms-admin-style
 git+https://github.com/divio/djangocms-column.git#egg=djangocms-column

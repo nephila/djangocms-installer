@@ -3,12 +3,12 @@
 import sys
 import os
 import tempfile
+from mock import patch
 
 from aldryn_installer import config
 from aldryn_installer.install import check_install
 from aldryn_installer.utils import less_than_version
-from . import BaseTestClass, PatchStd
-
+from . import BaseTestClass
 
 class TestConfig(BaseTestClass):
     def test_default_config(self):
@@ -61,7 +61,6 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.db_driver, 'psycopg2')
 
     def test_cli_config_commaseparated_languages(self):
-        self._remove_project_dir()
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -73,7 +72,6 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
 
     def test_cli_config_comma_languages_with_space(self):
-        self._remove_project_dir()
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -85,69 +83,73 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
 
     def test_invalid_choices(self):
-        with PatchStd(self.stdout, self.stderr):
-            with self.assertRaises(SystemExit) as error:
-                conf_data = config.parse([
-                    '-q',
-                    '--db=postgres://user:pwd@host/dbname',
-                    '--cms-version=2.6',
-                    '--django-version=1.1',
-                    '--i18n=no',
-                    '-p'+self.project_dir,
-                    'example_prj'])
-                self.assertTrue(str(error.exception).find('--cms-version/-v: invalid choice: "2.6"') > -1)
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '--cms-version=2.6',
+                        '--django-version=1.1',
+                        '--i18n=no',
+                        '-p'+self.project_dir,
+                        'example_prj'])
+                    self.assertTrue(str(error.exception).find('--cms-version/-v: invalid choice: "2.6"') > -1)
 
     def test_invalid_project_name(self):
-        with PatchStd(self.stdout, self.stderr):
-            with self.assertRaises(SystemExit) as error:
-                conf_data = config.parse([
-                    '-q',
-                    '--db=postgres://user:pwd@host/dbname',
-                    '-p'+self.project_dir,
-                    'test'])
-                self.assertTrue(str(error.exception).find('Project name "test" is not valid') > -1)
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '-p'+self.project_dir,
+                        'test'])
+                    self.assertTrue(str(error.exception).find('Project name "test" is not valid') > -1)
 
-            with self.assertRaises(SystemExit) as error:
-                conf_data = config.parse([
-                    '-q',
-                    '--db=postgres://user:pwd@host/dbname',
-                    '-p'+self.project_dir,
-                    'assert'])
-                self.assertTrue(str(error.exception).find('Project name "assert" is not valid') > -1)
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '-p'+self.project_dir,
+                        'assert'])
+                    self.assertTrue(str(error.exception).find('Project name "assert" is not valid') > -1)
 
-            with self.assertRaises(SystemExit) as error:
-                conf_data = config.parse([
-                    '-q',
-                    '--db=postgres://user:pwd@host/dbname',
-                    '-p'+self.project_dir,
-                    'values'])
-                self.assertTrue(str(error.exception).find('Project name "assert" is not valid') > -1)
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '-p'+self.project_dir,
+                        'values'])
+                    self.assertTrue(str(error.exception).find('Project name "assert" is not valid') > -1)
 
     def test_invalid_project_path(self):
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
         os.makedirs(existing_path)
-        with PatchStd(self.stdout, self.stderr):
-            with self.assertRaises(SystemExit) as error:
-                conf_data = config.parse([
-                    '-q',
-                    '--db=postgres://user:pwd@host/dbname',
-                    '-p'+self.project_dir,
-                    prj_dir])
-                self.assertTrue(str(error.exception).find('Path "%s" already exists' % existing_path) > -1)
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '-p'+self.project_dir,
+                        prj_dir])
+                    self.assertTrue(str(error.exception).find('Path "%s" already exists' % existing_path) > -1)
 
     def test_whitespace_project_path(self):
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
         os.makedirs(existing_path)
-        with PatchStd(self.stdout, self.stderr):
-            with self.assertRaises(SystemExit) as error:
-                conf_data = config.parse([
-                    '-q',
-                    '--db=postgres://user:pwd@host/dbname',
-                    '-p'+self.project_dir,
-                    prj_dir])
-                self.assertEqual(conf_data.project_path, existing_path)
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '-p'+self.project_dir,
+                        prj_dir])
+                    self.assertEqual(conf_data.project_path, existing_path)
 
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), '2.5')
@@ -218,31 +220,32 @@ class TestConfig(BaseTestClass):
         except ImportError:
             pass
         # discard the argparser errors
-        with PatchStd(self.stdout, self.stderr):
-            conf_data = config.parse([
-                '-q',
-                '--db=postgres://user:pwd@host/dbname',
-                '--django-version=1.4',
-                '--i18n=no',
-                '-f',
-                '-p'+self.project_dir,
-                'example_prj'])
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                conf_data = config.parse([
+                    '-q',
+                    '--db=postgres://user:pwd@host/dbname',
+                    '--django-version=1.4',
+                    '--i18n=no',
+                    '-f',
+                    '-p'+self.project_dir,
+                    'example_prj'])
 
-            with self.assertRaises(EnvironmentError) as error:
-                check_install(conf_data)
-            self.assertTrue(str(error.exception).find('Pillow is not installed') > -1)
-            self.assertTrue(str(error.exception).find('PostgreSQL driver is not installed') > -1)
+                with self.assertRaises(EnvironmentError) as error:
+                    check_install(conf_data)
+                self.assertTrue(str(error.exception).find('Pillow is not installed') > -1)
+                self.assertTrue(str(error.exception).find('PostgreSQL driver is not installed') > -1)
 
-            conf_data = config.parse([
-                '-q',
-                '--db=mysql://user:pwd@host/dbname',
-                '--django-version=1.4',
-                '--i18n=no',
-                '-f',
-                '-p'+self.project_dir,
-                'example_prj'])
+                conf_data = config.parse([
+                    '-q',
+                    '--db=mysql://user:pwd@host/dbname',
+                    '--django-version=1.4',
+                    '--i18n=no',
+                    '-f',
+                    '-p'+self.project_dir,
+                    'example_prj'])
 
-            with self.assertRaises(EnvironmentError) as error:
-                check_install(conf_data)
+                with self.assertRaises(EnvironmentError) as error:
+                    check_install(conf_data)
 
-                self.assertTrue(str(error.exception).find('MySQL  driver is not installed') > -1)
+                    self.assertTrue(str(error.exception).find('MySQL  driver is not installed') > -1)
