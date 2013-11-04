@@ -5,7 +5,7 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
                         '--permissions']
 
-DJANGOCMS_DEVELOP = 'https://github.com/yakky/django-cms/archive/feature/fix_mptt_version.zip'
+DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta2.zip'
 DJANGOCMS_LATEST = '2.4'
 
