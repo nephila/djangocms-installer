@@ -13,28 +13,6 @@ else:
 from six import StringIO
 
 
-class PatchStd(object):
-    """Context manager for patching stdout / stderr"""
-    stdout = None
-    stderr = None
-    saved_out = None
-    saved_err = None
-
-    def __init__(self, stdout, stderr):
-        self.stdout = stdout
-        self.stderr = stderr
-
-    def __enter__(self):
-        self.saved_out = sys.stdout
-        self.saved_err = sys.stderr
-        sys.stdout = self.stdout
-        sys.stderr = self.stderr
-
-    def __exit__(self, etype, value, traceback):
-        sys.stdout = self.saved_out
-        sys.stderr = self.saved_err
-
-
 class BaseTestClass(unittest.TestCase):
     stdout = None
     stderr = None
