@@ -85,7 +85,7 @@ class TestConfig(BaseTestClass):
     def test_invalid_choices(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                with self.assertRaises(SystemExit) as error:
+                with self.assertRaises(SystemExit):
                     conf_data = config.parse([
                         '-q',
                         '--db=postgres://user:pwd@host/dbname',
@@ -94,34 +94,38 @@ class TestConfig(BaseTestClass):
                         '--i18n=no',
                         '-p'+self.project_dir,
                         'example_prj'])
-                    self.assertTrue(str(error.exception).find('--cms-version/-v: invalid choice: "2.6"') > -1)
+                self.assertTrue(self.stderr.getvalue().find(
+                    "--cms-version/-v: invalid choice: '2.6'") > -1)
 
     def test_invalid_project_name(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                with self.assertRaises(SystemExit) as error:
+                with self.assertRaises(SystemExit):
                     conf_data = config.parse([
                         '-q',
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'test'])
-                    self.assertTrue(str(error.exception).find('Project name "test" is not valid') > -1)
+                self.assertTrue(self.stderr.getvalue().find(
+                    "Project name 'test' is not valid") > -1)
 
-                with self.assertRaises(SystemExit) as error:
+                with self.assertRaises(SystemExit):
                     conf_data = config.parse([
                         '-q',
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'assert'])
-                    self.assertTrue(str(error.exception).find('Project name "assert" is not valid') > -1)
+                self.assertTrue(self.stderr.getvalue().find(
+                    "Project name 'assert' is not valid") > -1)
 
-                with self.assertRaises(SystemExit) as error:
+                with self.assertRaises(SystemExit):
                     conf_data = config.parse([
                         '-q',
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'values'])
-                    self.assertTrue(str(error.exception).find('Project name "assert" is not valid') > -1)
+                self.assertTrue(self.stderr.getvalue().find(
+                    "Project name 'values' is not valid") > -1)
 
     def test_invalid_project_path(self):
         prj_dir = 'example_prj'
@@ -129,13 +133,14 @@ class TestConfig(BaseTestClass):
         os.makedirs(existing_path)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                with self.assertRaises(SystemExit) as error:
+                with self.assertRaises(SystemExit):
                     conf_data = config.parse([
                         '-q',
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         prj_dir])
-                    self.assertTrue(str(error.exception).find('Path "%s" already exists' % existing_path) > -1)
+                self.assertTrue(self.stderr.getvalue().find(
+                    "Path '%s' already exists" % existing_path) > -1)
 
     def test_whitespace_project_path(self):
         prj_dir = 'example_prj'
@@ -143,7 +148,7 @@ class TestConfig(BaseTestClass):
         os.makedirs(existing_path)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                with self.assertRaises(SystemExit) as error:
+                with self.assertRaises(SystemExit):
                     conf_data = config.parse([
                         '-q',
                         '--db=postgres://user:pwd@host/dbname',
@@ -231,10 +236,12 @@ class TestConfig(BaseTestClass):
                     '-p'+self.project_dir,
                     'example_prj'])
 
-                with self.assertRaises(EnvironmentError) as error:
+                with self.assertRaises(EnvironmentError):
                     check_install(conf_data)
-                self.assertTrue(str(error.exception).find('Pillow is not installed') > -1)
-                self.assertTrue(str(error.exception).find('PostgreSQL driver is not installed') > -1)
+                self.assertTrue(self.stderr.getvalue().find(
+                    'Pillow is not installed') > -1)
+                self.assertTrue(self.stderr.getvalue().find(
+                    'PostgreSQL driver is not installed') > -1)
 
                 conf_data = config.parse([
                     '-q',
@@ -245,7 +252,8 @@ class TestConfig(BaseTestClass):
                     '-p'+self.project_dir,
                     'example_prj'])
 
-                with self.assertRaises(EnvironmentError) as error:
+                with self.assertRaises(EnvironmentError):
                     check_install(conf_data)
 
-                    self.assertTrue(str(error.exception).find('MySQL  driver is not installed') > -1)
+                self.assertTrue(self.stderr.getvalue().find(
+                    'MySQL  driver is not installed') > -1)
