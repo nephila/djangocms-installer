@@ -61,7 +61,6 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.db_driver, 'psycopg2')
 
     def test_cli_config_commaseparated_languages(self):
-        self._remove_project_dir()
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -73,7 +72,6 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
 
     def test_cli_config_comma_languages_with_space(self):
-        self._remove_project_dir()
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
