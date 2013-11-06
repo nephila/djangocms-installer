@@ -127,7 +127,7 @@ class TestConfig(BaseTestClass):
                 self.assertTrue(self.stderr.getvalue().find(
                     "Project name 'values' is not valid") > -1)
 
-    def test_invalid_project_path(self):
+    def test_existing_project_path(self):
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
         os.makedirs(existing_path)
@@ -141,20 +141,6 @@ class TestConfig(BaseTestClass):
                         prj_dir])
                 self.assertTrue(self.stderr.getvalue().find(
                     "Path '%s' already exists" % existing_path) > -1)
-
-    def test_whitespace_project_path(self):
-        prj_dir = 'example_prj'
-        existing_path = os.path.join(self.project_dir, prj_dir)
-        os.makedirs(existing_path)
-        with patch('sys.stdout', self.stdout):
-            with patch('sys.stderr', self.stderr):
-                with self.assertRaises(SystemExit):
-                    conf_data = config.parse([
-                        '-q',
-                        '--db=postgres://user:pwd@host/dbname',
-                        '-p'+self.project_dir,
-                        prj_dir])
-                    self.assertEqual(conf_data.project_path, existing_path)
 
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), '2.5')
