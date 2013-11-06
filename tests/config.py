@@ -127,7 +127,7 @@ class TestConfig(BaseTestClass):
                 self.assertTrue(self.stderr.getvalue().find(
                     "Project name 'values' is not valid") > -1)
 
-    def test_existing_project_path(self):
+    def test_invalid_existing_project_path(self):
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
         os.makedirs(existing_path)
