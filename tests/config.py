@@ -138,19 +138,6 @@ class TestConfig(BaseTestClass):
                     self.assertEqual(conf_data.project_path, existing_path)
                     self.assertTrue(str(error.exception).find('Path "%s" already exists' % existing_path) > -1)
 
-    def test_whitespace_project_path(self):
-        prj_dir = 'example_prj'
-        existing_path = os.path.join(self.project_dir, prj_dir)
-        os.makedirs(existing_path)
-        with patch('sys.stdout', self.stdout):
-            with patch('sys.stderr', self.stderr):
-                with self.assertRaises(SystemExit) as error:
-                    conf_data = config.parse([
-                        '-q',
-                        '--db=postgres://user:pwd@host/dbname',
-                        '-p'+self.project_dir,
-                        prj_dir])
-
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), '2.5')
         self.assertEqual(less_than_version('3'), '3.1')
