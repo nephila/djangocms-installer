@@ -135,6 +135,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         prj_dir])
+                    self.assertEqual(conf_data.project_path, existing_path)
                     self.assertTrue(str(error.exception).find('Path "%s" already exists' % existing_path) > -1)
 
     def test_whitespace_project_path(self):
@@ -149,7 +150,6 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         prj_dir])
-                    self.assertEqual(conf_data.project_path, existing_path)
 
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), '2.5')
@@ -214,14 +214,28 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
 
     def test_check_install(self):
-        try:
-            import PIL
-            self.skipTest('Virtualenv installed, cannot run this test')
-        except ImportError:
-            pass
+        import pip
         # discard the argparser errors
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
+                # clean the virtualenv
+                try:
+                    pip.main(['uninstall', 'psycopg2'])
+                except pip.exception.UninstallationError:
+                    ## package not installed, all is fine
+                    pass
+                try:
+                    pip.main(['uninstall', 'pillow'])
+                except pip.exception.UninstallationError:
+                    ## package not installed, all is fine
+                    pass
+                try:
+                    pip.main(['uninstall', 'mysql-python'])
+                except pip.exception.UninstallationError:
+                    ## package not installed, all is fine
+                    pass
+
+                # Check postgres / pillow
                 conf_data = config.parse([
                     '-q',
                     '--db=postgres://user:pwd@host/dbname',
@@ -230,12 +244,12 @@ class TestConfig(BaseTestClass):
                     '-f',
                     '-p'+self.project_dir,
                     'example_prj'])
-
-                with self.assertRaises(EnvironmentError) as error:
+                with self.assertRaises(EnvironmentError) as context_error:
                     check_install(conf_data)
-                self.assertTrue(str(error.exception).find('Pillow is not installed') > -1)
-                self.assertTrue(str(error.exception).find('PostgreSQL driver is not installed') > -1)
+                self.assertTrue(str(context_error.exception).find('Pillow is not installed') > -1)
+                self.assertTrue(str(context_error.exception).find('PostgreSQL driver is not installed') > -1)
 
+                # Check mysql
                 conf_data = config.parse([
                     '-q',
                     '--db=mysql://user:pwd@host/dbname',
@@ -244,8 +258,6 @@ class TestConfig(BaseTestClass):
                     '-f',
                     '-p'+self.project_dir,
                     'example_prj'])
-
-                with self.assertRaises(EnvironmentError) as error:
+                with self.assertRaises(EnvironmentError) as context_error:
                     check_install(conf_data)
-
-                    self.assertTrue(str(error.exception).find('MySQL  driver is not installed') > -1)
+                self.assertTrue(str(context_error.exception).find('MySQL driver is not installed') > -1)
