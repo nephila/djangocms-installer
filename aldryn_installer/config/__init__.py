@@ -43,7 +43,7 @@ def parse(args):
                         choices=('2.4', 'stable', 'beta', 'develop'),
                         default='stable', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
-                        required=False, default='',
+                        required=True, default='',
                         action='store', help='Optional project parent directory')
     parser.add_argument(dest='project_name', action='store',
                         help='Name of the project to be created')
