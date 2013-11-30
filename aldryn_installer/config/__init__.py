@@ -101,6 +101,9 @@ def parse(args):
             if not input_value and action.required:
                 raise ValueError("Option %s is required when in no-input mode" % action.dest)
             new_val = input_value
+            if action.dest == 'db':
+                action(parser, args, new_val, action.option_strings)
+                new_val = getattr(args, action.dest)
         if action.choices in ('yes', 'no'):
             new_val = new_val == 'yes'
         setattr(args, action.dest, new_val)
