@@ -43,7 +43,7 @@ def parse(args):
                         choices=('2.4', 'stable', 'beta', 'develop'),
                         default='stable', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
-                        required=False, default='',
+                        required=True, default='',
                         action='store', help='Optional project parent directory')
     parser.add_argument(dest='project_name', action='store',
                         help='Name of the project to be created')
@@ -101,6 +101,9 @@ def parse(args):
             if not input_value and action.required:
                 raise ValueError("Option %s is required when in no-input mode" % action.dest)
             new_val = input_value
+            if action.dest == 'db':
+                action(parser, args, new_val, action.option_strings)
+                new_val = getattr(args, action.dest)
         if action.choices in ('yes', 'no'):
             new_val = new_val == 'yes'
         setattr(args, action.dest, new_val)
