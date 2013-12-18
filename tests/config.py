@@ -216,17 +216,17 @@ class TestConfig(BaseTestClass):
                 # clean the virtualenv
                 try:
                     pip.main(['uninstall', '-y', 'psycopg2'])
-                except pip.exception.UninstallationError:
+                except pip.exceptions.UninstallationError:
                     ## package not installed, all is fine
                     pass
                 try:
                     pip.main(['uninstall', '-y', 'pillow'])
-                except pip.exception.UninstallationError:
+                except pip.exceptions.UninstallationError:
                     ## package not installed, all is fine
                     pass
                 try:
                     pip.main(['uninstall', '-y', 'mysql-python'])
-                except pip.exception.UninstallationError:
+                except pip.exceptions.UninstallationError:
                     ## package not installed, all is fine
                     pass
 
