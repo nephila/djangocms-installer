@@ -37,8 +37,8 @@ def parse(args):
     parser.add_argument('--languages', '-l', dest='languages', action='append',
                         help='Languages to enable. Option can be provided multiple times, or as a comma separated list')
     parser.add_argument('--django-version', dest='django_version', action='store',
-                        choices=('1.4', '1.5', 'stable'), #, 'beta', 'develop' beta and develop currently not supported
-                        default='stable', help='Django version')
+                        choices=('1.4', '1.5', '1.6', 'stable'), #, 'beta', 'develop' beta and develop currently not supported
+                        default='1.5', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
                         choices=('2.4', 'stable', 'beta', 'develop'),
                         default='stable', help='django CMS version')
@@ -68,6 +68,8 @@ def parse(args):
                         default=False, help="Don't run syncdb / migrate after bootstrapping")
     parser.add_argument('--no-user', '-u', dest='no_user', action='store_true',
                         default=False, help="Don't create the admin user")
+    parser.add_argument('--template', dest='template', action='store',
+                        default=None, help="The path or URL to load the template from")
 
     args = parser.parse_args(args)
 
@@ -134,7 +136,10 @@ def parse(args):
         if not args.no_db_driver:
             requirements.append(args.db_driver)
         if args.filer:
-            requirements.append(data.FILER_REQUIREMENTS)
+            if cms_version >= 3:
+                requirements.append(data.FILER_REQUIREMENTS_CMS3)
+            else:
+                requirements.append(data.FILER_REQUIREMENTS_CMS2)
 
         ## Django version check
         if args.django_version == 'develop':
@@ -151,8 +156,10 @@ def parse(args):
         if args.reversion:
             if django_version < 1.5:
                 requirements.append(data.DJANGO_14_REVERSION)
-            else:
+            elif django_version == 1.5:
                 requirements.append(data.DJANGO_15_REVERSION)
+            else:
+                requirements.append(data.DJANGO_16_REVERSION)
 
         ## Django cms version check
         if args.cms_version == 'develop':

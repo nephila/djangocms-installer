@@ -81,6 +81,7 @@ def less_than_version(value):
     items[1] += 1
     return ".".join(map(str, items))
 
+
 class chdir(object):
     """Context manager for changing the current working directory"""
     def __init__(self, newPath):

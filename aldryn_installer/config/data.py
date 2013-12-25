@@ -6,12 +6,12 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--permissions']
 
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip'
-DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta2.zip'
+DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_LATEST = '2.4'
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
-DJANGO_BETA = 'https://github.com/django/django/archive/1.6b2.zip'
-DJANGO_LATEST = '1.5'
+DJANGO_LATEST = '1.5'  # this is not true, but it's the most recente version
+                       # compatible with all the CMS versions
 
 DEFAULT_REQUIREMENTS = """
 django-classy-tags>=0.3.4.1
@@ -27,16 +27,22 @@ django-mptt>=0.5.1,<0.5.3
 
 DJANGOCMS_3_REQUIREMENTS = """
 django-mptt>=0.6
-djangocms-text-ckeditor>=2
+djangocms-text-ckeditor>=2.0.5
 djangocms-admin-style
 git+https://github.com/divio/djangocms-column.git#egg=djangocms-column
 git+https://github.com/divio/djangocms-style.git#egg=djangocms-style
 """
 
+DJANGO_16_REVERSION = "django-reversion>=1.8"
 DJANGO_15_REVERSION = "django-reversion>=1.7,<1.8"
 DJANGO_14_REVERSION = "django-reversion<1.7"
 
-FILER_REQUIREMENTS = """
+FILER_REQUIREMENTS_CMS3 = """
+easy_thumbnails
+https://github.com/stefanfoulis/django-filer/archive/develop.zip
+cmsplugin_filer
+"""
+FILER_REQUIREMENTS_CMS2 = """
 easy_thumbnails
 django-filer
 cmsplugin_filer

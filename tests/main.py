@@ -7,14 +7,16 @@ from mock import patch
 from aldryn_installer import main
 from . import BaseTestClass
 
+
 class TestMain(BaseTestClass):
 
     def test_main_invocation(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                    '-len', '--cms-version=develop',
-                                    '-q', '-u', '-p'+self.project_dir, 'example_prj']
+                                       '-len', '--cms-version=develop',
+                                       '-q', '-u', '-p'+self.project_dir,
+                                       'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
@@ -23,8 +25,9 @@ class TestMain(BaseTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                    '-len', '-lfr', '--cms-version=develop',
-                                    '-q', '-u', '-p'+self.project_dir, 'example_prj']
+                                       '-len', '-lfr', '--cms-version=develop',
+                                       '-q', '-u', '-p'+self.project_dir,
+                                       'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
@@ -33,8 +36,9 @@ class TestMain(BaseTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                    '-len', '--cms-version=develop',
-                                    '-q', '-u', '-p'+self.project_dir, 'example_prj']
+                                       '-len', '--cms-version=develop',
+                                       '-q', '-u', '-p'+self.project_dir,
+                                       'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
@@ -43,8 +47,9 @@ class TestMain(BaseTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                    '-len', '--django-version=1.4',
-                                    '-q', '-u', '-p'+self.project_dir, 'example_prj']
+                                       '-len', '--django-version=1.4',
+                                       '-q', '-u', '-p'+self.project_dir,
+                                       'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
@@ -53,8 +58,9 @@ class TestMain(BaseTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                    '-len', '--django-version=1.5',
-                                    '-q', '-u', '-p'+self.project_dir, 'example_prj']
+                                       '-len', '--django-version=1.5',
+                                       '-q', '-u', '-p'+self.project_dir,
+                                       'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
