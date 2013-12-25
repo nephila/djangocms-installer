@@ -19,33 +19,19 @@ def create_project(config_data):
     """
     Call django-admin to create the project structure
     """
-    try:
-        if config_data.project_directory:
-            if not os.path.exists(config_data.project_directory):
-                os.makedirs(config_data.project_directory)
+    from django.core.management import call_command
 
-            if sys.platform == 'win32':
-                subprocess.check_call(["django-admin.py", "startproject",
-                                       config_data.project_name,
-                                       config_data.project_directory],
-                                      shell=True)
-            else:
-                subprocess.check_call(["django-admin.py", "startproject",
-                                       config_data.project_name,
-                                       config_data.project_directory])
+    kwargs = {}
+    args = []
+    if config_data.template:
+        kwargs['template'] = config_data.template
+    args.append(config_data.project_name)
+    if config_data.project_directory:
+        args.append(config_data.project_directory)
+        if not os.path.exists(config_data.project_directory):
+            os.makedirs(config_data.project_directory)
 
-        else:
-            if sys.platform == 'win32':
-                subprocess.check_call(["django-admin.py", "startproject",
-                                       config_data.project_name],
-                                      shell=True)
-
-            else:
-                subprocess.check_call(["django-admin.py", "startproject",
-                                       config_data.project_name])
-
-    except subprocess.CalledProcessError as message:
-        raise EnvironmentError(message)
+    call_command('startproject', *args, **kwargs)
 
 
 def copy_files(config_data):
@@ -107,6 +93,7 @@ def patch_settings(config_data):
     # DATABASES is a dictionary, so different regexp needed
     item_re = re.compile(r"DATABASES = [^\}]+\}[^\}]+\}", re.DOTALL | re.MULTILINE)
     original = item_re.sub('', original)
+    original += "SITE_ID = 1\n\n"
 
     original += _build_settings(config_data)
 
@@ -121,6 +108,10 @@ def _build_settings(config_data):
     spacer = "    "
     text = []
     vars = get_settings()
+
+    if config_data.django_version < 1.6:
+        vars.MIDDLEWARE_CLASSES.extend(vars.MIDDLEWARE_CLASSES_DJANGO_15)
+
     text.append("TEMPLATE_LOADERS = (\n%s%s\n)" % (
         spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.TEMPLATE_LOADERS])))
 
