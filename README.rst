@@ -61,3 +61,9 @@ Libraries you would want to check:
 * zlib (for PNG support in ``Pillow``)
 * postgresql (for ``psycopg``)
 * libmysqlclient (for ``Mysql-Python``)
+
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/nephila/aldryn-installer/trend.png
+   :alt: Bitdeli badge
+   :target: https://bitdeli.com/free
+
