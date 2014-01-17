@@ -51,11 +51,11 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     'django.contrib.messages',
+    'cms',
+    'mptt',
+    'menus',
     'south',
     'sekizai',
-    'cms',
-    'menus',
-    'mptt',
 )
 
 STANDARD_PLUGINS = (
@@ -89,7 +89,6 @@ CMS_3_HEAD = (
 )
 
 CMS_3_APPLICATIONS = (
-    'cms.stacks',
     'djangocms_style',
     'djangocms_column',
 )
