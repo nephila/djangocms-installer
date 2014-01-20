@@ -103,8 +103,9 @@ REVERSION_APPLICATIONS = (
 )
 
 CMS_TEMPLATES = (
-    ('index.html', 'Home'),
-    ('page.html', 'Other')
+    ('fullwidth.html', 'Full Width Content'),
+    ('sidebar_left.html', 'Sidebar Left'),
+    ('sidebar_right.html', 'Sidebar Right')
 )
 LANGUAGES = (
 )
