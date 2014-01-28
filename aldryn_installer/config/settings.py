@@ -89,7 +89,6 @@ CMS_3_HEAD = (
 )
 
 CMS_3_APPLICATIONS = (
-    'cms.stacks',
     'djangocms_style',
     'djangocms_column',
 )
