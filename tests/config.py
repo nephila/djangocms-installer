@@ -201,12 +201,14 @@ class TestConfig(BaseTestClass):
             '--i18n=no',
             '--cms-version=develop',
             '-f',
+            '-z=yes',
             '-p'+self.project_dir,
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
+        self.assertTrue(conf_data.requirements.find('pytz') > -1)
 
     def suspend_test_check_install(self):
         import pip
