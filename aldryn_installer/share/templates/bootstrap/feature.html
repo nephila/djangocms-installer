@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load cms_tags staticfiles sekizai_tags menu_tags %}
+
+{% block content %}
+<div class="jumbotron">
+  {% placeholder "feature" %}
+</div>
+<div>
+  {% placeholder "content" %}
+</div>
+{% endblock content %}
