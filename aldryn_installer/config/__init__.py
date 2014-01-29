@@ -47,7 +47,7 @@ def parse(args):
                         action='store', help='Optional project parent directory')
     parser.add_argument('--bootstrap', dest='bootstrap', action='store',
                         choices=('yes', 'no'),
-                        default='yes', help='Add Bootstrap Theme')
+                        default='no', help='Add Bootstrap Theme')
     parser.add_argument(dest='project_name', action='store',
                         help='Name of the project to be created')
 
