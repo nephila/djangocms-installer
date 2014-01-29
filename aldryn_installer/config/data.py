@@ -40,7 +40,7 @@ DJANGO_14_REVERSION = "django-reversion<1.7"
 FILER_REQUIREMENTS_CMS3 = """
 easy_thumbnails
 https://github.com/stefanfoulis/django-filer/archive/develop.zip
-cmsplugin_filer
+https://github.com/stefanfoulis/cmsplugin_filer/archive/develop.zip
 """
 FILER_REQUIREMENTS_CMS2 = """
 easy_thumbnails

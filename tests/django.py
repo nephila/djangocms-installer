@@ -63,8 +63,7 @@ class TestDjango(BaseTestClass):
         del project
         del(sys.modules["%s.settings" % config_data.project_name])
 
-    @unittest.skipIf(six.PY3, "Filer not compatible with Python 3, skipping")
-    def test_setup_database_filer(self):
+    def disabled_test_setup_database_filer(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-f', '-q', '-u',
                                     '--cms-version=develop',

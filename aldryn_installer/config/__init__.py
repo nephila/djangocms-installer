@@ -152,6 +152,10 @@ def parse(args):
             else:
                 requirements.append("Django<%s" % less_than_version(args.django_version))
 
+        ## Timezone support
+        if args.use_timezone:
+            requirements.append('pytz')
+
         ## Reversion package version depends on django version
         if args.reversion:
             if django_version < 1.5:
