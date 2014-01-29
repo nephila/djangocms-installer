@@ -3,14 +3,14 @@ import six
 
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
-                        '--permissions']
+                        '--permissions', '--bootstrap']
 
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_LATEST = '2.4'
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
-DJANGO_LATEST = '1.5'  # this is not true, but it's the most recente version
+DJANGO_LATEST = '1.5'  # this is not true, but it's the most recent version
                        # compatible with all the CMS versions
 
 DEFAULT_REQUIREMENTS = """

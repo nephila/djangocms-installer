@@ -41,13 +41,19 @@ def copy_files(config_data):
     """
     urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls.py')
     share_path = os.path.join(os.path.dirname(__file__), '../share')
-    template_path = os.path.join(config_data.project_path, 'templates')
+    template_path = os.path.join(share_path, 'templates')
+    template_target = os.path.join(config_data.project_path, 'templates')
+
+    if config_data.bootstrap == 'yes':
+        template_path = os.path.join(template_path, 'bootstrap')
+    else:
+        template_path = os.path.join(template_path, 'basic')
 
     shutil.copy(urlconf_path, config_data.urlconf_path)
-    os.makedirs(template_path)
-    for filename in glob.glob(os.path.join(share_path, '*.html')):
+    os.makedirs(template_target)
+    for filename in glob.glob(os.path.join(template_path, '*.html')):
         if os.path.isfile(filename):
-            shutil.copy(filename, template_path)
+            shutil.copy(filename, template_target)
 
 
 def patch_settings(config_data):
@@ -174,9 +180,14 @@ def _build_settings(config_data):
 
     text.append("\n".join(cms_text))
 
+    if config_data.bootstrap == 'yes':
+        cms_templates = 'CMS_TEMPLATES_BOOTSTRAP'
+    else:
+        cms_templates = 'CMS_TEMPLATES'
+
     text.append("CMS_TEMPLATES = (\n%s%s\n%s%s\n)" % (
         spacer, "## Customize this",
-        spacer, (",\n" + spacer).join(["('%s', '%s')" % item for item in vars.CMS_TEMPLATES])))
+        spacer, (",\n" + spacer).join(["('%s', '%s')" % item for item in getattr(vars, cms_templates)])))
 
     text.append("CMS_PERMISSION = %s" % vars.CMS_PERMISSION)
     text.append("CMS_PLACEHOLDER_CONF = %s" % vars.CMS_PLACEHOLDER_CONF)

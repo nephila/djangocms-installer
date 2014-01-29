@@ -1,0 +1,38 @@
+{% load cms_tags staticfiles sekizai_tags menu_tags %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}This is my new project home page{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% render_block "css" %}
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+  </head>
+  <body style="padding-top:60px">
+    {% cms_toolbar %}
+        <div class="container">
+          <div class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Project name</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                {% show_menu 0 1 100 100 "menu.html" %}
+              </ul>
+            </div>
+          </div>
+        {% block content %}
+        {% endblock content %}
+        </div>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    {% render_block "js" %}
+  </body>
+</html>
+
