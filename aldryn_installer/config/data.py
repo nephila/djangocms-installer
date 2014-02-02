@@ -3,7 +3,7 @@ import six
 
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
-                        '--permissions', '--bootstrap']
+                        '--permissions', '--bootstrap', '--starting-page']
 
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'

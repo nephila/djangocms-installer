@@ -55,6 +55,10 @@ def copy_files(config_data):
         if os.path.isfile(filename):
             shutil.copy(filename, template_target)
 
+    if config_data.starting_page:
+        for filename in glob.glob(os.path.join(share_path, 'starting_page.*')):
+            if os.path.isfile(filename):
+                shutil.copy(filename, os.path.join(config_data.project_path, '..'))
 
 def patch_settings(config_data):
     """
@@ -216,3 +220,13 @@ def setup_database(config_data):
             print("\n\nCreating admin user")
             subprocess.check_call(["python", "-W", "ignore",
                                    "manage.py", "createsuperuser"])
+
+
+def load_starting_page(config_data):
+    """
+    Load starting page into the CMS
+    """
+    subprocess.check_call(
+        "cd %s && DJANGO_SETTINGS_MODULE=%s.settings python starting_page.py"
+        % (config_data.project_directory, config_data.project_name),
+        shell=True)
