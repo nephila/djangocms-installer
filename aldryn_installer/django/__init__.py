@@ -226,7 +226,8 @@ def load_starting_page(config_data):
     """
     Load starting page into the CMS
     """
-    subprocess.check_call(
-        "cd %s && DJANGO_SETTINGS_MODULE=%s.settings python starting_page.py"
-        % (config_data.project_directory, config_data.project_name),
-        shell=True)
+    with chdir(config_data.project_directory):
+        subprocess.check_call(
+            "DJANGO_SETTINGS_MODULE=%s.settings python starting_page.py" %
+            config_data.project_name, shell=True)
+        subprocess.check_call(['rm', 'starting_page.py', 'starting_page.json'])
