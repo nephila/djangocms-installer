@@ -43,4 +43,8 @@ for column_content in content['main']:
     add_plugin(placeholder['main'], 'TextPlugin', lang, body=column_content,
                target=col)
 
-publish_page(page, User.objects.all()[0])
+try:
+    publish_page(page, User.objects.all()[0], lang)
+except TypeError:
+    # supporting old cms versions
+    publish_page(page, User.objects.all()[0])
