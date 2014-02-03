@@ -230,5 +230,5 @@ def load_starting_page(config_data):
         subprocess.check_call(
             "DJANGO_SETTINGS_MODULE=%s.settings python starting_page.py" %
             config_data.project_name, shell=True)
-        subprocess.check_call(['rm', 'starting_page.py', 'starting_page.pyc',
-                               'starting_page.json'])
+        subprocess.check_call(['rm', '-f', 'starting_page.py',
+                               'starting_page.pyc', 'starting_page.json'])
