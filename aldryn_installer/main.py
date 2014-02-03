@@ -27,6 +27,8 @@ def execute():
             django.copy_files(config_data)
             if not config_data.no_sync:
                 django.setup_database(config_data)
+            if config_data.starting_page:
+                django.load_starting_page(config_data)
             print("All done!")
             print("Get into '%s' directory and type 'python manage.py runserver' "
                   "to start your project" % config_data.project_directory)
