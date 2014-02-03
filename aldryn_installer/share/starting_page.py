@@ -43,8 +43,10 @@ for column_content in content['main']:
     add_plugin(placeholder['main'], 'TextPlugin', lang, body=column_content,
                target=col)
 
-try:
-    publish_page(page, User.objects.all()[0], lang)
-except TypeError:
-    # supporting old cms versions
-    publish_page(page, User.objects.all()[0])
+# In order to publish the page there needs to be at least one user
+if User.objects.count() > 0:
+    try:
+        publish_page(page, User.objects.all()[0], lang)
+    except TypeError:
+        # supporting old cms versions
+        publish_page(page, User.objects.all()[0])
