@@ -6,7 +6,7 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--permissions', '--bootstrap', '--starting-page']
 
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip'
-DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
+DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/042f4953f6d2db66fd15e4cb748ab4b279f57947.zip'
 DJANGOCMS_LATEST = '2.4'
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
