@@ -1,18 +1,18 @@
-===============================
-Aldryn Installer
-===============================
+====================
+django CMS Installer
+====================
 
-.. image:: https://badge.fury.io/py/aldryn-installer.png
-    :target: http://badge.fury.io/py/aldryn-installer
+.. image:: https://badge.fury.io/py/djangocms-installer.png
+    :target: http://badge.fury.io/py/djangocms-installer
     
-.. image:: https://travis-ci.org/nephila/aldryn-installer.png?branch=master
-        :target: https://travis-ci.org/nephila/aldryn-installer
+.. image:: https://travis-ci.org/nephila/djangocms-installer.png?branch=master
+        :target: https://travis-ci.org/nephila/djangocms-installer
 
-.. image:: https://pypip.in/d/aldryn-installer/badge.png
-        :target: https://crate.io/packages/aldryn-installer?version=latest
+.. image:: https://pypip.in/d/djangocms-installer/badge.png
+        :target: https://crate.io/packages/djangocms-installer?version=latest
 
-.. image:: https://coveralls.io/repos/nephila/aldryn-installer/badge.png?branch=master
-        :target: https://coveralls.io/r/nephila/aldryn-installer?branch=master
+.. image:: https://coveralls.io/repos/nephila/djangocms-installer/badge.png?branch=master
+        :target: https://coveralls.io/r/nephila/djangocms-installer?branch=master
 
 Command to easily bootstrap django CMS projects
 
@@ -21,11 +21,14 @@ Command to easily bootstrap django CMS projects
 Features
 --------
 
-``aldryn-installer`` is a console wizard to help bootstrapping a django CMS
+``djangocms-installer`` is a console wizard to help bootstrapping a django CMS
 project.
 
 Refer to `django CMS Tutorial <http://slid.es/chive/djangocms/fullscreen>`_ on
 how to properly setup your first django CMS project.
+
+.. note:: It used to be called **aldryn-installer**, but since version 0.2.0
+          it's been renamed **djangocms-installer** for clarity.
 
 Installation
 ------------
@@ -34,18 +37,18 @@ Installation
 
     virtualenv /virtualenv/path/my_project
 
-#. Install `aldryn-installer`::
+#. Install `djangocms-installer`::
 
-    pip install aldryn-installer
+    pip install djangocms-installer
 
    or::
 
-    pip install -e git+https://github.com/nephila/aldryn-installer#egg=aldryn-installer
+    pip install -e git+https://github.com/nephila/djangocms-installer#egg=djangocms-installer
 
 Documentation
 -------------
 
-See http://aldryn-installer.readthedocs.org
+See http://djangocms-installer.readthedocs.org
 
 Caveats
 -------
@@ -63,7 +66,7 @@ Libraries you would want to check:
 * libmysqlclient (for ``Mysql-Python``)
 
 
-.. image:: https://d2weczhvl823v0.cloudfront.net/nephila/aldryn-installer/trend.png
+.. image:: https://d2weczhvl823v0.cloudfront.net/nephila/djangocms-installer/trend.png
    :alt: Bitdeli badge
    :target: https://bitdeli.com/free
 

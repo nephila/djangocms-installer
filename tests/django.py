@@ -6,7 +6,7 @@ import six
 import sqlite3
 from . import unittest
 
-from aldryn_installer import config, django, install
+from djangocms_installer import config, django, install
 from . import BaseTestClass
 
 
@@ -67,7 +67,7 @@ class TestDjango(BaseTestClass):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-f', '-q', '-u',
                                     '--cms-version=develop',
-                                    '-p'+self.project_dir, 'aldryn_project'])
+                                    '-p'+self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -89,7 +89,7 @@ class TestDjango(BaseTestClass):
     def test_setup_database(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-q', '-u', '--cms-version=develop',
-                                    '-p'+self.project_dir, 'aldryn_project'])
+                                    '-p'+self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)

@@ -6,9 +6,9 @@ import tempfile
 from mock import patch
 from six import StringIO
 
-from aldryn_installer import config
-from aldryn_installer.install import check_install
-from aldryn_installer.utils import less_than_version
+from djangocms_installer import config
+from djangocms_installer.install import check_install
+from djangocms_installer.utils import less_than_version
 
 from . import BaseTestClass
 

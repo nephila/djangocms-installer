@@ -7,8 +7,8 @@ import six
 
 from .. import compat, utils
 from . import data
-from aldryn_installer.config.internal import DbAction, validate_project
-from aldryn_installer.utils import less_than_version, supported_versions
+from djangocms_installer.config.internal import DbAction, validate_project
+from djangocms_installer.utils import less_than_version, supported_versions
 
 
 def parse(args):
@@ -209,7 +209,7 @@ def parse(args):
 
 
 def get_settings():
-    module = __import__('aldryn_installer.config', globals(), locals(), ['settings'])
+    module = __import__('djangocms_installer.config', globals(), locals(), ['settings'])
     return module.settings
 
 

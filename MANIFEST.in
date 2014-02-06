@@ -4,4 +4,4 @@ include HISTORY.rst
 include LICENSE
 include README.rst
 include requirements.txt
-recursive-include aldryn_installer/share *.jpg *.png *.html
+recursive-include djangocms-installer/share *.jpg *.png *.html

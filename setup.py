@@ -3,7 +3,7 @@
 
 import os
 import sys
-import aldryn_installer
+import djangocms_installer
 from setuptools import setup, find_packages
 
 if sys.argv[-1] == 'publish':
@@ -23,25 +23,25 @@ if sys.version_info[:2] < (2, 7):
     test_requirements.append('unittest2')
 
 setup(
-    name='aldryn-installer',
-    version=aldryn_installer.__version__,
+    name='djangocms-installer',
+    version=djangocms_installer.__version__,
     description='Command to easily bootstrap django CMS projects',
     long_description=readme + '\n\n' + history,
     author='Iacopo Spalletti',
     author_email='i.spalletti@nephila.it',
-    url='https://github.com/nephila/aldryn-installer',
+    url='https://github.com/nephila/djangocms-installer',
     packages=find_packages(),
-    package_dir={'aldryn-installer': 'aldryn_installer'},
+    package_dir={'djangocms_installer': 'djangocms_installer'},
     include_package_data=True,
     install_requires=requirements,
     entry_points={
         'console_scripts': [
-            'aldryn = aldryn_installer.main:execute',
+            'djangocms-start = djangocms_installer.main:execute',
         ]
     },
     license='BSD',
     zip_safe=False,
-    keywords='aldryn-installer',
+    keywords='djangocms-installer',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Django',

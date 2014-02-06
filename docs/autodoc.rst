@@ -1,15 +1,15 @@
-.. automodule:: aldryn_installer.config
+.. automodule:: djangocms_installer.config
     :members:
     :undoc-members:
 
-.. automodule:: aldryn_installer.django
+.. automodule:: djangocms_installer.django
     :members:
     :undoc-members:
 
-.. automodule:: aldryn_installer.install
+.. automodule:: djangocms_installer.install
     :members:
     :undoc-members:
 
-.. automodule:: aldryn_installer.main
+.. automodule:: djangocms_installer.main
     :members:
     :undoc-members:

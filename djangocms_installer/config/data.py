@@ -49,7 +49,7 @@ cmsplugin_filer
 """
 
 PLUGIN_LIST_TEXT = """
-aldryn_installer will install and configure the following plugins:
+djangocms_installer will install and configure the following plugins:
  * djangocms-text-ckeditor (Text plugin)
  * cms.plugins.file (File plugin)
  * cms.plugins.flash (Flash plugin)
