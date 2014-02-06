@@ -47,10 +47,10 @@ def parse(args):
                         action='store', help='Optional project parent directory')
     parser.add_argument('--bootstrap', dest='bootstrap', action='store',
                         choices=('yes', 'no'),
-                        default='no', help='Add Bootstrap Theme')
+                        default='no', help='Use Twitter Bootstrap Theme')
     parser.add_argument('--starting-page', dest='starting_page', action='store',
                         choices=('yes', 'no'),
-                        default='no', help='Load a starting page after installation')
+                        default='no', help='Load a starting page with examples after installation')
     parser.add_argument(dest='project_name', action='store',
                         help='Name of the project to be created')
 
