@@ -16,10 +16,12 @@ History
 0.2.0 (2014-02-06)
 ++++++++++++++++++
 
-* project renamed to djangocms-installer
+* Project renamed to djangocms-installer
 * Bugfixes
 * Better default templates
 * Python 3 compatibility
 * Django 1.6 compatibility
-* django CMS 3 beta3 support
+* django CMS 3 beta3 and dev snapshot support
 * Support for django-admin project templates
+* Ships Twitter bootstrap templates
+* Can now creates a dummy starting page
