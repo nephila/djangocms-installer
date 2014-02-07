@@ -13,16 +13,6 @@ History
 
 * Improved documentation on how to fix installation in case of missing libraries.
 
-0.2.0 (2014-01-22)
-++++++++++++++++++
-
-* Bugfixes
-* Better default templates
-* Python 3 compatibility
-* Django 1.6 compatibility
-* django CMS 3 beta3 support
-* Support for django-admin project templates
-
 0.2.0 (2014-02-06)
 ++++++++++++++++++
 

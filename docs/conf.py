@@ -49,7 +49,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Aldryn Installer'
+project = u'django CMS Installer'
 copyright = u'2013, Iacopo Spalletti'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -195,7 +195,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'djangocms_installer.tex', u'Aldryn Installer Documentation',
+  ('index', 'djangocms_installer.tex', u'django CMS Installer Documentation',
    u'Iacopo Spalletti', 'manual'),
 ]
 
@@ -225,7 +225,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'djangocms_installer', u'Aldryn Installer Documentation',
+    ('index', 'djangocms_installer', u'django CMS Installer Documentation',
      [u'Iacopo Spalletti'], 1)
 ]
 
@@ -239,7 +239,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'djangocms_installer', u'Aldryn Installer Documentation',
+  ('index', 'djangocms_installer', u'django CMS Installer Documentation',
    u'Iacopo Spalletti', 'djangocms_installer', 'One line description of project.',
    'Miscellaneous'),
 ]
