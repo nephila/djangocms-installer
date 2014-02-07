@@ -1,12 +1,12 @@
 .. _arguments:
 
-aldryn-installer arguments
+djangocms-installer arguments
 ==========================
 
 Required arguments
 ------------------
 
-You must always provide the following arguments when invoking **aldryn installer**:
+You must always provide the following arguments when invoking **djangocms installer**:
 
 * ``project_name``: Name of the project to be created
 * ``--parent-dir``, ``-p``: Optional project parent directory;
@@ -36,10 +36,10 @@ Advanced options
 The following options are not managed by the config wizard and are meant for
 advanced usage:
 
-* ``--no-input``, ``-q``: If given **aldryn installer** run in :ref:`batch_mode`;
+* ``--no-input``, ``-q``: If given **djangocms installer** run in :ref:`batch_mode`;
 * ``--filer``, ``-f``: Install and configure django-filer plugins;
 * ``--requirements``, ``-r``: You can use a custom requirements files instead of the
-  requirements provided by **aldryn installer**;
+  requirements provided by **djangocms installer**;
 * ``--no-deps``, ``-n``: Don't install package dependencies;
 * ``--no-db-driver``: Don't install database package;
 * ``--no-sync``, ``-m``: Don't run syncdb / migrate after bootstrapping the project;

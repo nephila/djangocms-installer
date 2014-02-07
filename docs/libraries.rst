@@ -26,11 +26,11 @@ If a native library is missing when installing a python package, the package
 installation may fail silently or the package may be missing some functionality
 (e.g.: if libjpeg is not installed Pillow will be compiled without JPEG support).
 
-``aldryn-installer`` tries to check for most common issues and will exit with
+``djangocms-installer`` tries to check for most common issues and will exit with
 an exception in case of errors.
 
 In case of package installation failure you can simply install the correct
-library and execute ``aldryn-installer`` again with the same parameters; if
+library and execute ``djangocms-installer`` again with the same parameters; if
 the package is compiled with some functionality missing, you have to first
 deinstall it (`pip uninstall *package-name*`), then install the correct library
-and the execute ``aldryn-installer`` again.
+and the execute ``djangocms-installer`` again.

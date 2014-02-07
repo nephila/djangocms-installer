@@ -4,7 +4,7 @@ import sys
 import os
 from mock import patch
 
-from aldryn_installer import main
+from djangocms_installer import main
 from . import BaseTestClass
 
 

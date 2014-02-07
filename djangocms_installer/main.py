@@ -35,6 +35,6 @@ def execute():
     except Exception as e:
         if six.PY3:
             tb = sys.exc_info()[2]
-            raise EnvironmentError("%s\nDocumentation available at http://aldryn-installer.rtfd.org" % e).with_traceback(tb)
+            raise EnvironmentError("%s\nDocumentation available at http://djangocms-installer.rtfd.org" % e).with_traceback(tb)
         else:
             raise
