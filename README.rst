@@ -9,7 +9,7 @@ django CMS Installer
         :target: https://travis-ci.org/nephila/djangocms-installer
 
 .. image:: https://pypip.in/d/djangocms-installer/badge.png
-        :target: https://crate.io/packages/djangocms-installer?version=latest
+        :target: https://pypi.python.org/pypi/djangocms-installer
 
 .. image:: https://coveralls.io/repos/nephila/djangocms-installer/badge.png?branch=master
         :target: https://coveralls.io/r/nephila/djangocms-installer?branch=master
