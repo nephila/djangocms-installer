@@ -1,12 +1,12 @@
 [run]
-source = djangocms-installer
+source = djangocms_installer
 branch = True
 omit =
-    djangocms-installer/share/*
-    djangocms-installer/__main__.py
-    djangocms-installer/main.py
-    djangocms-installer/config/urls.py
-    djangocms-installer/config/settings.py
+    djangocms_installer/share/*
+    djangocms_installer/__main__.py
+    djangocms_installer/main.py
+    djangocms_installer/config/urls.py
+    djangocms_installer/config/settings.py
 
 [report]
 exclude_lines =
