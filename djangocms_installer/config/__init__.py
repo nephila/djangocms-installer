@@ -84,6 +84,8 @@ def parse(args):
                         default=False, help="Don't create the admin user")
     parser.add_argument('--template', dest='template', action='store',
                         default=None, help="The path or URL to load the template from")
+    parser.add_argument('--extra-settings', dest='extra_settings', action='store',
+                        default=None, help="The path to an file that contains extra settings.")
 
     args = parser.parse_args(args)
 
