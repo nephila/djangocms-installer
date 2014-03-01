@@ -227,7 +227,8 @@ def load_starting_page(config_data):
     Load starting page into the CMS
     """
     with chdir(config_data.project_directory):
-        os.environ['DJANGO_SETTINGS_MODULE'] = '{0}.settings'.format(config_data.project_name)
+        os.environ['DJANGO_SETTINGS_MODULE'] = (
+            '{0}.settings'.format(config_data.project_name))
         subprocess.check_call(["python", "starting_page.py"], shell=True)
         os.remove('starting_page.py')
         os.remove('starting_page.pyc')
