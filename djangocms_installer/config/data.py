@@ -51,14 +51,14 @@ cmsplugin_filer
 PLUGIN_LIST_TEXT = """
 djangocms_installer will install and configure the following plugins:
  * djangocms-text-ckeditor (Text plugin)
- * cms.plugins.file (File plugin)
- * cms.plugins.flash (Flash plugin)
- * cms.plugins.googlemap (GoogleMap plugin)
- * cms.plugins.inherit (Inherit plugin)
- * cms.plugins.link (Link plugin)
- * cms.plugins.picture (Picture plugin)
- * cms.plugins.teaser (Teaser plugin)
- * cms.plugins.video (Video plugin)
+ * djangocms-file (File plugin)
+ * djangocms-flash (Flash plugin)
+ * djangocms-googlemap (GoogleMap plugin)
+ * djangocms-inherit (Inherit plugin)
+ * djangocms-link (Link plugin)
+ * djangocms-picture (Picture plugin)
+ * djangocms-teaser (Teaser plugin)
+ * djangocms-video (Video plugin)
  * djangocms_style (Style plugin)
  * djangocms_column (Style plugin)
                      
