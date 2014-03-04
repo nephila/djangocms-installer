@@ -80,7 +80,7 @@ def patch_settings(config_data):
     original = data.DEFAULT_PROJECT_HEADER + original
     original = original.replace("MEDIA_URL = ''", "MEDIA_URL = '/media/'")
     original = original.replace("MEDIA_ROOT = ''", "MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')")
-    original = original.replace("STATIC_ROOT = ''", "STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')")
+    original += data.STATIC_FILES
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
 
     # I18N

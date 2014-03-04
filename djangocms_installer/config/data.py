@@ -19,6 +19,14 @@ south>=0.7.2
 html5lib
 Pillow>=2
 django-sekizai>=0.7
+djangocms-file
+djangocms-flash
+djangocms-googlemap
+djangocms-inherit
+djangocms-link
+djangocms-picture
+djangocms-teaser
+djangocms-video
 """
 
 DJANGOCMS_2_REQUIREMENTS = """
@@ -83,4 +91,12 @@ DEFAULT_PROJECT_HEADER = """# -*- coding: utf-8 -*-
 import os
 gettext = lambda s: s
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+"""
+
+STATIC_FILES = """
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static_collected')
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_PATH, 'static'),
+)
+
 """
