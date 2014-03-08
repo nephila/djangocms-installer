@@ -57,6 +57,14 @@ This can be helpful to customize the virtualenv:
 
 See :ref:`arguments` for arguments reference
 
+Custom settings
+---------------
+
+If want or need to provide custom settings **before** the initial database sync is run, use `--extra-settings`
+parameter.
+To use this option, pass the path to a file as argument: its content is going to be appended to the generated
+settings file.
+
 
 HOWTO
 -----
