@@ -37,10 +37,10 @@ def parse(args):
     parser.add_argument('--languages', '-l', dest='languages', action='append',
                         help='Languages to enable. Option can be provided multiple times, or as a comma separated list')
     parser.add_argument('--django-version', dest='django_version', action='store',
-                        choices=('1.4', '1.5', '1.6', 'stable'), #, 'beta', 'develop' beta and develop currently not supported
+                        choices=('1.4', '1.5', '1.6', 'stable'),
                         default='1.5', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
-                        choices=('2.4', 'stable', 'beta', 'develop'),
+                        choices=('2.4', 'stable', 'rc', 'beta',  'develop'),
                         default='stable', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
                         required=True, default='',
@@ -174,6 +174,8 @@ def parse(args):
         ## Django cms version check
         if args.cms_version == 'develop':
             requirements.append(data.DJANGOCMS_DEVELOP)
+        elif args.cms_version == 'rc':
+            requirements.append(data.DJANGOCMS_RC)
         elif args.cms_version == 'beta':
             requirements.append(data.DJANGOCMS_BETA)
         else:

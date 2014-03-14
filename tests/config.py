@@ -199,6 +199,18 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
+            '--cms-version=rc',
+            '-f',
+            '-p'+self.project_dir,
+            'example_prj'])
+
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_RC) > -1)
+
+
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--i18n=no',
             '--cms-version=develop',
             '-f',
             '-z=yes',
