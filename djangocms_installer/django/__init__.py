@@ -206,6 +206,8 @@ def _build_settings(config_data):
 
 def setup_database(config_data):
     with chdir(config_data.project_directory):
+        os.environ['DJANGO_SETTINGS_MODULE'] = (
+            '{0}.settings'.format(config_data.project_name))
         try:
             import south
             subprocess.check_call(["python", "-W", "ignore",
