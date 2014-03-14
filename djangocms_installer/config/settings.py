@@ -59,14 +59,14 @@ INSTALLED_APPS = (
 )
 
 STANDARD_PLUGINS = (
-    'cms.plugins.file',
-    'cms.plugins.flash',
-    'cms.plugins.googlemap',
-    'cms.plugins.inherit',
-    'cms.plugins.link',
-    'cms.plugins.picture',
-    'cms.plugins.teaser',
-    'cms.plugins.video',
+    'djangocms_file',
+    'djangocms_flash',
+    'djangocms_googlemap',
+    'djangocms_inherit',
+    'djangocms_link',
+    'djangocms_picture',
+    'djangocms_teaser',
+    'djangocms_video',
 )
 
 FILER_PLUGINS = (
@@ -74,9 +74,9 @@ FILER_PLUGINS = (
     'easy_thumbnails',
     'cmsplugin_filer_file',
     'cmsplugin_filer_folder',
-    'cms.plugins.flash',
-    'cms.plugins.googlemap',
-    'cms.plugins.inherit',
+    'djangocms_flash',
+    'djangocms_googlemap',
+    'djangocms_inherit',
     'cmsplugin_filer_link',
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_video',

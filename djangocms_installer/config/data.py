@@ -19,6 +19,14 @@ south>=0.7.2
 html5lib
 Pillow>=2
 django-sekizai>=0.7
+djangocms-file
+djangocms-flash
+djangocms-googlemap
+djangocms-inherit
+djangocms-link
+djangocms-picture
+djangocms-teaser
+djangocms-video
 """
 
 DJANGOCMS_2_REQUIREMENTS = """
@@ -51,14 +59,14 @@ cmsplugin_filer
 PLUGIN_LIST_TEXT = """
 djangocms_installer will install and configure the following plugins:
  * djangocms-text-ckeditor (Text plugin)
- * cms.plugins.file (File plugin)
- * cms.plugins.flash (Flash plugin)
- * cms.plugins.googlemap (GoogleMap plugin)
- * cms.plugins.inherit (Inherit plugin)
- * cms.plugins.link (Link plugin)
- * cms.plugins.picture (Picture plugin)
- * cms.plugins.teaser (Teaser plugin)
- * cms.plugins.video (Video plugin)
+ * djangocms-file (File plugin)
+ * djangocms-flash (Flash plugin)
+ * djangocms-googlemap (GoogleMap plugin)
+ * djangocms-inherit (Inherit plugin)
+ * djangocms-link (Link plugin)
+ * djangocms-picture (Picture plugin)
+ * djangocms-teaser (Teaser plugin)
+ * djangocms-video (Video plugin)
  * djangocms_style (Style plugin)
  * djangocms_column (Style plugin)
                      
@@ -83,4 +91,12 @@ DEFAULT_PROJECT_HEADER = """# -*- coding: utf-8 -*-
 import os
 gettext = lambda s: s
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+"""
+
+STATIC_FILES = """
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static_collected')
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_PATH, 'static'),
+)
+
 """
