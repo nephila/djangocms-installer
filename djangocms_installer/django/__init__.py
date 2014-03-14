@@ -229,7 +229,9 @@ def load_starting_page(config_data):
     with chdir(config_data.project_directory):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        subprocess.check_call(["python", "starting_page.py"], shell=True)
-        os.remove('starting_page.py')
-        os.remove('starting_page.pyc')
-        os.remove('starting_page.json')
+        subprocess.check_call(["python", "starting_page.py"])
+        for ext in ['py', 'pyc', 'json']:
+            try:
+                os.remove('starting_page.%s' % ext)
+            except OSError:
+                pass
