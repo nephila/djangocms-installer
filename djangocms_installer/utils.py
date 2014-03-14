@@ -63,6 +63,8 @@ def supported_versions(django, cms):
     except ValueError:
         if cms == 'stable':
             cms_version = 2.4
+        elif django == 'rc':
+            django_version = 3.0
         elif django == 'beta':
             django_version = 3.0
         elif django == 'develop':
