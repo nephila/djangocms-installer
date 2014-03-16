@@ -210,17 +210,17 @@ def setup_database(config_data):
             '{0}.settings'.format(config_data.project_name))
         try:
             import south
-            subprocess.check_call(["python", "-W", "ignore",
+            subprocess.check_call([sys.executable, "-W", "ignore",
                                    "manage.py", "syncdb", "--all", "--noinput"])
-            subprocess.check_call(["python", "-W", "ignore",
+            subprocess.check_call([sys.executable, "-W", "ignore",
                                    "manage.py", "migrate", "--fake"])
         except ImportError:
-            subprocess.check_call(["python", "-W", "ignore",
+            subprocess.check_call([sys.executable, "-W", "ignore",
                                    "manage.py", "syncdb", "--noinput"])
             print("south not installed, migrations skipped")
         if not config_data.no_user:
             print("\n\nCreating admin user")
-            subprocess.check_call(["python", "-W", "ignore",
+            subprocess.check_call([sys.executable, "-W", "ignore",
                                    "manage.py", "createsuperuser"])
 
 
@@ -231,7 +231,7 @@ def load_starting_page(config_data):
     with chdir(config_data.project_directory):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        subprocess.check_call(["python", "starting_page.py"])
+        subprocess.check_call([sys.executable, "starting_page.py"])
         for ext in ['py', 'pyc', 'json']:
             try:
                 os.remove('starting_page.%s' % ext)
