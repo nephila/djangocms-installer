@@ -25,3 +25,17 @@ History
 * Support for django-admin project templates
 * Ships Twitter bootstrap templates
 * Can now creates a dummy starting page
+
+0.3.0 (2014-03-15)
+++++++++++++++++++
+
+* Sync with django CMS RC1 changes
+* Use external django CMS plugins instead of removed core ones
+
+0.3.1 (2014-03-16)
+++++++++++++++++++
+
+* Fix error in loading resource files
+* Fix error with non-standard python executable paths
+* Fix error with Django 1.6
+* Fix error installing django-filer
