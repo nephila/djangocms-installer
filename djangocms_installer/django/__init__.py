@@ -78,8 +78,14 @@ def patch_settings(config_data):
 
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
     original = data.DEFAULT_PROJECT_HEADER + original
-    original = original.replace("MEDIA_URL = ''", "MEDIA_URL = '/media/'")
-    original = original.replace("MEDIA_ROOT = ''", "MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')")
+    if original.find('MEDIA_URL') > -1:
+        original = original.replace("MEDIA_URL = ''", "MEDIA_URL = '/media/'")
+    else:
+        original += "MEDIA_URL = '/media/'\n"
+    if original.find('MEDIA_ROOT') > -1:
+        original = original.replace("MEDIA_ROOT = ''", "MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')")
+    else:
+        original += "MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')\n"
     original += data.STATIC_FILES
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
 
