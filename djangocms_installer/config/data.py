@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import six
-
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
                         '--permissions', '--bootstrap', '--starting-page']
@@ -13,6 +11,7 @@ DJANGOCMS_LATEST = '2.4'
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
 DJANGO_LATEST = '1.5'  # this is not true, but it's the most recent version
                        # compatible with all the CMS versions
+DJANGO_LATEST_CMS_3 = '1.6'
 
 DEFAULT_REQUIREMENTS = """
 django-classy-tags>=0.3.4.1
@@ -28,6 +27,7 @@ djangocms-link
 djangocms-picture
 djangocms-teaser
 djangocms-video
+six
 """
 
 DJANGOCMS_2_REQUIREMENTS = """
@@ -95,9 +95,13 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 """
 
 STATIC_FILES = """
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static_collected')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH, 'static'),
 )
 
+"""
+
+BASE_DIR = """
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 """

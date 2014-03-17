@@ -178,6 +178,7 @@ class TestConfig(BaseTestClass):
             '-p'+self.project_dir,
             'example_prj'])
 
+        self.assertTrue(conf_data.requirements.find('six') > -1)
         self.assertTrue(conf_data.requirements.find('django-cms<2.5') > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.6') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') == -1)

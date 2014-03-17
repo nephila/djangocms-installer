@@ -20,12 +20,38 @@ class TestDjango(BaseTestClass):
         django.create_project(config_data)
         self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'example_prj')))
 
+    def test_patch_16(self):
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en',
+                                    '--django-version=1.6',
+                                    '--cms-version=develop',
+                                    '-f', '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_16'])
+
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        settings = open(config_data.settings_path).read()
+        urlconf = open(config_data.urlconf_path).read()
+
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name,
+                             globals(), locals(), ['settings'])
+
+        ## checking for django options
+        self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(project.settings.MEDIA_URL, '/media/')
+
     def test_patch(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
+                                    '--django-version=1.5',
                                     '--cms-version=develop',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_patch'])
+                                    '-p'+self.project_dir, 'example_path'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -43,6 +69,8 @@ class TestDjango(BaseTestClass):
         self.assertFalse(project.settings.USE_L10N)
         self.assertFalse(project.settings.USE_TZ)
         self.assertEqual(project.settings.LANGUAGE_CODE, 'en')
+        self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(project.settings.MEDIA_URL, '/media/')
         #
         ## checking for standard CMS settings
         self.assertTrue('sekizai.context_processors.sekizai' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
@@ -53,6 +81,13 @@ class TestDjango(BaseTestClass):
         ## checking for filer (optional) settings
         self.assertTrue('filer' in project.settings.INSTALLED_APPS)
         self.assertTrue('easy_thumbnails' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_image' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_file' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_folder' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_link' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_teaser' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_utils' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_video' in project.settings.INSTALLED_APPS)
         self.assertTrue(hasattr(project.settings, 'THUMBNAIL_PROCESSORS'))
 
         ## basic urlconf check
