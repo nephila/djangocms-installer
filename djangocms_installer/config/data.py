@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import six
-
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
                         '--permissions', '--bootstrap', '--starting-page']
@@ -28,6 +26,7 @@ djangocms-link
 djangocms-picture
 djangocms-teaser
 djangocms-video
+six
 """
 
 DJANGOCMS_2_REQUIREMENTS = """
