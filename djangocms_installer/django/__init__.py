@@ -43,6 +43,8 @@ def copy_files(config_data):
     share_path = os.path.join(os.path.dirname(__file__), '../share')
     template_path = os.path.join(share_path, 'templates')
     template_target = os.path.join(config_data.project_path, 'templates')
+    static_project = os.path.join(config_data.project_directory, 'static')
+    static_main = os.path.join(config_data.project_path, 'static')
 
     if config_data.bootstrap == 'yes':
         template_path = os.path.join(template_path, 'bootstrap')
@@ -50,6 +52,8 @@ def copy_files(config_data):
         template_path = os.path.join(template_path, 'basic')
 
     shutil.copy(urlconf_path, config_data.urlconf_path)
+    os.makedirs(static_main)
+    os.makedirs(static_project)
     os.makedirs(template_target)
     for filename in glob.glob(os.path.join(template_path, '*.html')):
         if os.path.isfile(filename):
@@ -59,6 +63,7 @@ def copy_files(config_data):
         for filename in glob.glob(os.path.join(share_path, 'starting_page.*')):
             if os.path.isfile(filename):
                 shutil.copy(filename, os.path.join(config_data.project_path, '..'))
+
 
 def patch_settings(config_data):
     """
@@ -78,6 +83,8 @@ def patch_settings(config_data):
 
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
     original = data.DEFAULT_PROJECT_HEADER + original
+    if original.find('BASE_DIR') == -1:
+        original += data.BASE_DIR
     if original.find('MEDIA_URL') > -1:
         original = original.replace("MEDIA_URL = ''", "MEDIA_URL = '/media/'")
     else:

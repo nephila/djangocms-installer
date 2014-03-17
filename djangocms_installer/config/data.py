@@ -95,9 +95,13 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 """
 
 STATIC_FILES = """
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static_collected')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH, 'static'),
 )
 
+"""
+
+BASE_DIR = """
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 """
