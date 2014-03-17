@@ -11,6 +11,7 @@ DJANGOCMS_LATEST = '2.4'
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
 DJANGO_LATEST = '1.5'  # this is not true, but it's the most recent version
                        # compatible with all the CMS versions
+DJANGO_LATEST_CMS_3 = '1.6'
 
 DEFAULT_REQUIREMENTS = """
 django-classy-tags>=0.3.4.1

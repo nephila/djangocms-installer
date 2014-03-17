@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-import sys
-import os.path
 import argparse
 import locale
+import os.path
 import six
+import sys
+import warnings
 
 from .. import compat, utils
 from . import data
@@ -154,7 +155,10 @@ def parse(args):
             requirements.append(data.DJANGO_BETA)
         else:
             if args.django_version == 'stable':
-                requirements.append("Django<%s" % less_than_version(data.DJANGO_LATEST))
+                if cms_version < 3:
+                    requirements.append("Django<%s" % less_than_version(data.DJANGO_LATEST))
+                else:
+                    requirements.append("Django<%s" % less_than_version(data.DJANGO_LATEST_CMS_3))
             else:
                 requirements.append("Django<%s" % less_than_version(args.django_version))
 
