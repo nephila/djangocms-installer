@@ -18,6 +18,8 @@ class TestMain(BaseTestClass):
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()
+                self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'static')))
+                self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'example_prj', 'static')))
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
 

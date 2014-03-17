@@ -26,7 +26,7 @@ class TestDjango(BaseTestClass):
                                     '--django-version=1.6',
                                     '--cms-version=develop',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_patch'])
+                                    '-p'+self.project_dir, 'example_path_16'])
 
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -51,7 +51,7 @@ class TestDjango(BaseTestClass):
                                     '--django-version=1.5',
                                     '--cms-version=develop',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_patch'])
+                                    '-p'+self.project_dir, 'example_path'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -82,12 +82,12 @@ class TestDjango(BaseTestClass):
         self.assertTrue('filer' in project.settings.INSTALLED_APPS)
         self.assertTrue('easy_thumbnails' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_image' in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_link' in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_video' in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_flash' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_file' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_folder' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_link' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_teaser' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_utils' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_video' in project.settings.INSTALLED_APPS)
         self.assertTrue(hasattr(project.settings, 'THUMBNAIL_PROCESSORS'))
 
         ## basic urlconf check
