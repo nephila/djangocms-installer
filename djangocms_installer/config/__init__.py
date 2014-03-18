@@ -138,7 +138,24 @@ def parse(args):
                                                      args.cms_version)
 
     if not getattr(args, 'requirements_file'):
-        requirements = [data.DEFAULT_REQUIREMENTS]
+        requirements = []
+
+        ## Django cms version check
+        if args.cms_version == 'develop':
+            requirements.append(data.DJANGOCMS_DEVELOP)
+        elif args.cms_version == 'rc':
+            requirements.append(data.DJANGOCMS_RC)
+        elif args.cms_version == 'beta':
+            requirements.append(data.DJANGOCMS_BETA)
+        else:
+            if args.cms_version == 'stable':
+                requirements.append("django-cms<%s" % less_than_version(data.DJANGOCMS_LATEST))
+            else:
+                requirements.append("django-cms<%s" % less_than_version(args.cms_version))
+        if cms_version >= 3:
+            requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
+        else:
+            requirements.append(data.DJANGOCMS_2_REQUIREMENTS)
 
         if not args.no_db_driver:
             requirements.append(args.db_driver)
@@ -175,22 +192,7 @@ def parse(args):
             else:
                 requirements.append(data.DJANGO_16_REVERSION)
 
-        ## Django cms version check
-        if args.cms_version == 'develop':
-            requirements.append(data.DJANGOCMS_DEVELOP)
-        elif args.cms_version == 'rc':
-            requirements.append(data.DJANGOCMS_RC)
-        elif args.cms_version == 'beta':
-            requirements.append(data.DJANGOCMS_BETA)
-        else:
-            if args.cms_version == 'stable':
-                requirements.append("django-cms<%s" % less_than_version(data.DJANGOCMS_LATEST))
-            else:
-                requirements.append("django-cms<%s" % less_than_version(args.cms_version))
-        if cms_version >= 3:
-            requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
-        else:
-            requirements.append(data.DJANGOCMS_2_REQUIREMENTS)
+        requirements.extend([data.DEFAULT_REQUIREMENTS])
 
         setattr(args, "requirements", "\n".join(requirements).strip())
 
