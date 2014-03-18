@@ -185,7 +185,9 @@ def parse(args):
 
         ## Reversion package version depends on django version
         if args.reversion:
-            if django_version < 1.5:
+            if cms_version >= 3:
+                requirements.append(data.DJANGO_16_REVERSION)
+            elif django_version < 1.5:
                 requirements.append(data.DJANGO_14_REVERSION)
             elif django_version == 1.5:
                 requirements.append(data.DJANGO_15_REVERSION)

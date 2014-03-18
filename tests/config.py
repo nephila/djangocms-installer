@@ -152,6 +152,9 @@ class TestConfig(BaseTestClass):
         self.assertEqual(less_than_version('3.0.1'), '3.1.1')
 
     def test_requirements(self):
+        """
+        Test for different configuration and package versions
+        """
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -201,26 +204,48 @@ class TestConfig(BaseTestClass):
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
             '--cms-version=rc',
+            '--django-version=stable',
             '-f',
+            '--reversion=yes',
             '-p'+self.project_dir,
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_RC) > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
 
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--i18n=no',
+            '--cms-version=rc',
+            '--django-version=1.4',
+            '-f',
+            '--reversion=yes',
+            '-p'+self.project_dir,
+            'example_prj'])
+
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_RC) > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.5') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
 
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
             '--cms-version=develop',
+            '--django-version=stable',
             '-f',
+            '--reversion=yes',
             '-z=yes',
             '-p'+self.project_dir,
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
 
     def suspend_test_check_install(self):
