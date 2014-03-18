@@ -39,3 +39,9 @@ History
 * Fix error with non-standard python executable paths
 * Fix error with Django 1.6
 * Fix error installing django-filer
+
+0.3.2 (2014-03-18)
+++++++++++++++++++
+
+* Fix some versioned dependency resolve error
+
