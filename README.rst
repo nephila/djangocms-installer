@@ -24,7 +24,7 @@ Features
 ``djangocms-installer`` is a console wizard to help bootstrapping a django CMS
 project.
 
-Refer to `django CMS Tutorial <http://slid.es/chive/djangocms/fullscreen>`_ on
+Refer to `django CMS Tutorial <https://github.com/divio/django-cms-tutorial/>`_ on
 how to properly setup your first django CMS project.
 
 .. note:: It used to be called **aldryn-installer**, but since version 0.2.0
