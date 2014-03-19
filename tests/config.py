@@ -186,6 +186,8 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('Django<1.6') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-file') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.7') > -1)
 
         conf_data = config.parse([
