@@ -19,14 +19,6 @@ south>=0.7.2
 html5lib
 Pillow>=2
 django-sekizai>=0.7
-djangocms-file
-djangocms-flash
-djangocms-googlemap
-djangocms-inherit
-djangocms-link
-djangocms-picture
-djangocms-teaser
-djangocms-video
 six
 """
 
@@ -38,8 +30,19 @@ DJANGOCMS_3_REQUIREMENTS = """
 django-mptt>=0.6
 djangocms-text-ckeditor>=2.0.5
 djangocms-admin-style
-git+https://github.com/divio/djangocms-column.git#egg=djangocms-column
-git+https://github.com/divio/djangocms-style.git#egg=djangocms-style
+djangocms-column
+djangocms-style
+djangocms-flash
+djangocms-googlemap
+djangocms-inherit
+"""
+
+PLUGIN_REQUIREMENTS = """
+djangocms-file
+djangocms-link
+djangocms-picture
+djangocms-teaser
+djangocms-video
 """
 
 DJANGO_16_REVERSION = "django-reversion>=1.8"
