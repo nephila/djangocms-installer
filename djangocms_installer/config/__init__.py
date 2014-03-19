@@ -41,7 +41,7 @@ def parse(args):
                         choices=('1.4', '1.5', '1.6', 'stable'),
                         default='1.5', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
-                        choices=('2.4', 'stable', 'rc', 'beta',  'develop'),
+                        choices=('2.4', 'stable', 'rc', 'develop'),
                         default='stable', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
                         required=True, default='',
@@ -164,6 +164,8 @@ def parse(args):
                 requirements.append(data.FILER_REQUIREMENTS_CMS3)
             else:
                 requirements.append(data.FILER_REQUIREMENTS_CMS2)
+        elif cms_version >= 3:
+            requirements.append(data.PLUGIN_REQUIREMENTS)
 
         ## Django version check
         if args.django_version == 'develop':

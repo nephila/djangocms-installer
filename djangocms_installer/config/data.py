@@ -32,10 +32,13 @@ djangocms-text-ckeditor>=2.0.5
 djangocms-admin-style
 djangocms-column
 djangocms-style
-djangocms-file
 djangocms-flash
 djangocms-googlemap
 djangocms-inherit
+"""
+
+PLUGIN_REQUIREMENTS = """
+djangocms-file
 djangocms-link
 djangocms-picture
 djangocms-teaser

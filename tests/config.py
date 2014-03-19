@@ -186,8 +186,16 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('Django<1.6') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-column') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-googlemap') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-inherit') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-link') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-picture') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-style') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-video') == -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.7') > -1)
 
         conf_data = config.parse([
@@ -207,6 +215,32 @@ class TestConfig(BaseTestClass):
             '--i18n=no',
             '--cms-version=rc',
             '--django-version=stable',
+            '--reversion=yes',
+            '-p'+self.project_dir,
+            'example_prj'])
+
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_RC) > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-flash') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-googlemap') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-inherit') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-link') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-picture') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-style') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-video') > -1)
+
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--i18n=no',
+            '--cms-version=rc',
+            '--django-version=stable',
             '-f',
             '--reversion=yes',
             '-p'+self.project_dir,
@@ -215,6 +249,20 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_RC) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
+        self.assertTrue(conf_data.requirements.find('django-filer') > -1)
+        self.assertTrue(conf_data.requirements.find('cmsplugin-filer') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-file') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-flash') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-googlemap') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-inherit') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-link') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-picture') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-style') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-video') == -1)
 
         conf_data = config.parse([
             '-q',
