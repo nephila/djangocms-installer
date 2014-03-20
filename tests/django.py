@@ -25,7 +25,7 @@ class TestDjango(BaseTestClass):
                                     '--lang=en',
                                     '--django-version=1.6',
                                     '--cms-version=develop',
-                                    '-f', '-q', '-u', '-zno', '--i18n=no',
+                                    '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_16'])
 
         install.requirements(config_data.requirements)
@@ -44,6 +44,27 @@ class TestDjango(BaseTestClass):
         ## checking for django options
         self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
+
+        self.assertTrue('cmsplugin_filer_image' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_file' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_folder' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_link' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_teaser' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_utils' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_video' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_text_ckeditor' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_admin_style' in project.settings.INSTALLED_APPS)
+        self.assertTrue('filer' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_column' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_file' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_flash' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_googlemap' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_inherit' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_link' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_picture' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_teaser' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
 
     def test_patch(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -88,6 +109,19 @@ class TestDjango(BaseTestClass):
         self.assertTrue('cmsplugin_filer_teaser' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_utils' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_video' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_text_ckeditor' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_admin_style' in project.settings.INSTALLED_APPS)
+        self.assertTrue('filer' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_column' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_file' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_flash' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_googlemap' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_inherit' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_link' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_picture' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_teaser' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_video' not in project.settings.INSTALLED_APPS)
         self.assertTrue(hasattr(project.settings, 'THUMBNAIL_PROCESSORS'))
 
         ## basic urlconf check
