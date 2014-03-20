@@ -45,3 +45,8 @@ History
 
 * Fix some versioned dependency resolve error
 
+0.3.3 (2014-03-20)
+++++++++++++++++++
+
+* Better handling of differenct CMS version configuration
+
