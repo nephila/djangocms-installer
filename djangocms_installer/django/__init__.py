@@ -154,10 +154,16 @@ def _build_settings(config_data):
         apps = list(vars.CMS_3_HEAD) + apps
         apps.extend(vars.CMS_3_APPLICATIONS)
 
-    if config_data.filer:
-        apps.extend(vars.FILER_PLUGINS)
+    if config_data.cms_version == 2.4:
+        if config_data.filer:
+            apps.extend(vars.FILER_PLUGINS_2)
+        else:
+            apps.extend(vars.STANDARD_PLUGINS_2)
     else:
-        apps.extend(vars.STANDARD_PLUGINS)
+        if config_data.filer:
+            apps.extend(vars.FILER_PLUGINS_3)
+        else:
+            apps.extend(vars.STANDARD_PLUGINS_3)
     if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
     text.append("INSTALLED_APPS = (\n%s%s\n)" % (

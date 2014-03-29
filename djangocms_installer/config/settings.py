@@ -58,7 +58,19 @@ INSTALLED_APPS = (
     'sekizai',
 )
 
-STANDARD_PLUGINS = (
+STANDARD_PLUGINS_2 = (
+    'cms.plugins.file',
+    'cms.plugins.flash',
+    'cms.plugins.googlemap',
+    'cms.plugins.inherit',
+    'cms.plugins.link',
+    'cms.plugins.picture',
+    'cms.plugins.teaser',
+    'cms.plugins.text',
+    'cms.plugins.twitter',
+    'cms.plugins.video',
+)
+STANDARD_PLUGINS_3 = (
     'djangocms_file',
     'djangocms_flash',
     'djangocms_googlemap',
@@ -69,7 +81,22 @@ STANDARD_PLUGINS = (
     'djangocms_video',
 )
 
-FILER_PLUGINS = (
+FILER_PLUGINS_2 = (
+    'filer',
+    'easy_thumbnails',
+    'cmsplugin_filer_image',
+    'cmsplugin_filer_file',
+    'cmsplugin_filer_folder',
+    'cmsplugin_filer_link',
+    'cmsplugin_filer_teaser',
+    'cmsplugin_filer_utils',
+    'cmsplugin_filer_video',
+    'cms.plugins.flash',
+    'cms.plugins.googlemap',
+    'cms.plugins.inherit',
+)
+
+FILER_PLUGINS_3 = (
     'filer',
     'easy_thumbnails',
     'cmsplugin_filer_image',
