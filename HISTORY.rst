@@ -50,3 +50,8 @@ History
 
 * Better handling of differenct CMS version configuration
 
+0.3.4 (2014-03-29)
+++++++++++++++++++
+
+* Fix issues with django CMS 2.4
+
