@@ -55,3 +55,9 @@ History
 
 * Fix issues with django CMS 2.4
 
+0.3.5 (2014-04-03)
+++++++++++++++++++
+
+* Update for django CMS 3.0c2
+
+
