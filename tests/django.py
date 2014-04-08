@@ -5,6 +5,7 @@ import os.path
 import six
 import sqlite3
 from . import unittest
+import re
 
 from djangocms_installer import config, django, install
 from . import BaseTestClass
@@ -65,6 +66,11 @@ class TestDjango(BaseTestClass):
         self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_teaser' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
+
+        self.assertEqual(len(re.findall('BASE_DIR = ', settings)), 1)
+        self.assertEqual(len(re.findall('STATIC_ROOT', settings)), 1)
+        self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
+        self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")

@@ -94,16 +94,12 @@ DRIVERS = {
 DEFAULT_PROJECT_HEADER = """# -*- coding: utf-8 -*-
 import os
 gettext = lambda s: s
-PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 """
-
-STATIC_FILES = """
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_PATH, 'static'),
-)
-
-"""
+STATICFILES_DEFAULT = """STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+)"""
 
 BASE_DIR = """
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))

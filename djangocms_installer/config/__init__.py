@@ -18,7 +18,7 @@ def parse(args):
     """
     parser = argparse.ArgumentParser(description='Bootstrap a django CMS project.')
     parser.add_argument('--db', '-d', dest='db', action=DbAction,
-                        default='sqlite://locahost/project.db',
+                        default='sqlite://localhost/project.db',
                         help='Database configuration (in URL format)')
     parser.add_argument('--i18n', '-i', dest='i18n', action='store',
                         choices=('yes', 'no'),

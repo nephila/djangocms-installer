@@ -82,18 +82,29 @@ def patch_settings(config_data):
         original = fd_original.read()
 
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
-    original = data.DEFAULT_PROJECT_HEADER + original
+
     if original.find('BASE_DIR') == -1:
-        original += data.BASE_DIR
+        original = data.DEFAULT_PROJECT_HEADER + data.BASE_DIR + original
+    else:
+        original = data.DEFAULT_PROJECT_HEADER + original
     if original.find('MEDIA_URL') > -1:
         original = original.replace("MEDIA_URL = ''", "MEDIA_URL = '/media/'")
     else:
         original += "MEDIA_URL = '/media/'\n"
     if original.find('MEDIA_ROOT') > -1:
-        original = original.replace("MEDIA_ROOT = ''", "MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')")
+        original = original.replace("MEDIA_ROOT = ''", "MEDIA_ROOT = os.path.join(BASE_DIR, 'media')")
     else:
-        original += "MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')\n"
-    original += data.STATIC_FILES
+        original += "MEDIA_ROOT = os.path.join(BASE_DIR, 'media')\n"
+    if original.find('STATIC_ROOT') > -1:
+        original = original.replace("STATIC_ROOT = ''", "STATIC_ROOT = os.path.join(BASE_DIR, 'static')")
+    else:
+        original += "STATIC_ROOT = os.path.join(BASE_DIR, 'static')"
+    if original.find('STATICFILES_DIRS') > -1:
+        original = original.replace(data.STATICFILES_DEFAULT, """STATICFILES_DEFAULT = (
+    os.path.join(BASE_DIR, '%s', 'static'),
+)""" % config_data.project_name)
+    else:
+        original += "STATICFILES_DIRS = os.path.join(BASE_DIR, 'static')"
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
 
     # I18N
@@ -116,7 +127,8 @@ def patch_settings(config_data):
     # DATABASES is a dictionary, so different regexp needed
     item_re = re.compile(r"DATABASES = [^\}]+\}[^\}]+\}", re.DOTALL | re.MULTILINE)
     original = item_re.sub('', original)
-    original += "SITE_ID = 1\n\n"
+    if original.find('SITE_ID') == -1:
+        original += "SITE_ID = 1\n\n"
 
     original += _build_settings(config_data)
 
@@ -145,7 +157,7 @@ def _build_settings(config_data):
         spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.TEMPLATE_CONTEXT_PROCESSORS])))
 
     text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
-        spacer, 'os.path.join(PROJECT_PATH, "templates"),'))
+        spacer, "os.path.join(BASE_DIR, '%s', 'templates')," % config_data.project_name))
 
     apps = list(vars.INSTALLED_APPS)
     if config_data.cms_version == 2.4:
@@ -167,7 +179,7 @@ def _build_settings(config_data):
     if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
     text.append("INSTALLED_APPS = (\n%s%s\n)" % (
-        spacer, (",\n" + spacer).join(["'%s'" % var for var in apps])))
+        spacer, (",\n" + spacer).join(["'%s'" % var for var in apps] + ["'%s'" % config_data.project_name])))
 
     text.append("LANGUAGES = (\n%s%s\n%s%s\n)" % (
         spacer, "## Customize this",
