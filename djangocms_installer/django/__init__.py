@@ -98,13 +98,19 @@ def patch_settings(config_data):
     if original.find('STATIC_ROOT') > -1:
         original = original.replace("STATIC_ROOT = ''", "STATIC_ROOT = os.path.join(BASE_DIR, 'static')")
     else:
-        original += "STATIC_ROOT = os.path.join(BASE_DIR, 'static')"
+        original += "STATIC_ROOT = os.path.join(BASE_DIR, 'static')\n"
     if original.find('STATICFILES_DIRS') > -1:
-        original = original.replace(data.STATICFILES_DEFAULT, """STATICFILES_DEFAULT = (
+        original = original.replace(data.STATICFILES_DEFAULT, """
+STATICFILES_DIRS = (
     os.path.join(BASE_DIR, '%s', 'static'),
-)""" % config_data.project_name)
+)
+""" % config_data.project_name)
     else:
-        original += "STATICFILES_DIRS = os.path.join(BASE_DIR, 'static')"
+        original += """
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, '%s', 'static'),
+)
+""" % config_data.project_name
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
 
     # I18N
