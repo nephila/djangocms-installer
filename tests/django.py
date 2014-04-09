@@ -70,7 +70,7 @@ class TestDjango(BaseTestClass):
         self.assertEqual(len(re.findall('BASE_DIR = ', settings)), 1)
         self.assertEqual(len(re.findall('STATIC_ROOT', settings)), 1)
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
-        self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
+        self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 2)
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
