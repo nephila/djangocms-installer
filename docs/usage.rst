@@ -10,7 +10,7 @@ Wizard mode
 
 Call it with a project name and a directory path to install the project into::
 
-    djangocms-start -p /path/whatever project_name
+    djangocms -p /path/whatever project_name
 
 A wizard will ask for the missing parameters; for most of them sane defaults are
 provided, but you're free to adapt to your own needs.
