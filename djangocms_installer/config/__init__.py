@@ -41,7 +41,7 @@ def parse(args):
                         choices=('1.4', '1.5', '1.6', 'stable'),
                         default='1.5', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
-                        choices=('2.4', 'stable', 'rc', 'develop'),
+                        choices=('2.4', '3.0', 'stable', 'develop'),
                         default='stable', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
                         required=True, default='',

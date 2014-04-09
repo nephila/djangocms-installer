@@ -60,4 +60,11 @@ History
 
 * Update for django CMS 3.0c2
 
+0.4 (2014-04-09)
+++++++++++++++++
+
+* Update for django CMS 3.0 stable!
+* Fixes for settings parameter
+
+
 

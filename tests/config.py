@@ -20,7 +20,7 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(conf_data.project_name, 'example_prj')
 
-        self.assertEqual(conf_data.cms_version, 2.4)
+        self.assertEqual(conf_data.cms_version, 3.0)
         self.assertEqual(conf_data.django_version, 1.5)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
@@ -164,18 +164,18 @@ class TestConfig(BaseTestClass):
             '-p'+self.project_dir,
             'example_prj'])
 
-        self.assertTrue(conf_data.requirements.find('django-cms<2.5') > -1)
+        self.assertTrue(conf_data.requirements.find('django-cms<3.1') > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.5') > -1)
         self.assertTrue(conf_data.requirements.find('django-filer') > -1)
-        self.assertTrue(conf_data.requirements.find('cmsplugin_filer') > -1)
-        self.assertTrue(conf_data.requirements.find('django-reversion<1.7') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') == -1)
+        self.assertTrue(conf_data.requirements.find('cmsplugin-filer') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
 
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
-            '--cms-version=stable',
+            '--cms-version=2.4',
             '--django-version=stable',
             '-f',
             '-p'+self.project_dir,
@@ -202,13 +202,13 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
-            '--cms-version=rc',
+            '--cms-version=stable',
             '--django-version=stable',
             '--reversion=yes',
             '-p'+self.project_dir,
             'example_prj'])
 
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_RC) > -1)
+        self.assertTrue(conf_data.requirements.find('django-cms<3.1') > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
@@ -228,14 +228,14 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
-            '--cms-version=rc',
+            '--cms-version=develop',
             '--django-version=stable',
             '-f',
             '--reversion=yes',
             '-p'+self.project_dir,
             'example_prj'])
 
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_RC) > -1)
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
@@ -257,14 +257,14 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
-            '--cms-version=rc',
+            '--cms-version=develop',
             '--django-version=1.4',
             '-f',
             '--reversion=yes',
             '-p'+self.project_dir,
             'example_prj'])
 
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_RC) > -1)
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.5') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
 
