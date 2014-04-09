@@ -24,8 +24,8 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--reversion``, ``-e``: Install and configure reversion support, choices: ``yes|no``, default: ``yes``
 * ``--permissions``: Activate CMS permission management; choices: ``yes|no``, default: ``yes``
 * ``--languages``, ``-l``: Languages to enable. Option can be provided multiple times, or as a comma separated list
-* ``--django-version``: Django version;  choices: ``1.4|1.5|stable``, default: ``stable``
-* ``--cms-version``, ``-v``: django CMS version, choices: ``2.4|stable|beta|develop``. default: ``stable``
+* ``--django-version``: Django version;  choices: ``1.4|1.5|1.6|stable``, default: ``stable``
+* ``--cms-version``, ``-v``: django CMS version, choices: ``2.4|3.0|stable|develop``. default: ``stable``
 * ``--bootstrap``, ``-v``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
 * ``--starting-page``, ``-v``: Load a starting page with examples after installation, choices: ``yes|no``, default: ``no``
 
