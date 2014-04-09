@@ -6,7 +6,7 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
 DJANGOCMS_DEVELOP = '-e git+https://github.com/divio/django-cms@develop#egg=django-cms'
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
-DJANGOCMS_LATEST = '2.4'
+DJANGOCMS_LATEST = '3.0'
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
 DJANGO_LATEST = '1.5'  # this is not true, but it's the most recent version
