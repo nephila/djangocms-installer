@@ -25,7 +25,7 @@ class TestDjango(BaseTestClass):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.6',
-                                    '--cms-version=develop',
+                                    '--cms-version=3.0',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_16'])
 
@@ -78,7 +78,7 @@ class TestDjango(BaseTestClass):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.5',
-                                    '--cms-version=stable',
+                                    '--cms-version=2.4',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_24_s'])
 
@@ -123,7 +123,7 @@ class TestDjango(BaseTestClass):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.5',
-                                    '--cms-version=stable',
+                                    '--cms-version=2.4',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_24_f'])
 
@@ -166,7 +166,7 @@ class TestDjango(BaseTestClass):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.5',
-                                    '--cms-version=develop',
+                                    '--cms-version=3.0',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path'])
         install.requirements(config_data.requirements)
@@ -229,10 +229,10 @@ class TestDjango(BaseTestClass):
         del(sys.modules["%s.settings" % config_data.project_name])
 
     @unittest.skip("Currently unsupported test")
-    def test_setup_database_filer(self):
+    def test_database_setup_filer(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-f', '-q', '-u',
-                                    '--cms-version=rc',
+                                    '--cms-version=3.0',
                                     '-p'+self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -252,9 +252,9 @@ class TestDjango(BaseTestClass):
         query = project_db.execute('SELECT * FROM cms_page')
         self.assertTrue(query)
 
-    def test_setup_database(self):
+    def test_database_setup(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '-q', '-u', '--cms-version=rc',
+                                    '-q', '-u', '--cms-version=3.0',
                                     '-p'+self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
