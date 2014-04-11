@@ -19,3 +19,5 @@ else:
             return value
 
 iteritems = six.iteritems
+
+StringIO = six.StringIO
