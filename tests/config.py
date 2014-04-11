@@ -335,3 +335,10 @@ class TestConfig(BaseTestClass):
                 with self.assertRaises(EnvironmentError) as context_error:
                     check_install(conf_data)
                 self.assertTrue(str(context_error.exception).find('MySQL driver is not installed') > -1)
+
+    def test_show_plugins(self):
+        sys.stdout = StringIO()
+        try:
+            config.show_plugins()
+        finally:
+            sys.stdout = sys.__stdout__

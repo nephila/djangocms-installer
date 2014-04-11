@@ -233,5 +233,4 @@ def show_plugins():
     """
     Shows a descriptive text about supported plugins
     """
-    sys.stdout.write(unicode(data.PLUGIN_LIST_TEXT))
-
+    sys.stdout.write(compat.unicode(data.PLUGIN_LIST_TEXT))

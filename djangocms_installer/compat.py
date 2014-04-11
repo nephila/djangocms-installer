@@ -9,6 +9,8 @@ if six.PY3:
         else:
             return value
 
+    unicode = str
+
 else:
     input = raw_input
 
@@ -18,4 +20,8 @@ else:
         else:
             return value
 
+    unicode = unicode
+
 iteritems = six.iteritems
+
+StringIO = six.StringIO
