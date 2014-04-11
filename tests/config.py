@@ -340,6 +340,5 @@ class TestConfig(BaseTestClass):
         sys.stdout = StringIO()
         try:
             config.show_plugins()
-            value = sys.stdout.getvalue()
         finally:
             sys.stdout = sys.__stdout__

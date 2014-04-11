@@ -9,6 +9,8 @@ if six.PY3:
         else:
             return value
 
+    unicode = str
+
 else:
     input = raw_input
 
@@ -17,6 +19,8 @@ else:
             return value.strip().decode("utf-8")
         else:
             return value
+
+    unicode = unicode
 
 iteritems = six.iteritems
 
