@@ -25,7 +25,7 @@ MIDDLEWARE_CLASSES_DJANGO_15 = [
 ]
 
 
-TEMPLATE_CONTEXT_PROCESSORS = (
+TEMPLATE_CONTEXT_PROCESSORS = [
     "django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.i18n",
@@ -34,10 +34,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     'django.core.context_processors.csrf',
     "django.core.context_processors.tz",
-    "cms.context_processors.media",
     "sekizai.context_processors.sekizai",
     "django.core.context_processors.static",
-)
+]
+TEMPLATE_CONTEXT_PROCESSORS_2 = [
+    "cms.context_processors.media",
+]
+TEMPLATE_CONTEXT_PROCESSORS_3 = [
+    "cms.context_processors.cms_settings",
+]
 
 TEMPLATE_DIRS = (
 )

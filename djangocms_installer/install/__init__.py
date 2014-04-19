@@ -25,12 +25,14 @@ def check_install(config_data):
         try:
             im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.png"))
             im.thumbnail(size)
-        except IOError:
+        except IOError as e:
+            #errors.append(e.strerror)
             errors.append("Pillow is not compiled with PNG support, see 'Libraries installation issues' documentation section.")
         try:
             im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.jpg"))
             im.thumbnail(size)
-        except IOError:
+        except IOError as e:
+            #errors.append(e.strerror)
             errors.append("Pillow is not compiled with JPEG support, see 'Libraries installation issues' documentation section.")
     except ImportError:
         errors.append("Pillow is not installed check for installation errors and see 'Libraries installation issues' documentation section.")

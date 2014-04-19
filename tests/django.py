@@ -66,6 +66,8 @@ class TestDjango(BaseTestClass):
         self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_teaser' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue('cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
 
         self.assertEqual(len(re.findall('BASE_DIR = ', settings)), 1)
         self.assertEqual(len(re.findall('STATIC_ROOT', settings)), 1)
@@ -98,6 +100,8 @@ class TestDjango(BaseTestClass):
         ## checking for django options
         self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
+        self.assertTrue('cms.context_processors.cms_settings' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue('cms.context_processors.media' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
         self.assertTrue('djangocms_file' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_flash' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_googlemap' not in project.settings.INSTALLED_APPS)
@@ -168,7 +172,7 @@ class TestDjango(BaseTestClass):
                                     '--django-version=1.5',
                                     '--cms-version=3.0',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path'])
+                                    '-p'+self.project_dir, 'example_path_patch'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -219,6 +223,8 @@ class TestDjango(BaseTestClass):
         self.assertTrue('djangocms_teaser' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' not in project.settings.INSTALLED_APPS)
         self.assertTrue(hasattr(project.settings, 'THUMBNAIL_PROCESSORS'))
+        self.assertTrue('cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue('cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
 
         ## basic urlconf check
         self.assertTrue('cms.urls' in urlconf)

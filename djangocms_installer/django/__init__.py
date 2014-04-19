@@ -6,9 +6,7 @@ import re
 import shutil
 import glob
 import subprocess
-from copy import copy
-
-import six
+from copy import copy, deepcopy
 
 from ..compat import iteritems
 from ..utils import chdir
@@ -159,8 +157,12 @@ def _build_settings(config_data):
     text.append("MIDDLEWARE_CLASSES = (\n%s%s\n)" % (
         spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.MIDDLEWARE_CLASSES])))
 
+    if config_data.cms_version < 3:
+        processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_2
+    else:
+        processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_3
     text.append("TEMPLATE_CONTEXT_PROCESSORS = (\n%s%s\n)" % (
-        spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.TEMPLATE_CONTEXT_PROCESSORS])))
+        spacer, (",\n" + spacer).join(["'%s'" % var for var in processors])))
 
     text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
         spacer, "os.path.join(BASE_DIR, '%s', 'templates')," % config_data.project_name))
@@ -191,7 +193,7 @@ def _build_settings(config_data):
         spacer, "## Customize this",
         spacer, ("\n" + spacer).join(["('%s', gettext('%s'))," % (item, item) for item in config_data.languages])))
 
-    cms_langs = vars.CMS_LANGUAGES
+    cms_langs = deepcopy(vars.CMS_LANGUAGES)
     for lang in config_data.languages:
         lang_dict = {'code': lang, 'name': lang}
         lang_dict.update(copy(cms_langs['default']))
