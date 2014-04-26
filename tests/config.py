@@ -21,7 +21,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.project_name, 'example_prj')
 
         self.assertEqual(conf_data.cms_version, 3.0)
-        self.assertEqual(conf_data.django_version, 1.5)
+        self.assertEqual(conf_data.django_version, 1.6)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
         self.assertEqual(conf_data.permissions, 'yes')

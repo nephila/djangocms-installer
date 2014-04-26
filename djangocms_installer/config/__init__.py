@@ -39,7 +39,7 @@ def parse(args):
                         help='Languages to enable. Option can be provided multiple times, or as a comma separated list')
     parser.add_argument('--django-version', dest='django_version', action='store',
                         choices=('1.4', '1.5', '1.6', 'stable'),
-                        default='1.5', help='Django version')
+                        default='stable', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
                         choices=('2.4', '3.0', 'stable', 'develop'),
                         default='stable', help='django CMS version')
