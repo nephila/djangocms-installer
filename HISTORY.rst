@@ -70,3 +70,11 @@ History
 ++++++++++++++++++
 
 * Fix some newlines issues in the settings file
+
+0.4.2 (2014-04-26)
+++++++++++++++++++
+
+* Use current cms.context_processors.cms_settings instead of deprecated one
+* Document some fixes for library issues
+* Fix Python 3 issue
+* Switch default Django version to stable instead of 1.5

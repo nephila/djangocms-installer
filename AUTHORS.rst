@@ -16,3 +16,4 @@ Contributors
 * Henning Sprang <henning.sprang@gmail.com>
 * Nick Moore <nick@zoic.org>
 * Enkel Mitrushi
+* Jonas Obrist <ojiidotch@gmail.com>
