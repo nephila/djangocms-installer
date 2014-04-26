@@ -65,6 +65,8 @@ Libraries you would want to check:
 * postgresql (for ``psycopg``)
 * libmysqlclient (for ``Mysql-Python``)
 
+For additional information, check http://djangocms-installer.readthedocs.org/en/latest/libraries.html
+
 
 .. image:: https://d2weczhvl823v0.cloudfront.net/nephila/djangocms-installer/trend.png
    :alt: Bitdeli badge

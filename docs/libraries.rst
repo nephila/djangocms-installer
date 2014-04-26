@@ -34,3 +34,6 @@ library and execute ``djangocms-installer`` again with the same parameters; if
 the package is compiled with some functionality missing, you have to first
 deinstall it (`pip uninstall *package-name*`), then install the correct library
 and the execute ``djangocms-installer`` again.
+
+For older Debian / Ubuntu releases, a manual fix may be needed to properly fix
+compilation issues: see http://stackoverflow.com/questions/23078303/getting-error-while-running-django-cms-demo-page#23086541
