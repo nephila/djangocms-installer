@@ -7,9 +7,9 @@ import pip
 
 def check_install(config_data):
     """
-    Here we do some **really* basic sanity check for the environment.
+    Here we do some **really** basic environment sanity checks.
 
-    Bsically we test for the more delicate and failing-prone dependencies:
+    Basically we test for the more delicate and failing-prone dependencies:
      * database driver
      * Pillow image format support
 

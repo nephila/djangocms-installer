@@ -15,6 +15,8 @@ def execute():
     try:
         if config_data.plugins:
             config.show_plugins()
+        elif config_data.dump_reqs:
+            config.show_requirements(config_data)
         else:
             if not config_data.no_deps:
                 if config_data.requirements_file:
