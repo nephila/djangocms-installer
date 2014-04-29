@@ -28,6 +28,36 @@ All the paramaters asked by the wizard can be passed as command line arguments.
 
 See :ref:`arguments` for arguments reference
 
+
+.. _dump_mode:
+
+Dump mode
+---------
+
+By using the `-R` arguments, **djangocms-installer** won't create a new
+django CMS instance but will print to stdout the list of packages
+required to properly setup the virtualenv.
+This can be helpful to customize the virtualenv:
+
+#. Dump the list of requirements::
+
+    $ djangocms -p /path/whatever project_name -R > requirements.txt
+
+#. Edit requirements.txt according to your needs
+#. Run the installer again providing the customized requirements file::
+
+    $ djangocms -r custom_requirements.txt -p /path/whatever project_name
+
+   or install the requirements manually and execute the installer with `n`
+   argument::
+
+    $ pip install -r custom_requirements.txt
+    $ djangocms -n -p /path/whatever project_name
+
+
+See :ref:`arguments` for arguments reference
+
+
 HOWTO
 -----
 
