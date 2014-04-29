@@ -3,6 +3,12 @@
 History
 -------
 
+0.5.0 (Unreleased)
+++++++++++++++++++
+
+* Add dump-requirements argument
+* Add FAQ section
+* Documentation update
 
 0.4.2 (2014-04-26)
 ++++++++++++++++++
