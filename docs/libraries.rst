@@ -1,3 +1,5 @@
+.. _libraries:
+
 Libraries installation issues
 =============================
 
@@ -36,4 +38,13 @@ deinstall it (`pip uninstall *package-name*`), then install the correct library
 and the execute ``djangocms-installer`` again.
 
 For older Debian / Ubuntu releases, a manual fix may be needed to properly fix
-compilation issues: see http://stackoverflow.com/questions/23078303/getting-error-while-running-django-cms-demo-page#23086541
+compilation issues: see `stackoverflow`_
+
+Manual installation
+-------------------
+
+If all else fails, you can use :ref:`dump_mode` to create a requirements file,
+install it by hand and run the installer with `-n` parameter.
+
+
+.. _stackoverflow: http://stackoverflow.com/questions/23078303/getting-error-while-running-django-cms-demo-page#23086541

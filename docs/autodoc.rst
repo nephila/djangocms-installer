@@ -1,3 +1,6 @@
+Module documentation
+====================
+
 .. automodule:: djangocms_installer.config
     :members:
     :undoc-members:

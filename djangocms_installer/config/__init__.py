@@ -59,6 +59,11 @@ def parse(args):
     parser.add_argument('--list-plugins', '-P', dest='plugins', action='store_true',
                         help="List plugins that's going to be installed and configured")
 
+    # Command that lists the supported plugins in verbose description
+    parser.add_argument('--dump-requirements', '-R', dest='dump_reqs', action='store_true',
+                        help="It dumps the requirements that would be installed according to parameters given."
+                             "Together with --requirements argument is useful for customizing the virtualenv")
+
     # Advanced options. These have a predefined default and are not managed
     # by config wizard.
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
@@ -234,3 +239,10 @@ def show_plugins():
     Shows a descriptive text about supported plugins
     """
     sys.stdout.write(compat.unicode(data.PLUGIN_LIST_TEXT))
+
+
+def show_requirements(args):
+    """
+    Prints the list of requirements according to the arguments provided
+    """
+    sys.stdout.write(compat.unicode(args.requirements))

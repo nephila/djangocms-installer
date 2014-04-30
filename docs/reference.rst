@@ -17,7 +17,7 @@ Wizard arguments
 
 The following arguments can be overridden in :ref:`wizard_mode`
 
-* ``--db``, ``-d``: Database configuration (in URL format); default: ``sqlite://locahost/project.db``
+* ``--db``, ``-d``: Database configuration (in URL format); default: ``sqlite://localhost/project.db``
 * ``--i18n``, ``-i``: Activate Django I18N / L10N setting; choices: ``yes|no``, default: ``yes``
 * ``--use-tz``, ``-z``: Activate Django timezone support;  choices: ``yes|no``, default: ``yes``
 * ``--timezone``, ``-t``: Optional default time zone, default: ``America/Chicago``
@@ -29,6 +29,13 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--bootstrap``, ``-v``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
 * ``--starting-page``, ``-v``: Load a starting page with examples after installation, choices: ``yes|no``, default: ``no``
 
+.. note:: the ``stable`` keyword is expanded to the following Django version::
+
+   * if django CMS version is 3.0 or develop: **stable** is expanded to Django==1.6;
+   * if django CMS version is 2.4: **stable** is expanded to Django==1.5;
+
+.. note:: the ``stable`` keyword is expanded to the latest django CMS stable version (3.0)
+
 
 Advanced options
 ----------------
@@ -38,6 +45,8 @@ advanced usage:
 
 * ``--no-input``, ``-q``: If given **djangocms installer** run in :ref:`batch_mode`;
 * ``--filer``, ``-f``: Install and configure django-filer plugins;
+* ``--dump-requirements``, ``-R``: Dumps the generated requirements to stdout
+  and exits; see :ref:`dump_mode`;
 * ``--requirements``, ``-r``: You can use a custom requirements files instead of the
   requirements provided by **djangocms installer**;
 * ``--no-deps``, ``-n``: Don't install package dependencies;

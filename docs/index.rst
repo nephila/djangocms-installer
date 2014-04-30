@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to django CMS Installer's documentation!
-=================================================
+================================================
 
 Contents:
 
@@ -13,6 +13,7 @@ Contents:
 
    readme
    usage
+   faq
    reference
    libraries
    contributing
