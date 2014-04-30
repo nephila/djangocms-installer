@@ -287,6 +287,56 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
 
+    def test_boostrap(self):
+        """
+        Verify handling of bootstrap parameter
+        """
+        conf_data = config.parse([
+            '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertFalse(conf_data.bootstrap)
+
+        conf_data = config.parse([
+            '--bootstrap=yes', '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertTrue(conf_data.bootstrap)
+
+    def test_starting_page(self):
+        """
+        Verify handling of starting-page parameter
+        """
+        conf_data = config.parse([
+            '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertFalse(conf_data.starting_page)
+
+        conf_data = config.parse([
+            '--starting-page=yes', '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertTrue(conf_data.starting_page)
+
+    def test_templates(self):
+        """
+        Verify handling of valid (existing) and invalid (non-existing) templates directory parameter
+        """
+        conf_data = config.parse([
+            '--templates=/foo/bar', '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertFalse(conf_data.templates)
+
+        tpl_path = os.path.join(os.path.dirname(__file__), 'test_templates')
+
+        conf_data = config.parse([
+            '--templates=%s' % tpl_path, '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertEqual(conf_data.templates, tpl_path)
+
     def suspend_test_check_install(self):
         import pip
         # discard the argparser errors
@@ -340,5 +390,20 @@ class TestConfig(BaseTestClass):
         sys.stdout = StringIO()
         try:
             config.show_plugins()
+        finally:
+            sys.stdout = sys.__stdout__
+
+    def test_show_requirements(self):
+        sys.stdout = StringIO()
+        try:
+            conf_data = config.parse([
+                '-q',
+                '--db=mysql://user:pwd@host/dbname',
+                '--django-version=1.4',
+                '--i18n=no',
+                '-f',
+                '-p'+self.project_dir,
+                'example_prj'])
+            config.show_requirements(conf_data)
         finally:
             sys.stdout = sys.__stdout__

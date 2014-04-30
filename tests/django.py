@@ -21,6 +21,69 @@ class TestDjango(BaseTestClass):
         django.create_project(config_data)
         self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'example_prj')))
 
+    def test_copy_data(self):
+        """
+        Test corret file copying with different switches
+        """
+
+        # Basic template
+        config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
+                                    '--cms-version=stable',
+                                    '-q', '-p'+self.project_dir, 'example_prj'])
+        os.makedirs(config_data.project_path)
+        django.copy_files(config_data)
+        starting_page_py = os.path.join(config_data.project_directory, 'starting_page.py')
+        starting_page_json = os.path.join(config_data.project_directory, 'starting_page.json')
+        basic_template = os.path.join(config_data.project_path, 'templates', 'fullwidth.html')
+        boostrap_template = os.path.join(config_data.project_path, 'templates', 'feature.html')
+        self.assertFalse(os.path.exists(starting_page_py))
+        self.assertFalse(os.path.exists(starting_page_json))
+        self.assertFalse(os.path.exists(boostrap_template))
+        self.assertTrue(os.path.exists(basic_template))
+
+        # Bootstrap template
+        self._create_project_dir()
+        config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
+                                    '--cms-version=stable', '--bootstrap=yes',
+                                    '-q', '-p'+self.project_dir, 'example_prj'])
+        os.makedirs(config_data.project_path)
+        django.copy_files(config_data)
+        starting_page_py = os.path.join(config_data.project_directory, 'starting_page.py')
+        starting_page_json = os.path.join(config_data.project_directory, 'starting_page.json')
+        basic_template = os.path.join(config_data.project_path, 'templates', 'fullwidth.html')
+        boostrap_template = os.path.join(config_data.project_path, 'templates', 'feature.html')
+        self.assertFalse(os.path.exists(starting_page_py))
+        self.assertFalse(os.path.exists(starting_page_json))
+        self.assertTrue(os.path.exists(boostrap_template))
+        self.assertFalse(os.path.exists(basic_template))
+
+        # Custom template
+        self._create_project_dir()
+        tpl_path = os.path.join(os.path.dirname(__file__), 'test_templates')
+        config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
+                                    '--cms-version=stable', '--templates=%s' % tpl_path,
+                                    '-q', '-p'+self.project_dir, 'example_prj'])
+        os.makedirs(config_data.project_path)
+        django.copy_files(config_data)
+        basic_template = os.path.join(config_data.project_path, 'templates', 'fullwidth.html')
+        boostrap_template = os.path.join(config_data.project_path, 'templates', 'feature.html')
+        custom_template = os.path.join(config_data.project_path, 'templates', 'left.html')
+        self.assertTrue(os.path.exists(custom_template))
+        self.assertFalse(os.path.exists(boostrap_template))
+        self.assertFalse(os.path.exists(basic_template))
+
+        # Starting page
+        self._create_project_dir()
+        config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
+                                    '--cms-version=stable', '--starting-page=yes',
+                                    '-q', '-p'+self.project_dir, 'example_prj'])
+        os.makedirs(config_data.project_path)
+        django.copy_files(config_data)
+        starting_page_py = os.path.join(config_data.project_directory, 'starting_page.py')
+        starting_page_json = os.path.join(config_data.project_directory, 'starting_page.json')
+        self.assertTrue(os.path.exists(starting_page_py))
+        self.assertTrue(os.path.exists(starting_page_json))
+
     def test_patch_16(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
