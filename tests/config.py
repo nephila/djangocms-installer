@@ -8,7 +8,7 @@ from six import StringIO
 
 from djangocms_installer import config
 from djangocms_installer.install import check_install
-from djangocms_installer.utils import less_than_version
+from djangocms_installer.utils import less_than_version, supported_versions
 
 from . import BaseTestClass
 
@@ -150,6 +150,19 @@ class TestConfig(BaseTestClass):
         self.assertEqual(less_than_version('2.4'), '2.5')
         self.assertEqual(less_than_version('3'), '3.1')
         self.assertEqual(less_than_version('3.0.1'), '3.1.1')
+
+    def test_supported_versions(self):
+        self.assertEqual(supported_versions('stable', 'stable'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', '3.0'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', 'rc'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', 'beta'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', 'develop'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', '2.4'), (1.5, 2.4))
+
+        self.assertEqual(supported_versions('1.5', 'stable'), (1.5, 3.0))
+        self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.0))
+        self.assertEqual(supported_versions('beta', 'stable'), (1.6, 3.0))
+        self.assertEqual(supported_versions('develop', 'stable'), (1.7, 3.0))
 
     def test_requirements(self):
         """
