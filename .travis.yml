@@ -15,7 +15,7 @@ install:
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install -U https://github.com/pypa/pip/archive/develop.zip; fi"
 
 # command to run tests, e.g. python setup.py test
-script: USE_SHM="yes" coverage run --rcfile=coverage.rc setup.py test
+script: USE_SHM="yes" coverage run setup.py test
 
 after_success: coveralls
 
