@@ -91,3 +91,10 @@ HOWTO
     (whatever) $ python manage.py runserver
 
 #. Enjoy!
+
+Use different templates directory
+---------------------------------
+
+You can create the base project with a custom templateset by using the ``--templates`` parameter.
+Be aware that while **djangocms installer** will copy the files for you, it won't update the ``CMS_TEMPLATES`` settings
+parameter, so you'll need to modify that after installation.
