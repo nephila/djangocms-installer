@@ -1,7 +1,7 @@
 .. _arguments:
 
-djangocms-installer arguments
-==========================
+Arguments reference
+===================
 
 Required arguments
 ------------------
@@ -17,7 +17,8 @@ Wizard arguments
 
 The following arguments can be overridden in :ref:`wizard_mode`
 
-* ``--db``, ``-d``: Database configuration (in URL format); default: ``sqlite://localhost/project.db``
+* ``--db``, ``-d``: Database configuration (in URL format); use `dj-database-url`_
+  syntax;  default: ``sqlite://localhost/project.db``
 * ``--i18n``, ``-i``: Activate Django I18N / L10N setting; choices: ``yes|no``, default: ``yes``
 * ``--use-tz``, ``-z``: Activate Django timezone support;  choices: ``yes|no``, default: ``yes``
 * ``--timezone``, ``-t``: Optional default time zone, default: ``America/Chicago``
@@ -29,7 +30,7 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--bootstrap``, ``-v``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
 * ``--starting-page``, ``-v``: Load a starting page with examples after installation, choices: ``yes|no``, default: ``no``
 
-.. note:: the ``stable`` keyword is expanded to the following Django version::
+.. note:: the ``stable`` keyword is expanded to the following Django version:
 
    * if django CMS version is 3.0 or develop: **stable** is expanded to Django==1.6;
    * if django CMS version is 2.4: **stable** is expanded to Django==1.5;
@@ -56,3 +57,6 @@ advanced usage:
 * ``--list-plugins``, ``-P``: List plugins that's going to be installed and
   configured for the project; this will not alter the virtualenv or create the
   project;
+
+
+.. _dj-database-url: https://github.com/kennethreitz/dj-database-url

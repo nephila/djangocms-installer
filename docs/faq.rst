@@ -1,5 +1,5 @@
-djangocms-installer FAQ
-=======================
+FAQ
+===
 
 #. I need to use version **foo** of package *blargh*, while the installer
    want to use version **baz**, how can I solve this?
@@ -22,6 +22,11 @@ djangocms-installer FAQ
    errors lie somewhere else. In this case, please open an issue on github
    `project`_, or ask in the #django-cms IRC channel.
 
+#. How can I configure the database to use?
+
+   **djangocms-installer** uses `dj-database-url`_ to get database
+   configuration parameters; refer to this package for more details.
 
 
+.. _dj-database-url: https://github.com/kennethreitz/dj-database-url
 .. _project: https://github.com/nephila/djangocms-installer/issues
