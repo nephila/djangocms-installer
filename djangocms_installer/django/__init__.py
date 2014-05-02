@@ -44,7 +44,9 @@ def copy_files(config_data):
     static_project = os.path.join(config_data.project_directory, 'static')
     static_main = os.path.join(config_data.project_path, 'static')
 
-    if config_data.bootstrap == 'yes':
+    if config_data.templates and os.path.isdir(config_data.templates):
+        template_path = config_data.templates
+    elif config_data.bootstrap:
         template_path = os.path.join(template_path, 'bootstrap')
     else:
         template_path = os.path.join(template_path, 'basic')

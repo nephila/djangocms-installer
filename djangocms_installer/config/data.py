@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
-                        '--permissions', '--bootstrap', '--starting-page']
+                        '--permissions', '--bootstrap', '--templates',
+                        '--starting-page']
 
 DJANGOCMS_DEVELOP = '-e git+https://github.com/divio/django-cms@develop#egg=django-cms'
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'

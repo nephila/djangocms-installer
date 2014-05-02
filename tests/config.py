@@ -8,7 +8,7 @@ from six import StringIO
 
 from djangocms_installer import config
 from djangocms_installer.install import check_install
-from djangocms_installer.utils import less_than_version
+from djangocms_installer.utils import less_than_version, supported_versions
 
 from . import BaseTestClass
 
@@ -151,6 +151,19 @@ class TestConfig(BaseTestClass):
         self.assertEqual(less_than_version('3'), '3.1')
         self.assertEqual(less_than_version('3.0.1'), '3.1.1')
 
+    def test_supported_versions(self):
+        self.assertEqual(supported_versions('stable', 'stable'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', '3.0'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', 'rc'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', 'beta'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', 'develop'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', '2.4'), (1.5, 2.4))
+
+        self.assertEqual(supported_versions('1.5', 'stable'), (1.5, 3.0))
+        self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.0))
+        self.assertEqual(supported_versions('beta', 'stable'), (1.6, 3.0))
+        self.assertEqual(supported_versions('develop', 'stable'), (1.7, 3.0))
+
     def test_requirements(self):
         """
         Test for different configuration and package versions
@@ -287,6 +300,56 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
 
+    def test_boostrap(self):
+        """
+        Verify handling of bootstrap parameter
+        """
+        conf_data = config.parse([
+            '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertFalse(conf_data.bootstrap)
+
+        conf_data = config.parse([
+            '--bootstrap=yes', '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertTrue(conf_data.bootstrap)
+
+    def test_starting_page(self):
+        """
+        Verify handling of starting-page parameter
+        """
+        conf_data = config.parse([
+            '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertFalse(conf_data.starting_page)
+
+        conf_data = config.parse([
+            '--starting-page=yes', '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertTrue(conf_data.starting_page)
+
+    def test_templates(self):
+        """
+        Verify handling of valid (existing) and invalid (non-existing) templates directory parameter
+        """
+        conf_data = config.parse([
+            '--templates=/foo/bar', '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertFalse(conf_data.templates)
+
+        tpl_path = os.path.join(os.path.dirname(__file__), 'test_templates')
+
+        conf_data = config.parse([
+            '--templates=%s' % tpl_path, '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertEqual(conf_data.templates, tpl_path)
+
     def suspend_test_check_install(self):
         import pip
         # discard the argparser errors
@@ -340,5 +403,20 @@ class TestConfig(BaseTestClass):
         sys.stdout = StringIO()
         try:
             config.show_plugins()
+        finally:
+            sys.stdout = sys.__stdout__
+
+    def test_show_requirements(self):
+        sys.stdout = StringIO()
+        try:
+            conf_data = config.parse([
+                '-q',
+                '--db=mysql://user:pwd@host/dbname',
+                '--django-version=1.4',
+                '--i18n=no',
+                '-f',
+                '-p'+self.project_dir,
+                'example_prj'])
+            config.show_requirements(conf_data)
         finally:
             sys.stdout = sys.__stdout__

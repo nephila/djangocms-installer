@@ -8,6 +8,7 @@ History
 
 * Add dump-requirements argument
 * Add FAQ section
+* Add templates argument
 * Documentation update
 
 0.4.2 (2014-04-26)

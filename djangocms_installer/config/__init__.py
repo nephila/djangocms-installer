@@ -49,6 +49,8 @@ def parse(args):
     parser.add_argument('--bootstrap', dest='bootstrap', action='store',
                         choices=('yes', 'no'),
                         default='no', help='Use Twitter Bootstrap Theme')
+    parser.add_argument('--templates', dest='templates', action='store',
+                        default='no', help='Use custom template set')
     parser.add_argument('--starting-page', dest='starting_page', action='store',
                         choices=('yes', 'no'),
                         default='no', help='Load a starting page with examples after installation')
@@ -108,6 +110,10 @@ def parse(args):
                 new_val = compat.clean(new_val)
                 if not new_val and input_value:
                     new_val = input_value
+                if new_val and action.dest == 'templates':
+                    if new_val != 'no' and not os.path.isdir(new_val):
+                        sys.stdout.write('Given directory does not exists, retry\n')
+                        new_val = False
                 if new_val and action.dest == 'db':
                     action(parser, args, new_val, action.option_strings)
                     new_val = getattr(args, action.dest)
@@ -118,8 +124,10 @@ def parse(args):
             if action.dest == 'db':
                 action(parser, args, new_val, action.option_strings)
                 new_val = getattr(args, action.dest)
-        if action.choices in ('yes', 'no'):
-            new_val = new_val == 'yes'
+        if action.dest == 'templates' and (new_val == 'no' or not os.path.isdir(new_val)):
+            new_val = False
+        if action.dest in ('bootstrap', 'starting_page'):
+            new_val = (new_val == 'yes')
         setattr(args, action.dest, new_val)
 
     # what do we want here?!

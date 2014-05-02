@@ -38,14 +38,14 @@ def check_install(config_data):
         errors.append("Pillow is not installed check for installation errors and see 'Libraries installation issues' documentation section.")
 
     # PostgreSQL test
-    if config_data.db_driver == 'psycopg2' and not config_data.no_db_driver:
+    if config_data.db_driver == 'psycopg2' and not config_data.no_db_driver:  # pragma: no cover
         try:
             import psycopg2
         except ImportError:
             errors.append("PostgreSQL driver is not installed, but you configured a PostgreSQL database, please check your installation and see 'Libraries installation issues' documentation section.")
 
     # MySQL test
-    if config_data.db_driver == 'MySQL-python' and not config_data.no_db_driver:
+    if config_data.db_driver == 'MySQL-python' and not config_data.no_db_driver:  # pragma: no cover
         try:
             import MySQLdb
         except ImportError:
