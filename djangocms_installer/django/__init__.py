@@ -125,6 +125,9 @@ STATICFILES_DIRS = (
     if config_data.languages:
         original = original.replace("LANGUAGE_CODE = 'en-us'", "LANGUAGE_CODE = '%s'" % config_data.languages[0])
     if config_data.timezone:
+        # This is for Django 1.6 which changed the default timezone
+        original = original.replace("TIME_ZONE = 'UTC'", "TIME_ZONE = '%s'" % config_data.timezone)
+        # This is for older django versions
         original = original.replace("TIME_ZONE = 'America/Chicago'", "TIME_ZONE = '%s'" % config_data.timezone)
 
     for item in overridden_settings:

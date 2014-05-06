@@ -88,7 +88,7 @@ class TestDjango(BaseTestClass):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.6',
-                                    '--cms-version=3.0',
+                                    '--cms-version=3.0', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_16'])
 
@@ -109,6 +109,7 @@ class TestDjango(BaseTestClass):
         self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
+        self.assertEqual(project.settings.TIME_ZONE, 'Europe/Moscow')
         self.assertTrue('cmsplugin_filer_image' not in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_file' not in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_folder' not in project.settings.INSTALLED_APPS)
@@ -233,7 +234,7 @@ class TestDjango(BaseTestClass):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.5',
-                                    '--cms-version=3.0',
+                                    '--cms-version=3.0', '--timezone=Europe/Moscow',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_patch'])
         install.requirements(config_data.requirements)
@@ -252,6 +253,7 @@ class TestDjango(BaseTestClass):
         ## checking for django options
         self.assertFalse(project.settings.USE_L10N)
         self.assertFalse(project.settings.USE_TZ)
+        self.assertEqual(project.settings.TIME_ZONE, 'Europe/Moscow')
         self.assertEqual(project.settings.LANGUAGE_CODE, 'en')
         self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
