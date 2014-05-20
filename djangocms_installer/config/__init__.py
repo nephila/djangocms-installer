@@ -36,7 +36,8 @@ def parse(args):
                         choices=('yes', 'no'),
                         default='yes', help='Activate CMS permission management')
     parser.add_argument('--languages', '-l', dest='languages', action='append',
-                        help='Languages to enable. Option can be provided multiple times, or as a comma separated list')
+                        help='Languages to enable. Option can be provided multiple times, or as a comma separated list. '
+                        'Only language codes supported by Django can be used here')
     parser.add_argument('--django-version', dest='django_version', action='store',
                         choices=('1.4', '1.5', '1.6', 'stable'),
                         default='stable', help='Django version')
