@@ -24,7 +24,9 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--timezone``, ``-t``: Optional default time zone, default: ``America/Chicago``
 * ``--reversion``, ``-e``: Install and configure reversion support, choices: ``yes|no``, default: ``yes``
 * ``--permissions``: Activate CMS permission management; choices: ``yes|no``, default: ``yes``
-* ``--languages``, ``-l``: Languages to enable. Option can be provided multiple times, or as a comma separated list
+* ``--languages``, ``-l``: Languages available for the project. Option can be provided multiple times, or as a
+  comma separated list.
+  Only language codes supported by Django can be used here. Refer to `django source`_ for a list of supported codes.
 * ``--django-version``: Django version;  choices: ``1.4|1.5|1.6|stable``, default: ``stable``
 * ``--cms-version``, ``-v``: django CMS version, choices: ``2.4|3.0|stable|develop``. default: ``stable``
 * ``--bootstrap``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
@@ -62,3 +64,4 @@ advanced usage:
 
 
 .. _dj-database-url: https://github.com/kennethreitz/dj-database-url
+.. _django source: https://github.com/django/django/blob/master/django/conf/global_settings.py#L50
