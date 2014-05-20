@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-import tempfile
 import os.path
 
 import pip
+from pip.exceptions import InstallationError
+from pip.status_codes import SUCCESS
 
 
 def check_install(config_data):
@@ -60,4 +61,7 @@ def requirements(requirements, is_file=False):
     else:
         args = ['install', '-q', ]
         args.extend(requirements.split())
-    command = pip.main(args)
+    exit_status = pip.main(args)
+    if exit_status != SUCCESS:
+        raise InstallationError("Error while installing requirements. Check pip log file for error details.")
+    return True
