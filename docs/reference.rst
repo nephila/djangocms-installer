@@ -61,6 +61,8 @@ advanced usage:
 * ``--list-plugins``, ``-P``: List plugins that's going to be installed and
   configured for the project; this will not alter the virtualenv or create the
   project;
+* ``--extra-settings``: Path to a file with extra variables to append to generated settings file. It doesn't need to be
+  a Python file, its content is blindly copied in the project settings.
 
 
 .. _dj-database-url: https://github.com/kennethreitz/dj-database-url

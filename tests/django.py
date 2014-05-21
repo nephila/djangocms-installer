@@ -84,6 +84,32 @@ class TestDjango(BaseTestClass):
         self.assertTrue(os.path.exists(starting_page_py))
         self.assertTrue(os.path.exists(starting_page_json))
 
+    def test_patch_16_settings(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.6',
+                                    '--cms-version=3.0', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_16_settigns'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name,
+                             globals(), locals(), ['settings'])
+
+        ## checking for django options
+        self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(project.settings.MEDIA_URL, '/media/')
+
+        # Data from external settings file
+        self.assertEqual(project.settings.CUSTOM_SETTINGS_VAR, True)
+        self.assertEqual(project.settings.CMS_PERMISSION, False)
+
     def test_patch_16(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',

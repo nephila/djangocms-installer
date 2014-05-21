@@ -73,6 +73,7 @@ def patch_settings(config_data):
     overridden_settings = ('MIDDLEWARE_CLASSES', 'INSTALLED_APPS',
                            'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS',
                            'TEMPLATE_DIRS', 'LANGUAGES')
+    extra_settings = ''
 
     if not os.path.exists(config_data.settings_path):
         sys.stdout.write("Error while creating target project, please check the given configuration")
@@ -80,6 +81,11 @@ def patch_settings(config_data):
 
     with open(config_data.settings_path, 'r') as fd_original:
         original = fd_original.read()
+
+    # extra settings reading
+    if config_data.extra_settings and os.path.exists(config_data.extra_settings):
+        with open(config_data.extra_settings, 'r') as fd_extra:
+            extra_settings = fd_extra.read()
 
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
 
@@ -140,6 +146,8 @@ STATICFILES_DIRS = (
         original += "SITE_ID = 1\n\n"
 
     original += _build_settings(config_data)
+    # Append extra settings at the end of the file
+    original += ("\n" + extra_settings)
 
     with open(config_data.settings_path, "w") as fd_dest:
         fd_dest.write(original)
