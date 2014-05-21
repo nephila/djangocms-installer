@@ -3,10 +3,11 @@
 History
 -------
 
-0.5.0 (Unreleased)
+0.5.0 (2014-05-21)
 ++++++++++++++++++
 
 * Add dump-requirements argument
+* Add user provided extra setting
 * Add FAQ section
 * Add templates argument
 * Documentation update
