@@ -236,7 +236,7 @@ def _build_settings(config_data):
 
     text.append("\n".join(cms_text))
 
-    if config_data.bootstrap == 'yes':
+    if config_data.bootstrap:
         cms_templates = 'CMS_TEMPLATES_BOOTSTRAP'
     else:
         cms_templates = 'CMS_TEMPLATES'
