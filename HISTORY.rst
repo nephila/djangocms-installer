@@ -3,6 +3,12 @@
 History
 -------
 
+0.5.1 (2014-05-22)
+++++++++++++++++++
+
+* Fix error in bootstrap template handling
+* Add clarification about custom template set and starting page
+
 0.5.0 (2014-05-21)
 ++++++++++++++++++
 
