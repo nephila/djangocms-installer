@@ -10,8 +10,9 @@ DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_LATEST = '3.0'
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
-DJANGO_LATEST = '1.5'  # this is not true, but it's the most recent version
-                       # compatible with all the CMS versions
+# this is not true, but it's the most recent version
+# compatible with all the CMS versions
+DJANGO_LATEST = '1.5'
 DJANGO_LATEST_CMS_3 = '1.6'
 
 DEFAULT_REQUIREMENTS = """
@@ -74,7 +75,7 @@ djangocms_installer will install and configure the following plugins:
  * djangocms-video (Video plugin)
  * djangocms_style (Style plugin)
  * djangocms_column (Style plugin)
-                     
+
 It will optionally install cmsplugin-filer plugins (if requested during
 configuration):
  * cmsplugin_filer_file (File plugin, replaces cms.plugins.file)

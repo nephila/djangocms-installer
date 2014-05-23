@@ -152,7 +152,7 @@ CMS_LANGUAGES = {
     1: [
     ],
     'default': {
-        'redirect_on_fallback':  True,
+        'redirect_on_fallback': True,
         'public': True,
         'hide_untranslated': False,
     }
