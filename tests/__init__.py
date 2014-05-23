@@ -25,7 +25,12 @@ class BaseTestClass(unittest.TestCase):
 
     def _create_project_dir(self):
         if 'USE_SHM' in os.environ:
-            self.project_dir = tempfile.mkdtemp(dir="/run/shm")
+            if os.path.exists('/run/shm'):
+                self.project_dir = tempfile.mkdtemp(dir='/run/shm')
+            elif os.path.exists('/dev/shm'):
+                self.project_dir = tempfile.mkdtemp(dir='/dev/shm')
+            else:
+                self.project_dir = tempfile.mkdtemp()
         else:
             self.project_dir = tempfile.mkdtemp()
 

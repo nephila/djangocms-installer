@@ -12,6 +12,9 @@ from . import BaseTestClass
 
 
 class TestDjango(BaseTestClass):
+    templates_basic = set((('fullwidth.html', 'Fullwidth'), ('sidebar_left.html', 'Sidebar Left'),
+                           ('sidebar_right.html', 'Sidebar Right')))
+    templates_bootstrap = set((('page.html', 'Page'), ('feature.html', 'Page with Feature')))
 
     def test_create_project(self):
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
@@ -109,10 +112,11 @@ class TestDjango(BaseTestClass):
         # Data from external settings file
         self.assertEqual(project.settings.CUSTOM_SETTINGS_VAR, True)
         self.assertEqual(project.settings.CMS_PERMISSION, False)
+        self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
 
     def test_patch_16(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '--lang=en',
+                                    '--lang=en', '--bootstrap=yes',
                                     '--django-version=1.6',
                                     '--cms-version=3.0', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
@@ -159,10 +163,13 @@ class TestDjango(BaseTestClass):
         self.assertTrue('cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
         self.assertTrue('cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
 
+        self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_bootstrap)
+
         self.assertEqual(len(re.findall('BASE_DIR = ', settings)), 1)
         self.assertEqual(len(re.findall('STATIC_ROOT', settings)), 1)
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
         self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 2)
+
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
