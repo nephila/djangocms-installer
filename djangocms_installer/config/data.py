@@ -46,7 +46,7 @@ djangocms-teaser
 djangocms-video
 """
 
-DJANGO_16_REVERSION = "django-reversion>=1.8"
+DJANGO_16_REVERSION = "django-reversion==1.8"
 DJANGO_15_REVERSION = "django-reversion>=1.7,<1.8"
 DJANGO_14_REVERSION = "django-reversion<1.7"
 
