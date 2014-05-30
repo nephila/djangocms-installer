@@ -3,6 +3,11 @@
 History
 -------
 
+0.5.2 (2014-05-30)
+++++++++++++++++++
+
+* Pin reversion to 1.8 waiting for a proper fix in django CMS
+
 0.5.1 (2014-05-22)
 ++++++++++++++++++
 
