@@ -24,7 +24,7 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 lint:
-	flake8 djangocms-installer tests
+	flake8 djangocms_installer
 
 test:
 	python setup.py test
@@ -39,12 +39,11 @@ coverage:
 	open htmlcov/index.html
 
 docs:
-	rm docs/djangocms-installer.rst
-	rm docs/modules.rst
-	sphinx-apidoc -o docs/ djangocms-installer
+	rm -f docs/djangocms_installer.*.rst
+	rm -f docs/modules.rst
+	sphinx-apidoc -o docs/ djangocms_installer
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-	open docs/_build/html/index.html
 
 release: clean
 	python setup.py sdist upload

@@ -4,7 +4,6 @@ import locale
 import os.path
 import six
 import sys
-import warnings
 
 from .. import compat, utils
 from . import data
@@ -156,7 +155,7 @@ def parse(args):
     if not getattr(args, 'requirements_file'):
         requirements = []
 
-        ## Django cms version check
+        # Django cms version check
         if args.cms_version == 'develop':
             requirements.append(data.DJANGOCMS_DEVELOP)
         elif args.cms_version == 'rc':
@@ -183,7 +182,7 @@ def parse(args):
         elif cms_version >= 3:
             requirements.append(data.PLUGIN_REQUIREMENTS)
 
-        ## Django version check
+        # Django version check
         if args.django_version == 'develop':
             requirements.append(data.DJANGO_DEVELOP)
         elif args.django_version == 'beta':
@@ -197,11 +196,11 @@ def parse(args):
             else:
                 requirements.append("Django<%s" % less_than_version(args.django_version))
 
-        ## Timezone support
+        # Timezone support
         if args.use_timezone:
             requirements.append('pytz')
 
-        ## Reversion package version depends on django version
+        # Reversion package version depends on django version
         if args.reversion:
             if cms_version >= 3:
                 requirements.append(data.DJANGO_16_REVERSION)
@@ -216,7 +215,7 @@ def parse(args):
 
         setattr(args, "requirements", "\n".join(requirements).strip())
 
-    ## Convenient shortcuts
+    # Convenient shortcuts
     setattr(args, "cms_version", cms_version)
     setattr(args, "django_version", django_version)
     setattr(args, 'project_path',

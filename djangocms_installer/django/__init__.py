@@ -217,20 +217,20 @@ def _build_settings(config_data):
         if key == 'default':
             cms_text.append("%s'%s': {" % (spacer, key))
             for config_name, config_value in iteritems(value):
-                cms_text.append("%s'%s': %s," % (spacer*2, config_name, config_value))
+                cms_text.append("%s'%s': %s," % (spacer * 2, config_name, config_value))
             cms_text.append("%s}," % spacer)
         else:
             cms_text.append("%s%s: [" % (spacer, key))
             for lang in value:
-                cms_text.append("%s{" % (spacer*2))
+                cms_text.append("%s{" % (spacer * 2))
                 for config_name, config_value in iteritems(lang):
                     if config_name == 'code':
-                        cms_text.append("%s'%s': '%s'," % (spacer*3, config_name, config_value))
+                        cms_text.append("%s'%s': '%s'," % (spacer * 3, config_name, config_value))
                     elif config_name == 'name':
-                        cms_text.append("%s'%s': gettext('%s')," % (spacer*3, config_name, config_value))
+                        cms_text.append("%s'%s': gettext('%s')," % (spacer * 3, config_name, config_value))
                     else:
-                        cms_text.append("%s'%s': %s," % (spacer*3, config_name, config_value))
-                cms_text.append("%s}," % (spacer*2))
+                        cms_text.append("%s'%s': %s," % (spacer * 3, config_name, config_value))
+                cms_text.append("%s}," % (spacer * 2))
             cms_text.append("%s]," % spacer)
     cms_text.append("}")
 
@@ -248,11 +248,11 @@ def _build_settings(config_data):
     text.append("CMS_PERMISSION = %s" % vars.CMS_PERMISSION)
     text.append("CMS_PLACEHOLDER_CONF = %s" % vars.CMS_PLACEHOLDER_CONF)
 
-    text.append("DATABASES = {\n%s'default':\n%s%s\n}" % (spacer, spacer*2, config_data.db_parsed))
+    text.append("DATABASES = {\n%s'default':\n%s%s\n}" % (spacer, spacer * 2, config_data.db_parsed))
 
     if config_data.filer:
         text.append("THUMBNAIL_PROCESSORS = (\n%s%s\n)" % (
-        spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.THUMBNAIL_PROCESSORS])))
+            spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.THUMBNAIL_PROCESSORS])))
     return "\n\n".join(text)
 
 
@@ -261,7 +261,7 @@ def setup_database(config_data):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
         try:
-            import south
+            import south  # NOQA
             subprocess.check_call([sys.executable, "-W", "ignore",
                                    "manage.py", "syncdb", "--all", "--noinput"])
             subprocess.check_call([sys.executable, "-W", "ignore",
