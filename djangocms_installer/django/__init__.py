@@ -253,6 +253,8 @@ def _build_settings(config_data):
     if config_data.filer:
         text.append("THUMBNAIL_PROCESSORS = (\n%s%s\n)" % (
             spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.THUMBNAIL_PROCESSORS])))
+        text.append("SOUTH_MIGRATION_MODULES = {\n%s%s\n}" % (
+            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.SOUTH_MIGRATION_MODULES])))
     return "\n\n".join(text)
 
 
