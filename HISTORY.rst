@@ -3,6 +3,15 @@
 History
 -------
 
+0.5.3 (2014-07-23)
+++++++++++++++++++
+
+* Add support for easy_thumbnails 2.0 migrations
+* Fix asking for creating user even when --no-input flag is used
+* Unpin reversion as django CMS 3.0.3 solves the issue
+* Versioned dependency for django-filer when installing django CMS 2.4
+* Switch to official django-filer and cmsplugin-filer releases for CMS 3.0
+
 0.5.2 (2014-05-30)
 ++++++++++++++++++
 
