@@ -227,7 +227,7 @@ class TestDjango(BaseTestClass):
                                     '--cms-version=2.4',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_24_f'])
-
+        reqs = config_data.requirements.replace('django-mptt>=0.5.1,<0.5.3', '')
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -358,7 +358,7 @@ class TestDjango(BaseTestClass):
 
     def test_database_setup(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '-q', '-u', '--cms-version=3.0',
+                                    '-q', '--cms-version=3.0',
                                     '-p'+self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -374,5 +374,9 @@ class TestDjango(BaseTestClass):
         # No data in CMS tables at setup time, but if query succeed database
         # schema should be fine
         query = project_db.execute('SELECT * FROM cms_page')
+        self.assertTrue(query)
+
+        # No data in auth tables at setup time due to the no-input
+        query = project_db.execute('SELECT * FROM auth_user')
         self.assertTrue(query)
 

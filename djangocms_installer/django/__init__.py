@@ -272,7 +272,7 @@ def setup_database(config_data):
             subprocess.check_call([sys.executable, "-W", "ignore",
                                    "manage.py", "syncdb", "--noinput"])
             print("south not installed, migrations skipped")
-        if not config_data.no_user:
+        if not config_data.no_user and not config_data.noinput:
             print("\n\nCreating admin user")
             subprocess.check_call([sys.executable, "-W", "ignore",
                                    "manage.py", "createsuperuser"])

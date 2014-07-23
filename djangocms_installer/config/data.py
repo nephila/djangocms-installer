@@ -30,7 +30,7 @@ django-mptt>=0.5.1,<0.5.3
 
 DJANGOCMS_3_REQUIREMENTS = """
 django-mptt>=0.6
-djangocms-text-ckeditor>=2.0.5
+djangocms-text-ckeditor>=2.1.4
 djangocms-admin-style
 djangocms-column
 djangocms-style
@@ -47,18 +47,18 @@ djangocms-teaser
 djangocms-video
 """
 
-DJANGO_16_REVERSION = "django-reversion==1.8"
+DJANGO_16_REVERSION = "django-reversion>=1.8"
 DJANGO_15_REVERSION = "django-reversion>=1.7,<1.8"
 DJANGO_14_REVERSION = "django-reversion<1.7"
 
 FILER_REQUIREMENTS_CMS3 = """
 easy_thumbnails
-https://github.com/stefanfoulis/django-filer/archive/develop.zip
-https://github.com/stefanfoulis/cmsplugin-filer/archive/develop.zip
+django-filer>=0.9.6
+cmsplugin-filer>=0.9.9
 """
 FILER_REQUIREMENTS_CMS2 = """
 easy_thumbnails
-django-filer
+django-filer<=0.9.6
 cmsplugin_filer
 """
 
