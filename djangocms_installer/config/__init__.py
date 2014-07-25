@@ -83,7 +83,7 @@ def parse(args):
     parser.add_argument('--no-user', '-u', dest='no_user', action='store_true',
                         default=False, help="Don't create the admin user")
     parser.add_argument('--template', dest='template', action='store',
-                        default=None, help="The path or URL to load the template from")
+                        default=None, help="The path or URL to load the django project template from.")
     parser.add_argument('--extra-settings', dest='extra_settings', action='store',
                         default=None, help="The path to an file that contains extra settings.")
 
