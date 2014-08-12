@@ -89,6 +89,12 @@ def parse(args):
 
     args = parser.parse_args(args)
 
+    # First of all, check if the project name is valid
+    if '-' in args.project_name:
+        sys.stderr.write("Project name '%s' is not a valid app name. Please use only numbers, letters and underscores.\n"
+                % args.project_name)
+        sys.exit(1)
+
     for item in data.CONFIGURABLE_OPTIONS:
         action = parser._option_string_actions[item]
         choices = default = ""
