@@ -3,6 +3,12 @@
 History
 -------
 
+0.5.4 (2014-08-14)
+++++++++++++++++++
+
+* Fix reversion version selection for older Django versions
+* Berter project name validation
+
 0.5.3 (2014-07-23)
 ++++++++++++++++++
 
