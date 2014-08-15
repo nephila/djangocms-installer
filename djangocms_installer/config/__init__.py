@@ -38,7 +38,7 @@ def parse(args):
                         help='Languages to enable. Option can be provided multiple times, or as a comma separated list. '
                         'Only language codes supported by Django can be used here')
     parser.add_argument('--django-version', dest='django_version', action='store',
-                        choices=('1.4', '1.5', '1.6', 'stable'),
+                        choices=('1.4', '1.5', '1.6', '1.7', 'stable'),
                         default='stable', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
                         choices=('2.4', '3.0', 'stable', 'develop'),
