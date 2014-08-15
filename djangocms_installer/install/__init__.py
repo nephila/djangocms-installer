@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os.path
-
 import pip
 from pip.exceptions import InstallationError
 from pip.status_codes import SUCCESS
