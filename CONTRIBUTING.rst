@@ -67,7 +67,7 @@ Ready to contribute? Here's how to set up `djangocms-installer` for local develo
     $ mkvirtualenv djangocms-installer
     $ cd djangocms-installer/
     $ python setup.py develop
-    $ pip install requirements_dev.txt
+    $ pip install -r requirements_dev.txt
 
 the last one is to get the requirements including testing and development
 tools installed.
@@ -82,7 +82,7 @@ Now you can make your changes locally.
 tests, including testing other Python versions with tox::
 
     $ flake8 djangocms-installer tests
-	$ python setup.py test
+    $ python setup.py test
     $ tox
 
 6. Commit your changes and push your branch to GitHub::
