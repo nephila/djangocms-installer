@@ -64,6 +64,7 @@ Libraries you would want to check:
 * zlib (for PNG support in ``Pillow``)
 * postgresql (for ``psycopg``)
 * libmysqlclient (for ``Mysql-Python``)
+* python-dev (for compilation and linking)
 
 For additional information, check http://djangocms-installer.readthedocs.org/en/latest/libraries.html
 
