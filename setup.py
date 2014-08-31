@@ -20,7 +20,10 @@ test_requirements.append('mock')
 # Add Python 2.6-specific dependencies
 if sys.version_info[:2] < (2, 7):
     test_requirements.append('unittest2')
-
+    test_suite = 'tests'
+else:
+    test_suite = 'tests'
+    
 setup(
     name='djangocms-installer',
     version=djangocms_installer.__version__,
@@ -55,6 +58,6 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Topic :: Software Development',
     ],
-    test_suite='tests',
+    test_suite=test_suite,
     tests_require=test_requirements
 )
