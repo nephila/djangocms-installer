@@ -352,7 +352,10 @@ class TestConfig(BaseTestClass):
                         '-a',
                         '-p'+self.project_dir,
                         'example_prj'])
-                self.assertEqual(error.exception.code, 5)
+                try:
+                    self.assertEqual(error.exception.code, 5)
+                except AttributeError:
+                    self.assertEqual(error.exception, 5)
 
     def test_boostrap(self):
         """
