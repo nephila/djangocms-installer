@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
 import os.path
-import six
-import sqlite3
-from . import unittest
 import re
+import sqlite3
+import sys
+
+import six
 
 from djangocms_installer import config, django, install
-from . import BaseTestClass
 from djangocms_installer.config.settings import MIGRATION_MODULES
+from .base import unittest, BaseTestClass
 
 
 class TestDjango(BaseTestClass):

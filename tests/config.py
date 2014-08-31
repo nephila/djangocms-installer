@@ -1,8 +1,8 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
 import os
+import sys
 import tempfile
+
 from mock import patch
 from six import StringIO
 
@@ -10,7 +10,7 @@ from djangocms_installer import config
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
 
-from . import BaseTestClass
+from .base import BaseTestClass
 
 
 class TestConfig(BaseTestClass):
