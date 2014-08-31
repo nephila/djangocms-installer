@@ -9,7 +9,7 @@ import subprocess
 import sys
 import tempfile
 import zipfile
-from six import StringIO
+from six import BytesIO
 
 from ..compat import iteritems
 from ..utils import chdir
@@ -50,7 +50,7 @@ def copy_files(config_data):
         template_target = os.path.join(config_data.project_directory, 'templates')
         tmpdir = tempfile.mkdtemp()
         aldrynzip = requests.get(data.ALDRYN_BOILERPLATE)
-        zip_open = zipfile.ZipFile(StringIO(aldrynzip.content))
+        zip_open = zipfile.ZipFile(BytesIO(aldrynzip.content))
         zip_open.extractall(path=tmpdir)
         for component in os.listdir(os.path.join(tmpdir, 'aldryn-boilerplate-master')):
             src = os.path.join(tmpdir, 'aldryn-boilerplate-master', component)
