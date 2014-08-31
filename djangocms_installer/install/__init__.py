@@ -54,9 +54,9 @@ def check_install(config_data):
 
 def requirements(requirements, is_file=False):
     if is_file:
-        args = ['install', '-q', '-r', requirements]
+        args = ['install', '-q', '-I', '-r', requirements]
     else:
-        args = ['install', '-q', ]
+        args = ['install', '-q', '-I']
         args.extend(requirements.split())
     exit_status = pip.main(args)
     if exit_status != SUCCESS:
