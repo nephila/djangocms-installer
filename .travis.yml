@@ -3,6 +3,7 @@
 language: python
 
 python:
+  - 3.4
   - 3.3
   - 2.7
   - 2.6
@@ -12,7 +13,6 @@ install:
   - pip install -r requirements.txt
   - pip install coveralls coverage
   - "if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install unittest2; fi"
-  - "if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install -U https://github.com/pypa/pip/archive/develop.zip; fi"
 
 # command to run tests, e.g. python setup.py test
 script: USE_SHM="yes" coverage run setup.py test
@@ -22,3 +22,4 @@ after_success: coveralls
 matrix:
   allow_failures:
     - python: 3.3
+    - python: 3.4
