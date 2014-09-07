@@ -270,7 +270,8 @@ def setup_database(config_data):
     with chdir(config_data.project_directory):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        if config_data.django_version <= 1.6:
+
+        if config_data.django_version < 1.7:
             try:
                 import south  # NOQA
                 subprocess.check_call([sys.executable, "-W", "ignore",

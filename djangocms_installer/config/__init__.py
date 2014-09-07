@@ -183,11 +183,21 @@ def parse(args):
             requirements.append(args.db_driver)
         if args.filer:
             if cms_version >= 3:
-                requirements.append(data.FILER_REQUIREMENTS_CMS3)
+                if django_version < 1.7:
+                    requirements.append(data.PLUGINS_REQUIREMENTS_BASIC)
+                    requirements.append(data.FILER_REQUIREMENTS_CMS3)
+                else:
+                    requirements.append(data.PLUGINS_REQUIREMENTS_BASIC_DJANGO_17)
+                    requirements.append(data.FILER_REQUIREMENTS_CMS3)
             else:
                 requirements.append(data.FILER_REQUIREMENTS_CMS2)
         elif cms_version >= 3:
-            requirements.append(data.PLUGIN_REQUIREMENTS)
+            if django_version < 1.7:
+                requirements.append(data.PLUGINS_REQUIREMENTS_BASIC)
+                requirements.append(data.PLUGINS_REQUIREMENTS_NON_FILER)
+            else:
+                requirements.append(data.PLUGINS_REQUIREMENTS_BASIC_DJANGO_17)
+                requirements.append(data.PLUGINS_REQUIREMENTS_NON_FILER_DJANGO_17)
 
         # Django version check
         if args.django_version == 'develop':
@@ -207,14 +217,20 @@ def parse(args):
         if args.use_timezone:
             requirements.append('pytz')
 
+        # Requirements dependendent on django version
+        if django_version < 1.7:
+            requirements.append(data.DJANGO_16_REQUIREMENTS)
+
         # Reversion package version depends on django version
         if args.reversion:
             if django_version < 1.5:
                 requirements.append(data.DJANGO_14_REVERSION)
             elif django_version == 1.5:
                 requirements.append(data.DJANGO_15_REVERSION)
-            else:
+            elif django_version == 1.6:
                 requirements.append(data.DJANGO_16_REVERSION)
+            else:
+                requirements.append(data.DJANGO_17_REVERSION)
 
         requirements.extend([data.DEFAULT_REQUIREMENTS])
 
