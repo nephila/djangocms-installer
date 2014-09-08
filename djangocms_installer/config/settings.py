@@ -59,7 +59,6 @@ INSTALLED_APPS = (
     'cms',
     'mptt',
     'menus',
-    'south',
     'sekizai',
 )
 
@@ -133,6 +132,9 @@ CMS_2_APPLICATIONS = (
 REVERSION_APPLICATIONS = (
     'reversion',
 )
+SOUTH_APPLICATIONS = (
+    'south',
+)
 
 CMS_TEMPLATES = (
     ('fullwidth.html', 'Fullwidth'),
@@ -173,4 +175,20 @@ URLCONF = {
 
 SOUTH_MIGRATION_MODULES = (
     ('easy_thumbnails', 'easy_thumbnails.south_migrations'),
+)
+
+MIGRATION_MODULES = (
+    ('cms', 'cms.migrations_django'),
+    ('menus', 'menus.migrations_django'),
+    ('djangocms_text_ckeditor', 'djangocms_text_ckeditor.migrations_django'),
+    ('djangocms_column', 'djangocms_column.migrations_django'),
+    ('djangocms_file', 'djangocms_file.migrations_django'),
+    ('djangocms_flash', 'djangocms_flash.migrations_django'),
+    ('djangocms_googlemap', 'djangocms_googlemap.migrations_django'),
+    ('djangocms_inherit', 'djangocms_inherit.migrations_django'),
+    ('djangocms_link', 'djangocms_link.migrations_django'),
+    ('djangocms_picture', 'djangocms_picture.migrations_django'),
+    ('djangocms_style', 'djangocms_style.migrations_django'),
+    ('djangocms_teaser', 'djangocms_teaser.migrations_django'),
+    ('djangocms_video', 'djangocms_video.migrations_django'),
 )

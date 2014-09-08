@@ -197,6 +197,9 @@ def _build_settings(config_data):
             apps.extend(vars.FILER_PLUGINS_3)
         else:
             apps.extend(vars.STANDARD_PLUGINS_3)
+    if config_data.django_version <= 1.6:
+        apps.extend(vars.SOUTH_APPLICATIONS)
+
     if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
     text.append("INSTALLED_APPS = (\n%s%s\n)" % (
@@ -250,11 +253,16 @@ def _build_settings(config_data):
 
     text.append("DATABASES = {\n%s'default':\n%s%s\n}" % (spacer, spacer * 2, config_data.db_parsed))
 
+    if config_data.django_version >= 1.7:
+        text.append("MIGRATION_MODULES = {\n%s%s\n}" % (
+            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.MIGRATION_MODULES])))
+
     if config_data.filer:
         text.append("THUMBNAIL_PROCESSORS = (\n%s%s\n)" % (
             spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.THUMBNAIL_PROCESSORS])))
-        text.append("SOUTH_MIGRATION_MODULES = {\n%s%s\n}" % (
-            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.SOUTH_MIGRATION_MODULES])))
+        if config_data.django_version <= 1.6:
+            text.append("SOUTH_MIGRATION_MODULES = {\n%s%s\n}" % (
+                spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.SOUTH_MIGRATION_MODULES])))
     return "\n\n".join(text)
 
 
@@ -262,16 +270,21 @@ def setup_database(config_data):
     with chdir(config_data.project_directory):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        try:
-            import south  # NOQA
+
+        if config_data.django_version < 1.7:
+            try:
+                import south  # NOQA
+                subprocess.check_call([sys.executable, "-W", "ignore",
+                                       "manage.py", "syncdb", "--all", "--noinput"])
+                subprocess.check_call([sys.executable, "-W", "ignore",
+                                       "manage.py", "migrate", "--fake"])
+            except ImportError:
+                subprocess.check_call([sys.executable, "-W", "ignore",
+                                       "manage.py", "syncdb", "--noinput"])
+                print("south not installed, migrations skipped")
+        else:
             subprocess.check_call([sys.executable, "-W", "ignore",
-                                   "manage.py", "syncdb", "--all", "--noinput"])
-            subprocess.check_call([sys.executable, "-W", "ignore",
-                                   "manage.py", "migrate", "--fake"])
-        except ImportError:
-            subprocess.check_call([sys.executable, "-W", "ignore",
-                                   "manage.py", "syncdb", "--noinput"])
-            print("south not installed, migrations skipped")
+                                  "manage.py", "migrate", "--noinput"])
         if not config_data.no_user and not config_data.noinput:
             print("\n\nCreating admin user")
             subprocess.check_call([sys.executable, "-W", "ignore",

@@ -69,9 +69,9 @@ def supported_versions(django, cms):
             else:
                 django_version = 1.5
         elif django == 'beta':
-            django_version = 1.6
+            django_version = 1.8
         elif django == 'develop':
-            django_version = 1.7
+            django_version = 1.8
 
     return django_version, cms_version
 

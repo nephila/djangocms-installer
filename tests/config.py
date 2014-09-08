@@ -141,7 +141,6 @@ class TestConfig(BaseTestClass):
                         'project-name'])
             self.assertTrue(stderr_tmp.getvalue().find("Project name 'project-name' is not a valid app name") > -1)
 
-
     def test_invalid_project_path(self):
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
@@ -172,8 +171,9 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(supported_versions('1.5', 'stable'), (1.5, 3.0))
         self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.0))
-        self.assertEqual(supported_versions('beta', 'stable'), (1.6, 3.0))
-        self.assertEqual(supported_versions('develop', 'stable'), (1.7, 3.0))
+        self.assertEqual(supported_versions('1.7', 'stable'), (1.7, 3.0))
+        self.assertEqual(supported_versions('beta', 'stable'), (1.8, 3.0))
+        self.assertEqual(supported_versions('develop', 'stable'), (1.8, 3.0))
 
     def test_requirements(self):
         """
@@ -310,6 +310,25 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
+
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--i18n=no',
+            '--cms-version=develop',
+            '--django-version=1.7',
+            '--reversion=yes',
+            '-z=yes',
+            '-p'+self.project_dir,
+            'example_prj'])
+
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.8') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor/archive/master.zip') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.2') > -1)
+        self.assertTrue(conf_data.requirements.find('south') == -1)
 
     def test_boostrap(self):
         """

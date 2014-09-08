@@ -9,6 +9,7 @@ import re
 
 from djangocms_installer import config, django, install
 from . import BaseTestClass
+from djangocms_installer.config.settings import MIGRATION_MODULES
 
 
 class TestDjango(BaseTestClass):
@@ -26,7 +27,7 @@ class TestDjango(BaseTestClass):
 
     def test_copy_data(self):
         """
-        Test corret file copying with different switches
+        Test correct file copying with different switches
         """
 
         # Basic template
@@ -87,7 +88,7 @@ class TestDjango(BaseTestClass):
         self.assertTrue(os.path.exists(starting_page_py))
         self.assertTrue(os.path.exists(starting_page_json))
 
-    def test_patch_16_settings(self):
+    def test_patch_django_16_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
@@ -114,7 +115,31 @@ class TestDjango(BaseTestClass):
         self.assertEqual(project.settings.CMS_PERMISSION, False)
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
 
-    def test_patch_16(self):
+    def test_patch_django_17_settings(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.7',
+                                    '--cms-version=develop', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_17_settigns'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name,
+                             globals(), locals(), ['settings'])
+
+        ## checking for django options
+        self.assertFalse('south' in project.settings.INSTALLED_APPS)
+        for module in MIGRATION_MODULES:
+            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
+            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
+
+    def test_patch_django_16(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
                                     '--django-version=1.6',
@@ -173,7 +198,7 @@ class TestDjango(BaseTestClass):
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
-    def test_patch_24_standard(self):
+    def test_patch_cms_24_standard(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.5',
@@ -220,7 +245,7 @@ class TestDjango(BaseTestClass):
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
-    def test_patch_24_filer(self):
+    def test_patch_cms_24_filer(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.5',
