@@ -62,3 +62,10 @@ def requirements(requirements, is_file=False):
     if exit_status != SUCCESS:
         raise InstallationError("Error while installing requirements. Check pip log file for error details.")
     return True
+
+
+def cleanup(requirements):
+    args = ['uninstall', '-q', '-y']
+    args.extend(requirements.split())
+    exit_status = pip.main(args)
+    return True

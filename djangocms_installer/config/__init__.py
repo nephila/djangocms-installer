@@ -243,7 +243,6 @@ def parse(args):
         sys.stderr.write("Aldryn Boilerplate is not compatible with django CMS versions < 3\n")
         sys.exit(5)
 
-
     # Convenient shortcuts
     setattr(args, "cms_version", cms_version)
     setattr(args, "django_version", django_version)

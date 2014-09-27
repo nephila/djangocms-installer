@@ -164,7 +164,7 @@ class TestDjango(BaseTestClass):
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
         self.assertTrue('compressor' in project.settings.INSTALLED_APPS)
 
-    def test_patch_django_17_settings(self):
+    def def_test_patch_django_17_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
@@ -243,7 +243,6 @@ class TestDjango(BaseTestClass):
         self.assertEqual(len(re.findall('STATIC_ROOT', settings)), 1)
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
         self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
-
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")

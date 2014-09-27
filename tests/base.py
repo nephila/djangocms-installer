@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
-import sys
 import os
-import tempfile
+import sys
 import shutil
-
+import tempfile
 if sys.version_info[:2] < (2, 7):
     import unittest2 as unittest
 else:
     import unittest
 
 from six import StringIO
+from mock import patch
+
+from djangocms_installer import install
 
 
 class BaseTestClass(unittest.TestCase):
