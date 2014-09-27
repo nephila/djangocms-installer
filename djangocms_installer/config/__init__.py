@@ -5,10 +5,10 @@ import os.path
 import six
 import sys
 
-from .. import compat, utils
 from . import data
-from djangocms_installer.config.internal import DbAction, validate_project
-from djangocms_installer.utils import less_than_version, supported_versions
+from .internal import DbAction, validate_project
+from .. import compat, utils
+from ..utils import less_than_version, supported_versions
 
 
 def parse(args):
@@ -68,6 +68,8 @@ def parse(args):
 
     # Advanced options. These have a predefined default and are not managed
     # by config wizard.
+    parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
+                        default=False, help="Use Aldryn-boilerplate as project template")
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
                         default=False, help="Don't run the configuration wizard, just use the provided values")
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
@@ -198,6 +200,8 @@ def parse(args):
             else:
                 requirements.append(data.PLUGINS_REQUIREMENTS_BASIC_DJANGO_17)
                 requirements.append(data.PLUGINS_REQUIREMENTS_NON_FILER_DJANGO_17)
+        if args.aldryn:
+            requirements.append(data.ALDRYN_REQUIREMENTS)
 
         # Django version check
         if args.django_version == 'develop':
@@ -235,6 +239,9 @@ def parse(args):
         requirements.extend([data.DEFAULT_REQUIREMENTS])
 
         setattr(args, "requirements", "\n".join(requirements).strip())
+    if cms_version < 3 and args.aldryn:
+        sys.stderr.write("Aldryn Boilerplate is not compatible with django CMS versions < 3\n")
+        sys.exit(5)
 
     # Convenient shortcuts
     setattr(args, "cms_version", cms_version)

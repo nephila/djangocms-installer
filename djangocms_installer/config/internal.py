@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-import sys
-import keyword
-
 from argparse import Action
+import keyword
+import sys
+
 import dj_database_url
 
 from .data import DRIVERS

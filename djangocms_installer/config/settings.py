@@ -136,6 +136,10 @@ SOUTH_APPLICATIONS = (
     'south',
 )
 
+ALDRYN_APPLICATIONS = (
+    'compressor',
+)
+
 CMS_TEMPLATES = (
     ('fullwidth.html', 'Fullwidth'),
     ('sidebar_left.html', 'Sidebar Left'),

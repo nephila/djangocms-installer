@@ -1,8 +1,8 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
 import os
+import sys
 import tempfile
+
 from mock import patch
 from six import StringIO
 
@@ -10,7 +10,7 @@ from djangocms_installer import config
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
 
-from . import BaseTestClass
+from .base import BaseTestClass
 
 
 class TestConfig(BaseTestClass):
@@ -329,6 +329,33 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.2') > -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
+
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--cms-version=stable',
+            '--django-version=stable',
+            '-a',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertTrue(conf_data.requirements.find('django-compressor') > -1)
+
+    def test_aldryn_compatibility(self):
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '--cms-version=2.4',
+                        '--django-version=stable',
+                        '-a',
+                        '-p'+self.project_dir,
+                        'example_prj'])
+                try:
+                    self.assertEqual(error.exception.code, 5)
+                except AttributeError:
+                    self.assertEqual(error.exception, 5)
 
     def test_boostrap(self):
         """

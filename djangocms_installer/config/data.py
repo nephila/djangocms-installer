@@ -73,6 +73,9 @@ https://github.com/divio/djangocms-video/archive/master.zip
 
 
 DJANGO_17_REVERSION = "django-reversion>=1.8.2"
+ALDRYN_REQUIREMENTS = """
+django-compressor
+"""
 DJANGO_16_REVERSION = "django-reversion>=1.8"
 DJANGO_15_REVERSION = "django-reversion>=1.7,<1.8"
 DJANGO_14_REVERSION = "django-reversion<1.7"
@@ -132,3 +135,5 @@ STATICFILES_DEFAULT = """STATICFILES_DIRS = (
 BASE_DIR = """
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 """
+
+ALDRYN_BOILERPLATE = 'https://github.com/aldryn/aldryn-boilerplate/archive/master.zip'

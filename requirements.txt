@@ -2,3 +2,4 @@ dj-database-url
 pip>1.4
 six
 argparse
+requests

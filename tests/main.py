@@ -1,11 +1,11 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
 import os
+import sys
+
 from mock import patch
 
 from djangocms_installer import main
-from . import BaseTestClass
+from .base import BaseTestClass
 
 
 class TestMain(BaseTestClass):
