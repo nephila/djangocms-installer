@@ -137,3 +137,5 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 """
 
 ALDRYN_BOILERPLATE = 'https://github.com/aldryn/aldryn-boilerplate/archive/master.zip'
+
+VERSION_WARNING = '%s version of %s is not supported and it may not work as expected'

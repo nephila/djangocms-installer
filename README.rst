@@ -50,6 +50,25 @@ Documentation
 
 See http://djangocms-installer.readthedocs.org
 
+Supported versions
+------------------
+
+The current supported version matrix is the following:
+
++----------------+-------------+-------------+-------------+-------------+
+|                | Django 1.4  | Django 1.5  | Django 1.6  | Django 1.7  |
++----------------+-------------+-------------+-------------+-------------+
+| django CMS 2.4 | Supported   | Supported   | Unsupported | Unsupported |
++----------------+-------------+-------------+-------------+-------------+
+| django CMS 3.0 | Supported   | Supported   | Supported   | WiP         |
++----------------+-------------+-------------+-------------+-------------+
+
+Any beta and develop version of Django and django CMS, by its very nature,
+it's not supported, while it still may work.
+
+``djangocms-installer`` tries to support beta versions of django CMS when they
+will be considered sufficiently stable by the upstream project.
+
 Caveats
 -------
 
