@@ -4,6 +4,7 @@ import locale
 import os.path
 import six
 import sys
+import warnings
 
 from . import data
 from .internal import DbAction, validate_project
@@ -167,10 +168,12 @@ def parse(args):
         # Django cms version check
         if args.cms_version == 'develop':
             requirements.append(data.DJANGOCMS_DEVELOP)
+            warnings.warn(data.VERSION_WARNING % ('develop', 'django CMS'))
         elif args.cms_version == 'rc':
             requirements.append(data.DJANGOCMS_RC)
         elif args.cms_version == 'beta':
             requirements.append(data.DJANGOCMS_BETA)
+            warnings.warn(data.VERSION_WARNING % ('beta', 'django CMS'))
         else:
             if args.cms_version == 'stable':
                 requirements.append("django-cms<%s" % less_than_version(data.DJANGOCMS_LATEST))
@@ -206,8 +209,10 @@ def parse(args):
         # Django version check
         if args.django_version == 'develop':
             requirements.append(data.DJANGO_DEVELOP)
+            warnings.warn(data.VERSION_WARNING % ('develop', 'Django'))
         elif args.django_version == 'beta':
             requirements.append(data.DJANGO_BETA)
+            warnings.warn(data.VERSION_WARNING % ('beta', 'Django'))
         else:
             if args.django_version == 'stable':
                 if cms_version < 3:
