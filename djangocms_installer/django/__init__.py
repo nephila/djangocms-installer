@@ -314,7 +314,7 @@ def setup_database(config_data):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
         env = dict(os.environ)
-        env['PYTHONPATH'] = ':'.join(map(shlex_quote, sys.path))
+        env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
 
         if config_data.django_version < 1.7:
             try:
@@ -344,7 +344,7 @@ def load_starting_page(config_data):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
         env = dict(os.environ)
-        env['PYTHONPATH'] = ':'.join(map(shlex_quote, sys.path))
+        env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
         subprocess.check_call([sys.executable, "starting_page.py"], env=env)
         for ext in ['py', 'pyc', 'json']:
             try:
