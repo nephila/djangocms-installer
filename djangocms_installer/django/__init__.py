@@ -4,12 +4,17 @@ import glob
 import os
 import re
 import requests
+try:
+    from shlex import quote as shlex_quote
+except ImportError:
+    from pipes import quote as shlex_quote
 import shutil
 import subprocess
 import sys
 import tempfile
 import zipfile
 from six import BytesIO
+
 
 from ..compat import iteritems
 from ..utils import chdir
@@ -308,25 +313,27 @@ def setup_database(config_data):
     with chdir(config_data.project_directory):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
+        env = dict(os.environ)
+        env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
 
         if config_data.django_version < 1.7:
             try:
                 import south  # NOQA
                 subprocess.check_call([sys.executable, "-W", "ignore",
-                                       "manage.py", "syncdb", "--all", "--noinput"])
+                                       "manage.py", "syncdb", "--all", "--noinput"], env=env)
                 subprocess.check_call([sys.executable, "-W", "ignore",
-                                       "manage.py", "migrate", "--fake"])
+                                       "manage.py", "migrate", "--fake"], env=env)
             except ImportError:
                 subprocess.check_call([sys.executable, "-W", "ignore",
-                                       "manage.py", "syncdb", "--noinput"])
+                                       "manage.py", "syncdb", "--noinput"], env=env)
                 print("south not installed, migrations skipped")
         else:
             subprocess.check_call([sys.executable, "-W", "ignore",
-                                  "manage.py", "migrate", "--noinput"])
+                                  "manage.py", "migrate", "--noinput"], env=env)
         if not config_data.no_user and not config_data.noinput:
             print("\n\nCreating admin user")
             subprocess.check_call([sys.executable, "-W", "ignore",
-                                   "manage.py", "createsuperuser"])
+                                   "manage.py", "createsuperuser"], env=env)
 
 
 def load_starting_page(config_data):
@@ -336,7 +343,9 @@ def load_starting_page(config_data):
     with chdir(config_data.project_directory):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        subprocess.check_call([sys.executable, "starting_page.py"])
+        env = dict(os.environ)
+        env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
+        subprocess.check_call([sys.executable, "starting_page.py"], env=env)
         for ext in ['py', 'pyc', 'json']:
             try:
                 os.remove('starting_page.%s' % ext)
