@@ -46,19 +46,19 @@ def supported_versions(django, cms):
     """
     Convert numeric and literal version information to numeric format
     """
-    cms_version = 3
-    django_version = 1.5
+    cms_version = None
+    django_version = None
     try:
         cms_version = float(cms)
     except ValueError:
         if cms == 'stable':
             cms_version = 3.0
-        elif django == 'rc':
-            django_version = 3.0
-        elif django == 'beta':
-            django_version = 3.0
-        elif django == 'develop':
-            django_version = 3.0
+        elif cms == 'rc':
+            cms_version = 3.0
+        elif cms == 'beta':
+            cms_version = 3.0
+        elif cms == 'develop':
+            cms_version = 3.0
 
     try:
         django_version = float(django)

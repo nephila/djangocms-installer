@@ -8,12 +8,15 @@ DJANGOCMS_DEVELOP = '-e git+https://github.com/divio/django-cms@develop#egg=djan
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_LATEST = '3.0'
+DJANGOCMS_SUPPORTED = ('2.4', '3.0', 'stable', 'develop')
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
 # this is not true, but it's the most recent version
 # compatible with all the CMS versions
 DJANGO_LATEST = '1.5'
 DJANGO_LATEST_CMS_3 = '1.6'
+DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', 'stable')
+
 
 DEFAULT_REQUIREMENTS = """
 django-classy-tags>=0.3.4.1
