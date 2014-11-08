@@ -37,6 +37,9 @@ django-mptt>=0.5.1,<0.5.3
 DJANGOCMS_3_REQUIREMENTS = """
 django-mptt>=0.6
 """
+DJANGOCMS_3_1_REQUIREMENTS = """
+django-treebeard==2.0
+"""
 
 PLUGINS_REQUIREMENTS_BASIC = """
 djangocms-admin-style

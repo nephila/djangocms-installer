@@ -185,8 +185,11 @@ def parse(args):
                 requirements.append("django-cms<%s" % less_than_version(data.DJANGOCMS_LATEST))
             else:
                 requirements.append("django-cms<%s" % less_than_version(args.cms_version))
-        if cms_version >= 3:
+
+        if cms_version == 3:
             requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
+        elif cms_version >= 3:
+            requirements.append(data.DJANGOCMS_3_1_REQUIREMENTS)
         else:
             requirements.append(data.DJANGOCMS_2_REQUIREMENTS)
 
