@@ -39,10 +39,10 @@ def parse(args):
                         help='Languages to enable. Option can be provided multiple times, or as a comma separated list. '
                         'Only language codes supported by Django can be used here')
     parser.add_argument('--django-version', dest='django_version', action='store',
-                        choices=('1.4', '1.5', '1.6', '1.7', 'stable'),
+                        choices=data.DJANGO_SUPPORTED,
                         default='stable', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
-                        choices=('2.4', '3.0', 'stable', 'develop'),
+                        choices=data.DJANGOCMS_SUPPORTED,
                         default='stable', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
                         required=True, default='',
@@ -161,6 +161,12 @@ def parse(args):
     # Convert version to numeric format for easier checking
     django_version, cms_version = supported_versions(args.django_version,
                                                      args.cms_version)
+    if django_version is None:
+        sys.stderr.write("Please provide a Django supported version: %s. Only Major.Minor version selector is accepted\n" % ", ".join(data.DJANGO_SUPPORTED))
+        sys.exit(6)
+    if django_version is None:
+        sys.stderr.write("Please provide a django CMS supported version: %s. Only Major.Minor version selector is accepted\n" % ", ".join(data.DJANGOCMS_SUPPORTED))
+        sys.exit(6)
 
     if not getattr(args, 'requirements_file'):
         requirements = []
@@ -179,8 +185,11 @@ def parse(args):
                 requirements.append("django-cms<%s" % less_than_version(data.DJANGOCMS_LATEST))
             else:
                 requirements.append("django-cms<%s" % less_than_version(args.cms_version))
-        if cms_version >= 3:
+
+        if cms_version == 3:
             requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
+        elif cms_version >= 3:
+            requirements.append(data.DJANGOCMS_3_1_REQUIREMENTS)
         else:
             requirements.append(data.DJANGOCMS_2_REQUIREMENTS)
 
@@ -220,7 +229,7 @@ def parse(args):
                 else:
                     requirements.append("Django<%s" % less_than_version(data.DJANGO_LATEST_CMS_3))
             else:
-                requirements.append("Django<%s" % less_than_version(args.django_version))
+                requirements.append("Django<%s" % less_than_version(str(django_version)))
 
         # Timezone support
         if args.use_timezone:

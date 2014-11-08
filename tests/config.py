@@ -38,7 +38,7 @@ class TestConfig(BaseTestClass):
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
-            '--cms-version=develop',
+            '--cms-version=stable',
             '--django-version=1.4',
             '--i18n=no',
             '--reversion=no',
@@ -164,13 +164,15 @@ class TestConfig(BaseTestClass):
     def test_supported_versions(self):
         self.assertEqual(supported_versions('stable', 'stable'), (1.6, 3.0))
         self.assertEqual(supported_versions('stable', '3.0'), (1.6, 3.0))
-        self.assertEqual(supported_versions('stable', 'rc'), (1.6, 3.0))
-        self.assertEqual(supported_versions('stable', 'beta'), (1.6, 3.0))
-        self.assertEqual(supported_versions('stable', 'develop'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', '3.0.10'), (None, None))
+        self.assertEqual(supported_versions('stable', 'rc'), (1.6, 3.1))
+        self.assertEqual(supported_versions('stable', 'beta'), (1.6, 3.1))
+        self.assertEqual(supported_versions('stable', 'develop'), (1.6, 3.1))
         self.assertEqual(supported_versions('stable', '2.4'), (1.5, 2.4))
 
         self.assertEqual(supported_versions('1.5', 'stable'), (1.5, 3.0))
         self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.0))
+        self.assertEqual(supported_versions('1.6.9', 'stable'), (None, 3.0))
         self.assertEqual(supported_versions('1.7', 'stable'), (1.7, 3.0))
         self.assertEqual(supported_versions('beta', 'stable'), (1.8, 3.0))
         self.assertEqual(supported_versions('develop', 'stable'), (1.8, 3.0))
@@ -290,6 +292,8 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.6') > -1)
+        self.assertTrue(conf_data.requirements.find('django-mptt') == -1)
+        self.assertTrue(conf_data.requirements.find('django-treebeard') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.7,<1.8') > -1)
 
         conf_data = config.parse([
