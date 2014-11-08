@@ -164,7 +164,7 @@ class TestConfig(BaseTestClass):
     def test_supported_versions(self):
         self.assertEqual(supported_versions('stable', 'stable'), (1.6, 3.0))
         self.assertEqual(supported_versions('stable', '3.0'), (1.6, 3.0))
-        self.assertEqual(supported_versions('stable', '3.0.10'), (1.5, None))
+        self.assertEqual(supported_versions('stable', '3.0.10'), (None, None))
         self.assertEqual(supported_versions('stable', 'rc'), (1.6, 3.1))
         self.assertEqual(supported_versions('stable', 'beta'), (1.6, 3.1))
         self.assertEqual(supported_versions('stable', 'develop'), (1.6, 3.1))
