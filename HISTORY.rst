@@ -3,11 +3,14 @@
 History
 -------
 
-0.6.0 (unreleased)
+0.6.0 (2014-11-30)
 ++++++++++++++++++
 
 * Add support for installing aldryn-boilerplate
 * Force installing all packages (-I) when creating the project virtualenv
+* Fix multiplatform support bugs
+* Update supported Django / django CMS versions
+* Add preliminary support for django CMS develop (3.1)
 
 0.5.4 (2014-08-14)
 ++++++++++++++++++
