@@ -21,6 +21,7 @@ test_requirements.append('mock')
 if sys.version_info[:2] < (2, 7):
     test_requirements.append('unittest2')
 
+    
 setup(
     name='djangocms-installer',
     version=djangocms_installer.__version__,
@@ -42,7 +43,7 @@ setup(
     zip_safe=False,
     keywords='djangocms-installer',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production',
         'Framework :: Django',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
@@ -52,6 +53,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Software Development',
     ],
     test_suite='tests',

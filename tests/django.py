@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
 import os.path
-import six
-import sqlite3
-from . import unittest
 import re
+import sqlite3
+import sys
+
+import six
 
 from djangocms_installer import config, django, install
-from . import BaseTestClass
+from djangocms_installer.config.settings import MIGRATION_MODULES
+from .base import unittest, BaseTestClass
 
 
 class TestDjango(BaseTestClass):
@@ -18,7 +19,7 @@ class TestDjango(BaseTestClass):
 
     def test_create_project(self):
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=develop',
+                                    '--cms-version=stable',
                                     '-q', '-p'+self.project_dir, 'example_prj'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -26,7 +27,7 @@ class TestDjango(BaseTestClass):
 
     def test_copy_data(self):
         """
-        Test corret file copying with different switches
+        Test correct file copying with different switches
         """
 
         # Basic template
@@ -87,6 +88,26 @@ class TestDjango(BaseTestClass):
         self.assertTrue(os.path.exists(starting_page_py))
         self.assertTrue(os.path.exists(starting_page_json))
 
+        # Aldryn boilerplate
+        self._create_project_dir()
+        config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
+                                    '--cms-version=stable', '-a',
+                                    '-q', '-p'+self.project_dir, 'example_prj'])
+        os.makedirs(config_data.project_path)
+        django.copy_files(config_data)
+        private_dir = os.path.join(config_data.project_directory, 'private')
+        static_js = os.path.join(config_data.project_directory, 'static', 'js', 'base.js')
+        aldryn_template = os.path.join(config_data.project_directory, 'templates', 'fullwidth.html')
+        basic_template = os.path.join(config_data.project_path, 'templates', 'fullwidth.html')
+        boostrap_template = os.path.join(config_data.project_path, 'templates', 'feature.html')
+        custom_template = os.path.join(config_data.project_path, 'templates', 'left.html')
+        self.assertFalse(os.path.exists(custom_template))
+        self.assertFalse(os.path.exists(boostrap_template))
+        self.assertFalse(os.path.exists(basic_template))
+        self.assertTrue(os.path.exists(private_dir))
+        self.assertTrue(os.path.exists(static_js))
+        self.assertTrue(os.path.exists(aldryn_template))
+
     def test_patch_16_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -106,7 +127,7 @@ class TestDjango(BaseTestClass):
                              globals(), locals(), ['settings'])
 
         ## checking for django options
-        self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
         # Data from external settings file
@@ -114,7 +135,60 @@ class TestDjango(BaseTestClass):
         self.assertEqual(project.settings.CMS_PERMISSION, False)
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
 
-    def test_patch_16(self):
+    def test_patch_16_aldryn(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.6', '-a',
+                                    '--cms-version=3.0', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_16_aldryn'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name,
+                             globals(), locals(), ['settings'])
+
+        ## checking for django options
+        self.assertEqual(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'dist', 'media'))
+        self.assertEqual(project.settings.TEMPLATE_DIRS, (os.path.join(config_data.project_directory, 'templates'),))
+        self.assertEqual(project.settings.MEDIA_URL, '/media/')
+
+        # Data from external settings file
+        self.assertEqual(project.settings.CUSTOM_SETTINGS_VAR, True)
+        self.assertEqual(project.settings.CMS_PERMISSION, False)
+        self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
+        self.assertTrue('compressor' in project.settings.INSTALLED_APPS)
+
+    def def_test_patch_django_17_settings(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.7',
+                                    '--cms-version=stable', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_17_settigns'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name,
+                             globals(), locals(), ['settings'])
+
+        ## checking for django options
+        self.assertFalse('south' in project.settings.INSTALLED_APPS)
+        for module in MIGRATION_MODULES:
+            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
+            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
+
+    def test_patch_django_16(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
                                     '--django-version=1.6',
@@ -136,7 +210,7 @@ class TestDjango(BaseTestClass):
                              globals(), locals(), ['settings'])
 
         ## checking for django options
-        self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
         self.assertEqual(project.settings.TIME_ZONE, 'Europe/Moscow')
@@ -168,12 +242,11 @@ class TestDjango(BaseTestClass):
         self.assertEqual(len(re.findall('BASE_DIR = ', settings)), 1)
         self.assertEqual(len(re.findall('STATIC_ROOT', settings)), 1)
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
-        self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 2)
-
+        self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
-    def test_patch_24_standard(self):
+    def test_patch_cms_24_standard(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.5',
@@ -220,7 +293,7 @@ class TestDjango(BaseTestClass):
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
-    def test_patch_24_filer(self):
+    def test_patch_cms_24_filer(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.5',

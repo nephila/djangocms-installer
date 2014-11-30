@@ -1,11 +1,11 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
 import os
+import sys
+
 from mock import patch
 
 from djangocms_installer import main
-from . import BaseTestClass
+from .base import BaseTestClass
 
 
 class TestMain(BaseTestClass):
@@ -14,7 +14,7 @@ class TestMain(BaseTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--cms-version=develop', '-R',
+                                       '-len', '--cms-version=stable', '-R',
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()
@@ -38,7 +38,7 @@ class TestMain(BaseTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--cms-version=develop',
+                                       '-len', '--cms-version=stable',
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()
@@ -51,7 +51,7 @@ class TestMain(BaseTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '-lfr', '--cms-version=develop',
+                                       '-len', '-lfr', '--cms-version=stable',
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()

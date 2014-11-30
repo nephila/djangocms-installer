@@ -1,8 +1,8 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
 import os
+import sys
 import tempfile
+
 from mock import patch
 from six import StringIO
 
@@ -10,7 +10,7 @@ from djangocms_installer import config
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
 
-from . import BaseTestClass
+from .base import BaseTestClass
 
 
 class TestConfig(BaseTestClass):
@@ -38,7 +38,7 @@ class TestConfig(BaseTestClass):
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
-            '--cms-version=develop',
+            '--cms-version=stable',
             '--django-version=1.4',
             '--i18n=no',
             '--reversion=no',
@@ -141,7 +141,6 @@ class TestConfig(BaseTestClass):
                         'project-name'])
             self.assertTrue(stderr_tmp.getvalue().find("Project name 'project-name' is not a valid app name") > -1)
 
-
     def test_invalid_project_path(self):
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, prj_dir)
@@ -165,15 +164,18 @@ class TestConfig(BaseTestClass):
     def test_supported_versions(self):
         self.assertEqual(supported_versions('stable', 'stable'), (1.6, 3.0))
         self.assertEqual(supported_versions('stable', '3.0'), (1.6, 3.0))
-        self.assertEqual(supported_versions('stable', 'rc'), (1.6, 3.0))
-        self.assertEqual(supported_versions('stable', 'beta'), (1.6, 3.0))
-        self.assertEqual(supported_versions('stable', 'develop'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', '3.0.10'), (None, None))
+        self.assertEqual(supported_versions('stable', 'rc'), (1.6, 3.1))
+        self.assertEqual(supported_versions('stable', 'beta'), (1.6, 3.1))
+        self.assertEqual(supported_versions('stable', 'develop'), (1.6, 3.1))
         self.assertEqual(supported_versions('stable', '2.4'), (1.5, 2.4))
 
         self.assertEqual(supported_versions('1.5', 'stable'), (1.5, 3.0))
         self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.0))
-        self.assertEqual(supported_versions('beta', 'stable'), (1.6, 3.0))
-        self.assertEqual(supported_versions('develop', 'stable'), (1.7, 3.0))
+        self.assertEqual(supported_versions('1.6.9', 'stable'), (None, 3.0))
+        self.assertEqual(supported_versions('1.7', 'stable'), (1.7, 3.0))
+        self.assertEqual(supported_versions('beta', 'stable'), (1.8, 3.0))
+        self.assertEqual(supported_versions('develop', 'stable'), (1.8, 3.0))
 
     def test_requirements(self):
         """
@@ -290,6 +292,8 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.6') > -1)
+        self.assertTrue(conf_data.requirements.find('django-mptt') == -1)
+        self.assertTrue(conf_data.requirements.find('django-treebeard') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.7,<1.8') > -1)
 
         conf_data = config.parse([
@@ -310,6 +314,52 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
+
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--i18n=no',
+            '--cms-version=develop',
+            '--django-version=1.7',
+            '--reversion=yes',
+            '-z=yes',
+            '-p'+self.project_dir,
+            'example_prj'])
+
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.8') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor/archive/master.zip') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.2') > -1)
+        self.assertTrue(conf_data.requirements.find('south') == -1)
+
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--cms-version=stable',
+            '--django-version=stable',
+            '-a',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertTrue(conf_data.requirements.find('django-compressor') > -1)
+
+    def test_aldryn_compatibility(self):
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '--cms-version=2.4',
+                        '--django-version=stable',
+                        '-a',
+                        '-p'+self.project_dir,
+                        'example_prj'])
+                try:
+                    self.assertEqual(error.exception.code, 5)
+                except AttributeError:
+                    self.assertEqual(error.exception, 5)
 
     def test_boostrap(self):
         """

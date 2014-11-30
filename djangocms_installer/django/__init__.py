@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
-import sys
+from copy import copy, deepcopy
+import glob
 import os
 import re
-
+import requests
+try:
+    from shlex import quote as shlex_quote
+except ImportError:
+    from pipes import quote as shlex_quote
 import shutil
-import glob
 import subprocess
-from copy import copy, deepcopy
+import sys
+import tempfile
+import zipfile
+from six import BytesIO
+
 
 from ..compat import iteritems
 from ..utils import chdir
@@ -40,21 +48,43 @@ def copy_files(config_data):
     urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls.py')
     share_path = os.path.join(os.path.dirname(__file__), '../share')
     template_path = os.path.join(share_path, 'templates')
-    template_target = os.path.join(config_data.project_path, 'templates')
-    static_project = os.path.join(config_data.project_directory, 'static')
-    static_main = os.path.join(config_data.project_path, 'static')
-
-    if config_data.templates and os.path.isdir(config_data.templates):
-        template_path = config_data.templates
-    elif config_data.bootstrap:
-        template_path = os.path.join(template_path, 'bootstrap')
+    if config_data.aldryn:
+        media_project = os.path.join(config_data.project_directory, 'dist', 'media')
+        static_main = False
+        static_project = os.path.join(config_data.project_directory, 'dist', 'static')
+        template_target = os.path.join(config_data.project_directory, 'templates')
+        tmpdir = tempfile.mkdtemp()
+        aldrynzip = requests.get(data.ALDRYN_BOILERPLATE)
+        zip_open = zipfile.ZipFile(BytesIO(aldrynzip.content))
+        zip_open.extractall(path=tmpdir)
+        for component in os.listdir(os.path.join(tmpdir, 'aldryn-boilerplate-master')):
+            src = os.path.join(tmpdir, 'aldryn-boilerplate-master', component)
+            dst = os.path.join(config_data.project_directory, component)
+            if os.path.isfile(src):
+                shutil.copy(src, dst)
+            else:
+                shutil.copytree(src, dst)
     else:
-        template_path = os.path.join(template_path, 'basic')
+        media_project = os.path.join(config_data.project_directory, 'media')
+        static_main = os.path.join(config_data.project_path, 'static')
+        static_project = os.path.join(config_data.project_directory, 'static')
+        template_target = os.path.join(config_data.project_path, 'templates')
+        if config_data.templates and os.path.isdir(config_data.templates):
+            template_path = config_data.templates
+        elif config_data.bootstrap:
+            template_path = os.path.join(template_path, 'bootstrap')
+        else:
+            template_path = os.path.join(template_path, 'basic')
 
     shutil.copy(urlconf_path, config_data.urlconf_path)
-    os.makedirs(static_main)
-    os.makedirs(static_project)
-    os.makedirs(template_target)
+    if media_project:
+        os.makedirs(media_project)
+    if static_main:
+        os.makedirs(static_main)
+    if not os.path.exists(static_project):
+        os.makedirs(static_project)
+    if not os.path.exists(template_target):
+        os.makedirs(template_target)
     for filename in glob.glob(os.path.join(template_path, '*.html')):
         if os.path.isfile(filename):
             shutil.copy(filename, template_target)
@@ -89,34 +119,41 @@ def patch_settings(config_data):
 
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
 
-    if original.find('BASE_DIR') == -1:
-        original = data.DEFAULT_PROJECT_HEADER + data.BASE_DIR + original
+    if config_data.aldryn:
+        DATA_DIR = "DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dist')\n"
+        STATICFILES_DIR = 'os.path.join(BASE_DIR, \'static\'),'
     else:
-        original = data.DEFAULT_PROJECT_HEADER + original
+        DATA_DIR = "DATA_DIR = os.path.dirname(os.path.dirname(__file__))\n"
+        STATICFILES_DIR = 'os.path.join(BASE_DIR, \'%s\', \'static\'),' % config_data.project_name
+
+    if original.find('BASE_DIR') == -1:
+        original = data.DEFAULT_PROJECT_HEADER + data.BASE_DIR + DATA_DIR + original
+    else:
+        original = data.DEFAULT_PROJECT_HEADER + DATA_DIR + original
     if original.find('MEDIA_URL') > -1:
         original = original.replace("MEDIA_URL = ''", "MEDIA_URL = '/media/'")
     else:
         original += "MEDIA_URL = '/media/'\n"
     if original.find('MEDIA_ROOT') > -1:
-        original = original.replace("MEDIA_ROOT = ''", "MEDIA_ROOT = os.path.join(BASE_DIR, 'media')")
+        original = original.replace("MEDIA_ROOT = ''", "MEDIA_ROOT = os.path.join(DATA_DIR, 'media')")
     else:
-        original += "MEDIA_ROOT = os.path.join(BASE_DIR, 'media')\n"
+        original += "MEDIA_ROOT = os.path.join(DATA_DIR, 'media')\n"
     if original.find('STATIC_ROOT') > -1:
-        original = original.replace("STATIC_ROOT = ''", "STATIC_ROOT = os.path.join(BASE_DIR, 'static')")
+        original = original.replace("STATIC_ROOT = ''", "STATIC_ROOT = os.path.join(DATA_DIR, 'static')")
     else:
-        original += "STATIC_ROOT = os.path.join(BASE_DIR, 'static')\n"
+        original += "STATIC_ROOT = os.path.join(DATA_DIR, 'static')\n"
     if original.find('STATICFILES_DIRS') > -1:
         original = original.replace(data.STATICFILES_DEFAULT, """
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '%s', 'static'),
+    %s
 )
-""" % config_data.project_name)
+""" % STATICFILES_DIR)
     else:
         original += """
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '%s', 'static'),
+    %s
 )
-""" % config_data.project_name
+""" % STATICFILES_DIR
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
 
     # I18N
@@ -177,8 +214,12 @@ def _build_settings(config_data):
     text.append("TEMPLATE_CONTEXT_PROCESSORS = (\n%s%s\n)" % (
         spacer, (",\n" + spacer).join(["'%s'" % var for var in processors])))
 
-    text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
-        spacer, "os.path.join(BASE_DIR, '%s', 'templates')," % config_data.project_name))
+    if config_data.aldryn:
+        text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
+            spacer, "os.path.join(BASE_DIR, 'templates'),"))
+    else:
+        text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
+            spacer, "os.path.join(BASE_DIR, '%s', 'templates')," % config_data.project_name))
 
     apps = list(vars.INSTALLED_APPS)
     if config_data.cms_version == 2.4:
@@ -197,6 +238,11 @@ def _build_settings(config_data):
             apps.extend(vars.FILER_PLUGINS_3)
         else:
             apps.extend(vars.STANDARD_PLUGINS_3)
+    if config_data.django_version <= 1.6:
+        apps.extend(vars.SOUTH_APPLICATIONS)
+
+    if config_data.aldryn:
+        apps.extend(vars.ALDRYN_APPLICATIONS)
     if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
     text.append("INSTALLED_APPS = (\n%s%s\n)" % (
@@ -250,11 +296,16 @@ def _build_settings(config_data):
 
     text.append("DATABASES = {\n%s'default':\n%s%s\n}" % (spacer, spacer * 2, config_data.db_parsed))
 
+    if config_data.django_version >= 1.7:
+        text.append("MIGRATION_MODULES = {\n%s%s\n}" % (
+            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.MIGRATION_MODULES])))
+
     if config_data.filer:
         text.append("THUMBNAIL_PROCESSORS = (\n%s%s\n)" % (
             spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.THUMBNAIL_PROCESSORS])))
-        text.append("SOUTH_MIGRATION_MODULES = {\n%s%s\n}" % (
-            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.SOUTH_MIGRATION_MODULES])))
+        if config_data.django_version <= 1.6:
+            text.append("SOUTH_MIGRATION_MODULES = {\n%s%s\n}" % (
+                spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.SOUTH_MIGRATION_MODULES])))
     return "\n\n".join(text)
 
 
@@ -262,20 +313,27 @@ def setup_database(config_data):
     with chdir(config_data.project_directory):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        try:
-            import south  # NOQA
+        env = dict(os.environ)
+        env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
+
+        if config_data.django_version < 1.7:
+            try:
+                import south  # NOQA
+                subprocess.check_call([sys.executable, "-W", "ignore",
+                                       "manage.py", "syncdb", "--all", "--noinput"], env=env)
+                subprocess.check_call([sys.executable, "-W", "ignore",
+                                       "manage.py", "migrate", "--fake"], env=env)
+            except ImportError:
+                subprocess.check_call([sys.executable, "-W", "ignore",
+                                       "manage.py", "syncdb", "--noinput"], env=env)
+                print("south not installed, migrations skipped")
+        else:
             subprocess.check_call([sys.executable, "-W", "ignore",
-                                   "manage.py", "syncdb", "--all", "--noinput"])
-            subprocess.check_call([sys.executable, "-W", "ignore",
-                                   "manage.py", "migrate", "--fake"])
-        except ImportError:
-            subprocess.check_call([sys.executable, "-W", "ignore",
-                                   "manage.py", "syncdb", "--noinput"])
-            print("south not installed, migrations skipped")
+                                  "manage.py", "migrate", "--noinput"], env=env)
         if not config_data.no_user and not config_data.noinput:
             print("\n\nCreating admin user")
             subprocess.check_call([sys.executable, "-W", "ignore",
-                                   "manage.py", "createsuperuser"])
+                                   "manage.py", "createsuperuser"], env=env)
 
 
 def load_starting_page(config_data):
@@ -285,7 +343,9 @@ def load_starting_page(config_data):
     with chdir(config_data.project_directory):
         os.environ['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        subprocess.check_call([sys.executable, "starting_page.py"])
+        env = dict(os.environ)
+        env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
+        subprocess.check_call([sys.executable, "starting_page.py"], env=env)
         for ext in ['py', 'pyc', 'json']:
             try:
                 os.remove('starting_page.%s' % ext)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import sys
-import six
 import logging
+import six
+import sys
 
 
 from . import config, install, django
@@ -31,9 +31,14 @@ def execute():
                 django.setup_database(config_data)
             if config_data.starting_page:
                 django.load_starting_page(config_data)
-            print("All done!")
-            print("Get into '%s' directory and type 'python manage.py runserver' "
-                  "to start your project" % config_data.project_directory)
+            if config_data.aldryn:
+                print("Project created!")
+                print("aldryn boilerplate requires action before you can actually run the project.\n"
+                      "See documentation at http://aldryn-boilerplate.readthedocs.org/ for more information.")
+            else:
+                print("All done!")
+                print("Get into '%s' directory and type 'python manage.py runserver' "
+                      "to start your project" % config_data.project_directory)
     except Exception as e:
         if six.PY3:
             tb = sys.exc_info()[2]

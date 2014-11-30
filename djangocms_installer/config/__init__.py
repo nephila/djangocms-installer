@@ -4,11 +4,12 @@ import locale
 import os.path
 import six
 import sys
+import warnings
 
-from .. import compat, utils
 from . import data
-from djangocms_installer.config.internal import DbAction, validate_project
-from djangocms_installer.utils import less_than_version, supported_versions
+from .internal import DbAction, validate_project
+from .. import compat, utils
+from ..utils import less_than_version, supported_versions
 
 
 def parse(args):
@@ -38,10 +39,10 @@ def parse(args):
                         help='Languages to enable. Option can be provided multiple times, or as a comma separated list. '
                         'Only language codes supported by Django can be used here')
     parser.add_argument('--django-version', dest='django_version', action='store',
-                        choices=('1.4', '1.5', '1.6', 'stable'),
+                        choices=data.DJANGO_SUPPORTED,
                         default='stable', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
-                        choices=('2.4', '3.0', 'stable', 'develop'),
+                        choices=data.DJANGOCMS_SUPPORTED,
                         default='stable', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
                         required=True, default='',
@@ -68,6 +69,8 @@ def parse(args):
 
     # Advanced options. These have a predefined default and are not managed
     # by config wizard.
+    parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
+                        default=False, help="Use Aldryn-boilerplate as project template")
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
                         default=False, help="Don't run the configuration wizard, just use the provided values")
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
@@ -83,7 +86,7 @@ def parse(args):
     parser.add_argument('--no-user', '-u', dest='no_user', action='store_true',
                         default=False, help="Don't create the admin user")
     parser.add_argument('--template', dest='template', action='store',
-                        default=None, help="The path or URL to load the template from")
+                        default=None, help="The path or URL to load the django project template from.")
     parser.add_argument('--extra-settings', dest='extra_settings', action='store',
                         default=None, help="The path to an file that contains extra settings.")
 
@@ -158,6 +161,12 @@ def parse(args):
     # Convert version to numeric format for easier checking
     django_version, cms_version = supported_versions(args.django_version,
                                                      args.cms_version)
+    if django_version is None:
+        sys.stderr.write("Please provide a Django supported version: %s. Only Major.Minor version selector is accepted\n" % ", ".join(data.DJANGO_SUPPORTED))
+        sys.exit(6)
+    if django_version is None:
+        sys.stderr.write("Please provide a django CMS supported version: %s. Only Major.Minor version selector is accepted\n" % ", ".join(data.DJANGOCMS_SUPPORTED))
+        sys.exit(6)
 
     if not getattr(args, 'requirements_file'):
         requirements = []
@@ -165,17 +174,22 @@ def parse(args):
         # Django cms version check
         if args.cms_version == 'develop':
             requirements.append(data.DJANGOCMS_DEVELOP)
+            warnings.warn(data.VERSION_WARNING % ('develop', 'django CMS'))
         elif args.cms_version == 'rc':
             requirements.append(data.DJANGOCMS_RC)
         elif args.cms_version == 'beta':
             requirements.append(data.DJANGOCMS_BETA)
+            warnings.warn(data.VERSION_WARNING % ('beta', 'django CMS'))
         else:
             if args.cms_version == 'stable':
                 requirements.append("django-cms<%s" % less_than_version(data.DJANGOCMS_LATEST))
             else:
                 requirements.append("django-cms<%s" % less_than_version(args.cms_version))
-        if cms_version >= 3:
+
+        if cms_version == 3:
             requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
+        elif cms_version >= 3:
+            requirements.append(data.DJANGOCMS_3_1_REQUIREMENTS)
         else:
             requirements.append(data.DJANGOCMS_2_REQUIREMENTS)
 
@@ -183,17 +197,31 @@ def parse(args):
             requirements.append(args.db_driver)
         if args.filer:
             if cms_version >= 3:
-                requirements.append(data.FILER_REQUIREMENTS_CMS3)
+                if django_version < 1.7:
+                    requirements.append(data.PLUGINS_REQUIREMENTS_BASIC)
+                    requirements.append(data.FILER_REQUIREMENTS_CMS3)
+                else:
+                    requirements.append(data.PLUGINS_REQUIREMENTS_BASIC_DJANGO_17)
+                    requirements.append(data.FILER_REQUIREMENTS_CMS3)
             else:
                 requirements.append(data.FILER_REQUIREMENTS_CMS2)
         elif cms_version >= 3:
-            requirements.append(data.PLUGIN_REQUIREMENTS)
+            if django_version < 1.7:
+                requirements.append(data.PLUGINS_REQUIREMENTS_BASIC)
+                requirements.append(data.PLUGINS_REQUIREMENTS_NON_FILER)
+            else:
+                requirements.append(data.PLUGINS_REQUIREMENTS_BASIC_DJANGO_17)
+                requirements.append(data.PLUGINS_REQUIREMENTS_NON_FILER_DJANGO_17)
+        if args.aldryn:
+            requirements.append(data.ALDRYN_REQUIREMENTS)
 
         # Django version check
         if args.django_version == 'develop':
             requirements.append(data.DJANGO_DEVELOP)
+            warnings.warn(data.VERSION_WARNING % ('develop', 'Django'))
         elif args.django_version == 'beta':
             requirements.append(data.DJANGO_BETA)
+            warnings.warn(data.VERSION_WARNING % ('beta', 'Django'))
         else:
             if args.django_version == 'stable':
                 if cms_version < 3:
@@ -201,11 +229,15 @@ def parse(args):
                 else:
                     requirements.append("Django<%s" % less_than_version(data.DJANGO_LATEST_CMS_3))
             else:
-                requirements.append("Django<%s" % less_than_version(args.django_version))
+                requirements.append("Django<%s" % less_than_version(str(django_version)))
 
         # Timezone support
         if args.use_timezone:
             requirements.append('pytz')
+
+        # Requirements dependendent on django version
+        if django_version < 1.7:
+            requirements.append(data.DJANGO_16_REQUIREMENTS)
 
         # Reversion package version depends on django version
         if args.reversion:
@@ -213,12 +245,17 @@ def parse(args):
                 requirements.append(data.DJANGO_14_REVERSION)
             elif django_version == 1.5:
                 requirements.append(data.DJANGO_15_REVERSION)
-            else:
+            elif django_version == 1.6:
                 requirements.append(data.DJANGO_16_REVERSION)
+            else:
+                requirements.append(data.DJANGO_17_REVERSION)
 
         requirements.extend([data.DEFAULT_REQUIREMENTS])
 
         setattr(args, "requirements", "\n".join(requirements).strip())
+    if cms_version < 3 and args.aldryn:
+        sys.stderr.write("Aldryn Boilerplate is not compatible with django CMS versions < 3\n")
+        sys.exit(5)
 
     # Convenient shortcuts
     setattr(args, "cms_version", cms_version)

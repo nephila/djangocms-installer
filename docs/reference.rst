@@ -63,7 +63,12 @@ advanced usage:
   project;
 * ``--extra-settings``: Path to a file with extra variables to append to generated settings file. It doesn't need to be
   a Python file, its content is blindly copied in the project settings.
-
+*``--aldryn``, ``-a``: Use `aldryn-boilerplate`_; this downloads **aldryn-boilerplate** and copies it
+  into the project, adapting the project layout according to boilerplate specifications; the use
+  of aldryn-boilerplate requires manual actions, look at `aldryn-boilerplate documentation`_ for
+  further informations.
 
 .. _dj-database-url: https://github.com/kennethreitz/dj-database-url
 .. _django source: https://github.com/django/django/blob/master/django/conf/global_settings.py#L50
+.. _aldryn-boilerplate: https://github.com/aldryn/aldryn-boilerplate
+.. _aldryn-boilerplate documentation: http://aldryn-boilerplate.readthedocs.org/en/latest/general/requirements.html
