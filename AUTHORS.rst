@@ -12,9 +12,12 @@ Development Lead
 Contributors
 ------------
 
-* Carlo Ascani <c.ascani@nephila.it>
 * Aaron Boman
-* Henning Sprang <henning.sprang@gmail.com>
-* Nick Moore <nick@zoic.org>
+* Carlo Ascani <c.ascani@nephila.it>
+* Claudio Luck
 * Enkel Mitrushi
+* growlf
+* Henning Sprang <henning.sprang@gmail.com>
 * Jonas Obrist <ojiidotch@gmail.com>
+* Nick Moore <nick@zoic.org>
+* pipsqueaker
