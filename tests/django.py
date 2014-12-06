@@ -241,8 +241,8 @@ class TestDjango(IsolatedTestClass):
         ## checking for django options
         self.assertFalse('south' in project.settings.INSTALLED_APPS)
         for module in MIGRATION_MODULES_BASE:
-            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES_BASE.keys())
-            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES_BASE.values())
+            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
+            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
 
     def test_patch_31(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
