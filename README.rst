@@ -60,7 +60,9 @@ The current supported version matrix is the following:
 +----------------+-------------+-------------+-------------+-------------+
 | django CMS 2.4 | Supported   | Supported   | Unsupported | Unsupported |
 +----------------+-------------+-------------+-------------+-------------+
-| django CMS 3.0 | Supported   | Supported   | Supported   | WiP         |
+| django CMS 3.0 | Supported   | Supported   | Supported   | Supported   |
++----------------+-------------+-------------+-------------+-------------+
+| django CMS dev | Unsupported | Unsupported | Supported   | Supported   |
 +----------------+-------------+-------------+-------------+-------------+
 
 Any beta and develop version of Django and django CMS, by its very nature,
