@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from subprocess import CalledProcessError
 import sys
 
 from mock import patch
@@ -68,6 +69,18 @@ class TestMain(IsolatedTestClass):
                 main.execute()
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
+
+    def test_cleanup(self):
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(CalledProcessError):
+                    sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
+                                           '-len', '--cms-version=2.4',
+                                           '--django=1.7',
+                                           '-q', '-u', '-p'+self.project_dir,
+                                           'example_prj']
+                    main.execute()
+        self.assertFalse(os.path.exists(self.project_dir))
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django 1.4 does not support python3")
