@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
+import time
+
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
                         '--permissions', '--bootstrap', '--templates',
                         '--starting-page']
 
-DJANGOCMS_DEVELOP = '-e git+https://github.com/divio/django-cms@develop#egg=django-cms'
+DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_LATEST = '3.0'
 DJANGOCMS_SUPPORTED = ('2.4', '3.0', 'stable', 'develop')
 
-DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
+DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
 # this is not true, but it's the most recent version
 # compatible with all the CMS versions
 DJANGO_LATEST = '1.5'
