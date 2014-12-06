@@ -27,7 +27,7 @@ class BaseTestClass(unittest.TestCase):
             self.project_dir = None
 
     def _create_project_dir(self):
-        if 'USE_SHM' in os.environ:
+        if os.environ.get('USE_SHM', 'no') == 'yes':
             if os.path.exists('/run/shm'):
                 self.project_dir = tempfile.mkdtemp(dir='/run/shm')
             elif os.path.exists('/dev/shm'):
@@ -65,13 +65,23 @@ class IsolatedTestClass(BaseTestClass):
     def tearDown(self):
         super(IsolatedTestClass, self).tearDown()
         if os.path.exists(SYSTEM_ACTIVATE):
-            execfile(SYSTEM_ACTIVATE, dict(__file__=SYSTEM_ACTIVATE))
+            try:
+                execfile(SYSTEM_ACTIVATE, dict(__file__=SYSTEM_ACTIVATE))
+            except NameError:
+                with open(SYSTEM_ACTIVATE) as f:
+                    code = compile(f.read(), SYSTEM_ACTIVATE, 'exec')
+                exec(code, dict(__file__=SYSTEM_ACTIVATE))
             sys.executable = os.path.join(os.path.dirname(SYSTEM_ACTIVATE), 'python')
 
     def setUp(self):
         super(IsolatedTestClass, self).setUp()
         if os.path.exists(SYSTEM_ACTIVATE):
-            subprocess.check_call(['virtualenv', self.virtualenv_dir])
+            subprocess.check_call(['virtualenv', '--python=%s' % sys.executable, self.virtualenv_dir])
             activate_temp = os.path.join(self.virtualenv_dir, 'bin', 'activate_this.py')
-            execfile(activate_temp, dict(__file__=activate_temp))
+            try:
+                execfile(activate_temp, dict(__file__=activate_temp))
+            except NameError:
+                with open(activate_temp) as f:
+                    code = compile(f.read(), activate_temp, 'exec')
+                exec(code, dict(__file__=activate_temp))
             sys.executable = os.path.join(self.virtualenv_dir, 'bin', 'python')
