@@ -409,30 +409,6 @@ class TestDjango(BaseTestClass):
         del project
         del(sys.modules["%s.settings" % config_data.project_name])
 
-    def test_patch_31(self):
-        config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '--lang=en', '--cms=develop',
-                                    '--django-version=1.6',
-                                    '--timezone=Europe/Moscow',
-                                    '-f', '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_patch_31'])
-        install.requirements(config_data.requirements)
-        django.create_project(config_data)
-        django.patch_settings(config_data)
-        django.copy_files(config_data)
-        settings = open(config_data.settings_path).read()
-        urlconf = open(config_data.urlconf_path).read()
-
-        # settings is importable even in non django environment
-        sys.path.append(config_data.project_directory)
-
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
-
-        ## checking mptt / treebeard
-        self.assertFalse('mptt' in project.settings.INSTALLED_APPS)
-        self.assertTrue('treebeard' in project.settings.INSTALLED_APPS)
-
     @unittest.skip("Currently unsupported test")
     def test_database_setup_filer(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
