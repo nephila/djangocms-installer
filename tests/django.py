@@ -218,7 +218,7 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
         self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
 
-    @unittest.skipIf(sys.version_info == (2, 6),
+    @unittest.skipIf(sys.version_info <= (2, 7),
                      reason="django 1.7 does not support python 2.6")
     def test_patch_django_17_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
@@ -268,7 +268,7 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('mptt' in project.settings.INSTALLED_APPS)
         self.assertTrue('treebeard' in project.settings.INSTALLED_APPS)
 
-    @unittest.skipIf(sys.version_info == (2, 6),
+    @unittest.skipIf(sys.version_info <= (2, 7),
                      reason="django 1.7 does not support python 2.6")
     def test_patch_django_17_31(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
