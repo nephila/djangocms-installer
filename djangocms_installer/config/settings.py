@@ -57,9 +57,17 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.messages',
     'cms',
-    'mptt',
     'menus',
     'sekizai',
+)
+
+MPTT_APPS = (
+    'mptt',
+
+)
+
+TREEBEARD_APPS = (
+    'treebeard',
 )
 
 STANDARD_PLUGINS_2 = (
@@ -184,6 +192,20 @@ SOUTH_MIGRATION_MODULES = (
 MIGRATION_MODULES = (
     ('cms', 'cms.migrations_django'),
     ('menus', 'menus.migrations_django'),
+    ('djangocms_text_ckeditor', 'djangocms_text_ckeditor.migrations_django'),
+    ('djangocms_column', 'djangocms_column.migrations_django'),
+    ('djangocms_file', 'djangocms_file.migrations_django'),
+    ('djangocms_flash', 'djangocms_flash.migrations_django'),
+    ('djangocms_googlemap', 'djangocms_googlemap.migrations_django'),
+    ('djangocms_inherit', 'djangocms_inherit.migrations_django'),
+    ('djangocms_link', 'djangocms_link.migrations_django'),
+    ('djangocms_picture', 'djangocms_picture.migrations_django'),
+    ('djangocms_style', 'djangocms_style.migrations_django'),
+    ('djangocms_teaser', 'djangocms_teaser.migrations_django'),
+    ('djangocms_video', 'djangocms_video.migrations_django'),
+)
+
+MIGRATION_MODULES_3_1 = (
     ('djangocms_text_ckeditor', 'djangocms_text_ckeditor.migrations_django'),
     ('djangocms_column', 'djangocms_column.migrations_django'),
     ('djangocms_file', 'djangocms_file.migrations_django'),

@@ -224,9 +224,18 @@ def _build_settings(config_data):
     apps = list(vars.INSTALLED_APPS)
     if config_data.cms_version == 2.4:
         apps.extend(vars.CMS_2_APPLICATIONS)
+        apps.extend(vars.MPTT_APPS)
+        MIGRATION_MODULES = ()
+    elif config_data.cms_version == 3.0:
+        apps = list(vars.CMS_3_HEAD) + apps
+        apps.extend(vars.MPTT_APPS)
+        apps.extend(vars.CMS_3_APPLICATIONS)
+        MIGRATION_MODULES = vars.MIGRATION_MODULES
     else:
         apps = list(vars.CMS_3_HEAD) + apps
+        apps.extend(vars.TREEBEARD_APPS)
         apps.extend(vars.CMS_3_APPLICATIONS)
+        MIGRATION_MODULES = vars.MIGRATION_MODULES_3_1
 
     if config_data.cms_version == 2.4:
         if config_data.filer:
@@ -298,7 +307,7 @@ def _build_settings(config_data):
 
     if config_data.django_version >= 1.7:
         text.append("MIGRATION_MODULES = {\n%s%s\n}" % (
-            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.MIGRATION_MODULES])))
+            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in MIGRATION_MODULES])))
 
     if config_data.filer:
         text.append("THUMBNAIL_PROCESSORS = (\n%s%s\n)" % (

@@ -370,6 +370,10 @@ class TestDjango(BaseTestClass):
         self.assertTrue(project.settings.CMS_LANGUAGES['default']['redirect_on_fallback'])
         self.assertEqual(project.settings.CMS_LANGUAGES[1][0]['code'], 'en')
 
+        ## checking mptt / treebeard
+        self.assertTrue('mptt' in project.settings.INSTALLED_APPS)
+        self.assertFalse('treebeard' in project.settings.INSTALLED_APPS)
+
         ## checking for filer (optional) settings
         self.assertTrue('filer' in project.settings.INSTALLED_APPS)
         self.assertTrue('easy_thumbnails' in project.settings.INSTALLED_APPS)
