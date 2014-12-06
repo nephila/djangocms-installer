@@ -25,14 +25,14 @@ def check_install(config_data):
         try:
             im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.png"))
             im.thumbnail(size)
-        except IOError:
+        except IOError:  # pragma: no cover
             errors.append("Pillow is not compiled with PNG support, see 'Libraries installation issues' documentation section: http://djangocms-installer.readthedocs.org/en/latest/libraries.html.")
         try:
             im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.jpg"))
             im.thumbnail(size)
-        except IOError:
+        except IOError:  # pragma: no cover
             errors.append("Pillow is not compiled with JPEG support, see 'Libraries installation issues' documentation section: http://djangocms-installer.readthedocs.org/en/latest/libraries.html")
-    except ImportError:
+    except ImportError:  # pragma: no cover
         errors.append("Pillow is not installed check for installation errors and see 'Libraries installation issues' documentation section: http://djangocms-installer.readthedocs.org/en/latest/libraries.html")
 
     # PostgreSQL test
@@ -48,12 +48,12 @@ def check_install(config_data):
             import MySQLdb  # NOQA
         except ImportError:
             errors.append("MySQL driver is not installed, but you configured a MySQL database, please check your installation and see 'Libraries installation issues' documentation section: http://djangocms-installer.readthedocs.org/en/latest/libraries.html")
-    if errors:
+    if errors:  # pragma: no cover
         raise EnvironmentError("\n".join(errors))
 
 
 def requirements(requirements, is_file=False):
-    if is_file:
+    if is_file:  # pragma: no cover
         args = ['install', '-q', '-r', requirements]
     else:
         args = ['install', '-q']
@@ -64,7 +64,7 @@ def requirements(requirements, is_file=False):
     return True
 
 
-def cleanup(requirements):
+def cleanup(requirements):  # pragma: no cover
     args = ['uninstall', '-q', '-y']
     args.extend(requirements.split())
     exit_status = pip.main(args)

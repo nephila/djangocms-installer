@@ -5,7 +5,7 @@ import sys
 from . import compat
 
 
-def query_yes_no(question, default=None):
+def query_yes_no(question, default=None):  # pragma: no cover
     """
     Ask a yes/no question via `raw_input()` and return their answer.
 
