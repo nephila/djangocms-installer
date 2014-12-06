@@ -3,15 +3,17 @@ import os
 import sys
 import shutil
 import tempfile
+import subprocess
+
 if sys.version_info[:2] < (2, 7):
     import unittest2 as unittest
 else:
     import unittest
 
 from six import StringIO
-from mock import patch
 
-from djangocms_installer import install
+
+SYSTEM_ACTIVATE = os.path.join(os.path.dirname(sys.executable), 'activate_this.py')
 
 
 class BaseTestClass(unittest.TestCase):
@@ -44,3 +46,32 @@ class BaseTestClass(unittest.TestCase):
         self.stdout = StringIO()
         self.stderr = StringIO()
         self._create_project_dir()
+
+
+class IsolatedTestClass(BaseTestClass):
+    virtualenv_dir = None
+    activate_this = ''
+
+    def _remove_project_dir(self):
+        super(IsolatedTestClass, self)._remove_project_dir()
+        if self.virtualenv_dir:
+            shutil.rmtree(self.virtualenv_dir)
+            self.virtualenv_dir = None
+
+    def _create_project_dir(self):
+        super(IsolatedTestClass, self)._create_project_dir()
+        self.virtualenv_dir = tempfile.mkdtemp()
+
+    def tearDown(self):
+        super(IsolatedTestClass, self).tearDown()
+        if os.path.exists(SYSTEM_ACTIVATE):
+            execfile(SYSTEM_ACTIVATE, dict(__file__=SYSTEM_ACTIVATE))
+            sys.executable = os.path.join(os.path.dirname(SYSTEM_ACTIVATE), 'python')
+
+    def setUp(self):
+        super(IsolatedTestClass, self).setUp()
+        if os.path.exists(SYSTEM_ACTIVATE):
+            subprocess.check_call(['virtualenv', self.virtualenv_dir])
+            activate_temp = os.path.join(self.virtualenv_dir, 'bin', 'activate_this.py')
+            execfile(activate_temp, dict(__file__=activate_temp))
+            sys.executable = os.path.join(self.virtualenv_dir, 'bin', 'python')
