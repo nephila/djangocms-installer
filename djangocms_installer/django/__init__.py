@@ -25,8 +25,11 @@ def create_project(config_data):
     """
     Call django-admin to create the project structure
     """
-    from django.core.management import call_command
 
+    env = deepcopy(dict(os.environ))
+    env['DJANGO_SETTINGS_MODULE'] = (
+        '{0}.settings'.format(config_data.project_name))
+    env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
     kwargs = {}
     args = []
     if config_data.template:
@@ -36,8 +39,7 @@ def create_project(config_data):
         args.append(config_data.project_directory)
         if not os.path.exists(config_data.project_directory):
             os.makedirs(config_data.project_directory)
-
-    call_command('startproject', *args, **kwargs)
+    subprocess.check_call(['django-admin.py', 'startproject'] + args)
 
 
 def copy_files(config_data):
@@ -106,7 +108,7 @@ def patch_settings(config_data):
     extra_settings = ''
 
     if not os.path.exists(config_data.settings_path):
-        sys.stdout.write("Error while creating target project, please check the given configuration")
+        sys.stdout.write("Error while creating target project, please check the given configuration: %s" % config_data.settings_path)
         return sys.exit(5)
 
     with open(config_data.settings_path, 'r') as fd_original:
@@ -320,9 +322,9 @@ def _build_settings(config_data):
 
 def setup_database(config_data):
     with chdir(config_data.project_directory):
-        os.environ['DJANGO_SETTINGS_MODULE'] = (
+        env = deepcopy(dict(os.environ))
+        env['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        env = dict(os.environ)
         env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
 
         if config_data.django_version < 1.7:
@@ -350,9 +352,9 @@ def load_starting_page(config_data):
     Load starting page into the CMS
     """
     with chdir(config_data.project_directory):
-        os.environ['DJANGO_SETTINGS_MODULE'] = (
+        env = deepcopy(dict(os.environ))
+        env['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        env = dict(os.environ)
         env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
         subprocess.check_call([sys.executable, "starting_page.py"], env=env)
         for ext in ['py', 'pyc', 'json']:
