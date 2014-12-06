@@ -415,7 +415,7 @@ class TestDjango(BaseTestClass):
                                     '--django-version=1.6',
                                     '--timezone=Europe/Moscow',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_patch'])
+                                    '-p'+self.project_dir, 'example_path_patch_31'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
