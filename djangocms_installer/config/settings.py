@@ -189,32 +189,44 @@ SOUTH_MIGRATION_MODULES = (
     ('easy_thumbnails', 'easy_thumbnails.south_migrations'),
 )
 
-MIGRATION_MODULES = (
-    ('cms', 'cms.migrations_django'),
-    ('menus', 'menus.migrations_django'),
+MIGRATION_MODULES_COMMON = (
     ('djangocms_text_ckeditor', 'djangocms_text_ckeditor.migrations_django'),
     ('djangocms_column', 'djangocms_column.migrations_django'),
+    ('djangocms_inherit', 'djangocms_inherit.migrations_django'),
+    ('djangocms_style', 'djangocms_style.migrations_django'),
+)
+
+MIGRATION_MODULES_STANDARD = (
     ('djangocms_file', 'djangocms_file.migrations_django'),
     ('djangocms_flash', 'djangocms_flash.migrations_django'),
     ('djangocms_googlemap', 'djangocms_googlemap.migrations_django'),
-    ('djangocms_inherit', 'djangocms_inherit.migrations_django'),
     ('djangocms_link', 'djangocms_link.migrations_django'),
     ('djangocms_picture', 'djangocms_picture.migrations_django'),
-    ('djangocms_style', 'djangocms_style.migrations_django'),
     ('djangocms_teaser', 'djangocms_teaser.migrations_django'),
     ('djangocms_video', 'djangocms_video.migrations_django'),
 )
 
-MIGRATION_MODULES_3_1 = (
-    ('djangocms_text_ckeditor', 'djangocms_text_ckeditor.migrations_django'),
-    ('djangocms_column', 'djangocms_column.migrations_django'),
-    ('djangocms_file', 'djangocms_file.migrations_django'),
-    ('djangocms_flash', 'djangocms_flash.migrations_django'),
-    ('djangocms_googlemap', 'djangocms_googlemap.migrations_django'),
-    ('djangocms_inherit', 'djangocms_inherit.migrations_django'),
-    ('djangocms_link', 'djangocms_link.migrations_django'),
-    ('djangocms_picture', 'djangocms_picture.migrations_django'),
-    ('djangocms_style', 'djangocms_style.migrations_django'),
-    ('djangocms_teaser', 'djangocms_teaser.migrations_django'),
-    ('djangocms_video', 'djangocms_video.migrations_django'),
+MIGRATION_MODULES_FILER = (
+    ('filer', 'filer.migrations_django'),
+    ('cmsplugin_filer_image', 'cmsplugin_filer_image.migrations_django'),
+    ('cmsplugin_filer_file', 'cmsplugin_filer_file.migrations_django'),
+    ('cmsplugin_filer_folder', 'cmsplugin_filer_folder.migrations_django'),
+    ('cmsplugin_filer_link', 'cmsplugin_filer_link.migrations_django'),
+    ('cmsplugin_filer_teaser', 'cmsplugin_filer_teaser.migrations_django'),
+    ('cmsplugin_filer_utils', 'cmsplugin_filer_utils.migrations_django'),
+    ('cmsplugin_filer_video', 'cmsplugin_filer_video.migrations_django'),
 )
+
+MIGRATION_MODULES_BASE = (
+    ('cms', 'cms.migrations_django'),
+    ('menus', 'menus.migrations_django'),
+) + MIGRATION_MODULES_COMMON + MIGRATION_MODULES_STANDARD
+
+MIGRATION_MODULES_BASE_FILER = (
+    ('cms', 'cms.migrations_django'),
+    ('menus', 'menus.migrations_django'),
+) + MIGRATION_MODULES_COMMON + MIGRATION_MODULES_FILER
+
+MIGRATION_MODULES_3_1 = MIGRATION_MODULES_COMMON + MIGRATION_MODULES_STANDARD
+
+MIGRATION_MODULES_3_1_FILER = MIGRATION_MODULES_COMMON + MIGRATION_MODULES_FILER

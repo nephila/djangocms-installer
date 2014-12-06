@@ -232,12 +232,18 @@ def _build_settings(config_data):
         apps = list(vars.CMS_3_HEAD) + apps
         apps.extend(vars.MPTT_APPS)
         apps.extend(vars.CMS_3_APPLICATIONS)
-        MIGRATION_MODULES = vars.MIGRATION_MODULES
+        if config_data.filer:
+            MIGRATION_MODULES = vars.MIGRATION_MODULES_BASE_FILER
+        else:
+            MIGRATION_MODULES = vars.MIGRATION_MODULES_BASE
     else:
         apps = list(vars.CMS_3_HEAD) + apps
         apps.extend(vars.TREEBEARD_APPS)
         apps.extend(vars.CMS_3_APPLICATIONS)
-        MIGRATION_MODULES = vars.MIGRATION_MODULES_3_1
+        if config_data.filer:
+            MIGRATION_MODULES = vars.MIGRATION_MODULES_3_1_FILER
+        else:
+            MIGRATION_MODULES = vars.MIGRATION_MODULES_3_1
 
     if config_data.cms_version == 2.4:
         if config_data.filer:
