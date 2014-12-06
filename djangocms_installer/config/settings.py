@@ -57,9 +57,17 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.messages',
     'cms',
-    'mptt',
     'menus',
     'sekizai',
+)
+
+MPTT_APPS = (
+    'mptt',
+
+)
+
+TREEBEARD_APPS = (
+    'treebeard',
 )
 
 STANDARD_PLUGINS_2 = (

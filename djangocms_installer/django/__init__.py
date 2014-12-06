@@ -224,8 +224,14 @@ def _build_settings(config_data):
     apps = list(vars.INSTALLED_APPS)
     if config_data.cms_version == 2.4:
         apps.extend(vars.CMS_2_APPLICATIONS)
+        apps.extend(vars.MPTT_APPS)
+    elif config_data.cms_version == 3.0:
+        apps = list(vars.CMS_3_HEAD) + apps
+        apps.extend(vars.MPTT_APPS)
+        apps.extend(vars.CMS_3_APPLICATIONS)
     else:
         apps = list(vars.CMS_3_HEAD) + apps
+        apps.extend(vars.TREEBEARD_APPS)
         apps.extend(vars.CMS_3_APPLICATIONS)
 
     if config_data.cms_version == 2.4:
