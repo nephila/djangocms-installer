@@ -5,7 +5,8 @@ import sqlite3
 import sys
 
 from djangocms_installer import config, django, install
-from djangocms_installer.config.settings import MIGRATION_MODULES
+from djangocms_installer.config.settings import (MIGRATION_MODULES_BASE,
+                                                 MIGRATION_MODULES_3_1_FILER)
 from .base import unittest, IsolatedTestClass
 
 
@@ -161,30 +162,6 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
         self.assertTrue('compressor' in project.settings.INSTALLED_APPS)
 
-    def test_patch_django_17_settings(self):
-        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
-        config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '--lang=en', '--extra-settings=%s' % extra_path,
-                                    '--django-version=1.7',
-                                    '--cms-version=stable', '--timezone=Europe/Moscow',
-                                    '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_17_settigns'])
-        install.requirements(config_data.requirements)
-        django.create_project(config_data)
-        django.patch_settings(config_data)
-        django.copy_files(config_data)
-        # settings is importable even in non django environment
-        sys.path.append(config_data.project_directory)
-
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
-
-        ## checking for django options
-        self.assertFalse('south' in project.settings.INSTALLED_APPS)
-        for module in MIGRATION_MODULES:
-            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
-            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
-
     def test_patch_django_16(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
@@ -241,6 +218,32 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
         self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
 
+    @unittest.skipIf(sys.version_info == (2, 6),
+                     reason="django 1.7 does not support python 2.6")
+    def test_patch_django_17_settings(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.7',
+                                    '--cms-version=stable', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_17_settings'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name,
+                             globals(), locals(), ['settings'])
+
+        ## checking for django options
+        self.assertFalse('south' in project.settings.INSTALLED_APPS)
+        for module in MIGRATION_MODULES_BASE:
+            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES_BASE.keys())
+            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES_BASE.values())
+
     def test_patch_31(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--cms=develop',
@@ -264,6 +267,32 @@ class TestDjango(IsolatedTestClass):
         ## checking mptt / treebeard
         self.assertFalse('mptt' in project.settings.INSTALLED_APPS)
         self.assertTrue('treebeard' in project.settings.INSTALLED_APPS)
+
+    @unittest.skipIf(sys.version_info == (2, 6),
+                     reason="django 1.7 does not support python 2.6")
+    def test_patch_django_17_31(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.7', '-f',
+                                    '--cms-version=develop', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_17_31_settings'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name,
+                             globals(), locals(), ['settings'])
+
+        ## checking for django options
+        self.assertFalse('south' in project.settings.INSTALLED_APPS)
+        for module in MIGRATION_MODULES_3_1_FILER:
+            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
+            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
