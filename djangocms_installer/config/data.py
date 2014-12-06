@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
+import time
+
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
                         '--permissions', '--bootstrap', '--templates',
                         '--starting-page']
 
-DJANGOCMS_DEVELOP = '-e git+https://github.com/divio/django-cms@develop#egg=django-cms'
+DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_LATEST = '3.0'
 DJANGOCMS_SUPPORTED = ('2.4', '3.0', 'stable', 'develop')
 
-DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip'
+DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
 # this is not true, but it's the most recent version
 # compatible with all the CMS versions
 DJANGO_LATEST = '1.5'
@@ -60,22 +62,22 @@ djangocms-video
 """
 
 PLUGINS_REQUIREMENTS_BASIC_DJANGO_17 = """
-https://github.com/divio/djangocms-admin-style/archive/master.zip
-https://github.com/divio/djangocms-column/archive/master.zip
-https://github.com/divio/djangocms-flash/archive/master.zip
-https://github.com/divio/djangocms-googlemap/archive/master.zip
-https://github.com/divio/djangocms-inherit/archive/master.zip
-https://github.com/divio/djangocms-style/archive/master.zip
-https://github.com/divio/djangocms-text-ckeditor/archive/master.zip
-"""
+https://github.com/divio/djangocms-admin-style/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-column/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-flash/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-googlemap/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-inherit/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-style/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?%(bust)s
+""" % {'bust': time.time()}
 
 PLUGINS_REQUIREMENTS_NON_FILER_DJANGO_17 = """
-https://github.com/divio/djangocms-file/archive/master.zip
-https://github.com/divio/djangocms-link/archive/master.zip
-https://github.com/divio/djangocms-picture/archive/master.zip
-https://github.com/divio/djangocms-teaser/archive/master.zip
-https://github.com/divio/djangocms-video/archive/master.zip
-"""
+https://github.com/divio/djangocms-file/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-link/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-picture/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-teaser/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-video/archive/master.zip?%(bust)s
+""" % {'bust': time.time()}
 
 
 DJANGO_17_REVERSION = "django-reversion>=1.8.2"

@@ -25,8 +25,11 @@ def create_project(config_data):
     """
     Call django-admin to create the project structure
     """
-    from django.core.management import call_command
 
+    env = deepcopy(dict(os.environ))
+    env['DJANGO_SETTINGS_MODULE'] = (
+        '{0}.settings'.format(config_data.project_name))
+    env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
     kwargs = {}
     args = []
     if config_data.template:
@@ -36,8 +39,7 @@ def create_project(config_data):
         args.append(config_data.project_directory)
         if not os.path.exists(config_data.project_directory):
             os.makedirs(config_data.project_directory)
-
-    call_command('startproject', *args, **kwargs)
+    subprocess.check_call(['django-admin.py', 'startproject'] + args)
 
 
 def copy_files(config_data):
@@ -106,7 +108,7 @@ def patch_settings(config_data):
     extra_settings = ''
 
     if not os.path.exists(config_data.settings_path):
-        sys.stdout.write("Error while creating target project, please check the given configuration")
+        sys.stdout.write("Error while creating target project, please check the given configuration: %s" % config_data.settings_path)
         return sys.exit(5)
 
     with open(config_data.settings_path, 'r') as fd_original:
@@ -224,9 +226,24 @@ def _build_settings(config_data):
     apps = list(vars.INSTALLED_APPS)
     if config_data.cms_version == 2.4:
         apps.extend(vars.CMS_2_APPLICATIONS)
+        apps.extend(vars.MPTT_APPS)
+        MIGRATION_MODULES = ()
+    elif config_data.cms_version == 3.0:
+        apps = list(vars.CMS_3_HEAD) + apps
+        apps.extend(vars.MPTT_APPS)
+        apps.extend(vars.CMS_3_APPLICATIONS)
+        if config_data.filer:
+            MIGRATION_MODULES = vars.MIGRATION_MODULES_BASE_FILER
+        else:
+            MIGRATION_MODULES = vars.MIGRATION_MODULES_BASE
     else:
         apps = list(vars.CMS_3_HEAD) + apps
+        apps.extend(vars.TREEBEARD_APPS)
         apps.extend(vars.CMS_3_APPLICATIONS)
+        if config_data.filer:
+            MIGRATION_MODULES = vars.MIGRATION_MODULES_3_1_FILER
+        else:
+            MIGRATION_MODULES = vars.MIGRATION_MODULES_3_1
 
     if config_data.cms_version == 2.4:
         if config_data.filer:
@@ -298,7 +315,7 @@ def _build_settings(config_data):
 
     if config_data.django_version >= 1.7:
         text.append("MIGRATION_MODULES = {\n%s%s\n}" % (
-            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.MIGRATION_MODULES])))
+            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in MIGRATION_MODULES])))
 
     if config_data.filer:
         text.append("THUMBNAIL_PROCESSORS = (\n%s%s\n)" % (
@@ -311,9 +328,9 @@ def _build_settings(config_data):
 
 def setup_database(config_data):
     with chdir(config_data.project_directory):
-        os.environ['DJANGO_SETTINGS_MODULE'] = (
+        env = deepcopy(dict(os.environ))
+        env['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        env = dict(os.environ)
         env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
 
         if config_data.django_version < 1.7:
@@ -341,9 +358,9 @@ def load_starting_page(config_data):
     Load starting page into the CMS
     """
     with chdir(config_data.project_directory):
-        os.environ['DJANGO_SETTINGS_MODULE'] = (
+        env = deepcopy(dict(os.environ))
+        env['DJANGO_SETTINGS_MODULE'] = (
             '{0}.settings'.format(config_data.project_name))
-        env = dict(os.environ)
         env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
         subprocess.check_call([sys.executable, "starting_page.py"], env=env)
         for ext in ['py', 'pyc', 'json']:

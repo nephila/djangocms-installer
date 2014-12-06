@@ -5,10 +5,10 @@ import sys
 from mock import patch
 
 from djangocms_installer import main
-from .base import BaseTestClass
+from .base import unittest, IsolatedTestClass
 
 
-class TestMain(BaseTestClass):
+class TestMain(IsolatedTestClass):
 
     def test_requirements_invocation(self):
         with patch('sys.stdout', self.stdout):
@@ -58,7 +58,7 @@ class TestMain(BaseTestClass):
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
 
-    def manual_test_develop(self):
+    def test_develop(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
@@ -69,7 +69,9 @@ class TestMain(BaseTestClass):
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
 
-    def manual_test_django_1_4(self):
+    @unittest.skipIf(sys.version_info >= (3, 0),
+                     reason="django 1.4 does not support python3")
+    def test_django_1_4(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
@@ -80,7 +82,9 @@ class TestMain(BaseTestClass):
                 # Checking we successfully completed the whole process
                 self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
 
-    def manual_test_django_1_5(self):
+    @unittest.skipIf(sys.version_info >= (3, 0),
+                     reason="django 1.5 does not support python3")
+    def test_django_1_5(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
