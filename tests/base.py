@@ -22,7 +22,7 @@ class BaseTestClass(unittest.TestCase):
     project_dir = None
 
     def _remove_project_dir(self):
-        if self.project_dir:
+        if self.project_dir and os.path.exists(self.project_dir):
             shutil.rmtree(self.project_dir)
             self.project_dir = None
 

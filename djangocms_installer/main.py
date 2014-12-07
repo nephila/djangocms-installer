@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
+import os
+import shutil
 import six
 import sys
 
@@ -40,6 +42,9 @@ def execute():
                 print("Get into '%s' directory and type 'python manage.py runserver' "
                       "to start your project" % config_data.project_directory)
     except Exception as e:
+        # Clean up your own mess
+        if os.path.exists(config_data.project_directory):
+            shutil.rmtree(config_data.project_directory)
         if six.PY3:
             tb = sys.exc_info()[2]
             raise EnvironmentError("%s\nDocumentation available at http://djangocms-installer.rtfd.org" % e).with_traceback(tb)
