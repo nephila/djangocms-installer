@@ -9,6 +9,7 @@ History
 * Improved support for Django 1.7 and django CMS develop (3.1)
 * Totally new test strategy
 * Reverted -I parameter to install packages
+* Improved support for cleanup after failure
 
 0.6.0 (2014-11-30)
 ++++++++++++++++++
