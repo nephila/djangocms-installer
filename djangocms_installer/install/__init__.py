@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 import os.path
-import pip
-from pip.exceptions import InstallationError
-from pip.status_codes import SUCCESS
 
 
 def check_install(config_data):
@@ -53,11 +50,15 @@ def check_install(config_data):
 
 
 def requirements(requirements, is_file=False):
+    import pip
+    from pip.exceptions import InstallationError
+    from pip.status_codes import SUCCESS
+
     if is_file:  # pragma: no cover
         args = ['install', '-q', '-r', requirements]
     else:
         args = ['install', '-q']
-        args.extend(requirements.split())
+        args.extend(['%s' % package for package in requirements.split()])
     exit_status = pip.main(args)
     if exit_status != SUCCESS:
         raise InstallationError("Error while installing requirements. Check pip log file for error details.")
@@ -65,6 +66,8 @@ def requirements(requirements, is_file=False):
 
 
 def cleanup(requirements):  # pragma: no cover
+    import pip
+
     args = ['uninstall', '-q', '-y']
     args.extend(requirements.split())
     exit_status = pip.main(args)
