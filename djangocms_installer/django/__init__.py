@@ -59,8 +59,8 @@ def copy_files(config_data):
         aldrynzip = requests.get(data.ALDRYN_BOILERPLATE)
         zip_open = zipfile.ZipFile(BytesIO(aldrynzip.content))
         zip_open.extractall(path=tmpdir)
-        for component in os.listdir(os.path.join(tmpdir, 'aldryn-boilerplate-master')):
-            src = os.path.join(tmpdir, 'aldryn-boilerplate-master', component)
+        for component in os.listdir(os.path.join(tmpdir, 'aldryn-boilerplate-standard-master')):
+            src = os.path.join(tmpdir, 'aldryn-boilerplate-standard-master', component)
             dst = os.path.join(config_data.project_directory, component)
             if os.path.isfile(src):
                 shutil.copy(src, dst)
