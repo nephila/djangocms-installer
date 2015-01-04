@@ -41,11 +41,13 @@ class BaseTestClass(unittest.TestCase):
         self._remove_project_dir()
         self.stdout = None
         self.stderr = None
+        sys.path = self.syspath
 
     def setUp(self):
         self.stdout = StringIO()
         self.stderr = StringIO()
         self._create_project_dir()
+        self.syspath = sys.path
 
 
 class IsolatedTestClass(BaseTestClass):

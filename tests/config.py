@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-import tempfile
 
 from mock import patch
 from six import StringIO
