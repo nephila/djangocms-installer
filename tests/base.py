@@ -57,15 +57,17 @@ class IsolatedTestClass(BaseTestClass):
     def _remove_project_dir(self):
         super(IsolatedTestClass, self)._remove_project_dir()
         if self.virtualenv_dir:
+            print("remove virtualenv", self.virtualenv_dir)
             shutil.rmtree(self.virtualenv_dir)
             self.virtualenv_dir = None
 
     def _create_project_dir(self):
         super(IsolatedTestClass, self)._create_project_dir()
         self.virtualenv_dir = tempfile.mkdtemp()
+        print("creating virtualenv", self.virtualenv_dir)
 
     def tearDown(self):
-        super(IsolatedTestClass, self).tearDown()
+        print("deactivating virtualenv", self.virtualenv_dir)
         if os.path.exists(SYSTEM_ACTIVATE):
             try:
                 execfile(SYSTEM_ACTIVATE, dict(__file__=SYSTEM_ACTIVATE))
@@ -74,11 +76,12 @@ class IsolatedTestClass(BaseTestClass):
                     code = compile(f.read(), SYSTEM_ACTIVATE, 'exec')
                 exec(code, dict(__file__=SYSTEM_ACTIVATE))
             sys.executable = os.path.join(os.path.dirname(SYSTEM_ACTIVATE), 'python')
+        super(IsolatedTestClass, self).tearDown()
 
     def setUp(self):
         super(IsolatedTestClass, self).setUp()
         if os.path.exists(SYSTEM_ACTIVATE):
-            subprocess.check_call(['virtualenv', '--python=%s' % sys.executable, self.virtualenv_dir])
+            subprocess.check_call(['virtualenv', '-q', '--python=%s' % sys.executable, self.virtualenv_dir])
             activate_temp = os.path.join(self.virtualenv_dir, 'bin', 'activate_this.py')
             try:
                 execfile(activate_temp, dict(__file__=activate_temp))
@@ -86,4 +89,5 @@ class IsolatedTestClass(BaseTestClass):
                 with open(activate_temp) as f:
                     code = compile(f.read(), activate_temp, 'exec')
                 exec(code, dict(__file__=activate_temp))
+            print("activating virtualenv", self.virtualenv_dir)
             sys.executable = os.path.join(self.virtualenv_dir, 'bin', 'python')

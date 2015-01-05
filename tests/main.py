@@ -89,6 +89,7 @@ class TestMain(IsolatedTestClass):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                        '-len', '--django-version=1.4',
+                                       '--cms-version=3.0',
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()
@@ -102,6 +103,7 @@ class TestMain(IsolatedTestClass):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                        '-len', '--django-version=1.5',
+                                       '--cms-version=3.0',
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()

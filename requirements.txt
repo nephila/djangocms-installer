@@ -1,5 +1,5 @@
 dj-database-url
-pip>=1.5
+pip
 six
 argparse
 requests
