@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import time
 
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
