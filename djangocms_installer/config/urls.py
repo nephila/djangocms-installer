@@ -1,3 +1,4 @@
+from __future__ import print_function
 from cms.sitemaps import CMSSitemap
 from django.conf.urls import *  # NOQA
 from django.conf.urls.i18n import i18n_patterns
