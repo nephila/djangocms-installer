@@ -3,7 +3,7 @@
 History
 -------
 
-0.7.0 (unreleased)
+0.7.0 (2015-01-10)
 ++++++++++++++++++
 
 * Improved support for Django 1.7 and django CMS develop (3.1)
