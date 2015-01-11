@@ -44,7 +44,7 @@ def execute():
     except Exception as e:
         # Clean up your own mess
         if os.path.exists(config_data.project_directory):
-            shutil.rmtree(config_data.project_directory)
+            shutil.rmtree(config_data.project_directory, True)
         if six.PY3:
             tb = sys.exc_info()[2]
             raise EnvironmentError("%s\nDocumentation available at http://djangocms-installer.rtfd.org" % e).with_traceback(tb)
