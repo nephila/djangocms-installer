@@ -1,14 +1,15 @@
 Usage
 =====
-**djangocms installer** can be executed both as a batch script and as a command line
-wizard.
+**djangocms installer** works as a batch script and as a command line wizard.
 
 .. _wizard_mode:
 
 Wizard mode
 -----------
 
-Call it with a project name and a directory path to install the project into::
+Wizard mode works by asking relevant questions to the user; it must be called with
+the `-p` option (which is the project main directory) and the `project_name`
+argument::
 
     djangocms -p /path/whatever project_name
 
