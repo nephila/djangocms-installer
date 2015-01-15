@@ -3,6 +3,13 @@
 History
 -------
 
+0.7.1 (2015-01-15)
+++++++++++++++++++
+
+* Ask for permission before cleanup
+* Clarifiy the `-p` parameter
+* Check if the project directory is empty before proceeding
+
 0.7.0 (2015-01-10)
 ++++++++++++++++++
 
