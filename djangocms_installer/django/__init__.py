@@ -67,6 +67,7 @@ def copy_files(config_data):
                 shutil.copy(src, dst)
             else:
                 shutil.copytree(src, dst)
+        shutil.rmtree(tmpdir)
     else:
         media_project = os.path.join(config_data.project_directory, 'media')
         static_main = os.path.join(config_data.project_path, 'static')

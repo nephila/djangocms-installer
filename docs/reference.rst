@@ -9,7 +9,7 @@ Required arguments
 You must always provide the following arguments when invoking **djangocms installer**:
 
 * ``project_name``: Name of the project to be created
-* ``--parent-dir``, ``-p``: Optional project parent directory;
+* ``--parent-dir``, ``-p``: Optional project directory;
 
 
 Wizard arguments
@@ -34,12 +34,12 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--templates``: Use a custom directory as template source; is checked to be a valid path, otherwise the
   shipped templates are used
 
-.. note:: the ``stable`` keyword is expanded to the following Django version:
+.. note:: for Django the ``stable`` keyword is expanded to the following Django version:
 
    * if django CMS version is 3.0 or develop: **stable** is expanded to Django==1.6;
    * if django CMS version is 2.4: **stable** is expanded to Django==1.5;
 
-.. note:: the ``stable`` keyword is expanded to the latest django CMS stable version (3.0)
+.. note:: the django CMS ``stable`` keyword is expanded to the latest django CMS stable version (3.0)
 
 
 Advanced options
