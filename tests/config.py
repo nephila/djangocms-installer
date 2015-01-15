@@ -154,7 +154,23 @@ class TestConfig(BaseTestClass):
                         '-p'+self.project_dir,
                         prj_dir])
                     self.assertEqual(conf_data.project_path, existing_path)
-        self.assertTrue(self.stderr.getvalue().find("Path '%s' already exists" % existing_path) > -1)
+        self.assertTrue(self.stderr.getvalue().find("Path '%s' already exists and is not empty" % self.project_dir) > -1)
+
+    def test_invalid_project_dir(self):
+        prj_dir = 'example_prj'
+        existing_path = os.path.join(self.project_dir, 'a_file')
+        with open(existing_path, 'w') as f:
+            f.write('')
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '-p'+self.project_dir,
+                        prj_dir])
+                    self.assertEqual(conf_data.project_path, existing_path)
+        self.assertTrue(self.stderr.getvalue().find("Path '%s' already exists and is not empty" % self.project_dir) > -1)
 
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), '2.5')
