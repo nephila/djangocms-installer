@@ -11,6 +11,12 @@ You must always provide the following arguments when invoking **djangocms instal
 * ``project_name``: Name of the project to be created
 * ``--parent-dir``, ``-p``: Optional project directory;
 
+.. warning:: project directory dir is the main project directory (the one where ``manage.py``
+             will be created); by default the installer check if it's empty (minus hidden files)
+             to ensure that you're running in a clean environment. If you want to use a
+             non-empty directory use the ``-s`` flag;
+
+
 
 Wizard arguments
 ----------------
@@ -67,6 +73,11 @@ advanced usage:
   into the project, adapting the project layout according to boilerplate specifications; the use
   of aldryn-boilerplate requires manual actions, look at `aldryn-boilerplate documentation`_ for
   further informations.
+*``--skip-empty-check``, ``-s``: Skip the check if the project dir contains files or directory;
+  in case of error when setting up the project, ``djangocms-installer`` may ask you to remove
+  the directory, be careful if using this option as you may remove files not related to the
+  project set up by the installer.
+
 
 .. _dj-database-url: https://github.com/kennethreitz/dj-database-url
 .. _django source: https://github.com/django/django/blob/master/django/conf/global_settings.py#L50
