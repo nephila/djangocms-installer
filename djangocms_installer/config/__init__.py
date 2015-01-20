@@ -269,7 +269,8 @@ def parse(args):
     setattr(args, 'urlconf_path',
             os.path.join(args.project_directory, args.project_name, 'urls.py').strip())
 
-    if os.path.exists(args.project_directory) and os.listdir(args.project_directory):
+    if (os.path.exists(args.project_directory) and
+            [path for path in os.listdir(args.project_directory) if not path.startswith('.')]):
         sys.stderr.write("Path '%s' already exists and is not empty, "
                          "please choose a different one\n" % args.project_directory)
         sys.exit(4)
