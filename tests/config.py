@@ -172,6 +172,20 @@ class TestConfig(BaseTestClass):
                     self.assertEqual(conf_data.project_path, existing_path)
         self.assertTrue(self.stderr.getvalue().find("Path '%s' already exists and is not empty" % self.project_dir) > -1)
 
+    def test_invalid_project_dir_skip(self):
+        prj_dir = 'example_prj'
+        existing_path = os.path.join(self.project_dir, 'a_file')
+        with open(existing_path, 'w') as f:
+            f.write('')
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                conf_data = config.parse([
+                    '-q', '-s',
+                    '--db=postgres://user:pwd@host/dbname',
+                    '-p'+self.project_dir,
+                    prj_dir])
+        self.assertFalse(self.stderr.getvalue().find("Path '%s' already exists and is not empty" % self.project_dir) > -1)
+
     def test_valid_project_dir(self):
         prj_dir = 'example_prj'
         existing_path = os.path.join(self.project_dir, '.hidden_file')

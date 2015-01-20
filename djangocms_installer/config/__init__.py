@@ -90,6 +90,9 @@ def parse(args):
                         default=None, help="The path or URL to load the django project template from.")
     parser.add_argument('--extra-settings', dest='extra_settings', action='store',
                         default=None, help="The path to an file that contains extra settings.")
+    parser.add_argument('--skip-empty-check', '-s', dest='skip_project_dir_check',
+                        action='store_true',
+                        default=False, help="Skip the check if project dir is empty.")
 
     args = parser.parse_args(args)
 
@@ -100,6 +103,22 @@ def parse(args):
                          u"Please use only numbers, letters and underscores.\n"
                          % args.project_name)
         sys.exit(3)
+
+    # Checking the given path
+    setattr(args, 'project_path',
+            os.path.join(args.project_directory, args.project_name).strip())
+    if not args.skip_project_dir_check:
+        if (os.path.exists(args.project_directory) and
+                [path for path in os.listdir(args.project_directory) if not path.startswith('.')]):
+            sys.stderr.write("Path '%s' already exists and is not empty, "
+                             "please choose a different one\nIf you want to use this path anyway "
+                             "use the -s flag to skip this check." % args.project_directory)
+            sys.exit(4)
+
+    if os.path.exists(args.project_path):
+        sys.stderr.write("Path '%s' already exists, "
+                         "please choose a different one\n" % args.project_path)
+        sys.exit(4)
 
     for item in data.CONFIGURABLE_OPTIONS:
         action = parser._option_string_actions[item]
@@ -262,23 +281,10 @@ def parse(args):
     # Convenient shortcuts
     setattr(args, "cms_version", cms_version)
     setattr(args, "django_version", django_version)
-    setattr(args, 'project_path',
-            os.path.join(args.project_directory, args.project_name).strip())
     setattr(args, 'settings_path',
             os.path.join(args.project_directory, args.project_name, 'settings.py').strip())
     setattr(args, 'urlconf_path',
             os.path.join(args.project_directory, args.project_name, 'urls.py').strip())
-
-    if (os.path.exists(args.project_directory) and
-            [path for path in os.listdir(args.project_directory) if not path.startswith('.')]):
-        sys.stderr.write("Path '%s' already exists and is not empty, "
-                         "please choose a different one\n" % args.project_directory)
-        sys.exit(4)
-
-    if os.path.exists(args.project_path):
-        sys.stderr.write("Path '%s' already exists, "
-                         "please choose a different one\n" % args.project_path)
-        sys.exit(4)
 
     return args
 
