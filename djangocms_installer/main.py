@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-from distutils.util import strtobool
 import logging
 import os
-import shutil
 import six
 import sys
 
 
-from . import config, install, django
+from . import config, django, install
 
 
 def execute():
@@ -46,18 +44,7 @@ def execute():
                                  "to start your project\n" % os.path.abspath(config_data.project_directory))
     except Exception as e:
         # Clean up your own mess
-        if os.path.exists(config_data.project_directory):
-            choice = 'N'
-            if config_data.noinput is False:
-                sys.stdout.write("Failure occurred. Do you want to cleanup by removing %s? "
-                                 "[Y/N] " % os.path.abspath(config_data.project_directory))
-                choice = raw_input().lower()
-            else:
-                sys.stdout.write("Failure occurred.\n")
-            if strtobool(choice) or config_data.noinput:
-                sys.stdout.write("Removing everything under %s\n"
-                                 "" % os.path.abspath(config_data.project_directory))
-                shutil.rmtree(config_data.project_directory, True)
+        install.cleanup_directory(config_data)
         if six.PY3:
             tb = sys.exc_info()[2]
             raise EnvironmentError("%s\nDocumentation available at "
