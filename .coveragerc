@@ -8,6 +8,7 @@ omit =
     djangocms_installer/compat.py
     djangocms_installer/config/urls.py
     djangocms_installer/config/settings.py
+    tests/*
 
 [report]
 exclude_lines =
