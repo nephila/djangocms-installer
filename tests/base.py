@@ -57,14 +57,17 @@ class IsolatedTestClass(BaseTestClass):
 
     def _remove_project_dir(self):
         super(IsolatedTestClass, self)._remove_project_dir()
-        if self.virtualenv_dir:
+        if self.virtualenv_dir and not os.environ.get('INSTALLER_TEST_VIRTUALENV', False):
             print("remove virtualenv", self.virtualenv_dir)
             shutil.rmtree(self.virtualenv_dir)
             self.virtualenv_dir = None
 
     def _create_project_dir(self):
         super(IsolatedTestClass, self)._create_project_dir()
-        self.virtualenv_dir = tempfile.mkdtemp()
+        if os.environ.get('INSTALLER_TEST_VIRTUALENV', False):
+            self.virtualenv_dir = os.environ.get('INSTALLER_TEST_VIRTUALENV')
+        else:
+            self.virtualenv_dir = tempfile.mkdtemp()
         print("creating virtualenv", self.virtualenv_dir)
 
     def tearDown(self):

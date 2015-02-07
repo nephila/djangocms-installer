@@ -100,7 +100,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(self.stderr.getvalue().find("--cms-version/-v: invalid choice: '2.6'") > -1)
 
     def test_invalid_project_name(self):
-        #with patch('sys.stdout', self.stdout):
+        with patch('sys.stdout', self.stdout):
             stderr_tmp = StringIO()
             with patch('sys.stderr', stderr_tmp):
                 with self.assertRaises(SystemExit) as error:

@@ -6,7 +6,7 @@ import sys
 
 from mock import patch
 
-from djangocms_installer import main
+from djangocms_installer import main, config, install
 from .base import unittest, IsolatedTestClass
 
 
@@ -35,6 +35,21 @@ class TestMain(IsolatedTestClass):
         self.assertTrue(stdout.find('djangocms-style') > -1)
         self.assertTrue(stdout.find('djangocms-teaser') > -1)
         self.assertTrue(stdout.find('djangocms-video') > -1)
+
+    def cleanup_ask(self):
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                conf_data = config.parse([
+                    '-q',
+                    '--db=postgres://user:pwd@host/dbname',
+                    '--i18n=no',
+                    '--cms-version=2.4',
+                    '--django-version=stable',
+                    '-f',
+                    '-p'+self.project_dir,
+                    'example_prj'])
+                install.cleanup_directory(conf_data)
+                self.assertFalse(os.path.exists(self.project_dir))
 
     def test_main_invocation(self):
         with patch('sys.stdout', self.stdout):

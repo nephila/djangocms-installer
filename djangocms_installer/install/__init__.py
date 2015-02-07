@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from distutils.util import strtobool
 import os.path
+import shutil
 import subprocess
+import sys
+
+from djangocms_installer import compat
 
 
 def check_install(config_data):
@@ -69,3 +74,21 @@ def cleanup(requirements):  # pragma: no cover
     args.extend(requirements.split())
     exit_status = pip.main(args)
     return True
+
+
+def cleanup_directory(config_data):
+    """
+    Asks user for removal of project directory and eventually removes it
+    """
+    if os.path.exists(config_data.project_directory):
+        choice = 'N'
+        if config_data.noinput is False:
+            sys.stdout.write("Failure occurred. Do you want to cleanup by removing %s? "
+                             "[Y/N] " % os.path.abspath(config_data.project_directory))
+            choice = compat.input().lower()
+        else:
+            sys.stdout.write("Failure occurred.\n")
+        if strtobool(choice) or config_data.noinput:
+            sys.stdout.write("Removing everything under %s\n"
+                             "" % os.path.abspath(config_data.project_directory))
+            shutil.rmtree(config_data.project_directory, True)
