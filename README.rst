@@ -2,17 +2,22 @@
 django CMS Installer
 ====================
 
-.. image:: https://badge.fury.io/py/djangocms-installer.png
-    :target: http://badge.fury.io/py/djangocms-installer
-    
-.. image:: https://travis-ci.org/nephila/djangocms-installer.png?branch=master
-        :target: https://travis-ci.org/nephila/djangocms-installer
 
-.. image:: https://pypip.in/d/djangocms-installer/badge.png
+.. image:: https://img.shields.io/pypi/v/djangocms-installer.svg
         :target: https://pypi.python.org/pypi/djangocms-installer
+        :alt: Latest PyPI version
 
-.. image:: https://coveralls.io/repos/nephila/djangocms-installer/badge.png?branch=master
-        :target: https://coveralls.io/r/nephila/djangocms-installer?branch=master
+.. image:: https://img.shields.io/travis/nephila/djangocms-installer.svg
+        :target: https://travis-ci.org/nephila/djangocms-installer
+        :alt: Latest Travis CI build status
+
+.. image:: https://img.shields.io/pypi/dm/djangocms-installer.svg
+        :target: https://pypi.python.org/pypi/djangocms-installer
+        :alt: Monthly downloads
+
+.. image:: https://coveralls.io/repos/nephila/djangocms-installer/badge.png
+        :target: https://coveralls.io/r/nephila/djangocms-installer
+        :alt: Test coverage
 
 Command to easily bootstrap django CMS projects
 
