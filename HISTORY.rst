@@ -3,11 +3,18 @@
 History
 -------
 
+0.7.2 (2015-02-08)
+++++++++++++++++++
+
+* Fixed Windows compatibility issues
+* Fixed python 3 compatibility issues
+* Add a flag to skip the project directory emptiness check
+
 0.7.1 (2015-01-15)
 ++++++++++++++++++
 
 * Ask for permission before cleanup
-* Clarifiy the `-p` parameter
+* Clarify the `-p` parameter
 * Check if the project directory is empty before proceeding
 
 0.7.0 (2015-01-10)
