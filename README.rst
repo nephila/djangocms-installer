@@ -95,7 +95,17 @@ Libraries you would want to check:
 For additional information, check http://djangocms-installer.readthedocs.org/en/latest/libraries.html
 
 
-.. image:: https://d2weczhvl823v0.cloudfront.net/nephila/djangocms-installer/trend.png
-   :alt: Bitdeli badge
-   :target: https://bitdeli.com/free
+Windows support
+---------------
+
+The installer is tested on Windows 7 with Python versions 3.4.2 and 2.7.8 installed using
+official MSI packages available at http://python.org.
+
+Please check that the ``.py`` extension is associated correctly with Python interpreter::
+
+    c:\> assoc .py
+    .py=Python.File
+
+    c:\>ftype Python.File
+    Python.File="C:\Windows\py.exe" "%1" %*
 
