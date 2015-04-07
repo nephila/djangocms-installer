@@ -24,7 +24,7 @@ DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', 'stable')
 DEFAULT_REQUIREMENTS = """
 django-classy-tags>=0.3.4.1
 html5lib
-Pillow>=2
+Pillow<=2.8
 django-sekizai>=0.7
 six
 """
@@ -38,7 +38,7 @@ django-mptt>=0.5.1,<0.5.3
 """
 
 DJANGOCMS_3_REQUIREMENTS = """
-django-mptt>=0.6
+django-mptt<0.7
 """
 DJANGOCMS_3_1_REQUIREMENTS = """
 django-treebeard==2.0
