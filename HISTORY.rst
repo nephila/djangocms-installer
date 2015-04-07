@@ -3,6 +3,12 @@
 History
 -------
 
+0.7.3 (2015-04-08)
+++++++++++++++++++
+
+* Fix issues with django CMS requirements
+* Fix minor issues in shipped templates
+
 0.7.2 (2015-02-08)
 ++++++++++++++++++
 
