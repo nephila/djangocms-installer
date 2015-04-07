@@ -70,8 +70,8 @@ def parse(args):
 
     # Advanced options. These have a predefined default and are not managed
     # by config wizard.
-    parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
-                        default=False, help="Use Aldryn-boilerplate as project template")
+    #parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
+    #                    default=False, help="Use Aldryn-boilerplate as project template")
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
                         default=False, help="Don't run the configuration wizard, just use the provided values")
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
@@ -178,6 +178,7 @@ def parse(args):
         args.languages = args.languages[0].split(",")
 
     args.languages = [lang.strip() for lang in args.languages]
+    args.aldryn = False
 
     # Convert version to numeric format for easier checking
     django_version, cms_version = supported_versions(args.django_version,

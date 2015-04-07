@@ -378,17 +378,17 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.2') > -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
-        conf_data = config.parse([
-            '-q',
-            '--db=postgres://user:pwd@host/dbname',
-            '--cms-version=stable',
-            '--django-version=stable',
-            '-a',
-            '-p'+self.project_dir,
-            'example_prj'])
-        self.assertTrue(conf_data.requirements.find('django-compressor') > -1)
+        # conf_data = config.parse([
+        #     '-q',
+        #     '--db=postgres://user:pwd@host/dbname',
+        #     '--cms-version=stable',
+        #     '--django-version=stable',
+        #     #'-a',
+        #     '-p'+self.project_dir,
+        #     'example_prj'])
+        # self.assertTrue(conf_data.requirements.find('django-compressor') > -1)
 
-    def test_aldryn_compatibility(self):
+    def disabled_test_aldryn_compatibility(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 with self.assertRaises(SystemExit) as error:
@@ -397,7 +397,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '--cms-version=2.4',
                         '--django-version=stable',
-                        '-a',
+                        #'-a',
                         '-p'+self.project_dir,
                         'example_prj'])
                 try:
