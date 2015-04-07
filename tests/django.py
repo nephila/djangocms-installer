@@ -88,24 +88,24 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue(os.path.exists(starting_page_json))
 
         # Aldryn boilerplate
-        self._create_project_dir()
-        config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=stable', '-a',
-                                    '-q', '-p'+self.project_dir, 'example_prj'])
-        os.makedirs(config_data.project_path)
-        django.copy_files(config_data)
-        private_dir = os.path.join(config_data.project_directory, 'private')
-        static_js = os.path.join(config_data.project_directory, 'static', 'js', 'base.js')
-        aldryn_template = os.path.join(config_data.project_directory, 'templates', 'fullwidth.html')
-        basic_template = os.path.join(config_data.project_path, 'templates', 'fullwidth.html')
-        boostrap_template = os.path.join(config_data.project_path, 'templates', 'feature.html')
-        custom_template = os.path.join(config_data.project_path, 'templates', 'left.html')
-        self.assertFalse(os.path.exists(custom_template))
-        self.assertFalse(os.path.exists(boostrap_template))
-        self.assertFalse(os.path.exists(basic_template))
-        self.assertTrue(os.path.exists(private_dir))
-        self.assertTrue(os.path.exists(static_js))
-        self.assertTrue(os.path.exists(aldryn_template))
+        # self._create_project_dir()
+        # config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
+        #                             '--cms-version=stable', '-a',
+        #                             '-q', '-p'+self.project_dir, 'example_prj'])
+        # os.makedirs(config_data.project_path)
+        # django.copy_files(config_data)
+        # private_dir = os.path.join(config_data.project_directory, 'private')
+        # static_js = os.path.join(config_data.project_directory, 'static', 'js', 'base.js')
+        # aldryn_template = os.path.join(config_data.project_directory, 'templates', 'fullwidth.html')
+        # basic_template = os.path.join(config_data.project_path, 'templates', 'fullwidth.html')
+        # boostrap_template = os.path.join(config_data.project_path, 'templates', 'feature.html')
+        # custom_template = os.path.join(config_data.project_path, 'templates', 'left.html')
+        # self.assertFalse(os.path.exists(custom_template))
+        # self.assertFalse(os.path.exists(boostrap_template))
+        # self.assertFalse(os.path.exists(basic_template))
+        # self.assertTrue(os.path.exists(private_dir))
+        # self.assertTrue(os.path.exists(static_js))
+        # self.assertTrue(os.path.exists(aldryn_template))
 
     def test_patch_16_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
@@ -134,11 +134,11 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(project.settings.CMS_PERMISSION, False)
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
 
-    def test_patch_16_aldryn(self):
+    def disable_test_patch_16_aldryn(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
-                                    '--django-version=1.6', '-a',
+                                    '--django-version=1.6', #'-a',
                                     '--cms-version=3.0', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_16_aldryn'])
