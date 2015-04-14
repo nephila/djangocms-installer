@@ -4,7 +4,8 @@ import os
 import sys
 
 from mock import patch
-from six import StringIO
+from six import StringIO, text_type
+from tzlocal import get_localzone
 
 from djangocms_installer import config
 from djangocms_installer.install import check_install
@@ -436,6 +437,24 @@ class TestConfig(BaseTestClass):
             '-p'+self.project_dir,
             'example_prj'])
         self.assertTrue(conf_data.starting_page)
+
+    def test_utc(self):
+        """
+        Verify handling UTC default
+        """
+        default_tz = get_localzone()
+
+        conf_data = config.parse([
+            '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertEqual(text_type(conf_data.timezone), default_tz.zone)
+
+        conf_data = config.parse([
+            '-q', '--utc',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertEqual(conf_data.timezone, 'UTC')
 
     def test_templates(self):
         """
