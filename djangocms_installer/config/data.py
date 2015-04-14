@@ -81,11 +81,11 @@ https://github.com/divio/djangocms-video/archive/master.zip?%(bust)s
 """ % {'bust': time.time()}
 
 
-DJANGO_17_REVERSION = "django-reversion>=1.8.2"
+DJANGO_17_REVERSION = "django-reversion>=1.8.2,<1.8.6"
 ALDRYN_REQUIREMENTS = """
 django-compressor
 """
-DJANGO_16_REVERSION = "django-reversion>=1.8"
+DJANGO_16_REVERSION = "django-reversion>=1.8,<1.8.6"
 DJANGO_15_REVERSION = "django-reversion>=1.7,<1.8"
 DJANGO_14_REVERSION = "django-reversion<1.7"
 
