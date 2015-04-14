@@ -78,6 +78,12 @@ it's not supported, while it still may work.
 ``djangocms-installer`` tries to support beta versions of django CMS when they
 will be considered sufficiently stable by the upstream project.
 
+Warning
+-------
+
+``djangocms-installer`` assumes that ``django-admin.py`` is installed in the same directory
+as python executable, which is the standard virtualenv layout.
+
 Caveats
 -------
 
