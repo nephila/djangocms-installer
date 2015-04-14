@@ -3,6 +3,13 @@
 History
 -------
 
+0.7.4 (2015-04-14)
+++++++++++++++++++
+
+* Add automatic timezone detection
+* Pin django-reversion versions
+* Make installer more compatible with windows environment
+
 0.7.3 (2015-04-08)
 ++++++++++++++++++
 
