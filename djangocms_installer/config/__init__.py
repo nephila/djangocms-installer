@@ -95,7 +95,14 @@ def parse(args):
     parser.add_argument('--skip-empty-check', '-s', dest='skip_project_dir_check',
                         action='store_true',
                         default=False, help="Skip the check if project dir is empty.")
+    parser.add_argument('--utc', dest='utc',
+                        action='store_true',
+                        default=False, help="Use UTC timezone.")
 
+    if '--utc' in args:
+        for action in parser._positionals._actions:
+            if action.dest == 'timezone':
+                action.default = 'UTC'
     args = parser.parse_args(args)
 
     # First of all, check if the project name is valid

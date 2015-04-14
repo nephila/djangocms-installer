@@ -27,7 +27,7 @@ The following arguments can be overridden in :ref:`wizard_mode`
   syntax;  default: ``sqlite://localhost/project.db``
 * ``--i18n``, ``-i``: Activate Django I18N / L10N setting; choices: ``yes|no``, default: ``yes``
 * ``--use-tz``, ``-z``: Activate Django timezone support;  choices: ``yes|no``, default: ``yes``
-* ``--timezone``, ``-t``: Optional default time zone, default: ``America/Chicago``
+* ``--timezone``, ``-t``: Optional default time zone, default: *local timezone*
 * ``--reversion``, ``-e``: Install and configure reversion support, choices: ``yes|no``,
   default: ``yes``
 * ``--permissions``: Activate CMS permission management; choices: ``yes|no``, default: ``yes``
@@ -69,6 +69,7 @@ advanced usage:
 * ``--no-db-driver``: Don't install database package;
 * ``--no-sync``, ``-m``: Don't run syncdb / migrate after bootstrapping the project;
 * ``--no-user``, ``-u``: Don't create the admin user;
+* ``--utc``, : Use UTC as default timezone;
 * ``--list-plugins``, ``-P``: List plugins that's going to be installed and
   configured for the project; this will not alter the virtualenv or create the
   project;
