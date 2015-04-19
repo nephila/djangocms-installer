@@ -11,13 +11,13 @@ DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?%s'
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_LATEST = '3.0'
-DJANGOCMS_SUPPORTED = ('2.4', '3.0', 'stable', 'develop')
+DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', 'stable', 'develop')
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
 # this is not true, but it's the most recent version
 # compatible with all the CMS versions
 DJANGO_LATEST = '1.5'
-DJANGO_LATEST_CMS_3 = '1.6'
+DJANGO_LATEST_CMS_3 = '1.7'
 DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', 'stable')
 
 
@@ -30,7 +30,7 @@ six
 """
 
 DJANGO_16_REQUIREMENTS = """
-south>=0.7.2
+south>=1.0.0
 """
 
 DJANGOCMS_2_REQUIREMENTS = """
@@ -41,7 +41,7 @@ DJANGOCMS_3_REQUIREMENTS = """
 django-mptt<0.7
 """
 DJANGOCMS_3_1_REQUIREMENTS = """
-django-treebeard==2.0
+django-treebeard>=2.0
 """
 
 PLUGINS_REQUIREMENTS_BASIC = """

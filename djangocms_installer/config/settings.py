@@ -64,7 +64,6 @@ INSTALLED_APPS = (
 
 MPTT_APPS = (
     'mptt',
-
 )
 
 TREEBEARD_APPS = (
@@ -188,10 +187,10 @@ URLCONF = {
 
 SOUTH_MIGRATION_MODULES = (
     ('easy_thumbnails', 'easy_thumbnails.south_migrations'),
+    ('djangocms_text_ckeditor', 'djangocms_text_ckeditor.south_migrations'),
 )
 
 MIGRATION_MODULES_COMMON = (
-    ('djangocms_text_ckeditor', 'djangocms_text_ckeditor.migrations_django'),
     ('djangocms_column', 'djangocms_column.migrations_django'),
     ('djangocms_flash', 'djangocms_flash.migrations_django'),
     ('djangocms_googlemap', 'djangocms_googlemap.migrations_django'),
