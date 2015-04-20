@@ -9,6 +9,7 @@ from mock import patch
 from djangocms_installer import main, config, install
 from .base import unittest, IsolatedTestClass
 
+dj_ver = '1.7' if sys.version_info >= (2, 7) else '1.6'
 
 class TestMain(IsolatedTestClass):
 
@@ -55,7 +56,7 @@ class TestMain(IsolatedTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--cms-version=stable',
+                                       '-len', '--cms-version=stable', '--django=%s' % dj_ver,
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()
@@ -68,7 +69,7 @@ class TestMain(IsolatedTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '-lfr', '--cms-version=stable',
+                                       '-len', '-lfr', '--cms-version=stable', '--django=%s' % dj_ver,
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()
@@ -79,7 +80,7 @@ class TestMain(IsolatedTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--cms-version=develop',
+                                       '-len', '--cms-version=develop', '--django=%s' % dj_ver,
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()

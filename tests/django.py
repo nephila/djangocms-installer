@@ -10,6 +10,8 @@ from djangocms_installer.config.settings import (MIGRATION_MODULES_BASE,
                                                  MIGRATION_MODULES_3_1_FILER)
 from .base import unittest, IsolatedTestClass
 
+dj_ver = '1.7' if sys.version_info >= (2, 7) else '1.6'
+
 
 class TestDjango(IsolatedTestClass):
     templates_basic = set((('fullwidth.html', 'Fullwidth'), ('sidebar_left.html', 'Sidebar Left'),
@@ -18,7 +20,7 @@ class TestDjango(IsolatedTestClass):
 
     def test_create_project(self):
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=stable',
+                                    '--cms-version=stable', '--django=%s' % dj_ver,
                                     '-q', '-p'+self.project_dir, 'example_prj'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -486,7 +488,7 @@ class TestDjango(IsolatedTestClass):
 
     def test_database_setup(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '-q', '--cms-version=3.0',
+                                    '-q', '--cms-version=3.0', '--django=%s' % dj_ver,
                                     '-p'+self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
