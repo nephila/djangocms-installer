@@ -22,7 +22,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.project_name, 'example_prj')
 
         self.assertEqual(conf_data.cms_version, 3.0)
-        self.assertEqual(conf_data.django_version, 1.6)
+        self.assertEqual(conf_data.django_version, 1.7)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
         self.assertEqual(conf_data.permissions, 'yes')
@@ -207,12 +207,12 @@ class TestConfig(BaseTestClass):
         self.assertEqual(less_than_version('3.0.1'), '3.1.1')
 
     def test_supported_versions(self):
-        self.assertEqual(supported_versions('stable', 'stable'), (1.6, 3.0))
-        self.assertEqual(supported_versions('stable', '3.0'), (1.6, 3.0))
+        self.assertEqual(supported_versions('stable', 'stable'), (1.7, 3.0))
+        self.assertEqual(supported_versions('stable', '3.0'), (1.7, 3.0))
         self.assertEqual(supported_versions('stable', '3.0.10'), (None, None))
-        self.assertEqual(supported_versions('stable', 'rc'), (1.6, 3.1))
-        self.assertEqual(supported_versions('stable', 'beta'), (1.6, 3.1))
-        self.assertEqual(supported_versions('stable', 'develop'), (1.6, 3.1))
+        self.assertEqual(supported_versions('stable', 'rc'), (1.7, 3.1))
+        self.assertEqual(supported_versions('stable', 'beta'), (1.7, 3.1))
+        self.assertEqual(supported_versions('stable', 'develop'), (1.7, 3.1))
         self.assertEqual(supported_versions('stable', '2.4'), (1.5, 2.4))
 
         self.assertEqual(supported_versions('1.5', 'stable'), (1.5, 3.0))
@@ -280,7 +280,7 @@ class TestConfig(BaseTestClass):
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find('django-cms<3.1') > -1)
-        self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.8') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
@@ -307,7 +307,7 @@ class TestConfig(BaseTestClass):
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.8') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
@@ -354,7 +354,7 @@ class TestConfig(BaseTestClass):
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.8') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)

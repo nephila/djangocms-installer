@@ -66,7 +66,7 @@ def supported_versions(django, cms):
         if django == 'stable':
             if cms_version:
                 if cms_version >= 3.0:
-                    django_version = 1.6
+                    django_version = 1.7
                 else:
                     django_version = 1.5
         elif django == 'beta':

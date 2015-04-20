@@ -35,8 +35,8 @@ The following arguments can be overridden in :ref:`wizard_mode`
   times, or as a comma separated list.
   Only language codes supported by Django can be used here.
   Refer to `django source`_ for a list of supported codes.
-* ``--django-version``: Django version;  choices: ``1.4|1.5|1.6|stable``, default: ``stable``
-* ``--cms-version``, ``-v``: django CMS version, choices: ``2.4|3.0|stable|develop``.
+* ``--django-version``: Django version;  choices: ``1.4|1.5|1.6|1.7|stable``, default: ``stable``
+* ``--cms-version``, ``-v``: django CMS version, choices: ``2.4|3.0|3.1|stable|develop``.
   default: ``stable``
 * ``--bootstrap``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
 * ``--starting-page``: Load a starting page with examples after installation,
@@ -46,11 +46,11 @@ The following arguments can be overridden in :ref:`wizard_mode`
 
 .. note:: for Django the ``stable`` keyword is expanded to the following Django version:
 
-   * if django CMS version is 3.0 or develop: **stable** is expanded to Django==1.6;
+   * if django CMS version is 3.0, 3.1 or develop: **stable** is expanded to Django==1.7;
    * if django CMS version is 2.4: **stable** is expanded to Django==1.5;
 
 .. note:: the django CMS ``stable`` keyword is expanded to the latest django CMS stable
-          version (3.0)
+          version (3.1)
 
 
 Advanced options

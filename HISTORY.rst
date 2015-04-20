@@ -3,6 +3,12 @@
 History
 -------
 
+0.7.5 (2015-04-21)
+++++++++++++++++++
+
+* Add support for django CMS 3.1
+* Switch to Django 1.7 as stable django release
+
 0.7.4 (2015-04-14)
 ++++++++++++++++++
 
