@@ -21,7 +21,7 @@ class TestMain(IsolatedTestClass):
                                        'example_prj']
                 main.execute()
         stdout = self.stdout.getvalue()
-        self.assertTrue(stdout.find('Django<1.7') > -1)
+        self.assertTrue(stdout.find('Django<1.8') > -1)
         self.assertTrue(stdout.find('django-reversion>=1.8') > -1)
         self.assertTrue(stdout.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(stdout.find('djangocms-admin-style') > -1)
