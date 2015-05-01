@@ -3,6 +3,13 @@
 History
 -------
 
+0.7.6 (2015-05-01)
+++++++++++++++++++
+
+* Switch to django CMS 3.1 as stable django CMS release
+* Rework the Django supported matrix
+* Always use djangocms-link instead of cmsplugin-filer-link
+
 0.7.5 (2015-04-21)
 ++++++++++++++++++
 
