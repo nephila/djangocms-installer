@@ -190,8 +190,12 @@ def parse(args):
     args.aldryn = False
 
     # Convert version to numeric format for easier checking
-    django_version, cms_version = supported_versions(args.django_version,
-                                                     args.cms_version)
+    try:
+        django_version, cms_version = supported_versions(args.django_version,
+                                                         args.cms_version)
+    except RuntimeError as e:
+        sys.stderr.write(e)
+        sys.exit(6)
     if django_version is None:
         sys.stderr.write("Please provide a Django supported version: %s. Only Major.Minor version selector is accepted\n" % ", ".join(data.DJANGO_SUPPORTED))
         sys.exit(6)
