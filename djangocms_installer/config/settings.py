@@ -99,13 +99,13 @@ FILER_PLUGINS_2 = (
     'cmsplugin_filer_image',
     'cmsplugin_filer_file',
     'cmsplugin_filer_folder',
-    'cmsplugin_filer_link',
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_utils',
     'cmsplugin_filer_video',
     'cms.plugins.flash',
     'cms.plugins.googlemap',
     'cms.plugins.inherit',
+    'djangocms_link',
 )
 
 FILER_PLUGINS_3 = (
@@ -114,13 +114,13 @@ FILER_PLUGINS_3 = (
     'cmsplugin_filer_image',
     'cmsplugin_filer_file',
     'cmsplugin_filer_folder',
-    'cmsplugin_filer_link',
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_utils',
     'cmsplugin_filer_video',
     'djangocms_flash',
     'djangocms_googlemap',
     'djangocms_inherit',
+    'djangocms_link',
 )
 
 CMS_3_HEAD = (
