@@ -44,14 +44,10 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--templates``: Use a custom directory as template source; is checked to be a valid path,
   otherwise the shipped templates are used
 
-.. note:: for Django the ``stable`` keyword is expanded to the following Django version:
-
-   * if django CMS version is 3.0, 3.1 or develop: **stable** is expanded to Django==1.7;
-   * if django CMS version is 2.4: **stable** is expanded to Django==1.5;
-
-.. note:: the django CMS ``stable`` keyword is expanded to the latest django CMS stable
-          version (3.1)
-
+.. note:: ``stable`` keyword is expanded to Django version 1.7
+.. note:: ``stable`` keyword is expanded to django CMS version 3.1
+.. warning:: if an unsupported combination of Django and django CMS version is selected, the
+             wizard exits reporting the error.
 
 Advanced options
 ----------------

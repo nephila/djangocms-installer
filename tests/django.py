@@ -227,8 +227,8 @@ class TestDjango(IsolatedTestClass):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
-                                    '--django-version=1.7',
-                                    '--cms-version=stable', '--timezone=Europe/Moscow',
+                                    '--django-version=1.7', '--cms-version=3.0',
+                                    '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_17_settings'])
         install.requirements(config_data.requirements)
@@ -374,7 +374,7 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_flash' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_googlemap' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_inherit' not in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_link' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_link' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_picture' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_teaser' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' not in project.settings.INSTALLED_APPS)
@@ -384,7 +384,7 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('cms.plugins.inherit' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_file' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_folder' in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_link' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_link' not in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_teaser' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_utils' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_video' in project.settings.INSTALLED_APPS)
@@ -433,7 +433,7 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('cmsplugin_filer_image' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_file' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_folder' in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_link' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_link' not in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_teaser' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_utils' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_video' in project.settings.INSTALLED_APPS)
@@ -445,7 +445,7 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_flash' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_googlemap' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_inherit' in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_link' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_link' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_picture' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_teaser' not in project.settings.INSTALLED_APPS)

@@ -99,13 +99,13 @@ FILER_PLUGINS_2 = (
     'cmsplugin_filer_image',
     'cmsplugin_filer_file',
     'cmsplugin_filer_folder',
-    'cmsplugin_filer_link',
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_utils',
     'cmsplugin_filer_video',
     'cms.plugins.flash',
     'cms.plugins.googlemap',
     'cms.plugins.inherit',
+    'djangocms_link',
 )
 
 FILER_PLUGINS_3 = (
@@ -114,13 +114,13 @@ FILER_PLUGINS_3 = (
     'cmsplugin_filer_image',
     'cmsplugin_filer_file',
     'cmsplugin_filer_folder',
-    'cmsplugin_filer_link',
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_utils',
     'cmsplugin_filer_video',
     'djangocms_flash',
     'djangocms_googlemap',
     'djangocms_inherit',
+    'djangocms_link',
 )
 
 CMS_3_HEAD = (
@@ -195,12 +195,12 @@ MIGRATION_MODULES_COMMON = (
     ('djangocms_flash', 'djangocms_flash.migrations_django'),
     ('djangocms_googlemap', 'djangocms_googlemap.migrations_django'),
     ('djangocms_inherit', 'djangocms_inherit.migrations_django'),
+    ('djangocms_link', 'djangocms_link.migrations_django'),
     ('djangocms_style', 'djangocms_style.migrations_django'),
 )
 
 MIGRATION_MODULES_STANDARD = (
     ('djangocms_file', 'djangocms_file.migrations_django'),
-    ('djangocms_link', 'djangocms_link.migrations_django'),
     ('djangocms_picture', 'djangocms_picture.migrations_django'),
     ('djangocms_teaser', 'djangocms_teaser.migrations_django'),
     ('djangocms_video', 'djangocms_video.migrations_django'),
@@ -211,7 +211,6 @@ MIGRATION_MODULES_FILER = (
     ('cmsplugin_filer_image', 'cmsplugin_filer_image.migrations_django'),
     ('cmsplugin_filer_file', 'cmsplugin_filer_file.migrations_django'),
     ('cmsplugin_filer_folder', 'cmsplugin_filer_folder.migrations_django'),
-    ('cmsplugin_filer_link', 'cmsplugin_filer_link.migrations_django'),
     ('cmsplugin_filer_teaser', 'cmsplugin_filer_teaser.migrations_django'),
     ('cmsplugin_filer_utils', 'cmsplugin_filer_utils.migrations_django'),
     ('cmsplugin_filer_video', 'cmsplugin_filer_video.migrations_django'),

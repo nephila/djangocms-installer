@@ -3,6 +3,7 @@ import os
 import sys
 
 from . import compat
+from .config.data import DJANGO_VERSION_MATRIX, CMS_VERSION_MATRIX, VERSION_MATRIX
 
 
 def query_yes_no(question, default=None):  # pragma: no cover
@@ -51,28 +52,22 @@ def supported_versions(django, cms):
     try:
         cms_version = float(cms)
     except ValueError:
-        if cms == 'stable':
-            cms_version = 3.0
-        elif cms == 'rc':
-            cms_version = 3.1
-        elif cms == 'beta':
-            cms_version = 3.1
-        elif cms == 'develop':
-            cms_version = 3.1
+        try:
+            cms_version = CMS_VERSION_MATRIX[cms]
+        except KeyError:
+            pass
 
     try:
         django_version = float(django)
     except ValueError:
-        if django == 'stable':
-            if cms_version:
-                if cms_version >= 3.0:
-                    django_version = 1.7
-                else:
-                    django_version = 1.5
-        elif django == 'beta':
-            django_version = 1.8
-        elif django == 'develop':
-            django_version = 1.8
+        try:
+            django_version = DJANGO_VERSION_MATRIX[django]
+        except KeyError:
+            pass
+    if (cms_version and django_version and
+            not VERSION_MATRIX[cms_version][0] <= django_version <= VERSION_MATRIX[cms_version][1]):
+        raise RuntimeError('Django and django CMS versions doesn\'t match: '
+                           'Django %s is not supported by django CMS %s' % (django_version, cms_version))
 
     return django_version, cms_version
 
@@ -82,7 +77,7 @@ def less_than_version(value):
     Converts the current version to the next one for inserting into requirements
     in the ' < version' format
     """
-    items = list(map(int, value.split(".")))
+    items = list(map(int, str(value).split(".")))
     if len(items) == 1:
         items.append(0)
     items[1] += 1

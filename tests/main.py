@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+import tempfile
 import os
 from subprocess import CalledProcessError
 import sys
@@ -91,9 +92,8 @@ class TestMain(IsolatedTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 with self.assertRaises((CalledProcessError, EnvironmentError)):
-                    sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                           '-len', '--cms-version=2.4',
-                                           '--django=1.7',
+                    sys.argv = ['main'] + ['--db=postgres://user:pwd@host/dbname',
+                                           '-len', '--no-db-driver',
                                            '-q', '-u', '-p'+self.project_dir,
                                            'example_prj']
                     main.execute()

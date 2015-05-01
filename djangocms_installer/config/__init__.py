@@ -190,8 +190,12 @@ def parse(args):
     args.aldryn = False
 
     # Convert version to numeric format for easier checking
-    django_version, cms_version = supported_versions(args.django_version,
-                                                     args.cms_version)
+    try:
+        django_version, cms_version = supported_versions(args.django_version,
+                                                         args.cms_version)
+    except RuntimeError as e:
+        sys.stderr.write(compat.unicode(e))
+        sys.exit(6)
     if django_version is None:
         sys.stderr.write("Please provide a Django supported version: %s. Only Major.Minor version selector is accepted\n" % ", ".join(data.DJANGO_SUPPORTED))
         sys.exit(6)
@@ -202,7 +206,7 @@ def parse(args):
     if not getattr(args, 'requirements_file'):
         requirements = []
 
-        # Django cms version check
+        # django CMS version check
         if args.cms_version == 'develop':
             requirements.append(data.DJANGOCMS_DEVELOP)
             warnings.warn(data.VERSION_WARNING % ('develop', 'django CMS'))
@@ -212,10 +216,7 @@ def parse(args):
             requirements.append(data.DJANGOCMS_BETA)
             warnings.warn(data.VERSION_WARNING % ('beta', 'django CMS'))
         else:
-            if args.cms_version == 'stable':
-                requirements.append("django-cms<%s" % less_than_version(data.DJANGOCMS_LATEST))
-            else:
-                requirements.append("django-cms<%s" % less_than_version(args.cms_version))
+            requirements.append("django-cms<%s" % less_than_version(cms_version))
 
         if cms_version == 3:
             requirements.append(data.DJANGOCMS_3_REQUIREMENTS)
@@ -254,13 +255,7 @@ def parse(args):
             requirements.append(data.DJANGO_BETA)
             warnings.warn(data.VERSION_WARNING % ('beta', 'Django'))
         else:
-            if args.django_version == 'stable':
-                if cms_version < 3:
-                    requirements.append("Django<%s" % less_than_version(data.DJANGO_LATEST))
-                else:
-                    requirements.append("Django<%s" % less_than_version(data.DJANGO_LATEST_CMS_3))
-            else:
-                requirements.append("Django<%s" % less_than_version(str(django_version)))
+            requirements.append("Django<%s" % less_than_version(django_version))
 
         # Timezone support
         if args.use_timezone:
