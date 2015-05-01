@@ -90,7 +90,7 @@ class TestMain(IsolatedTestClass):
     def test_cleanup(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                with self.assertRaises((CalledProcessError, EnvironmentError)):
+                with self.assertRaises((CalledProcessError, EnvironmentError, RuntimeError)):
                     sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                            '-len', '--cms-version=2.4',
                                            '--django=1.7',

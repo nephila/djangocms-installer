@@ -10,15 +10,29 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
-DJANGOCMS_LATEST = '3.1'
 DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', 'stable', 'develop')
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
-# this is not true, but it's the most recent version
-# compatible with all the CMS versions
-DJANGO_LATEST = '1.5'
-DJANGO_LATEST_CMS_3 = '1.7'
 DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', 'stable')
+
+CMS_VERSION_MATRIX = {
+    'stable': 3.1,
+    'rc': 3.2,
+    'beta': 3.2,
+    'develop': 3.2
+}
+DJANGO_VERSION_MATRIX = {
+    'stable': 1.7,
+    'rc': 1.8,
+    'beta': 1.8,
+    'develop': 1.8
+}
+VERSION_MATRIX = {
+    2.4: (1.4, 1.5),
+    3.0: (1.4, 1.7),
+    3.1: (1.6, 1.8),
+    3.2: (1.6, 1.8),
+}
 
 
 DEFAULT_REQUIREMENTS = """
@@ -116,12 +130,12 @@ djangocms_installer will install and configure the following plugins:
 
 It will optionally install cmsplugin-filer plugins (if requested during
 configuration):
- * cmsplugin_filer_file (File plugin, replaces cms.plugins.file)
+ * cmsplugin_filer_file (File plugin, replaces djangocms-file)
  * cmsplugin_filer_folder (Folder plugin)
- * cmsplugin_filer_image (Image plugin, replaces cms.plugins.picture)
- * cmsplugin_filer_link (Link plugin, replaces cms.plugins.link)
- * cmsplugin_filer_teaser (Teaser plugin, replaces cms.plugins.teaser)
- * cmsplugin_filer_video (Video plugin, replaces cms.plugins.video)
+ * cmsplugin_filer_image (Image plugin, replaces djangocms-picture)
+ * djangocms-link (Link plugin)
+ * cmsplugin_filer_teaser (Teaser plugin, replaces djangocms-teaser)
+ * cmsplugin_filer_video (Video plugin, replaces djangocms-video)
 """
 
 DRIVERS = {

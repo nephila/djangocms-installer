@@ -21,7 +21,7 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(conf_data.project_name, 'example_prj')
 
-        self.assertEqual(conf_data.cms_version, 3.0)
+        self.assertEqual(conf_data.cms_version, 3.1)
         self.assertEqual(conf_data.django_version, 1.7)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
@@ -40,7 +40,36 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--cms-version=stable',
+            '--django-version=1.7',
+            '--i18n=no',
+            '--reversion=no',
+            '--permissions=no',
+            '--use-tz=no',
+            '-tEurope/Rome',
+            '-len', '-lde', '-lit',
+            '-p'+self.project_dir,
+            'example_prj'])
+
+        self.assertEqual(conf_data.project_name, 'example_prj')
+
+        self.assertEqual(conf_data.cms_version, 3.1)
+        self.assertEqual(conf_data.django_version, 1.7)
+        self.assertEqual(conf_data.i18n, 'no')
+        self.assertEqual(conf_data.reversion, 'no')
+        self.assertEqual(conf_data.permissions, 'no')
+        self.assertEqual(conf_data.use_timezone, 'no')
+        self.assertEqual(conf_data.timezone, 'Europe/Rome')
+        self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
+        self.assertEqual(conf_data.project_directory, self.project_dir)
+        self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
+        self.assertEqual(conf_data.db_driver, 'psycopg2')
+
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--cms-version=stable',
             '--django-version=1.4',
+            '--cms-version=3.0',
             '--i18n=no',
             '--reversion=no',
             '--permissions=no',
@@ -63,6 +92,22 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.project_directory, self.project_dir)
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
         self.assertEqual(conf_data.db_driver, 'psycopg2')
+
+    def test_version_mismatch(self):
+        with self.assertRaises(RuntimeError):
+            conf_data = config.parse([
+                '-q',
+                '--db=postgres://user:pwd@host/dbname',
+                '--cms-version=stable',
+                '--django-version=1.4',
+                '--i18n=no',
+                '--reversion=no',
+                '--permissions=no',
+                '--use-tz=no',
+                '-tEurope/Rome',
+                '-len', '-lde', '-lit',
+                '-p'+self.project_dir,
+                'example_prj'])
 
     def test_cli_config_commaseparated_languages(self):
         conf_data = config.parse([
@@ -207,20 +252,23 @@ class TestConfig(BaseTestClass):
         self.assertEqual(less_than_version('3.0.1'), '3.1.1')
 
     def test_supported_versions(self):
-        self.assertEqual(supported_versions('stable', 'stable'), (1.7, 3.0))
+        self.assertEqual(supported_versions('stable', 'stable'), (1.7, 3.1))
         self.assertEqual(supported_versions('stable', '3.0'), (1.7, 3.0))
-        self.assertEqual(supported_versions('stable', '3.0.10'), (None, None))
-        self.assertEqual(supported_versions('stable', 'rc'), (1.7, 3.1))
-        self.assertEqual(supported_versions('stable', 'beta'), (1.7, 3.1))
-        self.assertEqual(supported_versions('stable', 'develop'), (1.7, 3.1))
-        self.assertEqual(supported_versions('stable', '2.4'), (1.5, 2.4))
+        self.assertEqual(supported_versions('stable', '3.0.10'), (1.7, None))
+        self.assertEqual(supported_versions('stable', 'rc'), (1.7, 3.2))
+        self.assertEqual(supported_versions('stable', 'beta'), (1.7, 3.2))
+        self.assertEqual(supported_versions('stable', 'develop'), (1.7, 3.2))
 
-        self.assertEqual(supported_versions('1.5', 'stable'), (1.5, 3.0))
-        self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.0))
-        self.assertEqual(supported_versions('1.6.9', 'stable'), (None, 3.0))
-        self.assertEqual(supported_versions('1.7', 'stable'), (1.7, 3.0))
-        self.assertEqual(supported_versions('beta', 'stable'), (1.8, 3.0))
-        self.assertEqual(supported_versions('develop', 'stable'), (1.8, 3.0))
+        with self.assertRaises(RuntimeError):
+            supported_versions('stable', '2.4'), (1.5, 2.4)
+            supported_versions('1.5', 'stable'), (1.7, 3.1)
+
+        self.assertEqual(supported_versions('1.5', '2.4'), (1.5, 2.4))
+        self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.1))
+        self.assertEqual(supported_versions('1.6.9', 'stable'), (None, 3.1))
+        self.assertEqual(supported_versions('1.7', 'stable'), (1.7, 3.1))
+        self.assertEqual(supported_versions('beta', 'stable'), (1.8, 3.1))
+        self.assertEqual(supported_versions('develop', 'stable'), (1.8, 3.1))
 
     def test_requirements(self):
         """
@@ -229,17 +277,17 @@ class TestConfig(BaseTestClass):
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
-            '--django-version=1.4',
+            '--django-version=1.6',
             '--i18n=no',
             '-f',
             '-p'+self.project_dir,
             'example_prj'])
 
-        self.assertTrue(conf_data.requirements.find('django-cms<3.1') > -1)
-        self.assertTrue(conf_data.requirements.find('Django<1.5') > -1)
+        self.assertTrue(conf_data.requirements.find('django-cms<3.2') > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
         self.assertTrue(conf_data.requirements.find('django-filer') > -1)
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') > -1)
-        self.assertTrue(conf_data.requirements.find('django-reversion<1.7') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8,<1.8.6') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
 
         conf_data = config.parse([
@@ -247,7 +295,7 @@ class TestConfig(BaseTestClass):
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
             '--cms-version=2.4',
-            '--django-version=stable',
+            '--django-version=1.5',
             '-f',
             '-p'+self.project_dir,
             'example_prj'])
@@ -279,7 +327,7 @@ class TestConfig(BaseTestClass):
             '-p'+self.project_dir,
             'example_prj'])
 
-        self.assertTrue(conf_data.requirements.find('django-cms<3.1') > -1)
+        self.assertTrue(conf_data.requirements.find('django-cms<3.2') > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.8') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
@@ -329,17 +377,17 @@ class TestConfig(BaseTestClass):
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
             '--cms-version=develop',
-            '--django-version=1.5',
+            '--django-version=1.6',
             '-f',
             '--reversion=yes',
             '-p'+self.project_dir,
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<1.6') > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
         self.assertTrue(conf_data.requirements.find('django-mptt') == -1)
         self.assertTrue(conf_data.requirements.find('django-treebeard') > -1)
-        self.assertTrue(conf_data.requirements.find('django-reversion>=1.7,<1.8') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8,<1.8.6') > -1)
 
         conf_data = config.parse([
             '-q',
@@ -536,7 +584,7 @@ class TestConfig(BaseTestClass):
             conf_data = config.parse([
                 '-q',
                 '--db=mysql://user:pwd@host/dbname',
-                '--django-version=1.4',
+                '--django-version=1.7',
                 '--i18n=no',
                 '-f',
                 '-p'+self.project_dir,
