@@ -94,7 +94,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.db_driver, 'psycopg2')
 
     def test_version_mismatch(self):
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(SystemExit):
             conf_data = config.parse([
                 '-q',
                 '--db=postgres://user:pwd@host/dbname',
