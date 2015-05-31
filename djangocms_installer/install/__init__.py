@@ -57,11 +57,12 @@ def check_install(config_data):
 
 
 def requirements(requirements, is_file=False):
-
+    args = ['install', '-q']
+    if 'Django<1.5' in requirements:
+        args += ['--no-use-wheel']
     if is_file:  # pragma: no cover
-        args = ['install', '-q', '-r', requirements]
+        args += ['-r', requirements]
     else:
-        args = ['install', '-q']
         args.extend(['%s' % package for package in requirements.split()])
     subprocess.check_call(['pip'] + args)
     return True
