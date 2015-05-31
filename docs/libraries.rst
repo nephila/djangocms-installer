@@ -20,6 +20,16 @@ are using; you should make sure you have the library headers file installed
 (mostly contained in package with `-dev` in its name: e.g. `libjpeg-dev` for
 `libjpeg` library).
 
+Examples
+^^^^^^^^
+
+Below  are provided examples for Debian/Ubuntu, for other Linux distributions or
+other operating system details may vary:
+
+* Pillow: ``sudo apt-get install -y libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev``
+* postgres: ``sudo apt-get install libqd-dev``
+* MySQL: ``sudo apt-get install libmysqlclient-dev``
+
 
 Fixing libraries installation issues
 ------------------------------------
