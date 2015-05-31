@@ -64,11 +64,14 @@ def supported_versions(django, cms):
             django_version = DJANGO_VERSION_MATRIX[django]
         except KeyError:
             pass
-    if (cms_version and django_version and
-            not VERSION_MATRIX[cms_version][0] <= django_version <= VERSION_MATRIX[cms_version][1]):
+    try:
+        if (cms_version and django_version and
+                not VERSION_MATRIX[cms_version][0] <= django_version <= VERSION_MATRIX[cms_version][1]):
+            raise RuntimeError('Django and django CMS versions doesn\'t match: '
+                               'Django %s is not supported by django CMS %s' % (django_version, cms_version))
+    except KeyError:
         raise RuntimeError('Django and django CMS versions doesn\'t match: '
                            'Django %s is not supported by django CMS %s' % (django_version, cms_version))
-
     return django_version, cms_version
 
 
