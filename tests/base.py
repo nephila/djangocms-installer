@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 import os
-import sys
 import shutil
-import tempfile
 import subprocess
+import sys
+import tempfile
 
 if sys.version_info[:2] < (2, 7):
     import unittest2 as unittest
@@ -21,6 +21,7 @@ class BaseTestClass(unittest.TestCase):
     stdout = None
     stderr = None
     project_dir = None
+    verbose = False
 
     def _remove_project_dir(self):
         if self.project_dir and os.path.exists(self.project_dir):
@@ -58,7 +59,8 @@ class IsolatedTestClass(BaseTestClass):
     def _remove_project_dir(self):
         super(IsolatedTestClass, self)._remove_project_dir()
         if self.virtualenv_dir and not os.environ.get('INSTALLER_TEST_VIRTUALENV', False):
-            print("remove virtualenv", self.virtualenv_dir)
+            if self.verbose:
+                print("remove virtualenv", self.virtualenv_dir)
             shutil.rmtree(self.virtualenv_dir)
             self.virtualenv_dir = None
 
@@ -68,10 +70,12 @@ class IsolatedTestClass(BaseTestClass):
             self.virtualenv_dir = os.environ.get('INSTALLER_TEST_VIRTUALENV')
         else:
             self.virtualenv_dir = tempfile.mkdtemp()
-        print("creating virtualenv", self.virtualenv_dir)
+        if self.verbose:
+            print("creating virtualenv", self.virtualenv_dir)
 
     def tearDown(self):
-        print("deactivating virtualenv", self.virtualenv_dir)
+        if self.verbose:
+            print("deactivating virtualenv", self.virtualenv_dir)
         if os.path.exists(SYSTEM_ACTIVATE):
             try:
                 execfile(SYSTEM_ACTIVATE, dict(__file__=SYSTEM_ACTIVATE))
@@ -93,5 +97,6 @@ class IsolatedTestClass(BaseTestClass):
                 with open(activate_temp) as f:
                     code = compile(f.read(), activate_temp, 'exec')
                 exec(code, dict(__file__=activate_temp))
-            print("activating virtualenv", self.virtualenv_dir)
+            if self.verbose:
+                print("activating virtualenv", self.virtualenv_dir)
             sys.executable = os.path.join(self.virtualenv_dir, 'bin', 'python')
