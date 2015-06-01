@@ -179,7 +179,10 @@ def parse(args):
     #   resulting list.
 
     if not args.languages:
-        args.languages = [locale.getdefaultlocale()[0].split("_")[0]]
+        try:
+            args.languages = [locale.getdefaultlocale()[0].split("_")[0]]
+        except:
+            args.languages = ['en']
     elif isinstance(args.languages, six.string_types):
         args.languages = args.languages.split(",")
     elif len(args.languages) == 1 and isinstance(args.languages[0],
