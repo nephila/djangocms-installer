@@ -207,7 +207,6 @@ MIGRATION_MODULES_STANDARD = (
 )
 
 MIGRATION_MODULES_FILER = (
-    ('filer', 'filer.migrations_django'),
     ('cmsplugin_filer_image', 'cmsplugin_filer_image.migrations_django'),
     ('cmsplugin_filer_file', 'cmsplugin_filer_file.migrations_django'),
     ('cmsplugin_filer_folder', 'cmsplugin_filer_folder.migrations_django'),
