@@ -3,6 +3,12 @@
 History
 -------
 
+0.7.7 (2015-06-05)
+++++++++++++++++++
+
+* Switch to cloudflare CDN for bootstrap template
+* Fix support for django-filer 0.9.10
+
 0.7.6 (2015-05-01)
 ++++++++++++++++++
 
