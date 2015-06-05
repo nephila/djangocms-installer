@@ -366,7 +366,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-flash') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-googlemap') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-inherit') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-link') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-link') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-picture') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-style') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
@@ -426,16 +426,6 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.2') > -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
-
-        # conf_data = config.parse([
-        #     '-q',
-        #     '--db=postgres://user:pwd@host/dbname',
-        #     '--cms-version=stable',
-        #     '--django-version=stable',
-        #     #'-a',
-        #     '-p'+self.project_dir,
-        #     'example_prj'])
-        # self.assertTrue(conf_data.requirements.find('django-compressor') > -1)
 
     def disabled_test_aldryn_compatibility(self):
         with patch('sys.stdout', self.stdout):
