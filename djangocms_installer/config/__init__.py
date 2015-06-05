@@ -57,7 +57,7 @@ def parse(args):
                         default='no', help='Use custom template set')
     parser.add_argument('--starting-page', dest='starting_page', action='store',
                         choices=('yes', 'no'),
-                        default='no', help='Load a starting page with examples after installation. Choose "no" if you use a custom template set.')
+                        default='no', help='Load a starting page with examples after installation (english language only). Choose "no" if you use a custom template set.')
     parser.add_argument(dest='project_name', action='store',
                         help='Name of the project to be created')
 
