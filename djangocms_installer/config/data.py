@@ -83,12 +83,12 @@ https://github.com/divio/djangocms-flash/archive/master.zip?%(bust)s
 https://github.com/divio/djangocms-googlemap/archive/master.zip?%(bust)s
 https://github.com/divio/djangocms-inherit/archive/master.zip?%(bust)s
 https://github.com/divio/djangocms-style/archive/master.zip?%(bust)s
+https://github.com/divio/djangocms-link/archive/master.zip?%(bust)s
 https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?%(bust)s
 """ % {'bust': time.time()}
 
 PLUGINS_REQUIREMENTS_NON_FILER_DJANGO_17 = """
 https://github.com/divio/djangocms-file/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-link/archive/master.zip?%(bust)s
 https://github.com/divio/djangocms-picture/archive/master.zip?%(bust)s
 https://github.com/divio/djangocms-teaser/archive/master.zip?%(bust)s
 https://github.com/divio/djangocms-video/archive/master.zip?%(bust)s

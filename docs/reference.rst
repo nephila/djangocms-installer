@@ -39,8 +39,8 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--cms-version``, ``-v``: django CMS version, choices: ``2.4|3.0|3.1|stable|develop``.
   default: ``stable``
 * ``--bootstrap``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
-* ``--starting-page``: Load a starting page with examples after installation,
-  choices: ``yes|no``, default: ``no``
+* ``--starting-page``: Load a starting page with examples (available for english language only)
+  after installation, choices: ``yes|no``, default: ``no``
 * ``--templates``: Use a custom directory as template source; is checked to be a valid path,
   otherwise the shipped templates are used
 
