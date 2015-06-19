@@ -4,10 +4,10 @@
 {% block title %}{% page_attribute "page_title" %}{% endblock title %}
 
 {% block content %}
-    <div style="width:20%; float:left;">
+    <div class="sidebar">
         {% placeholder "sidebar" %}
     </div>
-    <div style="width:80%; float:left;">
+    <div class="content">
         {% placeholder "content" %}
     </div>
 {% endblock content %}
