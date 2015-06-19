@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% load cms_tags staticfiles sekizai_tags menu_tags %}
+{% load cms_tags %}
 
-{% block title %}{% page_attribute 'page_title' %}{% endblock title %}
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
 
 {% block content %}
-<div class="jumbotron">
-  {% placeholder "feature" %}
-</div>
-<div>
-  {% placeholder "content" %}
-</div>
+    <div class="jumbotron">
+        {% placeholder "feature" %}
+    </div>
+    <div>
+        {% placeholder "content" %}
+    </div>
 {% endblock content %}
