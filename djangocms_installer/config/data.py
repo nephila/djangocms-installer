@@ -13,7 +13,7 @@ DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', 'stable', 'develop')
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
-DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', 'stable')
+DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', '1.8', 'stable')
 
 CMS_VERSION_MATRIX = {
     'stable': 3.1,
