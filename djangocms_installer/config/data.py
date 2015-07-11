@@ -114,6 +114,23 @@ django-filer<=0.9.6
 cmsplugin_filer
 """
 
+TEMPLATES_1_8 = """
+TEMPLATES = [
+    {{
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [{dirs}],
+        'OPTIONS': {{
+            'context_processors': [
+                {processors}
+            ],
+            'loaders': [
+                {loaders}
+            ],
+        }},
+    }},
+]
+"""
+
 PLUGIN_LIST_TEXT = """
 djangocms_installer will install and configure the following plugins:
  * djangocms_column (Column plugin)
