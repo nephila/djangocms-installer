@@ -297,6 +297,30 @@ class TestDjango(IsolatedTestClass):
             self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
             self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
 
+    @unittest.skipIf(sys.version_info <= (2, 7),
+                     reason="django 1.7 does not support python 2.6")
+    def test_patch_django_18_31(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.8', '-f',
+                                    '--cms-version=stable', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_18_31_settings'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name,
+                             globals(), locals(), ['settings'])
+
+        ## checking for django options
+        self.assertTrue(project.settings.TEMPLATES)
+        self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
+
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
     def test_patch_cms_24_standard(self):

@@ -185,6 +185,10 @@ STATICFILES_DIRS = (
     for item in overridden_settings:
         item_re = re.compile(r"%s = [^\)]+\)" % item, re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
+    if config_data.django_version >= 1.8:
+        # TEMPLATES is special, so custom regexp needed
+        item_re = re.compile(r"TEMPLATES = .+\]$", re.DOTALL | re.MULTILINE)
+        original = item_re.sub('', original)
     # DATABASES is a dictionary, so different regexp needed
     item_re = re.compile(r"DATABASES = [^\}]+\}[^\}]+\}", re.DOTALL | re.MULTILINE)
     original = item_re.sub('', original)
@@ -210,25 +214,32 @@ def _build_settings(config_data):
     if config_data.django_version < 1.6:
         vars.MIDDLEWARE_CLASSES.extend(vars.MIDDLEWARE_CLASSES_DJANGO_15)
 
-    text.append("TEMPLATE_LOADERS = (\n%s%s\n)" % (
-        spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.TEMPLATE_LOADERS])))
-
-    text.append("MIDDLEWARE_CLASSES = (\n%s%s\n)" % (
-        spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.MIDDLEWARE_CLASSES])))
-
     if config_data.cms_version < 3:
         processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_2
     else:
         processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_3
-    text.append("TEMPLATE_CONTEXT_PROCESSORS = (\n%s%s\n)" % (
-        spacer, (",\n" + spacer).join(["'%s'" % var for var in processors])))
+    if config_data.django_version < 1.8:
+        text.append("TEMPLATE_LOADERS = (\n%s%s\n)" % (
+            spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.TEMPLATE_LOADERS])))
 
-    if config_data.aldryn:
-        text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
-            spacer, "os.path.join(BASE_DIR, 'templates'),"))
+        text.append("TEMPLATE_CONTEXT_PROCESSORS = (\n%s%s\n)" % (
+            spacer, (",\n" + spacer).join(["'%s'" % var for var in processors])))
+
+        if config_data.aldryn:
+            text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
+                spacer, "os.path.join(BASE_DIR, 'templates'),"))
+        else:
+            text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
+                spacer, "os.path.join(BASE_DIR, '%s', 'templates')," % config_data.project_name))
     else:
-        text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
-            spacer, "os.path.join(BASE_DIR, '%s', 'templates')," % config_data.project_name))
+        text.append(data.TEMPLATES_1_8.format(
+            loaders=(",\n" + spacer).join(["'%s'" % var for var in vars.TEMPLATE_LOADERS]),
+            processors=(",\n" + spacer).join(["'%s'" % var for var in processors]),
+            dirs="os.path.join(BASE_DIR, '%s', 'templates')," % config_data.project_name
+        ))
+
+    text.append("MIDDLEWARE_CLASSES = (\n%s%s\n)" % (
+        spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.MIDDLEWARE_CLASSES])))
 
     apps = list(vars.INSTALLED_APPS)
     if config_data.cms_version == 2.4:
