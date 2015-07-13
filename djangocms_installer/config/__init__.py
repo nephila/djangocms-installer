@@ -121,7 +121,7 @@ def parse(args):
                 [path for path in os.listdir(args.project_directory) if not path.startswith('.')]):
             sys.stderr.write("Path '%s' already exists and is not empty, "
                              "please choose a different one\nIf you want to use this path anyway "
-                             "use the -s flag to skip this check." % args.project_directory)
+                             "use the -s flag to skip this check.\n" % args.project_directory)
             sys.exit(4)
 
     if os.path.exists(args.project_path):
