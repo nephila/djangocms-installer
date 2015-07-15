@@ -38,7 +38,7 @@ VERSION_MATRIX = {
 DEFAULT_REQUIREMENTS = """
 django-classy-tags>=0.3.4.1
 html5lib
-Pillow<=2.8
+Pillow>=2.3
 django-sekizai>=0.7
 six
 """

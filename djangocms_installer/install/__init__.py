@@ -28,12 +28,12 @@ def check_install(config_data):
 
         try:
             im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.png"))
-            im.thumbnail(size)
+            im.load()
         except IOError:  # pragma: no cover
             errors.append("Pillow is not compiled with PNG support, see 'Libraries installation issues' documentation section: http://djangocms-installer.readthedocs.org/en/latest/libraries.html.")
         try:
             im = Image.open(os.path.join(os.path.dirname(__file__), "../share/test_image.jpg"))
-            im.thumbnail(size)
+            im.load()
         except IOError:  # pragma: no cover
             errors.append("Pillow is not compiled with JPEG support, see 'Libraries installation issues' documentation section: http://djangocms-installer.readthedocs.org/en/latest/libraries.html")
     except ImportError:  # pragma: no cover
