@@ -13,6 +13,7 @@ DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', 'stable', 'develop')
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
+DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
 DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', '1.8', 'stable')
 
 CMS_VERSION_MATRIX = {
@@ -34,85 +35,88 @@ VERSION_MATRIX = {
     3.2: (1.6, 1.8),
 }
 
+REQUIREMENTS ={
+    'default': [
+        'django-classy-tags>=0.3.4.1',
+        'html5lib',
+        'Pillow>=2.3',
+        'django-sekizai>=0.7',
+        'six',
+    ],
+    'django-legacy': [
+        'south>=1.0.0',
+    ],
+    'reversion-django-1.4': [
+        'django-reversion<1.7',
+    ],
+    'reversion-django-1.5': [
+        'django-reversion>=1.7,<1.8',
+    ],
+    'reversion-django-1.6': [
+        'django-reversion>=1.8,<1.8.6',
+    ],
+    'reversion-django-1.7': [
+        'django-reversion>=1.8.2,<1.8.6',
+    ],
+    'reversion-django-1.8': [
+        'django-reversion>=1.8.7',
+    ],
+    'cms-2.x': [
+        'django-mptt>=0.5.1,<0.5.3',
+    ],
+    'cms-3.0': [
+        'django-mptt<0.7',
+    ],
 
-DEFAULT_REQUIREMENTS = """
-django-classy-tags>=0.3.4.1
-html5lib
-Pillow>=2.3
-django-sekizai>=0.7
-six
-"""
-
-DJANGO_16_REQUIREMENTS = """
-south>=1.0.0
-"""
-
-DJANGOCMS_2_REQUIREMENTS = """
-django-mptt>=0.5.1,<0.5.3
-"""
-
-DJANGOCMS_3_REQUIREMENTS = """
-django-mptt<0.7
-"""
-DJANGOCMS_3_1_REQUIREMENTS = """
-django-treebeard>=2.0
-"""
-
-PLUGINS_REQUIREMENTS_BASIC = """
-djangocms-admin-style
-djangocms-column
-djangocms-flash
-djangocms-googlemap
-djangocms-inherit
-djangocms-style
-djangocms-text-ckeditor>=2.3.0
-"""
-
-PLUGINS_REQUIREMENTS_NON_FILER = """
-djangocms-file
-djangocms-link
-djangocms-picture
-djangocms-teaser
-djangocms-video
-"""
-
-PLUGINS_REQUIREMENTS_BASIC_DJANGO_17 = """
-https://github.com/divio/djangocms-admin-style/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-column/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-flash/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-googlemap/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-inherit/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-style/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-link/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?%(bust)s
-""" % {'bust': time.time()}
-
-PLUGINS_REQUIREMENTS_NON_FILER_DJANGO_17 = """
-https://github.com/divio/djangocms-file/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-picture/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-teaser/archive/master.zip?%(bust)s
-https://github.com/divio/djangocms-video/archive/master.zip?%(bust)s
-""" % {'bust': time.time()}
-
-
-DJANGO_17_REVERSION = "django-reversion>=1.8.2,<1.8.6"
-ALDRYN_REQUIREMENTS = """
-django-compressor
-"""
-DJANGO_16_REVERSION = "django-reversion>=1.8,<1.8.6"
-DJANGO_15_REVERSION = "django-reversion>=1.7,<1.8"
-DJANGO_14_REVERSION = "django-reversion<1.7"
-
-FILER_REQUIREMENTS_CMS3 = """
-easy_thumbnails
-https://github.com/stefanfoulis/django-filer/archive/develop.zip
-cmsplugin-filer>=0.9.9
-"""
-FILER_REQUIREMENTS_CMS2 = """
-easy_thumbnails
-django-filer<=0.9.6
-cmsplugin_filer
-"""
+    'cms-3.x': [
+        'django-treebeard>=2.0',
+    ],
+    'plugins-common': [
+        'djangocms-admin-style',
+        'djangocms-column',
+        'djangocms-flash',
+        'djangocms-googlemap',
+        'djangocms-inherit',
+        'djangocms-style',
+        'djangocms-text-ckeditor>=2.3.0',
+    ],
+    'plugins-basic': [
+        'djangocms-file',
+        'djangocms-link',
+        'djangocms-picture',
+        'djangocms-teaser',
+        'djangocms-video',
+    ],
+    'plugins-common-master': [
+        'https://github.com/divio/djangocms-admin-style/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-column/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-flash/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-googlemap/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-inherit/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-link/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-style/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?%(bust)s' % {'bust': time.time()},
+    ],
+    'plugins-basic-master': [
+        'https://github.com/divio/djangocms-file/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-picture/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-teaser/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-video/archive/master.zip?%(bust)s' % {'bust': time.time()},
+    ],
+    'aldryn': [
+        'django-compressor',
+    ],
+    'filer': [
+        'easy_thumbnails',
+        'https://github.com/stefanfoulis/django-filer/archive/develop.zip',
+        'cmsplugin-filer>=0.9.9',
+    ],
+    'filer-cms-2.x': [
+        'easy_thumbnails',
+        'django-filer<=0.9.6',
+        'cmsplugin-filer',
+    ],
+}
 
 TEMPLATES_1_8 = """
 TEMPLATES = [
