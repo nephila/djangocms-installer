@@ -69,12 +69,12 @@ def parse(args):
 
     # Command that lists the supported plugins in verbose description
     parser.add_argument('--list-plugins', '-P', dest='plugins', action='store_true',
-                        help="List plugins that's going to be installed and configured")
+                        help='List plugins that\'s going to be installed and configured')
 
     # Command that lists the supported plugins in verbose description
     parser.add_argument('--dump-requirements', '-R', dest='dump_reqs', action='store_true',
-                        help="It dumps the requirements that would be installed according to parameters given."
-                             "Together with --requirements argument is useful for customizing the virtualenv")
+                        help='It dumps the requirements that would be installed according to parameters given.'
+                             'Together with --requirements argument is useful for customizing the virtualenv')
 
     # Advanced options. These have a predefined default and are not managed
     # by config wizard.
@@ -88,6 +88,8 @@ def parse(args):
                         default=None, help='Externally defined requirements file')
     parser.add_argument('--no-deps', '-n', dest='no_deps', action='store_true',
                         default=False, help="Don't install package dependencies")
+    parser.add_argument('--no-plugins', dest='no_plugins', action='store_true',
+                        default=False, help="Don't install plugins")
     parser.add_argument('--no-db-driver', dest='no_db_driver', action='store_true',
                         default=False, help="Don't install database package")
     parser.add_argument('--no-sync', '-m', dest='no_sync', action='store_true',
@@ -116,9 +118,9 @@ def parse(args):
 
     # First of all, check if the project name is valid
     if not validate_project(args.project_name):
-        sys.stderr.write(u"Project name '%s' is not a valid app name, "
-                         u"or it's already defined. "
-                         u"Please use only numbers, letters and underscores.\n"
+        sys.stderr.write('Project name "%s" is not a valid app name, '
+                         'or it\'s already defined. '
+                         'Please use only numbers, letters and underscores.\n'
                          % args.project_name)
         sys.exit(3)
 
@@ -128,14 +130,14 @@ def parse(args):
     if not args.skip_project_dir_check:
         if (os.path.exists(args.project_directory) and
                 [path for path in os.listdir(args.project_directory) if not path.startswith('.')]):
-            sys.stderr.write("Path '%s' already exists and is not empty, "
-                             "please choose a different one\nIf you want to use this path anyway "
-                             "use the -s flag to skip this check.\n" % args.project_directory)
+            sys.stderr.write('Path "%s" already exists and is not empty, '
+                             'please choose a different one\nIf you want to use this path anyway '
+                             'use the -s flag to skip this check.\n' % args.project_directory)
             sys.exit(4)
 
     if os.path.exists(args.project_path):
-        sys.stderr.write("Path '%s' already exists, "
-                         "please choose a different one\n" % args.project_path)
+        sys.stderr.write('Path "%s" already exists, '
+                         'please choose a different one\n' % args.project_path)
         sys.exit(4)
 
     if args.config_dump and os.path.isfile(args.config_dump):
@@ -144,20 +146,20 @@ def parse(args):
 
     for item in data.CONFIGURABLE_OPTIONS:
         action = parser._option_string_actions[item]
-        choices = default = ""
+        choices = default = ''
         input_value = getattr(args, action.dest)
         new_val = None
         if not args.noinput:
             if action.choices:
-                choices = " (choices: %s)" % ", ".join(action.choices)
+                choices = ' (choices: %s)' % ', '.join(action.choices)
             if input_value:
                 if type(input_value) == list:
-                    default = " [default %s]" % ", ".join(input_value)
+                    default = ' [default %s]' % ', '.join(input_value)
                 else:
-                    default = " [default %s]" % input_value
+                    default = ' [default %s]' % input_value
 
             while not new_val:
-                prompt = "%s%s%s: " % (action.help, choices, default)
+                prompt = '%s%s%s: ' % (action.help, choices, default)
                 if action.choices in ('yes', 'no'):
                     new_val = utils.query_yes_no(prompt)
                 else:
@@ -174,7 +176,7 @@ def parse(args):
                     new_val = getattr(args, action.dest)
         else:
             if not input_value and action.required:
-                raise ValueError("Option %s is required when in no-input mode" % action.dest)
+                raise ValueError('Option %s is required when in no-input mode' % action.dest)
             new_val = input_value
             if action.dest == 'db':
                 action(parser, args, new_val, action.option_strings)
@@ -193,14 +195,14 @@ def parse(args):
 
     if not args.languages:
         try:
-            args.languages = [locale.getdefaultlocale()[0].split("_")[0]]
+            args.languages = [locale.getdefaultlocale()[0].split('_')[0]]
         except:
             args.languages = ['en']
     elif isinstance(args.languages, six.string_types):
-        args.languages = args.languages.split(",")
+        args.languages = args.languages.split(',')
     elif len(args.languages) == 1 and isinstance(args.languages[0],
                                                  six.string_types):
-        args.languages = args.languages[0].split(",")
+        args.languages = args.languages[0].split(',')
 
     args.languages = [lang.strip() for lang in args.languages]
     args.aldryn = False
@@ -213,10 +215,10 @@ def parse(args):
         sys.stderr.write(compat.unicode(e))
         sys.exit(6)
     if django_version is None:
-        sys.stderr.write("Please provide a Django supported version: %s. Only Major.Minor version selector is accepted\n" % ", ".join(data.DJANGO_SUPPORTED))
+        sys.stderr.write('Please provide a Django supported version: %s. Only Major.Minor version selector is accepted\n' % ', '.join(data.DJANGO_SUPPORTED))
         sys.exit(6)
     if django_version is None:
-        sys.stderr.write("Please provide a django CMS supported version: %s. Only Major.Minor version selector is accepted\n" % ", ".join(data.DJANGOCMS_SUPPORTED))
+        sys.stderr.write('Please provide a django CMS supported version: %s. Only Major.Minor version selector is accepted\n' % ', '.join(data.DJANGOCMS_SUPPORTED))
         sys.exit(6)
 
     if not getattr(args, 'requirements_file'):
@@ -232,7 +234,7 @@ def parse(args):
             requirements.append(data.DJANGOCMS_BETA)
             warnings.warn(data.VERSION_WARNING % ('beta', 'django CMS'))
         else:
-            requirements.append("django-cms<%s" % less_than_version(cms_version))
+            requirements.append('django-cms<%s' % less_than_version(cms_version))
 
         if cms_version == 3:
             requirements.extend(data.REQUIREMENTS['cms-3.0'])
@@ -243,23 +245,24 @@ def parse(args):
 
         if not args.no_db_driver:
             requirements.append(args.db_driver)
-        if args.filer:
-            if cms_version >= 3:
+        if not args.no_plugins:
+            if args.filer:
+                if cms_version >= 3:
+                    if django_version < 1.7:
+                        requirements.extend(data.REQUIREMENTS['plugins-common'])
+                        requirements.extend(data.REQUIREMENTS['filer'])
+                    else:
+                        requirements.extend(data.REQUIREMENTS['plugins-common-master'])
+                        requirements.extend(data.REQUIREMENTS['filer'])
+                else:
+                    requirements.extend(data.REQUIREMENTS['filer-cms-2.x'])
+            elif cms_version >= 3:
                 if django_version < 1.7:
                     requirements.extend(data.REQUIREMENTS['plugins-common'])
-                    requirements.extend(data.REQUIREMENTS['filer'])
+                    requirements.extend(data.REQUIREMENTS['plugins-basic'])
                 else:
                     requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                    requirements.extend(data.REQUIREMENTS['filer'])
-            else:
-                requirements.extend(data.REQUIREMENTS['filer-cms-2.x'])
-        elif cms_version >= 3:
-            if django_version < 1.7:
-                requirements.extend(data.REQUIREMENTS['plugins-common'])
-                requirements.extend(data.REQUIREMENTS['plugins-basic'])
-            else:
-                requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
+                    requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
         if args.aldryn:
             requirements.extend(data.REQUIREMENTS['aldryn'])
 
@@ -271,7 +274,7 @@ def parse(args):
             requirements.append(data.DJANGO_BETA)
             warnings.warn(data.VERSION_WARNING % ('beta', 'Django'))
         else:
-            requirements.append("Django<%s" % less_than_version(django_version))
+            requirements.append('Django<%s' % less_than_version(django_version))
 
         # Timezone support
         if args.use_timezone:
@@ -296,14 +299,14 @@ def parse(args):
 
         requirements.extend(data.REQUIREMENTS['default'])
 
-        setattr(args, "requirements", "\n".join(requirements).strip())
+        setattr(args, 'requirements', '\n'.join(requirements).strip())
     if cms_version < 3 and args.aldryn:
-        sys.stderr.write("Aldryn Boilerplate is not compatible with django CMS versions < 3\n")
+        sys.stderr.write('Aldryn Boilerplate is not compatible with django CMS versions < 3\n')
         sys.exit(5)
 
     # Convenient shortcuts
-    setattr(args, "cms_version", cms_version)
-    setattr(args, "django_version", django_version)
+    setattr(args, 'cms_version', cms_version)
+    setattr(args, 'django_version', django_version)
     setattr(args, 'settings_path',
             os.path.join(args.project_directory, args.project_name, 'settings.py').strip())
     setattr(args, 'urlconf_path',
