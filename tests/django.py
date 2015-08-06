@@ -4,6 +4,7 @@ import os.path
 import re
 import sqlite3
 import sys
+import textwrap
 
 from djangocms_installer import config, django, install
 from djangocms_installer.config.settings import (MIGRATION_MODULES_BASE,
@@ -534,3 +535,22 @@ class TestDjango(IsolatedTestClass):
         query = project_db.execute('SELECT * FROM auth_user')
         self.assertTrue(query)
 
+
+class TestBaseDjango(unittest.TestCase):
+    def test_build_settings(self):
+        """Tests django.__init__._build_settings function."""
+        config_data = config.parse(['--db=postgres://user:pwd@host:5432/dbname',
+                                    '--cms-version=stable', '--django=%s' % dj_ver,
+                                    '-q', '-p .', 'example_prj'])
+        settings = django._build_settings(config_data)
+        self.assertTrue(textwrap.dedent('''
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                    'HOST': 'host',
+                    'NAME': 'dbname',
+                    'PASSWORD': 'pwd',
+                    'PORT': '5432',
+                    'USER': 'user'
+                }
+            }''').strip() in settings)
