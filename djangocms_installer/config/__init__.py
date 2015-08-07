@@ -9,7 +9,7 @@ import warnings
 
 from tzlocal import get_localzone
 
-from . import data
+from . import data, ini
 from .internal import DbAction, validate_project
 from .. import compat, utils
 from ..utils import less_than_version, supported_versions
@@ -20,6 +20,9 @@ def parse(args):
     Define the available arguments
     """
     parser = argparse.ArgumentParser(description='Bootstrap a django CMS project.')
+    parser.add_argument('--config-file', dest='config_file', action='store',
+                        default=None,
+                        help='Configuration file for djangocms_installer')
     parser.add_argument('--db', '-d', dest='db', action=DbAction,
                         default='sqlite://localhost/project.db',
                         help='Database configuration (in URL format)')
@@ -103,7 +106,10 @@ def parse(args):
         for action in parser._positionals._actions:
             if action.dest == 'timezone':
                 action.default = 'UTC'
-    args = parser.parse_args(args)
+    
+    # If config_args then pretend that config args came from the stdin and run parser again.
+    config_args = ini.parse_config_file(parser, args)
+    args = parser.parse_args(config_args + args)
 
     # First of all, check if the project name is valid
     if not validate_project(args.project_name):
