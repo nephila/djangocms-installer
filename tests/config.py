@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from argparse import Namespace
+import copy
 import os
 import sys
 
@@ -8,10 +10,11 @@ from six import StringIO, text_type
 from tzlocal import get_localzone
 
 from djangocms_installer import config
+from djangocms_installer.config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
 
-from .base import BaseTestClass
+from .base import unittest, BaseTestClass
 
 
 class TestConfig(BaseTestClass):
@@ -582,3 +585,99 @@ class TestConfig(BaseTestClass):
             config.show_requirements(conf_data)
         finally:
             sys.stdout = sys.__stdout__
+
+
+class TestBaseConfig(unittest.TestCase):
+    base_dir = os.path.dirname(os.path.dirname(__file__))
+    config_dir = os.path.join(base_dir, 'tests/fixtures/configs')
+    args = ['--config-file', '-s', '-q', 'example_prj']
+    config_fixture = Namespace(**{
+        'bootstrap': False,
+        'cms_version': CMS_VERSION_MATRIX['stable'],
+        'db': 'sqlite://localhost/project.db',
+        'django_version': DJANGO_VERSION_MATRIX['stable'],
+        'dump_reqs': False,
+        'extra_settings': None,
+        'filer': False,
+        'i18n': 'yes',
+        'languages': ['en'],
+        'no_db_driver': False,
+        'no_deps': False,
+        'noinput': True,
+        'no_sync': False,
+        'no_user': False,
+        'permissions': 'yes',
+        'plugins': False,
+        'project_directory': '.',
+        'project_name': 'example_prj',
+        'requirements_file': None,
+        'reversion': 'yes',
+        'skip_project_dir_check': True,
+        'starting_page': False,
+        'template': None,
+        'templates': False,
+        'timezone': get_localzone(),
+        'use_timezone': 'yes',
+        'utc': False
+    })
+
+    def conf(self, filename):
+        return os.path.join(self.config_dir, filename)
+
+    def unused(self, config_data):
+        """Remove not configurable keys."""
+        for attr in ('aldryn', 'config_file', 'db_driver', 'db_parsed',
+                     'project_path', 'settings_path', 'urlconf_path'):
+            delattr(config_data, attr)
+        # When `requirements` arg is used then requirements attr isn't set.
+        if hasattr(config_data, 'requirements'):
+            delattr(config_data, 'requirements')
+
+    @patch('sys.stdout')
+    @patch('sys.stderr')
+    def test_parse_config_file(self, *args):
+        """Tests .config.__init__._parse_config_file function."""
+        with self.assertRaises(SystemExit) as error:
+            config_data = config.parse(self.args[0:1] + [self.conf('config-not-exists.ini')] + self.args[1:])
+            self.assertEqual(7, error.exception.code)
+
+        args = self.args[0:1] + [self.conf('config-01.ini')] + self.args[1:]
+        config_data = config.parse(args)
+        self.unused(config_data)
+        self.assertEqual(self.config_fixture, config_data)
+
+        fixture = copy.copy(self.config_fixture)
+        test_data = (
+            ('config-02.ini', 'db', 'postgres://user:pwd@host:54321/dbname'),
+            ('config-03.ini', 'i18n', 'no'),
+            ('config-04.ini', 'use_timezone', 'no'),
+            ('config-05.ini', 'timezone', 'Europe/London'),
+            ('config-06.ini', 'reversion', 'no'),
+            ('config-07.ini', 'permissions', 'no'),
+            ('config-08.ini', 'languages', ['en', 'ru']),
+            ('config-09.ini', 'django_version', 1.8),
+            ('config-10.ini', 'i18n', 'no'),
+            ('config-11.ini', 'project_directory', '/test/me'),
+            ('config-12.ini', 'bootstrap', True),
+            ('config-13.ini', 'templates', '.'),
+            ('config-14.ini', 'starting_page', True),
+            ('config-15.ini', 'plugins', True),
+            ('config-16.ini', 'dump_reqs', True),
+            ('config-17.ini', 'noinput', True),
+            ('config-18.ini', 'filer', True),
+            ('config-19.ini', 'requirements_file', '/test/reqs'),
+            ('config-20.ini', 'no_deps', True),
+            ('config-21.ini', 'no_db_driver', True),
+            ('config-22.ini', 'no_sync', True),
+            ('config-23.ini', 'no_user', True),
+            ('config-24.ini', 'template', '/test/template'),
+            ('config-25.ini', 'extra_settings', '/test/extra_settings'),
+            ('config-26.ini', 'skip_project_dir_check', True),
+            ('config-27.ini', 'utc', True),
+        )
+        for filename, key, val in test_data:
+            setattr(fixture, key, val)  # Change value.
+            args = self.args[0:1] + [self.conf(filename)] + self.args[1:]  # Load new config.
+            config_data = config.parse(args)
+            self.unused(config_data)
+            self.assertEqual(fixture, config_data)  # Check if config value and changed value equals.
