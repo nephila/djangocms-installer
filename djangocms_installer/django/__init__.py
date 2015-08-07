@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import textwrap
 import zipfile
 from six import BytesIO
 
@@ -329,7 +330,12 @@ def _build_settings(config_data):
     text.append("CMS_PERMISSION = %s" % vars.CMS_PERMISSION)
     text.append("CMS_PLACEHOLDER_CONF = %s" % vars.CMS_PLACEHOLDER_CONF)
 
-    text.append("DATABASES = {\n%s'default':\n%s%s\n}" % (spacer, spacer * 2, config_data.db_parsed))
+    text.append(textwrap.dedent("""
+        DATABASES = {
+            'default': {
+                %s
+            }
+        }""").strip() % (",\n" + spacer * 2).join(["'%s': '%s'" % (key, val) for key, val in sorted(config_data.db_parsed.items(), key=lambda x: x[0])]))
 
     if config_data.django_version >= 1.7:
         text.append("MIGRATION_MODULES = {\n%s%s\n}" % (
