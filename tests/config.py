@@ -621,12 +621,21 @@ class TestBaseConfig(unittest.TestCase):
         'utc': False
     })
 
+    def __init__(self, *args, **kwargs):
+        self.config_not_exists = self.conf('config-dump.ini')
+
+        super(TestBaseConfig, self).__init__(*args, **kwargs)
+
+    def tearDown(self):
+        if os.path.isfile(self.config_not_exists):
+            os.remove(self.config_not_exists)
+
     def conf(self, filename):
         return os.path.join(self.config_dir, filename)
 
     def unused(self, config_data):
         """Remove not configurable keys."""
-        for attr in ('aldryn', 'config_file', 'db_driver', 'db_parsed',
+        for attr in ('aldryn', 'config_dump', 'config_file', 'db_driver', 'db_parsed',
                      'project_path', 'settings_path', 'urlconf_path'):
             delattr(config_data, attr)
         # When `requirements` arg is used then requirements attr isn't set.
@@ -681,3 +690,24 @@ class TestBaseConfig(unittest.TestCase):
             config_data = config.parse(args)
             self.unused(config_data)
             self.assertEqual(fixture, config_data)  # Check if config value and changed value equals.
+
+    @patch('sys.stdout')
+    @patch('sys.stderr')
+    def test_dump_config_file(self, *args):
+        """Tests .config.ini.dump_config_file function."""
+        config_exists = self.conf('config-01.ini')
+
+        with self.assertRaises(SystemExit) as error:
+            config_data = config.parse(['--config-dump', config_exists] + self.args[1:] + ['-p', '.'])
+            self.assertEqual(8, error.exception.code)
+
+        config_data = config.parse(['--config-dump', self.config_not_exists] + self.args[1:] + ['-p', '.'])
+        self.assertTrue(os.path.isfile(self.config_not_exists))
+
+        fixture = copy.copy(self.config_fixture)
+        setattr(fixture, 'timezone', get_localzone().zone)
+        # Load dumped config.
+        args = self.args[0:1] + [self.config_not_exists] + self.args[1:]
+        config_data = config.parse(args)
+        self.unused(config_data)
+        self.assertEqual(fixture, config_data)
