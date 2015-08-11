@@ -3,7 +3,7 @@
 Libraries installation issues
 =============================
 
-While this wizard try to handle most of the things for you, it doesn't check for
+While this wizard tries to handle most of the things for you, it doesn't check for
 all the proper native (non python) libraries to be installed.
 Before running this, please check you have the proper header and libraries
 installed and available for packages to be installed.
@@ -15,7 +15,7 @@ Libraries you would want to check:
 * postgresql (for ``psycopg``)
 * libmysqlclient (for ``Mysql-Python``)
 
-The actualy package name may vary depending on the platform / distribution you
+The actual package name may vary depending on the platform / distribution you
 are using; you should make sure you have the library headers file installed
 (mostly contained in package with `-dev` in its name: e.g. `libjpeg-dev` for
 `libjpeg` library).
@@ -27,9 +27,12 @@ Below  are provided examples for Debian/Ubuntu, for other Linux distributions or
 other operating system details may vary:
 
 * Pillow: ``sudo apt-get install -y libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev``
-* postgres: ``sudo apt-get install libqd-dev``
+* Postgres: ``sudo apt-get install libqd-dev``
 * MySQL: ``sudo apt-get install libmysqlclient-dev``
 
+If you are using yum to install packages, use ``yum search xx`` to search for any missing packages
+
+* Pillow: ``sudo yum install libjpeg-devel libpng-devel libtiff-devel freetype-devel zlib-devel``
 
 Fixing libraries installation issues
 ------------------------------------
@@ -46,6 +49,8 @@ library and execute ``djangocms-installer`` again with the same parameters; if
 the package is compiled with some functionality missing, you have to first
 deinstall it (`pip uninstall *package-name*`), then install the correct library
 and the execute ``djangocms-installer`` again.
+
+* Reinstall ``pip install --upgrade --force-reinstall --no-deps djangocms-installer``
 
 For older Debian / Ubuntu releases, a manual fix may be needed to properly fix
 compilation issues: see `stackoverflow`_
