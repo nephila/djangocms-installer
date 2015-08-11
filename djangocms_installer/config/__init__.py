@@ -23,6 +23,9 @@ def parse(args):
     parser.add_argument('--config-file', dest='config_file', action='store',
                         default=None,
                         help='Configuration file for djangocms_installer')
+    parser.add_argument('--config-dump', dest='config_dump', action='store',
+                        default=None,
+                        help='Dump configuration file with current args')
     parser.add_argument('--db', '-d', dest='db', action=DbAction,
                         default='sqlite://localhost/project.db',
                         help='Database configuration (in URL format)')
@@ -134,6 +137,10 @@ def parse(args):
         sys.stderr.write("Path '%s' already exists, "
                          "please choose a different one\n" % args.project_path)
         sys.exit(4)
+
+    if args.config_dump and os.path.isfile(args.config_dump):
+        sys.stdout.write('Cannot dump because given configuration file "%s" is exists.\n' % args.config_dump)
+        sys.exit(8)
 
     for item in data.CONFIGURABLE_OPTIONS:
         action = parser._option_string_actions[item]
@@ -301,6 +308,9 @@ def parse(args):
             os.path.join(args.project_directory, args.project_name, 'settings.py').strip())
     setattr(args, 'urlconf_path',
             os.path.join(args.project_directory, args.project_name, 'urls.py').strip())
+
+    if args.config_dump:
+        ini.dump_config_file(args.config_dump, args, parser)
 
     return args
 
