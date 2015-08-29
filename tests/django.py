@@ -242,7 +242,7 @@ class TestDjango(IsolatedTestClass):
 
         ## checking for django options
         self.assertFalse('south' in project.settings.INSTALLED_APPS)
-        self.assertTrue('cms' in project.settings.MIGRATION_MODULES)
+        self.assertFalse('cms' in project.settings.MIGRATION_MODULES)
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
     def test_patch_31(self):
@@ -509,7 +509,7 @@ class TestDjango(IsolatedTestClass):
 
     def test_database_setup(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '-q', '--cms-version=3.0', '--django=%s' % dj_ver,
+                                    '-q', '--cms-version=3.1', '--django=%s' % dj_ver,
                                     '-p'+self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)

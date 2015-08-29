@@ -89,14 +89,8 @@ class IsolatedTestClass(BaseTestClass):
         super(IsolatedTestClass, self).tearDown()
         modules = copy(sys.modules)
         for module in modules:
-            if (module.endswith('.migrations')
-                    or module.endswith('.south_migrations')
-                    or module.endswith('.django_migrations')):
-                main_module = module.rpartition('.')[0]
-                if module in sys.modules:
-                    del sys.modules[module]
-                if main_module in sys.modules:
-                    del sys.modules[main_module]
+            if 'django' in module:
+                del sys.modules[module]
 
     def setUp(self):
         super(IsolatedTestClass, self).setUp()
