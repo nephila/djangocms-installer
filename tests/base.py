@@ -6,12 +6,13 @@ import subprocess
 import sys
 import tempfile
 
+from copy import copy
+from six import StringIO
+
 if sys.version_info[:2] < (2, 7):
     import unittest2 as unittest
 else:
     import unittest
-
-from six import StringIO
 
 
 SYSTEM_ACTIVATE = os.path.join(os.path.dirname(sys.executable), 'activate_this.py')
@@ -74,6 +75,7 @@ class IsolatedTestClass(BaseTestClass):
             print("creating virtualenv", self.virtualenv_dir)
 
     def tearDown(self):
+        from djangocms_installer.config.settings import MIGRATIONS_CHECK_MODULES
         if self.verbose:
             print("deactivating virtualenv", self.virtualenv_dir)
         if os.path.exists(SYSTEM_ACTIVATE):
@@ -85,6 +87,16 @@ class IsolatedTestClass(BaseTestClass):
                 exec(code, dict(__file__=SYSTEM_ACTIVATE))
             sys.executable = os.path.join(os.path.dirname(SYSTEM_ACTIVATE), 'python')
         super(IsolatedTestClass, self).tearDown()
+        modules = copy(sys.modules)
+        for module in modules:
+            if (module.endswith('.migrations')
+                    or module.endswith('.south_migrations')
+                    or module.endswith('.django_migrations')):
+                main_module = module.rpartition('.')[0]
+                if module in sys.modules:
+                    del sys.modules[module]
+                if main_module in sys.modules:
+                    del sys.modules[main_module]
 
     def setUp(self):
         super(IsolatedTestClass, self).setUp()

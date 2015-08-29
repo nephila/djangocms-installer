@@ -242,7 +242,7 @@ class TestDjango(IsolatedTestClass):
 
         ## checking for django options
         self.assertFalse('south' in project.settings.INSTALLED_APPS)
-        self.assertFalse('cms' in project.settings.MIGRATION_MODULES)
+        self.assertTrue('cms' in project.settings.MIGRATION_MODULES)
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
     def test_patch_31(self):

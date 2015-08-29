@@ -12,6 +12,7 @@ import textwrap
 import zipfile
 
 from copy import copy, deepcopy
+
 from importlib import import_module
 
 try:
@@ -51,14 +52,14 @@ def create_project(config_data):
 def _detect_migration_layout(vars, apps):
     SOUTH_MODULES = {}
     DJANGO_MODULES = {}
+
     for module in vars.MIGRATIONS_CHECK_MODULES:
         if module in apps:
             try:
                 import_module('%s.migrations_django' % module)
                 DJANGO_MODULES[module] = '%s.migrations_django' % module
                 SOUTH_MODULES[module] = '%s.migrations' % module
-            except Exception as e:
-                print(module, e)
+            except Exception:
                 pass
     return DJANGO_MODULES, SOUTH_MODULES
 
