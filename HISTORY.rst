@@ -3,6 +3,13 @@
 History
 -------
 
+0.8.0 (XXXX-XX-XX)
+++++++++++++++++++
+
+* Options can now be provided via an ini file for easy scripting
+* Better migration modules discovery strategy
+* Minor fixes
+
 0.7.9 (2015-07-21)
 ++++++++++++++++++
 

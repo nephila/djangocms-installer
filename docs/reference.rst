@@ -57,6 +57,9 @@ advanced usage:
 
 * ``--no-input``, ``-q``: If given **djangocms installer** run in :ref:`batch_mode`;
 * ``--filer``, ``-f``: Install and configure django-filer plugins;
+* ``--config-file``: Provides the configuration options via a ini file; see :ref:`ini_mode`;
+* ``--config-dump``: Dumps the configuration in a format suitable for ``-config-file``
+  option; see :ref:`ini_mode`;
 * ``--dump-requirements``, ``-R``: Dumps the generated requirements to stdout
   and exits; see :ref:`dump_mode`;
 * ``--requirements``, ``-r``: You can use a custom requirements files instead of the
@@ -71,11 +74,11 @@ advanced usage:
   project;
 * ``--extra-settings``: Path to a file with extra variables to append to generated settings file.
   It doesn't need to be a Python file, its content is blindly copied in the project settings.
-*``--aldryn``, ``-a``: Use `aldryn-boilerplate`_; this downloads **aldryn-boilerplate** and copies
+* ``--aldryn``, ``-a``: Use `aldryn-boilerplate`_; this downloads **aldryn-boilerplate** and copies
   it to the project, adapting the project layout according to boilerplate specifications; the use
   of aldryn-boilerplate requires manual actions, look at `aldryn-boilerplate documentation`_ for
   further informations.
-*``--skip-empty-check``, ``-s``: Skip the check if the project dir contains files or directory;
+* ``--skip-empty-check``, ``-s``: Skip the check if the project dir contains files or directory;
   in case of error when setting up the project, ``djangocms-installer`` may ask you to remove
   the directory, be careful if using this option as you may remove files not related to the
   project set up by the installer.

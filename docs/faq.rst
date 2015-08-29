@@ -27,7 +27,8 @@ FAQ
    **djangocms-installer** uses `dj-database-url`_ to get database
    configuration parameters; refer to this package for more details.
 
-#. The installer dies with an error like ``ImportError: Could not import settings 'foo.bar.settings' (Is it on sys.path? Is there an import error in the settings file?): No module named foo.bar.settings``,
+#. The installer dies with an error like
+   ``ImportError: Could not import settings 'foo.bar.settings' (Is it on sys.path? Is there an import error in the settings file?): No module named foo.bar.settings``,
    what's happening?
 
    Chances are you have ``DJANGO_SETTINGS_MODULE`` set in you environment,
