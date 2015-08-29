@@ -13,8 +13,6 @@ import zipfile
 
 from copy import copy, deepcopy
 
-from importlib import import_module
-
 try:
     from shlex import quote as shlex_quote
 except ImportError:
@@ -56,7 +54,7 @@ def _detect_migration_layout(vars, apps):
     for module in vars.MIGRATIONS_CHECK_MODULES:
         if module in apps:
             try:
-                mod = import_module('%s.migrations_django' % module)  # NOQA
+                mod = __import__('%s.migrations_django' % module)  # NOQA
                 DJANGO_MODULES[module] = '%s.migrations_django' % module
                 SOUTH_MODULES[module] = '%s.migrations' % module
             except Exception:
