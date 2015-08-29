@@ -31,8 +31,8 @@ def create_pages():
     try:
         # try to get a feature placeholder
         placeholder_feature = page.placeholders.get(slot='feature')
-        p = add_plugin(placeholder_feature, 'TextPlugin', lang,
-                       body=content['feature'])
+        add_plugin(placeholder_feature, 'TextPlugin', lang,
+                   body=content['feature'])
     except Placeholder.DoesNotExist:
         # fallback, add it to the
         add_plugin(placeholder['main'], 'TextPlugin', lang, body=content['feature'])
