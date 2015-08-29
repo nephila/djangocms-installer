@@ -7,8 +7,6 @@ import sys
 import textwrap
 
 from djangocms_installer import config, django, install
-from djangocms_installer.config.settings import (MIGRATION_MODULES_BASE,
-                                                 MIGRATION_MODULES_3_1_FILER)
 from .base import unittest, IsolatedTestClass
 
 dj_ver = '1.7' if sys.version_info >= (2, 7) else '1.6'
@@ -244,9 +242,8 @@ class TestDjango(IsolatedTestClass):
 
         ## checking for django options
         self.assertFalse('south' in project.settings.INSTALLED_APPS)
-        for module in MIGRATION_MODULES_BASE:
-            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
-            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
+        self.assertFalse('cms' in project.settings.MIGRATION_MODULES)
+        self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
     def test_patch_31(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -294,9 +291,8 @@ class TestDjango(IsolatedTestClass):
 
         ## checking for django options
         self.assertFalse('south' in project.settings.INSTALLED_APPS)
-        for module in MIGRATION_MODULES_3_1_FILER:
-            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
-            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
+        self.assertFalse('filer' in project.settings.MIGRATION_MODULES)
+        self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
     @unittest.skipIf(sys.version_info <= (2, 7),
                      reason="django 1.7 does not support python 2.6")
@@ -513,7 +509,7 @@ class TestDjango(IsolatedTestClass):
 
     def test_database_setup(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '-q', '--cms-version=3.0', '--django=%s' % dj_ver,
+                                    '-q', '--cms-version=3.1', '--django=%s' % dj_ver,
                                     '-p'+self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)

@@ -1,5 +1,6 @@
 -r requirements.txt
 flake8
 tox
-unittest2
 mock
+pillow
+coverage
