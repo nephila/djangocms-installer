@@ -3,6 +3,12 @@
 History
 -------
 
+0.7.9 (2015-07-21)
+++++++++++++++++++
+
+* Better Django 1.8 support
+* Fix error with newer Pillow versions
+
 0.7.8 (2015-06-27)
 ++++++++++++++++++
 
