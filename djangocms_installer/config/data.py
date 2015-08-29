@@ -7,13 +7,13 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--permissions', '--bootstrap', '--templates',
                         '--starting-page']
 
-DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
+DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % time.time()
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', 'stable', 'develop')
 
-DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
-DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?%s' % time.time()  ## to avoid getting this from caches or mirrors
+DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()
+DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?%s' % time.time()
 DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', '1.8', 'stable')
 
 CMS_VERSION_MATRIX = {
@@ -35,7 +35,7 @@ VERSION_MATRIX = {
     3.2: (1.6, 1.8),
 }
 
-REQUIREMENTS ={
+REQUIREMENTS = {
     'default': [
         'django-classy-tags>=0.3.4.1',
         'html5lib',

@@ -78,7 +78,7 @@ def parse(args):
 
     # Advanced options. These have a predefined default and are not managed
     # by config wizard.
-    #parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
+    # parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
     #                    default=False, help="Use Aldryn-boilerplate as project template")
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
                         default=False, help="Don't run the configuration wizard, just use the provided values")
@@ -109,7 +109,7 @@ def parse(args):
         for action in parser._positionals._actions:
             if action.dest == 'timezone':
                 action.default = 'UTC'
-    
+
     # If config_args then pretend that config args came from the stdin and run parser again.
     config_args = ini.parse_config_file(parser, args)
     args = parser.parse_args(config_args + args)

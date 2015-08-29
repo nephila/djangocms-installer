@@ -57,7 +57,7 @@ def dump_config_file(filename, args, parser=None):
         keys_empty_values_not_pass = (
             '--extra-settings', '--languages', '--requirements', '--template', '--timezone')
 
-        #_positionals._option_string_actions
+        # positionals._option_string_actions
         for action in parser._actions:
             if action.dest in ('help', 'config_file', 'config_dump', 'project_name'):
                 continue
