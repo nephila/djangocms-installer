@@ -3,7 +3,7 @@
 History
 -------
 
-0.8.0 (XXXX-XX-XX)
+0.8.0 (2015-08-30)
 ++++++++++++++++++
 
 * Options can now be provided via an ini file for easy scripting
