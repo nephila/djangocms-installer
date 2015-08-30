@@ -9,7 +9,7 @@ import warnings
 
 from tzlocal import get_localzone
 
-from . import data
+from . import data, ini
 from .internal import DbAction, validate_project
 from .. import compat, utils
 from ..utils import less_than_version, supported_versions
@@ -20,6 +20,12 @@ def parse(args):
     Define the available arguments
     """
     parser = argparse.ArgumentParser(description='Bootstrap a django CMS project.')
+    parser.add_argument('--config-file', dest='config_file', action='store',
+                        default=None,
+                        help='Configuration file for djangocms_installer')
+    parser.add_argument('--config-dump', dest='config_dump', action='store',
+                        default=None,
+                        help='Dump configuration file with current args')
     parser.add_argument('--db', '-d', dest='db', action=DbAction,
                         default='sqlite://localhost/project.db',
                         help='Database configuration (in URL format)')
@@ -72,7 +78,7 @@ def parse(args):
 
     # Advanced options. These have a predefined default and are not managed
     # by config wizard.
-    #parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
+    # parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
     #                    default=False, help="Use Aldryn-boilerplate as project template")
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
                         default=False, help="Don't run the configuration wizard, just use the provided values")
@@ -103,7 +109,10 @@ def parse(args):
         for action in parser._positionals._actions:
             if action.dest == 'timezone':
                 action.default = 'UTC'
-    args = parser.parse_args(args)
+
+    # If config_args then pretend that config args came from the stdin and run parser again.
+    config_args = ini.parse_config_file(parser, args)
+    args = parser.parse_args(config_args + args)
 
     # First of all, check if the project name is valid
     if not validate_project(args.project_name):
@@ -128,6 +137,10 @@ def parse(args):
         sys.stderr.write("Path '%s' already exists, "
                          "please choose a different one\n" % args.project_path)
         sys.exit(4)
+
+    if args.config_dump and os.path.isfile(args.config_dump):
+        sys.stdout.write('Cannot dump because given configuration file "%s" is exists.\n' % args.config_dump)
+        sys.exit(8)
 
     for item in data.CONFIGURABLE_OPTIONS:
         action = parser._option_string_actions[item]
@@ -295,6 +308,9 @@ def parse(args):
             os.path.join(args.project_directory, args.project_name, 'settings.py').strip())
     setattr(args, 'urlconf_path',
             os.path.join(args.project_directory, args.project_name, 'urls.py').strip())
+
+    if args.config_dump:
+        ini.dump_config_file(args.config_dump, args, parser)
 
     return args
 

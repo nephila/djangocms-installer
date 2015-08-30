@@ -1,20 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from copy import copy, deepcopy
+
 import glob
 import os
 import re
-try:
-    from shlex import quote as shlex_quote
-except ImportError:
-    from pipes import quote as shlex_quote
 import shutil
 import subprocess
 import sys
 import tempfile
+import textwrap
 import zipfile
-from six import BytesIO
 
+from copy import copy, deepcopy
+
+try:
+    from shlex import quote as shlex_quote
+except ImportError:
+    from pipes import quote as shlex_quote
+
+from six import BytesIO
 
 from ..compat import iteritems
 from ..utils import chdir
@@ -41,6 +45,22 @@ def create_project(config_data):
             os.makedirs(config_data.project_directory)
     subprocess.check_call(' '.join([sys.executable, os.path.join(os.path.dirname(sys.executable), 'django-admin.py'), 'startproject'] + args),
                           shell=True)
+
+
+def _detect_migration_layout(vars, apps):
+    SOUTH_MODULES = {}
+    DJANGO_MODULES = {}
+
+    for module in vars.MIGRATIONS_CHECK_MODULES:
+        if module in apps:
+            try:
+                mod = __import__('%s.migrations_django' % module)  # NOQA
+                DJANGO_MODULES[module] = '%s.migrations_django' % module
+                SOUTH_MODULES[module] = '%s.migrations' % module
+            except Exception:
+                pass
+    return DJANGO_MODULES, SOUTH_MODULES
+
 
 def _install_aldryn(config_data):
     import requests
@@ -245,23 +265,14 @@ def _build_settings(config_data):
     if config_data.cms_version == 2.4:
         apps.extend(vars.CMS_2_APPLICATIONS)
         apps.extend(vars.MPTT_APPS)
-        MIGRATION_MODULES = ()
     elif config_data.cms_version == 3.0:
         apps = list(vars.CMS_3_HEAD) + apps
         apps.extend(vars.MPTT_APPS)
         apps.extend(vars.CMS_3_APPLICATIONS)
-        if config_data.filer:
-            MIGRATION_MODULES = vars.MIGRATION_MODULES_BASE_FILER
-        else:
-            MIGRATION_MODULES = vars.MIGRATION_MODULES_BASE
     else:
         apps = list(vars.CMS_3_HEAD) + apps
         apps.extend(vars.TREEBEARD_APPS)
         apps.extend(vars.CMS_3_APPLICATIONS)
-        if config_data.filer:
-            MIGRATION_MODULES = vars.MIGRATION_MODULES_3_1_FILER
-        else:
-            MIGRATION_MODULES = vars.MIGRATION_MODULES_3_1
 
     if config_data.cms_version == 2.4:
         if config_data.filer:
@@ -329,18 +340,25 @@ def _build_settings(config_data):
     text.append("CMS_PERMISSION = %s" % vars.CMS_PERMISSION)
     text.append("CMS_PLACEHOLDER_CONF = %s" % vars.CMS_PLACEHOLDER_CONF)
 
-    text.append("DATABASES = {\n%s'default':\n%s%s\n}" % (spacer, spacer * 2, config_data.db_parsed))
+    text.append(textwrap.dedent("""
+        DATABASES = {
+            'default': {
+                %s
+            }
+        }""").strip() % (",\n" + spacer * 2).join(["'%s': '%s'" % (key, val) for key, val in sorted(config_data.db_parsed.items(), key=lambda x: x[0])]))
+
+    DJANGO_MIGRATION_MODULES, SOUTH_MIGRATION_MODULES = _detect_migration_layout(vars, apps)
 
     if config_data.django_version >= 1.7:
         text.append("MIGRATION_MODULES = {\n%s%s\n}" % (
-            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in MIGRATION_MODULES])))
+            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in DJANGO_MIGRATION_MODULES.items()])))
+    else:
+        text.append("SOUTH_MIGRATION_MODULES = {\n%s%s\n}" % (
+            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in SOUTH_MIGRATION_MODULES.items()])))
 
     if config_data.filer:
         text.append("THUMBNAIL_PROCESSORS = (\n%s%s\n)" % (
             spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.THUMBNAIL_PROCESSORS])))
-        if config_data.django_version <= 1.6:
-            text.append("SOUTH_MIGRATION_MODULES = {\n%s%s\n}" % (
-                spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in vars.SOUTH_MIGRATION_MODULES])))
     return "\n\n".join(text)
 
 

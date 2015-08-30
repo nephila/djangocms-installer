@@ -13,6 +13,7 @@ Contributors
 ------------
 
 * Aaron Boman
+* Alexander Pervakov
 * Carlo Ascani <c.ascani@nephila.it>
 * Claudio Luck
 * Enkel Mitrushi

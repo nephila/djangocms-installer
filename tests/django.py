@@ -4,10 +4,9 @@ import os.path
 import re
 import sqlite3
 import sys
+import textwrap
 
 from djangocms_installer import config, django, install
-from djangocms_installer.config.settings import (MIGRATION_MODULES_BASE,
-                                                 MIGRATION_MODULES_3_1_FILER)
 from .base import unittest, IsolatedTestClass
 
 dj_ver = '1.7' if sys.version_info >= (2, 7) else '1.6'
@@ -243,9 +242,8 @@ class TestDjango(IsolatedTestClass):
 
         ## checking for django options
         self.assertFalse('south' in project.settings.INSTALLED_APPS)
-        for module in MIGRATION_MODULES_BASE:
-            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
-            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
+        self.assertFalse('cms' in project.settings.MIGRATION_MODULES)
+        self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
     def test_patch_31(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -293,9 +291,8 @@ class TestDjango(IsolatedTestClass):
 
         ## checking for django options
         self.assertFalse('south' in project.settings.INSTALLED_APPS)
-        for module in MIGRATION_MODULES_3_1_FILER:
-            self.assertTrue(module[0] in project.settings.MIGRATION_MODULES.keys())
-            self.assertTrue(module[1] in project.settings.MIGRATION_MODULES.values())
+        self.assertFalse('filer' in project.settings.MIGRATION_MODULES)
+        self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
     @unittest.skipIf(sys.version_info <= (2, 7),
                      reason="django 1.7 does not support python 2.6")
@@ -512,7 +509,7 @@ class TestDjango(IsolatedTestClass):
 
     def test_database_setup(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '-q', '--cms-version=3.0', '--django=%s' % dj_ver,
+                                    '-q', '--cms-version=3.1', '--django=%s' % dj_ver,
                                     '-p'+self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -534,3 +531,22 @@ class TestDjango(IsolatedTestClass):
         query = project_db.execute('SELECT * FROM auth_user')
         self.assertTrue(query)
 
+
+class TestBaseDjango(unittest.TestCase):
+    def test_build_settings(self):
+        """Tests django.__init__._build_settings function."""
+        config_data = config.parse(['--db=postgres://user:pwd@host:5432/dbname',
+                                    '--cms-version=stable', '--django=%s' % dj_ver,
+                                    '-q', '-p .', 'example_prj'])
+        settings = django._build_settings(config_data)
+        self.assertTrue(textwrap.dedent('''
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                    'HOST': 'host',
+                    'NAME': 'dbname',
+                    'PASSWORD': 'pwd',
+                    'PORT': '5432',
+                    'USER': 'user'
+                }
+            }''').strip() in settings)

@@ -58,6 +58,51 @@ This can be helpful to customize the virtualenv:
 
 See :ref:`arguments` for arguments reference
 
+.. _ini_mode:
+
+Config file mode
+----------------
+
+In config file mode, all (or some) options can be provided via an external configuration file.
+
+See a `complete example`_
+with all available arguments.
+
+Is it possible to either provide all the values in the config file:
+
+.. code-block:: shell
+
+    djangocms_installer --config-file /path/to/config.ini project_name
+
+Or just some, or overriding by using the command line arguments:
+
+.. code-block:: shell
+
+    djangocms_installer --config-file /path/general-config.ini -p /path/other/proj -s -q project_name
+
+.. note:: If config.ini not contains `no-input = true` and `-q` argument isn't set then one
+          act as a placeholder with default values for wizard.
+
+
+Dump config files
+^^^^^^^^^^^^^^^^^
+
+Values passed to the installer can be dumped for later reuse:
+
+.. code-block:: shell
+
+    djangocms_installer --config-dump /path/config.ini -p . project_name
+
+if installation fails dump can be used to fix some arguments and re-run installer with dumped config:
+
+.. code-block:: shell
+
+    djangocms_installer --config-dump /path/config.ini --db postgres://wrong-usr:pwd@host/db -p . project_name
+    # fails
+
+    djangocms_installer --config-file /path/config.ini --db postgres://correct-user:pwd@host/db -p . project_name
+    # succeed
+
 Custom settings
 ---------------
 
@@ -107,3 +152,5 @@ Use different templates directory
 You can create the base project with a custom templateset by using the ``--templates`` parameter.
 Be aware that while **djangocms installer** will copy the files for you, it won't update the ``CMS_TEMPLATES`` settings
 parameter, so you'll need to modify that after installation.
+
+.. _complete example: https://github.com/nephila/djangocms-installer/blob/develop/config.ini.sample

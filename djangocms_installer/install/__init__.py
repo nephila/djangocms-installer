@@ -20,7 +20,6 @@ def check_install(config_data):
     Many other errors will go undetected
     """
     errors = []
-    size = 128, 128
 
     # PIL tests
     try:
@@ -73,7 +72,7 @@ def cleanup(requirements):  # pragma: no cover
 
     args = ['uninstall', '-q', '-y']
     args.extend(requirements.split())
-    exit_status = pip.main(args)
+    pip.main(args)
     return True
 
 
