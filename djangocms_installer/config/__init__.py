@@ -44,6 +44,7 @@ def parse(args):
     parser.add_argument('--permissions', dest='permissions', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='Activate CMS permission management')
+    parser.add_argument('--pip-options', help='pass custom pip options', default='')
     parser.add_argument('--languages', '-l', dest='languages', action='append',
                         help='Languages to enable. Option can be provided multiple times, or as a comma separated list. '
                         'Only language codes supported by Django can be used here')

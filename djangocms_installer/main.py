@@ -23,9 +23,10 @@ def execute():
                              "Please wait while I install dependencies\n")
             if not config_data.no_deps:
                 if config_data.requirements_file:
-                    install.requirements(config_data.requirements_file, True)
+                    install.requirements(config_data.requirements_file, True,
+                        pip_options=config_data.pip_options)
                 else:
-                    install.requirements(config_data.requirements)
+                    install.requirements(config_data.requirements, pip_options=config_data.pip_options)
             sys.stdout.write("Dependencies installed\n"
                              "Creating the project")
             install.check_install(config_data)
