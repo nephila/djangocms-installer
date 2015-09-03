@@ -9,6 +9,7 @@ languages =
 django-version = stable
 cms-version = stable
 parent-dir = .
+pip-options =
 bootstrap = no
 templates = no
 starting-page = no
