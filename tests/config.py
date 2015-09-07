@@ -607,6 +607,7 @@ class TestBaseConfig(unittest.TestCase):
         'no_sync': False,
         'no_user': False,
         'permissions': 'yes',
+        'pip_options': '',
         'plugins': False,
         'project_directory': '.',
         'project_name': 'example_prj',
