@@ -9,7 +9,6 @@ Subpackages
     djangocms_installer.config
     djangocms_installer.django
     djangocms_installer.install
-    djangocms_installer.share
 
 Submodules
 ----------

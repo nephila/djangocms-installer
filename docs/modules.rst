@@ -1,5 +1,5 @@
-djangocms_installer
-===================
+Package documentation
+=====================
 
 .. toctree::
    :maxdepth: 4

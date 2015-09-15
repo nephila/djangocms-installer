@@ -4,14 +4,6 @@ djangocms_installer.config package
 Submodules
 ----------
 
-djangocms_installer.config.data module
---------------------------------------
-
-.. automodule:: djangocms_installer.config.data
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 djangocms_installer.config.internal module
 ------------------------------------------
 
@@ -27,15 +19,6 @@ djangocms_installer.config.settings module
     :members:
     :undoc-members:
     :show-inheritance:
-
-djangocms_installer.config.urls module
---------------------------------------
-
-.. automodule:: djangocms_installer.config.urls
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------
