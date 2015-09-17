@@ -25,6 +25,15 @@ parent = os.path.dirname(cwd)
 sys.path.append(parent)
 
 import djangocms_installer
+import sphinx.environment
+from docutils.utils import get_source_line
+
+
+def _warn_node(self, msg, node):
+    if not msg.startswith('nonlocal image URI found:'):
+        self._warnfunc(msg, '%s:%s' % get_source_line(node))
+
+sphinx.environment.BuildEnvironment.warn_node = _warn_node
 
 # -- General configuration -----------------------------------------------------
 
