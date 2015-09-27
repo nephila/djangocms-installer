@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
+
 import os
 import sys
 
 from . import compat
-from .config.data import DJANGO_VERSION_MATRIX, CMS_VERSION_MATRIX, VERSION_MATRIX
+from .config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX, VERSION_MATRIX
 
 
 def query_yes_no(question, default=None):  # pragma: no cover
@@ -20,15 +22,15 @@ def query_yes_no(question, default=None):  # pragma: no cover
     Code borrowed from cookiecutter
     https://github.com/audreyr/cookiecutter/blob/master/cookiecutter/prompt.py
     """
-    valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
+    valid = {'yes': True, 'y': True, 'ye': True, 'no': False, 'n': False}
     if default is None:
-        prompt = " [y/n] "
-    elif default == "yes":
-        prompt = " [Y/n] "
-    elif default == "no":
-        prompt = " [y/N] "
+        prompt = ' [y/n] '
+    elif default == 'yes':
+        prompt = ' [Y/n] '
+    elif default == 'no':
+        prompt = ' [y/N] '
     else:
-        raise ValueError("invalid default answer: '%s'" % default)
+        raise ValueError('invalid default answer: "%s"' % default)
 
     while True:
         sys.stdout.write(question + prompt)
@@ -39,8 +41,8 @@ def query_yes_no(question, default=None):  # pragma: no cover
         elif choice in valid:
             return valid[choice]
         else:
-            sys.stdout.write("Please answer with 'yes' or 'no' "
-                             "(or 'y' or 'n').\n")
+            sys.stdout.write('Please answer with "yes" or "no" '
+                             '(or "y" or "n").\n')
 
 
 def supported_versions(django, cms):
@@ -65,13 +67,20 @@ def supported_versions(django, cms):
         except KeyError:
             pass
     try:
-        if (cms_version and django_version and
-                not VERSION_MATRIX[cms_version][0] <= django_version <= VERSION_MATRIX[cms_version][1]):
-            raise RuntimeError('Django and django CMS versions doesn\'t match: '
-                               'Django %s is not supported by django CMS %s' % (django_version, cms_version))
+        if (
+                cms_version and django_version and
+                not (VERSION_MATRIX[cms_version][0] <= django_version
+                     <= VERSION_MATRIX[cms_version][1])
+        ):
+            raise RuntimeError(
+                'Django and django CMS versions doesn\'t match: '
+                'Django %s is not supported by django CMS %s' % (django_version, cms_version)
+            )
     except KeyError:
-        raise RuntimeError('Django and django CMS versions doesn\'t match: '
-                           'Django %s is not supported by django CMS %s' % (django_version, cms_version))
+        raise RuntimeError(
+            'Django and django CMS versions doesn\'t match: '
+            'Django %s is not supported by django CMS %s' % (django_version, cms_version)
+        )
     return django_version, cms_version
 
 
@@ -88,7 +97,9 @@ def less_than_version(value):
 
 
 class chdir(object):
-    """Context manager for changing the current working directory"""
+    """
+    Context manager for changing the current working directory
+    """
     def __init__(self, newPath):
         self.newPath = newPath
 

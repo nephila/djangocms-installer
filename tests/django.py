@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
+
 import os.path
 import re
 import sqlite3
@@ -7,13 +8,24 @@ import sys
 import textwrap
 
 from djangocms_installer import config, django, install
-from .base import unittest, IsolatedTestClass, dj_ver
+
+from .base import IsolatedTestClass, dj_ver, unittest
 
 
 class TestDjango(IsolatedTestClass):
-    templates_basic = set((('fullwidth.html', 'Fullwidth'), ('sidebar_left.html', 'Sidebar Left'),
-                           ('sidebar_right.html', 'Sidebar Right')))
-    templates_bootstrap = set((('page.html', 'Page'), ('feature.html', 'Page with Feature')))
+    templates_basic = set(
+        (
+            ('fullwidth.html', 'Fullwidth'),
+            ('sidebar_left.html', 'Sidebar Left'),
+            ('sidebar_right.html', 'Sidebar Right'),
+        )
+    )
+    templates_bootstrap = set(
+        (
+            ('page.html', 'Page'),
+            ('feature.html', 'Page with Feature')
+        )
+    )
 
     def test_create_project(self):
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
@@ -123,10 +135,9 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking for django options
+        # checking for django options
         self.assertEqual(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
@@ -152,10 +163,9 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking for django options
+        # checking for django options
         self.assertEqual(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'dist', 'media'))
         self.assertEqual(project.settings.TEMPLATE_DIRS, (os.path.join(config_data.project_directory, 'templates'),))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
@@ -186,10 +196,9 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking for django options
+        # checking for django options
         self.assertEqual(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
@@ -243,10 +252,9 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking for django options
+        # checking for django options
         self.assertFalse('south' in project.settings.INSTALLED_APPS)
         self.assertFalse('cms' in project.settings.MIGRATION_MODULES)
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
@@ -270,10 +278,9 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking mptt / treebeard
+        # checking mptt / treebeard
         self.assertFalse('mptt' in project.settings.INSTALLED_APPS)
         self.assertTrue('treebeard' in project.settings.INSTALLED_APPS)
 
@@ -296,10 +303,9 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking for django options
+        # checking for django options
         self.assertFalse('south' in project.settings.INSTALLED_APPS)
         self.assertFalse('filer' in project.settings.MIGRATION_MODULES)
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
@@ -321,12 +327,52 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking for django options
+        # checking for django options
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
+
+    @unittest.skipIf(sys.version_info <= (2, 7),
+                     reason="django 1.8 does not support python 2.6")
+    def test_patch_django_no_plugins(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.8', '-f', '--no-plugins',
+                                    '--cms-version=stable', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_no_plugin'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
+
+        # checking for django options
+        self.assertTrue(project.settings.TEMPLATES)
+        self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
+        self.assertFalse('djangocms_file' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_flash' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_googlemap' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_inherit' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_link' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_picture' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_teaser' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_video' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.file' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.flash' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.googlemap' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.inherit' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.link' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.picture' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.teaser' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.text' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.twitter' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.video' in project.settings.INSTALLED_APPS)
 
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
@@ -348,10 +394,9 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking for django options
+        # checking for django options
         self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
         self.assertTrue('cms.context_processors.cms_settings' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
@@ -395,10 +440,9 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking for django options
+        # checking for django options
         self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
         self.assertTrue('djangocms_file' not in project.settings.INSTALLED_APPS)
@@ -439,10 +483,9 @@ class TestDjango(IsolatedTestClass):
         # settings is importable even in non django environment
         sys.path.append(config_data.project_directory)
 
-        project = __import__(config_data.project_name,
-                             globals(), locals(), ['settings'])
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
-        ## checking for django options
+        # checking for django options
         self.assertFalse(project.settings.USE_L10N)
         self.assertFalse(project.settings.USE_TZ)
         self.assertEqual(project.settings.TIME_ZONE, 'Europe/Moscow')
@@ -450,17 +493,17 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
         #
-        ## checking for standard CMS settings
+        # checking for standard CMS settings
         self.assertTrue('sekizai.context_processors.sekizai' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
         self.assertTrue('cms.middleware.toolbar.ToolbarMiddleware' in project.settings.MIDDLEWARE_CLASSES)
         self.assertTrue(project.settings.CMS_LANGUAGES['default']['redirect_on_fallback'])
         self.assertEqual(project.settings.CMS_LANGUAGES[1][0]['code'], 'en')
 
-        ## checking mptt / treebeard
+        # checking mptt / treebeard
         self.assertTrue('mptt' in project.settings.INSTALLED_APPS)
         self.assertFalse('treebeard' in project.settings.INSTALLED_APPS)
 
-        ## checking for filer (optional) settings
+        # checking for filer (optional) settings
         self.assertTrue('filer' in project.settings.INSTALLED_APPS)
         self.assertTrue('easy_thumbnails' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_image' in project.settings.INSTALLED_APPS)
@@ -487,7 +530,7 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
         self.assertTrue('cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
 
-        ## basic urlconf check
+        # basic urlconf check
         self.assertTrue('cms.urls' in urlconf)
         self.assertTrue('staticfiles_urlpatterns' in urlconf)
 

@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-from argparse import Namespace
+from __future__ import absolute_import, print_function, unicode_literals
+
 import copy
 import os
 import sys
+from argparse import Namespace
 
 from mock import patch
 from six import StringIO, text_type
 from tzlocal import get_localzone
+import six
 
 from djangocms_installer import config
 from djangocms_installer.config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
 
-from .base import unittest, BaseTestClass
+from .base import BaseTestClass, unittest
 
 
 class TestConfig(BaseTestClass):
@@ -146,7 +148,10 @@ class TestConfig(BaseTestClass):
                         '--i18n=no',
                         '-p'+self.project_dir,
                         'example_prj'])
-        self.assertTrue(self.stderr.getvalue().find('--cms-version/-v: invalid choice: \'2.6\'') > -1)
+        if six.PY3:
+            self.assertTrue(self.stderr.getvalue().find('--cms-version/-v: invalid choice: \'2.6\'') > -1)
+        else:
+            self.assertTrue(self.stderr.getvalue().find('--cms-version/-v: invalid choice: u\'2.6\'') > -1)
 
     def test_invalid_project_name(self):
         with patch('sys.stdout', self.stdout):

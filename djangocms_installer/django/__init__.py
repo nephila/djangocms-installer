@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
 
 import glob
 import os
@@ -10,29 +10,26 @@ import sys
 import tempfile
 import textwrap
 import zipfile
-
 from copy import copy, deepcopy
+
+from six import BytesIO
+
+from ..compat import iteritems
+from ..config import data, get_settings
+from ..utils import chdir
 
 try:
     from shlex import quote as shlex_quote
 except ImportError:
     from pipes import quote as shlex_quote
 
-from six import BytesIO
-
-from ..compat import iteritems
-from ..utils import chdir
-from ..config import data, get_settings
-
 
 def create_project(config_data):
     """
     Call django-admin to create the project structure
     """
-
     env = deepcopy(dict(os.environ))
-    env['DJANGO_SETTINGS_MODULE'] = (
-        '{0}.settings'.format(config_data.project_name))
+    env['DJANGO_SETTINGS_MODULE'] = ('{0}.settings'.format(config_data.project_name))
     env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
     kwargs = {}
     args = []
@@ -43,8 +40,8 @@ def create_project(config_data):
         args.append(config_data.project_directory)
         if not os.path.exists(config_data.project_directory):
             os.makedirs(config_data.project_directory)
-    subprocess.check_call(' '.join([sys.executable, os.path.join(os.path.dirname(sys.executable), 'django-admin.py'), 'startproject'] + args),
-                          shell=True)
+    start_cmd = os.path.join(os.path.dirname(sys.executable), 'django-admin.py')
+    subprocess.check_call(' '.join([sys.executable, start_cmd, 'startproject'] + args), shell=True)
 
 
 def _detect_migration_layout(vars, apps):
@@ -129,13 +126,15 @@ def patch_settings(config_data):
     Modify the settings file created by Django injecting the django CMS
     configuration
     """
-    overridden_settings = ('MIDDLEWARE_CLASSES', 'INSTALLED_APPS',
-                           'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS',
-                           'TEMPLATE_DIRS', 'LANGUAGES')
+    overridden_settings = (
+        'MIDDLEWARE_CLASSES', 'INSTALLED_APPS', 'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS',
+        'TEMPLATE_DIRS', 'LANGUAGES'
+    )
     extra_settings = ''
 
     if not os.path.exists(config_data.settings_path):
-        sys.stdout.write("Error while creating target project, please check the given configuration: %s" % config_data.settings_path)
+        sys.stdout.write('Error while creating target project, '
+                         'please check the given configuration: %s' % config_data.settings_path)
         return sys.exit(5)
 
     with open(config_data.settings_path, 'r') as fd_original:
@@ -146,13 +145,15 @@ def patch_settings(config_data):
         with open(config_data.extra_settings, 'r') as fd_extra:
             extra_settings = fd_extra.read()
 
-    original = original.replace("# -*- coding: utf-8 -*-\n", "")
+    original = original.replace('# -*- coding: utf-8 -*-\n', '')
 
     if config_data.aldryn:
-        DATA_DIR = "DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dist')\n"
+        DATA_DIR = (
+            'DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), \'dist\')\n'
+        )
         STATICFILES_DIR = 'os.path.join(BASE_DIR, \'static\'),'
     else:
-        DATA_DIR = "DATA_DIR = os.path.dirname(os.path.dirname(__file__))\n"
+        DATA_DIR = 'DATA_DIR = os.path.dirname(os.path.dirname(__file__))\n'
         STATICFILES_DIR = 'os.path.join(BASE_DIR, \'%s\', \'static\'),' % config_data.project_name
 
     if original.find('BASE_DIR') == -1:
@@ -160,66 +161,76 @@ def patch_settings(config_data):
     else:
         original = data.DEFAULT_PROJECT_HEADER + DATA_DIR + original
     if original.find('MEDIA_URL') > -1:
-        original = original.replace("MEDIA_URL = ''", "MEDIA_URL = '/media/'")
+        original = original.replace('MEDIA_URL = \'\'', 'MEDIA_URL = \'/media/\'')
     else:
-        original += "MEDIA_URL = '/media/'\n"
+        original += 'MEDIA_URL = \'/media/\'\n'
     if original.find('MEDIA_ROOT') > -1:
-        original = original.replace("MEDIA_ROOT = ''", "MEDIA_ROOT = os.path.join(DATA_DIR, 'media')")
+        original = original.replace(
+            'MEDIA_ROOT = \'\'', 'MEDIA_ROOT = os.path.join(DATA_DIR, \'media\')'
+        )
     else:
-        original += "MEDIA_ROOT = os.path.join(DATA_DIR, 'media')\n"
+        original += 'MEDIA_ROOT = os.path.join(DATA_DIR, \'media\')\n'
     if original.find('STATIC_ROOT') > -1:
-        original = original.replace("STATIC_ROOT = ''", "STATIC_ROOT = os.path.join(DATA_DIR, 'static')")
+        original = original.replace(
+            'STATIC_ROOT = \'\'', 'STATIC_ROOT = os.path.join(DATA_DIR, \'static\')'
+        )
     else:
-        original += "STATIC_ROOT = os.path.join(DATA_DIR, 'static')\n"
+        original += 'STATIC_ROOT = os.path.join(DATA_DIR, \'static\')\n'
     if original.find('STATICFILES_DIRS') > -1:
-        original = original.replace(data.STATICFILES_DEFAULT, """
+        original = original.replace(data.STATICFILES_DEFAULT, '''
 STATICFILES_DIRS = (
     %s
 )
-""" % STATICFILES_DIR)
+''' % STATICFILES_DIR)
     else:
-        original += """
+        original += '''
 STATICFILES_DIRS = (
     %s
 )
-""" % STATICFILES_DIR
-    original = original.replace("# -*- coding: utf-8 -*-\n", "")
+''' % STATICFILES_DIR
+    original = original.replace('# -*- coding: utf-8 -*-\n', '')
 
     # I18N
     if config_data.i18n == 'no':
-        original = original.replace("I18N = True", "I18N = False")
-        original = original.replace("L10N = True", "L10N = False")
+        original = original.replace('I18N = True', 'I18N = False')
+        original = original.replace('L10N = True', 'L10N = False')
 
     # TZ
     if config_data.use_timezone == 'no':
-        original = original.replace("USE_TZ = True", "USE_TZ = False")
+        original = original.replace('USE_TZ = True', 'USE_TZ = False')
 
     if config_data.languages:
-        original = original.replace("LANGUAGE_CODE = 'en-us'", "LANGUAGE_CODE = '%s'" % config_data.languages[0])
+        original = original.replace(
+            'LANGUAGE_CODE = \'en-us\'', 'LANGUAGE_CODE = \'%s\'' % config_data.languages[0]
+        )
     if config_data.timezone:
         # This is for Django 1.6 which changed the default timezone
-        original = original.replace("TIME_ZONE = 'UTC'", "TIME_ZONE = '%s'" % config_data.timezone)
+        original = original.replace(
+            'TIME_ZONE = \'UTC\'', 'TIME_ZONE = \'%s\'' % config_data.timezone
+        )
         # This is for older django versions
-        original = original.replace("TIME_ZONE = 'America/Chicago'", "TIME_ZONE = '%s'" % config_data.timezone)
+        original = original.replace(
+            'TIME_ZONE = \'America/Chicago\'', 'TIME_ZONE = \'%s\'' % config_data.timezone
+        )
 
     for item in overridden_settings:
-        item_re = re.compile(r"%s = [^\)]+\)" % item, re.DOTALL | re.MULTILINE)
+        item_re = re.compile(r'%s = [^\)]+\)' % item, re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
     if config_data.django_version >= 1.8:
         # TEMPLATES is special, so custom regexp needed
-        item_re = re.compile(r"TEMPLATES = .+\]$", re.DOTALL | re.MULTILINE)
+        item_re = re.compile(r'TEMPLATES = .+\]$', re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
     # DATABASES is a dictionary, so different regexp needed
-    item_re = re.compile(r"DATABASES = [^\}]+\}[^\}]+\}", re.DOTALL | re.MULTILINE)
+    item_re = re.compile(r'DATABASES = [^\}]+\}[^\}]+\}', re.DOTALL | re.MULTILINE)
     original = item_re.sub('', original)
     if original.find('SITE_ID') == -1:
-        original += "SITE_ID = 1\n\n"
+        original += 'SITE_ID = 1\n\n'
 
     original += _build_settings(config_data)
     # Append extra settings at the end of the file
-    original += ("\n" + extra_settings)
+    original += ('\n' + extra_settings)
 
-    with open(config_data.settings_path, "w") as fd_dest:
+    with open(config_data.settings_path, 'w') as fd_dest:
         fd_dest.write(original)
 
 
@@ -227,7 +238,7 @@ def _build_settings(config_data):
     """
     Build the django CMS settings dictionary
     """
-    spacer = "    "
+    spacer = '    '
     text = []
     vars = get_settings()
 
@@ -239,27 +250,28 @@ def _build_settings(config_data):
     else:
         processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_3
     if config_data.django_version < 1.8:
-        text.append("TEMPLATE_LOADERS = (\n%s%s\n)" % (
-            spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.TEMPLATE_LOADERS])))
+        text.append('TEMPLATE_LOADERS = (\n%s%s\n)' % (
+            spacer, (',\n' + spacer).join(['\'%s\'' % var for var in vars.TEMPLATE_LOADERS])))
 
-        text.append("TEMPLATE_CONTEXT_PROCESSORS = (\n%s%s\n)" % (
-            spacer, (",\n" + spacer).join(["'%s'" % var for var in processors])))
+        text.append('TEMPLATE_CONTEXT_PROCESSORS = (\n%s%s\n)' % (
+            spacer, (',\n' + spacer).join(['\'%s\'' % var for var in processors])))
 
         if config_data.aldryn:
-            text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
-                spacer, "os.path.join(BASE_DIR, 'templates'),"))
+            text.append('TEMPLATE_DIRS = (\n%s%s\n)' % (
+                spacer, 'os.path.join(BASE_DIR, \'templates\'),'))
         else:
-            text.append("TEMPLATE_DIRS = (\n%s%s\n)" % (
-                spacer, "os.path.join(BASE_DIR, '%s', 'templates')," % config_data.project_name))
+            text.append('TEMPLATE_DIRS = (\n%s%s\n)' % (
+                spacer, 'os.path.join(BASE_DIR, \'%s\', \'templates\'),' % config_data.project_name
+            ))
     else:
         text.append(data.TEMPLATES_1_8.format(
-            loaders=(",\n" + spacer).join(["'%s'" % var for var in vars.TEMPLATE_LOADERS]),
-            processors=(",\n" + spacer).join(["'%s'" % var for var in processors]),
-            dirs="os.path.join(BASE_DIR, '%s', 'templates')," % config_data.project_name
+            loaders=(',\n' + spacer).join(['\'%s\'' % var for var in vars.TEMPLATE_LOADERS]),
+            processors=(',\n' + spacer).join(['\'%s\'' % var for var in processors]),
+            dirs='os.path.join(BASE_DIR, \'%s\', \'templates\'),' % config_data.project_name
         ))
 
-    text.append("MIDDLEWARE_CLASSES = (\n%s%s\n)" % (
-        spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.MIDDLEWARE_CLASSES])))
+    text.append('MIDDLEWARE_CLASSES = (\n%s%s\n)' % (
+        spacer, (',\n' + spacer).join(['\'%s\'' % var for var in vars.MIDDLEWARE_CLASSES])))
 
     apps = list(vars.INSTALLED_APPS)
     if config_data.cms_version == 2.4:
@@ -274,16 +286,17 @@ def _build_settings(config_data):
         apps.extend(vars.TREEBEARD_APPS)
         apps.extend(vars.CMS_3_APPLICATIONS)
 
-    if config_data.cms_version == 2.4:
-        if config_data.filer:
-            apps.extend(vars.FILER_PLUGINS_2)
+    if not config_data.no_plugins:
+        if config_data.cms_version == 2.4:
+            if config_data.filer:
+                apps.extend(vars.FILER_PLUGINS_2)
+            else:
+                apps.extend(vars.STANDARD_PLUGINS_2)
         else:
-            apps.extend(vars.STANDARD_PLUGINS_2)
-    else:
-        if config_data.filer:
-            apps.extend(vars.FILER_PLUGINS_3)
-        else:
-            apps.extend(vars.STANDARD_PLUGINS_3)
+            if config_data.filer:
+                apps.extend(vars.FILER_PLUGINS_3)
+            else:
+                apps.extend(vars.STANDARD_PLUGINS_3)
     if config_data.django_version <= 1.6:
         apps.extend(vars.SOUTH_APPLICATIONS)
 
@@ -291,107 +304,111 @@ def _build_settings(config_data):
         apps.extend(vars.ALDRYN_APPLICATIONS)
     if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
-    text.append("INSTALLED_APPS = (\n%s%s\n)" % (
-        spacer, (",\n" + spacer).join(["'%s'" % var for var in apps] + ["'%s'" % config_data.project_name])))
+    text.append('INSTALLED_APPS = (\n%s%s\n)' % (
+        spacer, (',\n' + spacer).join(['\'%s\'' % var for var in apps] + ['\'%s\'' % config_data.project_name])))  # NOQA
 
-    text.append("LANGUAGES = (\n%s%s\n%s%s\n)" % (
-        spacer, "## Customize this",
-        spacer, ("\n" + spacer).join(["('%s', gettext('%s'))," % (item, item) for item in config_data.languages])))
+    text.append('LANGUAGES = (\n%s%s\n%s%s\n)' % (
+        spacer, '## Customize this',
+        spacer, ('\n' + spacer).join(['(\'%s\', gettext(\'%s\')),' % (item, item) for item in config_data.languages])))  # NOQA
 
     cms_langs = deepcopy(vars.CMS_LANGUAGES)
     for lang in config_data.languages:
         lang_dict = {'code': lang, 'name': lang}
         lang_dict.update(copy(cms_langs['default']))
         cms_langs[1].append(lang_dict)
-    cms_text = ["CMS_LANGUAGES = {"]
-    cms_text.append("%s%s" % (spacer, "## Customize this",))
+    cms_text = ['CMS_LANGUAGES = {']
+    cms_text.append('%s%s' % (spacer, '## Customize this',))
     for key, value in iteritems(cms_langs):
         if key == 'default':
-            cms_text.append("%s'%s': {" % (spacer, key))
+            cms_text.append('%s\'%s\': {' % (spacer, key))
             for config_name, config_value in iteritems(value):
-                cms_text.append("%s'%s': %s," % (spacer * 2, config_name, config_value))
-            cms_text.append("%s}," % spacer)
+                cms_text.append('%s\'%s\': %s,' % (spacer * 2, config_name, config_value))
+            cms_text.append('%s},' % spacer)
         else:
-            cms_text.append("%s%s: [" % (spacer, key))
+            cms_text.append('%s%s: [' % (spacer, key))
             for lang in value:
-                cms_text.append("%s{" % (spacer * 2))
+                cms_text.append('%s{' % (spacer * 2))
                 for config_name, config_value in iteritems(lang):
                     if config_name == 'code':
-                        cms_text.append("%s'%s': '%s'," % (spacer * 3, config_name, config_value))
+                        cms_text.append('%s\'%s\': \'%s\',' % (spacer * 3, config_name, config_value))  # NOQA
                     elif config_name == 'name':
-                        cms_text.append("%s'%s': gettext('%s')," % (spacer * 3, config_name, config_value))
+                        cms_text.append('%s\'%s\': gettext(\'%s\'),' % (spacer * 3, config_name, config_value))  # NOQA
                     else:
-                        cms_text.append("%s'%s': %s," % (spacer * 3, config_name, config_value))
-                cms_text.append("%s}," % (spacer * 2))
-            cms_text.append("%s]," % spacer)
-    cms_text.append("}")
+                        cms_text.append('%s\'%s\': %s,' % (spacer * 3, config_name, config_value))
+                cms_text.append('%s},' % (spacer * 2))
+            cms_text.append('%s],' % spacer)
+    cms_text.append('}')
 
-    text.append("\n".join(cms_text))
+    text.append('\n'.join(cms_text))
 
     if config_data.bootstrap:
         cms_templates = 'CMS_TEMPLATES_BOOTSTRAP'
     else:
         cms_templates = 'CMS_TEMPLATES'
 
-    text.append("CMS_TEMPLATES = (\n%s%s\n%s%s\n)" % (
-        spacer, "## Customize this",
-        spacer, (",\n" + spacer).join(["('%s', '%s')" % item for item in getattr(vars, cms_templates)])))
+    text.append('CMS_TEMPLATES = (\n%s%s\n%s%s\n)' % (
+        spacer, '## Customize this',
+        spacer, (',\n' + spacer).join(['(\'%s\', \'%s\')' % item for item in getattr(vars, cms_templates)])))  # NOQA
 
-    text.append("CMS_PERMISSION = %s" % vars.CMS_PERMISSION)
-    text.append("CMS_PLACEHOLDER_CONF = %s" % vars.CMS_PLACEHOLDER_CONF)
+    text.append('CMS_PERMISSION = %s' % vars.CMS_PERMISSION)
+    text.append('CMS_PLACEHOLDER_CONF = %s' % vars.CMS_PLACEHOLDER_CONF)
 
-    text.append(textwrap.dedent("""
+    text.append(textwrap.dedent('''
         DATABASES = {
             'default': {
                 %s
             }
-        }""").strip() % (",\n" + spacer * 2).join(["'%s': '%s'" % (key, val) for key, val in sorted(config_data.db_parsed.items(), key=lambda x: x[0])]))
+        }''').strip() % (',\n' + spacer * 2).join(['\'%s\': \'%s\'' % (key, val) for key, val in sorted(config_data.db_parsed.items(), key=lambda x: x[0])]))  # NOQA
 
     DJANGO_MIGRATION_MODULES, SOUTH_MIGRATION_MODULES = _detect_migration_layout(vars, apps)
 
     if config_data.django_version >= 1.7:
-        text.append("MIGRATION_MODULES = {\n%s%s\n}" % (
-            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in DJANGO_MIGRATION_MODULES.items()])))
+        text.append('MIGRATION_MODULES = {\n%s%s\n}' % (
+            spacer, (',\n' + spacer).join(['\'%s\': \'%s\'' % item for item in DJANGO_MIGRATION_MODULES.items()])))  # NOQA
     else:
-        text.append("SOUTH_MIGRATION_MODULES = {\n%s%s\n}" % (
-            spacer, (",\n" + spacer).join(["'%s': '%s'" % item for item in SOUTH_MIGRATION_MODULES.items()])))
+        text.append('SOUTH_MIGRATION_MODULES = {\n%s%s\n}' % (
+            spacer, (',\n' + spacer).join(['\'%s\': \'%s\'' % item for item in SOUTH_MIGRATION_MODULES.items()])))  # NOQA
 
     if config_data.filer:
-        text.append("THUMBNAIL_PROCESSORS = (\n%s%s\n)" % (
-            spacer, (",\n" + spacer).join(["'%s'" % var for var in vars.THUMBNAIL_PROCESSORS])))
-    return "\n\n".join(text)
+        text.append('THUMBNAIL_PROCESSORS = (\n%s%s\n)' % (
+            spacer, (',\n' + spacer).join(['\'%s\'' % var for var in vars.THUMBNAIL_PROCESSORS])))
+    return '\n\n'.join(text)
 
 
 def setup_database(config_data):
     with chdir(config_data.project_directory):
         env = deepcopy(dict(os.environ))
-        env['DJANGO_SETTINGS_MODULE'] = (
-            '{0}.settings'.format(config_data.project_name))
+        env['DJANGO_SETTINGS_MODULE'] = ('{0}.settings'.format(config_data.project_name))
         env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
 
         if config_data.django_version < 1.7:
             try:
                 import south  # NOQA
-                subprocess.check_call([sys.executable, "-W", "ignore",
-                                       "manage.py", "syncdb", "--all",
-                                       "--noinput"], env=env)
-                subprocess.check_call([sys.executable, "-W", "ignore",
-                                       "manage.py", "migrate", "--fake"],
-                                      env=env)
+                subprocess.check_call(
+                    [sys.executable, '-W', 'ignore', 'manage.py', 'syncdb', '--all', '--noinput'],
+                    env=env
+                )
+                subprocess.check_call(
+                    [sys.executable, '-W', 'ignore', 'manage.py', 'migrate', '--fake'],
+                    env=env
+                )
             except ImportError:
-                subprocess.check_call([sys.executable, "-W", "ignore",
-                                       "manage.py", "syncdb", "--noinput"],
-                                      env=env)
-                print("south not installed, migrations skipped")
+                subprocess.check_call(
+                    [sys.executable, '-W', 'ignore', 'manage.py', 'syncdb', '--noinput'],
+                    env=env
+                )
+                print('south not installed, migrations skipped')
         else:
-            subprocess.check_call([sys.executable, "-W", "ignore",
-                                  "manage.py", "migrate", "--noinput"],
-                                  env=env)
+            subprocess.check_call(
+                [sys.executable, '-W', 'ignore', 'manage.py', 'migrate', '--noinput'],
+                env=env
+            )
         if not config_data.no_user and not config_data.noinput:
-            print("\n\nCreating admin user")
-            subprocess.check_call([sys.executable, "-W", "ignore",
-                                   "manage.py", "createsuperuser"],
-                                  env=env)
+            print('\n\nCreating admin user')
+            subprocess.check_call(
+                [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser'],
+                env=env
+            )
 
 
 def load_starting_page(config_data):
@@ -400,10 +417,9 @@ def load_starting_page(config_data):
     """
     with chdir(config_data.project_directory):
         env = deepcopy(dict(os.environ))
-        env['DJANGO_SETTINGS_MODULE'] = (
-            '{0}.settings'.format(config_data.project_name))
+        env['DJANGO_SETTINGS_MODULE'] = ('{0}.settings'.format(config_data.project_name))
         env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
-        subprocess.check_call([sys.executable, "starting_page.py"],
+        subprocess.check_call([sys.executable, 'starting_page.py'],
                               env=env)
         for ext in ['py', 'pyc', 'json']:
             try:

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
+
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
@@ -26,22 +27,22 @@ MIDDLEWARE_CLASSES_DJANGO_15 = [
 
 
 TEMPLATE_CONTEXT_PROCESSORS = [
-    "django.contrib.auth.context_processors.auth",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.request",
-    "django.core.context_processors.media",
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
     'django.core.context_processors.csrf',
-    "django.core.context_processors.tz",
-    "sekizai.context_processors.sekizai",
-    "django.core.context_processors.static",
+    'django.core.context_processors.tz',
+    'sekizai.context_processors.sekizai',
+    'django.core.context_processors.static',
 ]
 TEMPLATE_CONTEXT_PROCESSORS_2 = [
-    "cms.context_processors.media",
+    'cms.context_processors.media',
 ]
 TEMPLATE_CONTEXT_PROCESSORS_3 = [
-    "cms.context_processors.cms_settings",
+    'cms.context_processors.cms_settings',
 ]
 
 TEMPLATE_DIRS = (
