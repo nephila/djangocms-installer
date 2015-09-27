@@ -55,8 +55,9 @@ def check_install(config_data):
         raise EnvironmentError("\n".join(errors))
 
 
-def requirements(requirements, is_file=False):
+def requirements(requirements, pip_options='', is_file=False):
     args = ['install', '-q']
+    if pip_options: args.append(pip_options)
     if 'Django<1.5' in requirements:
         args += ['--no-use-wheel']
     if is_file:  # pragma: no cover
