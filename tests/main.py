@@ -64,7 +64,7 @@ class TestMain(IsolatedTestClass):
                 self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'static')))
                 self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'example_prj', 'static')))
                 # Checking we successfully completed the whole process
-                self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
+                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
 
     def test_two_langs_invocation(self):
         with patch('sys.stdout', self.stdout):
@@ -75,7 +75,7 @@ class TestMain(IsolatedTestClass):
                                        'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
-                self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
+                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
 
     def test_develop(self):
         with patch('sys.stdout', self.stdout):
@@ -86,7 +86,7 @@ class TestMain(IsolatedTestClass):
                                        'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
-                self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
+                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
 
     def test_cleanup(self):
         with patch('sys.stdout', self.stdout):
@@ -100,7 +100,7 @@ class TestMain(IsolatedTestClass):
         self.assertFalse(os.path.exists(self.project_dir))
 
     @unittest.skipIf(sys.version_info >= (3, 0),
-                     reason="django 1.4 does not support python3")
+                     reason='django 1.4 does not support python3')
     def test_django_1_4(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
@@ -111,10 +111,10 @@ class TestMain(IsolatedTestClass):
                                        'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
-                self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
+                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
 
     @unittest.skipIf(sys.version_info >= (3, 0),
-                     reason="django 1.5 does not support python3")
+                     reason='django 1.5 does not support python3')
     def test_django_1_5(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
@@ -125,4 +125,4 @@ class TestMain(IsolatedTestClass):
                                        'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
-                self.assertTrue(("Get into '%s' directory and type 'python manage.py runserver' to start your project" % self.project_dir) in self.stdout.getvalue())
+                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())

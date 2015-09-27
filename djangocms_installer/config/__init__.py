@@ -330,7 +330,7 @@ def parse(args):
 
 
 def get_settings():
-    module = __import__('djangocms_installer.config', globals(), locals(), ['settings'])
+    module = __import__(str('djangocms_installer.config'), globals(), locals(), [str('settings')])
     return module.settings
 
 

@@ -16,7 +16,6 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 requirements = open('requirements.txt').readlines()
 test_requirements = []
 
-test_requirements.append('mock<1.1')
 # Add Python 2.6-specific dependencies
 if sys.version_info[:2] < (2, 7):
     test_requirements.append('unittest2')

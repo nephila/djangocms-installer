@@ -9,6 +9,7 @@ from argparse import Namespace
 from mock import patch
 from six import StringIO, text_type
 from tzlocal import get_localzone
+import six
 
 from djangocms_installer import config
 from djangocms_installer.config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX
@@ -147,7 +148,10 @@ class TestConfig(BaseTestClass):
                         '--i18n=no',
                         '-p'+self.project_dir,
                         'example_prj'])
-        self.assertTrue(self.stderr.getvalue().find('--cms-version/-v: invalid choice: \'2.6\'') > -1)
+        if six.PY3:
+            self.assertTrue(self.stderr.getvalue().find('--cms-version/-v: invalid choice: \'2.6\'') > -1)
+        else:
+            self.assertTrue(self.stderr.getvalue().find('--cms-version/-v: invalid choice: u\'2.6\'') > -1)
 
     def test_invalid_project_name(self):
         with patch('sys.stdout', self.stdout):
