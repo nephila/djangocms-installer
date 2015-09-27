@@ -333,6 +333,47 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
 
+    @unittest.skipIf(sys.version_info <= (2, 7),
+                     reason="django 1.8 does not support python 2.6")
+    def test_patch_django_no_plugins(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.8', '-f', '--no-plugins',
+                                    '--cms-version=stable', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_no_plugin'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
+
+        # checking for django options
+        self.assertTrue(project.settings.TEMPLATES)
+        self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
+        self.assertFalse('djangocms_file' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_flash' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_googlemap' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_inherit' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_link' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_picture' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_teaser' in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_video' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.file' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.flash' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.googlemap' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.inherit' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.link' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.picture' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.teaser' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.text' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.twitter' in project.settings.INSTALLED_APPS)
+        self.assertFalse('cms.plugins.video' in project.settings.INSTALLED_APPS)
+
     @unittest.skipIf(sys.version_info >= (3, 0),
                      reason="django CMS 2.4 does not support python3")
     def test_patch_cms_24_standard(self):

@@ -286,16 +286,17 @@ def _build_settings(config_data):
         apps.extend(vars.TREEBEARD_APPS)
         apps.extend(vars.CMS_3_APPLICATIONS)
 
-    if config_data.cms_version == 2.4:
-        if config_data.filer:
-            apps.extend(vars.FILER_PLUGINS_2)
+    if not config_data.no_plugins:
+        if config_data.cms_version == 2.4:
+            if config_data.filer:
+                apps.extend(vars.FILER_PLUGINS_2)
+            else:
+                apps.extend(vars.STANDARD_PLUGINS_2)
         else:
-            apps.extend(vars.STANDARD_PLUGINS_2)
-    else:
-        if config_data.filer:
-            apps.extend(vars.FILER_PLUGINS_3)
-        else:
-            apps.extend(vars.STANDARD_PLUGINS_3)
+            if config_data.filer:
+                apps.extend(vars.FILER_PLUGINS_3)
+            else:
+                apps.extend(vars.STANDARD_PLUGINS_3)
     if config_data.django_version <= 1.6:
         apps.extend(vars.SOUTH_APPLICATIONS)
 

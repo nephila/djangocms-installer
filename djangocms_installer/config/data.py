@@ -111,7 +111,7 @@ REQUIREMENTS = {
     ],
     'filer': [
         'easy_thumbnails',
-        'django-filer>=0.9.13',
+        'django-filer>=0.9.12',
         'cmsplugin-filer>=0.10.2',
     ],
     'filer-cms-2.x': [
