@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
 
 import sys
+
+from .data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX
 
 try:
     from configparser import ConfigParser  # Python 3.
 except ImportError:
     from ConfigParser import ConfigParser  # Python 2.
-
-from .data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX
 
 
 SECTION = 'djangocms_installer'
@@ -39,7 +39,7 @@ def parse_config_file(parser, stdin_args):
 
     config = ConfigParser()
     if not config.read(parsed_args.config_file):
-        sys.stderr.write("Config file '%s' doesn't exists\n" % parsed_args.config_file)
+        sys.stderr.write('Config file "%s" doesn\'t exists\n' % parsed_args.config_file)
         sys.exit(7)  # It isn't used anythere.
 
     config_args = _convert_config_to_stdin(config, parser)
@@ -80,10 +80,12 @@ def dump_config_file(filename, args, parser=None):
             elif action.dest == 'templates':
                 config.set(SECTION, option_name, option_value if option_value else 'no')
             elif action.dest == 'cms_version':
-                version = 'stable' if option_value == CMS_VERSION_MATRIX['stable'] else option_value
+                version = ('stable' if option_value == CMS_VERSION_MATRIX['stable']
+                           else option_value)
                 config.set(SECTION, option_name, version)
             elif action.dest == 'django_version':
-                version = 'stable' if option_value == DJANGO_VERSION_MATRIX['stable'] else option_value
+                version = ('stable' if option_value == DJANGO_VERSION_MATRIX['stable']
+                           else option_value)
                 config.set(SECTION, option_name, version)
             elif action.const:
                 config.set(SECTION, option_name, 'true' if option_value else 'false')
@@ -113,7 +115,8 @@ def _convert_config_to_stdin(config, parser):
             except ValueError:
                 args.extend([keyp, val])  # Pass it as is to get the error from ArgumentParser.
         elif any([i for i in keys_empty_values_not_pass if i in action.option_strings]):
-            # Some keys with empty values shouldn't be passed into args to use their defaults from ArgumentParser.
+            # Some keys with empty values shouldn't be passed into args to use their defaults
+            # from ArgumentParser.
             if val != '':
                 args.extend([keyp, val])
         else:

@@ -1,4 +1,6 @@
-from __future__ import print_function
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
+
 from cms.sitemaps import CMSSitemap
 from django.conf.urls import *  # NOQA
 from django.conf.urls.i18n import i18n_patterns

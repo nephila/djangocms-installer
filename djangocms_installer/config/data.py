@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
+
 import time
+
+bust = {'bust': time.time()}
 
 CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--reversion', '--languages', '--timezone', '--use-tz',
@@ -88,20 +91,20 @@ REQUIREMENTS = {
         'djangocms-video',
     ],
     'plugins-common-master': [
-        'https://github.com/divio/djangocms-admin-style/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-column/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-flash/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-googlemap/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-inherit/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-link/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-style/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-admin-style/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-column/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-flash/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-googlemap/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-inherit/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-link/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-style/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?%(bust)s' % bust,
     ],
     'plugins-basic-master': [
-        'https://github.com/divio/djangocms-file/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-picture/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-teaser/archive/master.zip?%(bust)s' % {'bust': time.time()},
-        'https://github.com/divio/djangocms-video/archive/master.zip?%(bust)s' % {'bust': time.time()},
+        'https://github.com/divio/djangocms-file/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-picture/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-teaser/archive/master.zip?%(bust)s' % bust,
+        'https://github.com/divio/djangocms-video/archive/master.zip?%(bust)s' % bust,
     ],
     'aldryn': [
         'django-compressor',

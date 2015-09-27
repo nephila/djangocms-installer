@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
+
 import argparse
 import locale
 import os.path
-import six
 import sys
 import warnings
 
+import six
 from tzlocal import get_localzone
 
 from . import data, ini
@@ -46,8 +47,9 @@ def parse(args):
                         default='yes', help='Activate CMS permission management')
     parser.add_argument('--pip-options', help='pass custom pip options', default='')
     parser.add_argument('--languages', '-l', dest='languages', action='append',
-                        help='Languages to enable. Option can be provided multiple times, or as a comma separated list. '
-                        'Only language codes supported by Django can be used here')
+                        help='Languages to enable. Option can be provided multiple times, or as a '
+                             'comma separated list. Only language codes supported by Django can '
+                             'be used here')
     parser.add_argument('--django-version', dest='django_version', action='store',
                         choices=data.DJANGO_SUPPORTED,
                         default='stable', help='Django version')
@@ -64,7 +66,9 @@ def parse(args):
                         default='no', help='Use custom template set')
     parser.add_argument('--starting-page', dest='starting_page', action='store',
                         choices=('yes', 'no'),
-                        default='no', help='Load a starting page with examples after installation (english language only). Choose "no" if you use a custom template set.')
+                        default='no', help='Load a starting page with examples after installation '
+                                           '(english language only). Choose "no" if you use a '
+                                           'custom template set.')
     parser.add_argument(dest='project_name', action='store',
                         help='Name of the project to be created')
 
@@ -74,39 +78,42 @@ def parse(args):
 
     # Command that lists the supported plugins in verbose description
     parser.add_argument('--dump-requirements', '-R', dest='dump_reqs', action='store_true',
-                        help='It dumps the requirements that would be installed according to parameters given.'
-                             'Together with --requirements argument is useful for customizing the virtualenv')
+                        help='It dumps the requirements that would be installed according to '
+                             'parameters given. Together with --requirements argument is useful '
+                             'for customizing the virtualenv')
 
     # Advanced options. These have a predefined default and are not managed
     # by config wizard.
     # parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
-    #                    default=False, help="Use Aldryn-boilerplate as project template")
+    #                    default=False, help='Use Aldryn-boilerplate as project template')
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
-                        default=False, help="Don't run the configuration wizard, just use the provided values")
+                        default=False, help='Don\'t run the configuration wizard, just use the '
+                                            'provided values')
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
                         default=False, help='Install and configure django-filer plugins')
     parser.add_argument('--requirements', '-r', dest='requirements_file', action='store',
                         default=None, help='Externally defined requirements file')
     parser.add_argument('--no-deps', '-n', dest='no_deps', action='store_true',
-                        default=False, help="Don't install package dependencies")
+                        default=False, help='Don\'t install package dependencies')
     parser.add_argument('--no-plugins', dest='no_plugins', action='store_true',
-                        default=False, help="Don't install plugins")
+                        default=False, help='Don\'t install plugins')
     parser.add_argument('--no-db-driver', dest='no_db_driver', action='store_true',
-                        default=False, help="Don't install database package")
+                        default=False, help='Don\'t install database package')
     parser.add_argument('--no-sync', '-m', dest='no_sync', action='store_true',
-                        default=False, help="Don't run syncdb / migrate after bootstrapping")
+                        default=False, help='Don\'t run syncdb / migrate after bootstrapping')
     parser.add_argument('--no-user', '-u', dest='no_user', action='store_true',
-                        default=False, help="Don't create the admin user")
+                        default=False, help='Don\'t create the admin user')
     parser.add_argument('--template', dest='template', action='store',
-                        default=None, help="The path or URL to load the django project template from.")
+                        default=None, help='The path or URL to load the django project '
+                                           'template from.')
     parser.add_argument('--extra-settings', dest='extra_settings', action='store',
-                        default=None, help="The path to an file that contains extra settings.")
+                        default=None, help='The path to an file that contains extra settings.')
     parser.add_argument('--skip-empty-check', '-s', dest='skip_project_dir_check',
                         action='store_true',
-                        default=False, help="Skip the check if project dir is empty.")
+                        default=False, help='Skip the check if project dir is empty.')
     parser.add_argument('--utc', dest='utc',
                         action='store_true',
-                        default=False, help="Use UTC timezone.")
+                        default=False, help='Use UTC timezone.')
 
     if '--utc' in args:
         for action in parser._positionals._actions:
@@ -142,7 +149,8 @@ def parse(args):
         sys.exit(4)
 
     if args.config_dump and os.path.isfile(args.config_dump):
-        sys.stdout.write('Cannot dump because given configuration file "%s" is exists.\n' % args.config_dump)
+        sys.stdout.write('Cannot dump because given configuration file "%s" '
+                         'is exists.\n' % args.config_dump)
         sys.exit(8)
 
     for item in data.CONFIGURABLE_OPTIONS:
@@ -216,10 +224,12 @@ def parse(args):
         sys.stderr.write(compat.unicode(e))
         sys.exit(6)
     if django_version is None:
-        sys.stderr.write('Please provide a Django supported version: %s. Only Major.Minor version selector is accepted\n' % ', '.join(data.DJANGO_SUPPORTED))
+        sys.stderr.write('Please provide a Django supported version: %s. Only Major.Minor '
+                         'version selector is accepted\n' % ', '.join(data.DJANGO_SUPPORTED))
         sys.exit(6)
     if django_version is None:
-        sys.stderr.write('Please provide a django CMS supported version: %s. Only Major.Minor version selector is accepted\n' % ', '.join(data.DJANGOCMS_SUPPORTED))
+        sys.stderr.write('Please provide a django CMS supported version: %s. Only Major.Minor '
+                         'version selector is accepted\n' % ', '.join(data.DJANGOCMS_SUPPORTED))
         sys.exit(6)
 
     if not getattr(args, 'requirements_file'):
