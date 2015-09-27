@@ -111,8 +111,8 @@ REQUIREMENTS = {
     ],
     'filer': [
         'easy_thumbnails',
-        'https://github.com/stefanfoulis/django-filer/archive/develop.zip',
-        'cmsplugin-filer>=0.9.9',
+        'django-filer>=0.9.13',
+        'cmsplugin-filer>=0.10.2',
     ],
     'filer-cms-2.x': [
         'easy_thumbnails',
