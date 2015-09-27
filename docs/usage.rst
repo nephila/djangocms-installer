@@ -154,3 +154,10 @@ Be aware that while **djangocms installer** will copy the files for you, it won'
 parameter, so you'll need to modify that after installation.
 
 .. _complete example: https://github.com/nephila/djangocms-installer/blob/develop/config.ini.sample
+
+
+Bare install
+------------
+
+You can optionally install just Django and django CMS without any additiona plugin by using the
+``--no-plugins`` option; this will allow you to further customise your installation.

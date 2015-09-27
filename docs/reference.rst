@@ -65,6 +65,7 @@ advanced usage:
 * ``--requirements``, ``-r``: You can use a custom requirements files instead of the
   requirements provided by **djangocms installer**;
 * ``--no-deps``, ``-n``: Don't install package dependencies;
+* ``--no-plugins``: Don't install plugins;
 * ``--no-db-driver``: Don't install database package;
 * ``--no-sync``, ``-m``: Don't run syncdb / migrate after bootstrapping the project;
 * ``--no-user``, ``-u``: Don't create the admin user;

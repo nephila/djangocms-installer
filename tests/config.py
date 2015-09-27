@@ -146,7 +146,7 @@ class TestConfig(BaseTestClass):
                         '--i18n=no',
                         '-p'+self.project_dir,
                         'example_prj'])
-        self.assertTrue(self.stderr.getvalue().find("--cms-version/-v: invalid choice: '2.6'") > -1)
+        self.assertTrue(self.stderr.getvalue().find('--cms-version/-v: invalid choice: \'2.6\'') > -1)
 
     def test_invalid_project_name(self):
         with patch('sys.stdout', self.stdout):
@@ -158,7 +158,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'test'])
-            self.assertTrue(stderr_tmp.getvalue().find("Project name 'test' is not a valid app name") > -1)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "test" is not a valid app name') > -1)
 
             stderr_tmp = StringIO()
             with patch('sys.stderr', stderr_tmp):
@@ -168,7 +168,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'assert'])
-            self.assertTrue(stderr_tmp.getvalue().find("Project name 'assert' is not a valid app name") > -1)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "assert" is not a valid app name') > -1)
 
             stderr_tmp = StringIO()
             with patch('sys.stderr', stderr_tmp):
@@ -178,7 +178,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'values'])
-            self.assertTrue(stderr_tmp.getvalue().find("Project name 'values' is not a valid app name") > -1)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "values" is not a valid app name') > -1)
 
             stderr_tmp = StringIO()
             with patch('sys.stderr', stderr_tmp):
@@ -188,7 +188,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'project-name'])
-            self.assertTrue(stderr_tmp.getvalue().find("Project name 'project-name' is not a valid app name") > -1)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "project-name" is not a valid app name') > -1)
 
     def test_invalid_project_path(self):
         prj_dir = 'example_prj'
@@ -203,7 +203,7 @@ class TestConfig(BaseTestClass):
                         '-p'+self.project_dir,
                         prj_dir])
                     self.assertEqual(conf_data.project_path, existing_path)
-        self.assertTrue(self.stderr.getvalue().find("Path '%s' already exists and is not empty" % self.project_dir) > -1)
+        self.assertTrue(self.stderr.getvalue().find('Path "%s" already exists and is not empty' % self.project_dir) > -1)
 
     def test_invalid_project_dir(self):
         prj_dir = 'example_prj'
@@ -219,7 +219,7 @@ class TestConfig(BaseTestClass):
                         '-p'+self.project_dir,
                         prj_dir])
                     self.assertEqual(conf_data.project_path, existing_path)
-        self.assertTrue(self.stderr.getvalue().find("Path '%s' already exists and is not empty" % self.project_dir) > -1)
+        self.assertTrue(self.stderr.getvalue().find('Path "%s" already exists and is not empty' % self.project_dir) > -1)
 
     def test_invalid_project_dir_skip(self):
         prj_dir = 'example_prj'
@@ -233,7 +233,7 @@ class TestConfig(BaseTestClass):
                     '--db=postgres://user:pwd@host/dbname',
                     '-p'+self.project_dir,
                     prj_dir])
-        self.assertFalse(self.stderr.getvalue().find("Path '%s' already exists and is not empty" % self.project_dir) > -1)
+        self.assertFalse(self.stderr.getvalue().find('Path "%s" already exists and is not empty' % self.project_dir) > -1)
 
     def test_valid_project_dir(self):
         prj_dir = 'example_prj'
@@ -247,7 +247,7 @@ class TestConfig(BaseTestClass):
                     '--db=postgres://user:pwd@host/dbname',
                     '-p'+self.project_dir,
                     prj_dir])
-        self.assertFalse(self.stderr.getvalue().find("Path '%s' already exists and is not empty" % self.project_dir) > -1)
+        self.assertFalse(self.stderr.getvalue().find('Path "%s" already exists and is not empty' % self.project_dir) > -1)
 
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), '2.5')
@@ -427,6 +427,26 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor/archive/master.zip') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.2') > -1)
+        self.assertTrue(conf_data.requirements.find('south') == -1)
+
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--i18n=no',
+            '--cms-version=develop',
+            '--django-version=1.7',
+            '--reversion=yes',
+            '--no-plugins',
+            '-z=yes',
+            '-p'+self.project_dir,
+            'example_prj'])
+
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.8') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor/archive/master.zip') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.2') > -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
@@ -619,7 +639,8 @@ class TestBaseConfig(unittest.TestCase):
         'templates': False,
         'timezone': get_localzone(),
         'use_timezone': 'yes',
-        'utc': False
+        'utc': False,
+        'no_plugins': False
     })
 
     def __init__(self, *args, **kwargs):
@@ -684,6 +705,7 @@ class TestBaseConfig(unittest.TestCase):
             ('config-25.ini', 'extra_settings', '/test/extra_settings'),
             ('config-26.ini', 'skip_project_dir_check', True),
             ('config-27.ini', 'utc', True),
+            ('config-28.ini', 'no_plugins', True),
         )
         for filename, key, val in test_data:
             setattr(fixture, key, val)  # Change value.

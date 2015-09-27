@@ -3,6 +3,12 @@
 History
 -------
 
+0.8.1 (XXXX-XX-XX)
+++++++++++++++++++
+
+* Add option to not install plugins
+* Add Python 3.5 to build matrix
+
 0.8.0 (2015-08-30)
 ++++++++++++++++++
 
