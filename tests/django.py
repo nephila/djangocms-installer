@@ -7,9 +7,7 @@ import sys
 import textwrap
 
 from djangocms_installer import config, django, install
-from .base import unittest, IsolatedTestClass
-
-dj_ver = '1.7' if sys.version_info >= (2, 7) else '1.6'
+from .base import unittest, IsolatedTestClass, dj_ver
 
 
 class TestDjango(IsolatedTestClass):
@@ -108,6 +106,8 @@ class TestDjango(IsolatedTestClass):
         # self.assertTrue(os.path.exists(static_js))
         # self.assertTrue(os.path.exists(aldryn_template))
 
+    @unittest.skipIf(sys.version_info > (3, 4),
+                     reason="django 1.6 does not support python 3.5")
     def test_patch_16_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -135,6 +135,8 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(project.settings.CMS_PERMISSION, False)
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
 
+    @unittest.skipIf(sys.version_info > (3, 4),
+                     reason="django 1.6 does not support python 3.5")
     def disable_test_patch_16_aldryn(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -164,6 +166,8 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
         self.assertTrue('compressor' in project.settings.INSTALLED_APPS)
 
+    @unittest.skipIf(sys.version_info > (3, 4),
+                     reason="django 1.6 does not support python 3.5")
     def test_patch_django_16(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
@@ -222,6 +226,8 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info <= (2, 7),
                      reason="django 1.7 does not support python 2.6")
+    @unittest.skipIf(sys.version_info > (3, 4),
+                     reason="django 1.7 does not support python 3.5")
     def test_patch_django_17_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -245,6 +251,8 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('cms' in project.settings.MIGRATION_MODULES)
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
+    @unittest.skipIf(sys.version_info > (3, 4),
+                     reason="django 1.6 does not support python 3.5")
     def test_patch_31(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--cms=develop',
@@ -271,6 +279,8 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info <= (2, 7),
                      reason="django 1.7 does not support python 2.6")
+    @unittest.skipIf(sys.version_info > (3, 4),
+                     reason="django 1.7 does not support python 3.5")
     def test_patch_django_17_31(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -295,7 +305,7 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
     @unittest.skipIf(sys.version_info <= (2, 7),
-                     reason="django 1.7 does not support python 2.6")
+                     reason="django 1.8 does not support python 2.6")
     def test_patch_django_18_31(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -410,6 +420,8 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('cmsplugin_filer_utils' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_video' in project.settings.INSTALLED_APPS)
 
+    @unittest.skipIf(sys.version_info > (3, 4),
+                     reason="django 1.5 does not support python 3.5")
     def test_patch(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
@@ -520,7 +532,9 @@ class TestDjango(IsolatedTestClass):
 
         # Checking content type table to check for correct applications setup
         query = project_db.execute('SELECT * FROM django_content_type WHERE app_label="cms" AND model="page"')
-        self.assertEqual(query.fetchone()[1], 'page')
+        row = query.fetchone()
+        self.assertTrue('page' in row)
+        self.assertTrue('cms' in row)
 
         # No data in CMS tables at setup time, but if query succeed database
         # schema should be fine

@@ -270,8 +270,8 @@ class TestConfig(BaseTestClass):
         self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.1))
         self.assertEqual(supported_versions('1.6.9', 'stable'), (None, 3.1))
         self.assertEqual(supported_versions('1.7', 'stable'), (1.7, 3.1))
-        self.assertEqual(supported_versions('beta', 'stable'), (1.8, 3.1))
-        self.assertEqual(supported_versions('develop', 'stable'), (1.8, 3.1))
+        self.assertEqual(supported_versions('beta', 'stable'), (1.9, 3.1))
+        self.assertEqual(supported_versions('develop', 'stable'), (1.9, 3.1))
 
     def test_requirements(self):
         """

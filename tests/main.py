@@ -8,9 +8,8 @@ import sys
 from mock import patch
 
 from djangocms_installer import main, config, install
-from .base import unittest, IsolatedTestClass
+from .base import unittest, IsolatedTestClass, dj_ver
 
-dj_ver = '1.7' if sys.version_info >= (2, 7) else '1.6'
 
 class TestMain(IsolatedTestClass):
 
@@ -46,7 +45,7 @@ class TestMain(IsolatedTestClass):
                     '--db=postgres://user:pwd@host/dbname',
                     '--i18n=no',
                     '--cms-version=2.4',
-                    '--django-version=stable',
+                    '--django-version=1.7',
                     '-f',
                     '-p'+self.project_dir,
                     'example_prj'])

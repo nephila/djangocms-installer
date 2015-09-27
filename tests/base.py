@@ -14,6 +14,13 @@ if sys.version_info[:2] < (2, 7):
 else:
     import unittest
 
+if sys.version_info < (2, 7):
+    dj_ver = '1.6'
+elif sys.version_info < (3, 5):
+    dj_ver = '1.7'
+else:
+    dj_ver = '1.8'
+
 
 SYSTEM_ACTIVATE = os.path.join(os.path.dirname(sys.executable), 'activate_this.py')
 

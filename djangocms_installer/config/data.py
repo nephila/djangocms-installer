@@ -24,15 +24,15 @@ CMS_VERSION_MATRIX = {
 }
 DJANGO_VERSION_MATRIX = {
     'stable': 1.7,
-    'rc': 1.8,
-    'beta': 1.8,
-    'develop': 1.8
+    'rc': 1.9,
+    'beta': 1.9,
+    'develop': 1.9
 }
 VERSION_MATRIX = {
     2.4: (1.4, 1.5),
     3.0: (1.4, 1.7),
-    3.1: (1.6, 1.8),
-    3.2: (1.6, 1.8),
+    3.1: (1.6, 1.9),
+    3.2: (1.6, 1.9),
 }
 
 REQUIREMENTS = {

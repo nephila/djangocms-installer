@@ -5,6 +5,7 @@ language: python
 sudo: false
 
 python:
+  - 3.5
   - 3.4
   - 3.3
   - 2.7
@@ -20,13 +21,9 @@ install:
   - "if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then export TOX_ENV=py27; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then export TOX_ENV=py33; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.4' ]]; then export TOX_ENV=py34; fi"
+  - "if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then export TOX_ENV=py35; fi"
 
 # command to run tests, e.g. python setup.py test
 script: COMMAND='coverage run --source=djangocms_installer' tox -e$TOX_ENV
 
 after_success: coveralls
-
-matrix:
-  allow_failures:
-    - python: 3.3
-    - python: 3.4
