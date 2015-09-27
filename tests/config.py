@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from argparse import Namespace
 import copy
 import os
 import sys
+from argparse import Namespace
 
 from mock import patch
 from six import StringIO, text_type
@@ -15,7 +15,7 @@ from djangocms_installer.config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_M
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
 
-from .base import unittest, BaseTestClass
+from .base import BaseTestClass, unittest
 
 
 class TestConfig(BaseTestClass):

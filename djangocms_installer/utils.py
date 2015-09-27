@@ -5,7 +5,7 @@ import os
 import sys
 
 from . import compat
-from .config.data import DJANGO_VERSION_MATRIX, CMS_VERSION_MATRIX, VERSION_MATRIX
+from .config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX, VERSION_MATRIX
 
 
 def query_yes_no(question, default=None):  # pragma: no cover

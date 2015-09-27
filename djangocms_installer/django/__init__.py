@@ -10,19 +10,20 @@ import sys
 import tempfile
 import textwrap
 import zipfile
-
 from copy import copy, deepcopy
+
+from six import BytesIO
+
+from ..compat import iteritems
+from ..config import data, get_settings
+from ..utils import chdir
 
 try:
     from shlex import quote as shlex_quote
 except ImportError:
     from pipes import quote as shlex_quote
 
-from six import BytesIO
 
-from ..compat import iteritems
-from ..utils import chdir
-from ..config import data, get_settings
 
 
 def create_project(config_data):

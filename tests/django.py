@@ -8,7 +8,8 @@ import sys
 import textwrap
 
 from djangocms_installer import config, django, install
-from .base import unittest, IsolatedTestClass, dj_ver
+
+from .base import IsolatedTestClass, dj_ver, unittest
 
 
 class TestDjango(IsolatedTestClass):

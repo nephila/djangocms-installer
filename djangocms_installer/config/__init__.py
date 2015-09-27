@@ -11,9 +11,9 @@ import six
 from tzlocal import get_localzone
 
 from . import data, ini
-from .internal import DbAction, validate_project
 from .. import compat, utils
 from ..utils import less_than_version, supported_versions
+from .internal import DbAction, validate_project
 
 
 def parse(args):

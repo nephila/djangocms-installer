@@ -2,13 +2,14 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
-from subprocess import CalledProcessError
 import sys
+from subprocess import CalledProcessError
 
 from mock import patch
 
-from djangocms_installer import main, config, install
-from .base import unittest, IsolatedTestClass, dj_ver
+from djangocms_installer import config, install, main
+
+from .base import IsolatedTestClass, dj_ver, unittest
 
 
 class TestMain(IsolatedTestClass):

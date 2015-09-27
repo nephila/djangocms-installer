@@ -6,8 +6,8 @@ import shutil
 import subprocess
 import sys
 import tempfile
-
 from copy import copy
+
 from six import StringIO
 
 if sys.version_info[:2] < (2, 7):
