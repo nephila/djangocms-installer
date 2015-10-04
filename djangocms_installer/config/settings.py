@@ -125,10 +125,10 @@ FILER_PLUGINS_3 = (
 
 CMS_3_HEAD = (
     'djangocms_admin_style',
-    'djangocms_text_ckeditor',
 )
 
 CMS_3_APPLICATIONS = (
+    'djangocms_text_ckeditor',
     'djangocms_style',
     'djangocms_column',
 )
