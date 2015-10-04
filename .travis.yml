@@ -54,3 +54,6 @@ matrix:
     env: TEST='pep8'
   - python: 3.4
     env: TEST='isort'
+
+notifications:
+  webhooks: https://ring.nephila.it/packages/hook/
