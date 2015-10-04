@@ -9,6 +9,7 @@ History
 * Add option to not install plugins
 * Add Python 3.5 to build matrix
 * Add argument to pass options to pip
+* Fix support for custom user models
 
 0.8.0 (2015-08-30)
 ++++++++++++++++++
