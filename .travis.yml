@@ -22,6 +22,9 @@ env:
     - TEST='isort'
     - TEST='docs'
 
+before_install:
+  - pip install codecov
+
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
   - pip install -U tox virtualenv coveralls
@@ -35,7 +38,9 @@ install:
 # command to run tests, e.g. python setup.py test
 script: COMMAND='coverage run --source=djangocms_installer' tox -e$TOX_ENV
 
-after_success: coveralls
+after_success:
+  - codecov
+  - coveralls
 
 matrix:
   exclude:
