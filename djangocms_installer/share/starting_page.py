@@ -4,15 +4,13 @@ from __future__ import absolute_import, print_function, unicode_literals
 import json
 from distutils.version import LooseVersion
 
-import django
-from django.conf import settings
-from django.contrib.auth.models import User
-from django.utils.translation import ugettext_lazy as _
-
 
 def create_pages():
     from cms.models import Placeholder
     from cms.api import create_page, add_plugin, publish_page
+    from django.conf import settings
+    from django.contrib.auth.models import User
+    from django.utils.translation import ugettext_lazy as _
 
     placeholder = {}
 
@@ -58,6 +56,8 @@ def create_pages():
             publish_page(page, User.objects.all()[0])
 
 if __name__ == '__main__':
+    import django
+
     if LooseVersion(django.get_version()) >= LooseVersion('1.7'):
         django.setup()
     create_pages()

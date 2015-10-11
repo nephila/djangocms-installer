@@ -14,8 +14,8 @@ def query_yes_no(question, default=None):  # pragma: no cover
 
     :param question: A string that is presented to the user.
     :param default: The presumed answer if the user just hits <Enter>.
-    It must be "yes" (the default), "no" or None (meaning
-    an answer is required of the user).
+                    It must be "yes" (the default), "no" or None (meaning
+                    an answer is required of the user).
 
     The "answer" return value is one of "yes" or "no".
 
