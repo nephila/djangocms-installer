@@ -59,7 +59,7 @@ def _detect_migration_layout(vars, apps):
     return DJANGO_MODULES, SOUTH_MODULES
 
 
-def _install_aldryn(config_data):
+def _install_aldryn(config_data):  # pragma: no cover
     import requests
     media_project = os.path.join(config_data.project_directory, 'dist', 'media')
     static_main = False
@@ -147,7 +147,7 @@ def patch_settings(config_data):
 
     original = original.replace('# -*- coding: utf-8 -*-\n', '')
 
-    if config_data.aldryn:
+    if config_data.aldryn:  # pragma: no cover
         DATA_DIR = (
             'DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), \'dist\')\n'
         )
@@ -256,7 +256,7 @@ def _build_settings(config_data):
         text.append('TEMPLATE_CONTEXT_PROCESSORS = (\n%s%s\n)' % (
             spacer, (',\n' + spacer).join(['\'%s\'' % var for var in processors])))
 
-        if config_data.aldryn:
+        if config_data.aldryn:  # pragma: no cover
             text.append('TEMPLATE_DIRS = (\n%s%s\n)' % (
                 spacer, 'os.path.join(BASE_DIR, \'templates\'),'))
         else:
@@ -300,7 +300,7 @@ def _build_settings(config_data):
     if config_data.django_version <= 1.6:
         apps.extend(vars.SOUTH_APPLICATIONS)
 
-    if config_data.aldryn:
+    if config_data.aldryn:  # pragma: no cover
         apps.extend(vars.ALDRYN_APPLICATIONS)
     if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
