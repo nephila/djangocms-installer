@@ -1,5 +1,4 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 __author__ = 'Iacopo Spalletti'
 __email__ = 'i.spalletti@nephila.it'
-__version__ = '0.8.1.dev1'
+__version__ = '0.8.1'
