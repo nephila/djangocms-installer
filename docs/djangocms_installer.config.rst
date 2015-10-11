@@ -5,7 +5,7 @@ Submodules
 ----------
 
 djangocms_installer.config.internal module
-------------------------------------------
+##########################################
 
 .. automodule:: djangocms_installer.config.internal
     :members:
@@ -13,7 +13,7 @@ djangocms_installer.config.internal module
     :show-inheritance:
 
 djangocms_installer.config.settings module
-------------------------------------------
+##########################################
 
 .. automodule:: djangocms_installer.config.settings
     :members:
@@ -21,7 +21,7 @@ djangocms_installer.config.settings module
     :show-inheritance:
 
 Module contents
----------------
+###############
 
 .. automodule:: djangocms_installer.config
     :members:

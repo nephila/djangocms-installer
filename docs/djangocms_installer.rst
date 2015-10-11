@@ -14,7 +14,7 @@ Submodules
 ----------
 
 djangocms_installer.compat module
----------------------------------
+#################################
 
 .. automodule:: djangocms_installer.compat
     :members:
@@ -22,7 +22,7 @@ djangocms_installer.compat module
     :show-inheritance:
 
 djangocms_installer.main module
--------------------------------
+###############################
 
 .. automodule:: djangocms_installer.main
     :members:
@@ -30,7 +30,7 @@ djangocms_installer.main module
     :show-inheritance:
 
 djangocms_installer.utils module
---------------------------------
+################################
 
 .. automodule:: djangocms_installer.utils
     :members:
