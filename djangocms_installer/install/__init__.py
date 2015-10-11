@@ -91,6 +91,11 @@ def requirements(requirements, pip_options='', is_file=False):
     return True
 
 
+def write_requirements(config_data):
+    with open(os.path.join(config_data.project_directory, 'requirements.txt'), 'w') as reqfile:
+        reqfile.write(config_data.requirements)
+
+
 def cleanup(requirements):  # pragma: no cover
     import pip
 

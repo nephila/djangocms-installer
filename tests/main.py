@@ -62,7 +62,11 @@ class TestMain(IsolatedTestClass):
                                        'example_prj']
                 main.execute()
                 self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'static')))
+                self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'requirements.txt')))
                 self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'example_prj', 'static')))
+                with open(os.path.join(self.project_dir, 'requirements.txt'), 'r') as req_file:
+                    text = req_file.read()
+                    self.assertTrue(text.find('djangocms-text-ckeditor') > -1)
                 # Checking we successfully completed the whole process
                 self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
 
