@@ -19,7 +19,7 @@ Contents:
    contributing
    authors
    history
-   autodoc
+   modules
 
 Indices and tables
 ==================

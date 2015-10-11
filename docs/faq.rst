@@ -28,13 +28,14 @@ FAQ
    configuration parameters; refer to this package for more details.
 
 #. The installer dies with an error like
-   ``ImportError: Could not import settings 'foo.bar.settings' (Is it on sys.path? Is there an import error in the settings file?): No module named foo.bar.settings``,
+   ``ImportError: Could not import settings 'foo.bar.settings' (Is it on sys.path?
+   Is there an import error in the settings file?): No module named foo.bar.settings``,
    what's happening?
 
    Chances are you have ``DJANGO_SETTINGS_MODULE`` set in you environment,
    either by default or using postactivate virtualenv hooks or other tools;
    please check you environment right after the error happening (for example
-   using the ``env`` command on *nix systems) and remove any customisation: the
+   using the ``env`` command on \*nix systems) and remove any customisation: the
    installer requires that ``DJANGO_SETTINGS_MODULE`` is not set on the first
    run. You can customise it later.
 

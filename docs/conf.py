@@ -25,6 +25,15 @@ parent = os.path.dirname(cwd)
 sys.path.append(parent)
 
 import djangocms_installer
+import sphinx.environment
+from docutils.utils import get_source_line
+
+
+def _warn_node(self, msg, node):
+    if not msg.startswith('nonlocal image URI found:'):
+        self._warnfunc(msg, '%s:%s' % get_source_line(node))
+
+sphinx.environment.BuildEnvironment.warn_node = _warn_node
 
 # -- General configuration -----------------------------------------------------
 
@@ -104,7 +113,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

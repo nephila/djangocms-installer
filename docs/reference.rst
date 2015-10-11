@@ -75,14 +75,16 @@ advanced usage:
   project;
 * ``--extra-settings``: Path to a file with extra variables to append to generated settings file.
   It doesn't need to be a Python file, its content is blindly copied in the project settings.
-* ``--aldryn``, ``-a``: Use `aldryn-boilerplate`_; this downloads **aldryn-boilerplate** and copies
-  it to the project, adapting the project layout according to boilerplate specifications; the use
-  of aldryn-boilerplate requires manual actions, look at `aldryn-boilerplate documentation`_ for
-  further informations.
 * ``--skip-empty-check``, ``-s``: Skip the check if the project dir contains files or directory;
   in case of error when setting up the project, ``djangocms-installer`` may ask you to remove
   the directory, be careful if using this option as you may remove files not related to the
   project set up by the installer.
+
+
+..  ``--aldryn``, ``-a``: Use `aldryn-boilerplate`_; this downloads **aldryn-boilerplate** and copies
+    it to the project, adapting the project layout according to boilerplate specifications; the use
+    of aldryn-boilerplate requires manual actions, look at `aldryn-boilerplate documentation`_ for
+    further informations.
 
 
 .. _dj-database-url: https://github.com/kennethreitz/dj-database-url
