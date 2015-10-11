@@ -274,7 +274,7 @@ def parse(args):
                 else:
                     requirements.extend(data.REQUIREMENTS['plugins-common-master'])
                     requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
-        if args.aldryn:
+        if args.aldryn:  # pragma: no cover
             requirements.extend(data.REQUIREMENTS['aldryn'])
 
         # Django version check
@@ -311,7 +311,7 @@ def parse(args):
         requirements.extend(data.REQUIREMENTS['default'])
 
         setattr(args, 'requirements', '\n'.join(requirements).strip())
-    if cms_version < 3 and args.aldryn:
+    if cms_version < 3 and args.aldryn:  # pragma: no cover
         sys.stderr.write('Aldryn Boilerplate is not compatible with django CMS versions < 3\n')
         sys.exit(5)
 

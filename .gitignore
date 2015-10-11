@@ -1,3 +1,4 @@
+/.eggs
 *.py[cod]
 
 # C extensions

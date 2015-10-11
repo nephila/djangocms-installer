@@ -10,6 +10,8 @@ History
 * Add Python 3.5 to build matrix
 * Add argument to pass options to pip
 * Fix support for custom user models
+* Dump requirements file in the created project
+* Improve documentation
 
 0.8.0 (2015-08-30)
 ++++++++++++++++++

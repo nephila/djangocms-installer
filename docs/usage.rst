@@ -1,6 +1,19 @@
 Usage
 =====
+
+**djangocms installer** creates a complete and fully featured django CMS project.
+
+By default it:
+
+* creates the project
+* installs requirements
+* creates database
+* (optionally) creates a sample database
+* (optionally) copy a provided set of templates
+* write the requirements file to the project directory
+
 **djangocms installer** works as a batch script and as a command line wizard.
+
 
 .. _wizard_mode:
 
