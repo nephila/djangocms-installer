@@ -15,7 +15,7 @@ django CMS Installer
         :target: https://pypi.python.org/pypi/djangocms-installer
         :alt: Monthly downloads
 
-.. image:: https://coveralls.io/repos/nephila/djangocms-installer/badge.png
+.. image:: https://img.shields.io/coveralls/nephila/djangocms-installer.svg
         :target: https://coveralls.io/r/nephila/djangocms-installer
         :alt: Test coverage
 
@@ -60,17 +60,17 @@ Supported versions
 
 The current supported version matrix is the following:
 
-+----------------+-------------+-------------+-------------+-------------+-------------+
-|                | Django 1.4  | Django 1.5  | Django 1.6  | Django 1.7  | Django 1.8  |
-+----------------+-------------+-------------+-------------+-------------+-------------+
-| django CMS 2.4 | Supported   | Supported   | Unsupported | Unsupported | Unsupported |
-+----------------+-------------+-------------+-------------+-------------+-------------+
-| django CMS 3.0 | Supported   | Supported   | Supported   | Supported   | Unsupported |
-+----------------+-------------+-------------+-------------+-------------+-------------+
-| django CMS 3.1 | Unsupported | Unsupported | Supported   | Supported   | Supported   |
-+----------------+-------------+-------------+-------------+-------------+-------------+
-| django CMS dev | Unsupported | Unsupported | Supported   | Supported   | Supported   |
-+----------------+-------------+-------------+-------------+-------------+-------------+
++----------------+-------------+-------------+-------------+-------------+-------------+-------------+
+|                | Django 1.4  | Django 1.5  | Django 1.6  | Django 1.7  | Django 1.8  | Django 1.9  |
++----------------+-------------+-------------+-------------+-------------+-------------+-------------+
+| django CMS 2.4 | Supported   | Supported   | Unsupported | Unsupported | Unsupported | Unsupported |
++----------------+-------------+-------------+-------------+-------------+-------------+-------------+
+| django CMS 3.0 | Supported   | Supported   | Supported   | Supported   | Unsupported | Unsupported |
++----------------+-------------+-------------+-------------+-------------+-------------+-------------+
+| django CMS 3.1 | Unsupported | Unsupported | Supported   | Supported   | Supported   | WiP         |
++----------------+-------------+-------------+-------------+-------------+-------------+-------------+
+| django CMS dev | Unsupported | Unsupported | Supported   | Supported   | Supported   | WiP         |
++----------------+-------------+-------------+-------------+-------------+-------------+-------------+
 
 Any beta and develop version of Django and django CMS, by its very nature,
 it's not supported, while it still may work.
