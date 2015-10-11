@@ -88,7 +88,7 @@ def copy_files(config_data):
     urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls.py')
     share_path = os.path.join(os.path.dirname(__file__), '../share')
     template_path = os.path.join(share_path, 'templates')
-    if config_data.aldryn:
+    if config_data.aldryn:  # pragma: no cover
         media_project, static_main, static_project, template_target = _install_aldryn(config_data)
     else:
         media_project = os.path.join(config_data.project_directory, 'media')

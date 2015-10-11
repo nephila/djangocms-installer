@@ -43,7 +43,7 @@ def execute():
                 django.load_starting_page(config_data)
             if not config_data.requirements_file:
                 install.write_requirements(config_data)
-            if config_data.aldryn:
+            if config_data.aldryn:  # pragma: no cover
                 sys.stdout.write('Project created!\n')
                 sys.stdout.write('aldryn boilerplate requires action before '
                                  'you can actually run the project.\n'
