@@ -3,7 +3,14 @@
 History
 -------
 
-0.8.1 (XXXX-XX-XX)
+0.8.2 (XXXX-XX-XX)
+++++++++++++++++++
+
+* Add support for apphook reload middleware
+* Add viewport meta tag for mobile devices support
+
+
+0.8.1 (2015-10-11)
 ++++++++++++++++++
 
 * Add option to not install plugins

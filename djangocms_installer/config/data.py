@@ -119,6 +119,9 @@ REQUIREMENTS = {
         'django-filer<=0.9.6',
         'cmsplugin-filer',
     ],
+    'apphooks-reload': [
+        'aldryn-apphook-reload>=0.2.2'
+    ]
 }
 
 TEMPLATES_1_8 = """

@@ -181,7 +181,7 @@ class TestDjango(IsolatedTestClass):
     def test_patch_django_16(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
-                                    '--django-version=1.6',
+                                    '--django-version=1.6', '--apphooks-reload',
                                     '--cms-version=3.0', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p'+self.project_dir, 'example_path_16'])
@@ -223,6 +223,9 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_teaser' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
+        self.assertTrue('aldryn_apphook_reload' in project.settings.INSTALLED_APPS)
+        self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD in project.settings.MIDDLEWARE_CLASSES)
+        self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS not in project.settings.MIDDLEWARE_CLASSES)
         self.assertTrue('cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
         self.assertTrue('cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
 
@@ -332,6 +335,33 @@ class TestDjango(IsolatedTestClass):
         # checking for django options
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
+
+    @unittest.skipIf(sys.version_info <= (2, 7),
+                     reason="django 1.8 does not support python 2.6")
+    def test_patch_django_18_32(self):
+        # On django CMS 3.2 the reload apphooks middleware is enabled by default
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.8', '-f',
+                                    '--cms-version=develop', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p'+self.project_dir, 'example_path_18_32_settings'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
+
+        # checking for django options
+        self.assertTrue(project.settings.TEMPLATES)
+        self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
+        self.assertTrue('aldryn_apphook_reload' not in project.settings.INSTALLED_APPS)
+        self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in project.settings.MIDDLEWARE_CLASSES)
+        self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in project.settings.MIDDLEWARE_CLASSES)
 
     @unittest.skipIf(sys.version_info <= (2, 7),
                      reason="django 1.8 does not support python 2.6")

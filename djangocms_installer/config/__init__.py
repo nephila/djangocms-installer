@@ -89,6 +89,8 @@ def parse(args):
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
                         default=False, help='Don\'t run the configuration wizard, just use the '
                                             'provided values')
+    parser.add_argument('--apphooks-reload', '-k', dest='apphooks_reload', action='store_true',
+                        default=False, help='Use apphooks-reload middleware')
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
                         default=False, help='Install and configure django-filer plugins')
     parser.add_argument('--requirements', '-r', dest='requirements_file', action='store',
@@ -251,6 +253,8 @@ def parse(args):
             requirements.extend(data.REQUIREMENTS['cms-3.0'])
         elif cms_version >= 3:
             requirements.extend(data.REQUIREMENTS['cms-3.x'])
+        elif cms_version >= 3.2:
+            requirements.extend(data.REQUIREMENTS['cms-3.x'])
         else:
             requirements.extend(data.REQUIREMENTS['cms-2.x'])
 
@@ -276,6 +280,9 @@ def parse(args):
                     requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
         if args.aldryn:  # pragma: no cover
             requirements.extend(data.REQUIREMENTS['aldryn'])
+
+        if args.apphooks_reload and cms_version < 3.2:
+            requirements.extend(data.REQUIREMENTS['apphooks-reload'])
 
         # Django version check
         if args.django_version == 'develop':

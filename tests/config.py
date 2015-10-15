@@ -287,6 +287,7 @@ class TestConfig(BaseTestClass):
             '--db=postgres://user:pwd@host/dbname',
             '--django-version=1.6',
             '--i18n=no',
+            '--apphooks-reload',
             '-f',
             '-p'+self.project_dir,
             'example_prj'])
@@ -297,6 +298,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.8,<1.8.6') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
+        self.assertTrue(conf_data.requirements.find('aldryn-apphook-reload') > -1)
 
         conf_data = config.parse([
             '-q',
@@ -358,6 +360,7 @@ class TestConfig(BaseTestClass):
             '--cms-version=develop',
             '--django-version=stable',
             '-f',
+            '--apphooks-reload',
             '--reversion=yes',
             '-p'+self.project_dir,
             'example_prj'])
@@ -379,6 +382,8 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-style') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-video') == -1)
+        self.assertTrue(conf_data.requirements.find('aldryn-apphook-reload') == -1)
+
 
         conf_data = config.parse([
             '-q',
@@ -645,7 +650,8 @@ class TestBaseConfig(unittest.TestCase):
         'timezone': get_localzone(),
         'use_timezone': 'yes',
         'utc': False,
-        'no_plugins': False
+        'no_plugins': False,
+        'apphooks_reload': False,
     })
 
     def __init__(self, *args, **kwargs):
@@ -711,6 +717,7 @@ class TestBaseConfig(unittest.TestCase):
             ('config-26.ini', 'skip_project_dir_check', True),
             ('config-27.ini', 'utc', True),
             ('config-28.ini', 'no_plugins', True),
+            ('config-29.ini', 'apphooks_reload', True),
         )
         for filename, key, val in test_data:
             setattr(fixture, key, val)  # Change value.

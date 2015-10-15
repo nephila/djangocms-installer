@@ -188,7 +188,8 @@ URLCONF = {
 APPHOOK_RELOAD_APPLICATIONS = [
     'aldryn_apphook_reload'
 ]
-APPHOOK_RELOAD_MIDDLEWARE_CLASS = 'aldryn_apphook_reload.middleware.ApphookReloadMiddleware'
+APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD = 'aldryn_apphook_reload.middleware.ApphookReloadMiddleware'
+APPHOOK_RELOAD_MIDDLEWARE_CLASS = 'cms.middleware.utils.ApphookReloadMiddleware'
 
 MIGRATIONS_CHECK_MODULES = (
     'cms',
