@@ -242,6 +242,11 @@ def _build_settings(config_data):
     text = []
     vars = get_settings()
 
+    if config_data.cms_version >= 3.2:
+        vars.MIDDLEWARE_CLASSES.insert(0, vars.APPHOOK_RELOAD_MIDDLEWARE_CLASS)
+    elif config_data.apphooks_reload:
+        vars.MIDDLEWARE_CLASSES.insert(0, vars.APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD)
+
     if config_data.django_version < 1.6:
         vars.MIDDLEWARE_CLASSES.extend(vars.MIDDLEWARE_CLASSES_DJANGO_15)
 
@@ -302,6 +307,8 @@ def _build_settings(config_data):
 
     if config_data.aldryn:  # pragma: no cover
         apps.extend(vars.ALDRYN_APPLICATIONS)
+    if config_data.apphooks_reload and config_data.cms_version < 3.2:
+        apps.extend(vars.APPHOOK_RELOAD_APPLICATIONS)
     if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
     text.append('INSTALLED_APPS = (\n%s%s\n)' % (

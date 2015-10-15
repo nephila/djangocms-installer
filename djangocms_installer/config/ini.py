@@ -72,7 +72,7 @@ def dump_config_file(filename, args, parser=None):
                     if len(option_value) == 1 and option_value[0] == 'en':
                         config.set(SECTION, option_name, '')
                     else:
-                        config.set(SECTION, option_name, ','.join())
+                        config.set(SECTION, option_name, ','.join(option_value))
                 else:
                     config.set(SECTION, option_name, option_value if option_value else '')
             elif action.choices == ('yes', 'no'):
