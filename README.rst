@@ -2,22 +2,33 @@
 django CMS Installer
 ====================
 
+.. image:: https://img.shields.io/pypi/v/djangocms-installer.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/djangocms-installer
+    :alt: Latest PyPI version
 
-.. image:: https://img.shields.io/pypi/v/djangocms-installer.svg
-        :target: https://pypi.python.org/pypi/djangocms-installer
-        :alt: Latest PyPI version
+.. image:: https://img.shields.io/pypi/dm/djangocms-installer.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/djangocms-installer
+    :alt: Monthly downloads
 
-.. image:: https://img.shields.io/travis/nephila/djangocms-installer.svg
-        :target: https://travis-ci.org/nephila/djangocms-installer
-        :alt: Latest Travis CI build status
+.. image:: https://img.shields.io/pypi/pyversions/djangocms-installer.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/djangocms-installer
+    :alt: Python versions
 
-.. image:: https://img.shields.io/pypi/dm/djangocms-installer.svg
-        :target: https://pypi.python.org/pypi/djangocms-installer
-        :alt: Monthly downloads
+.. image:: https://img.shields.io/travis/nephila/djangocms-installer.svg?style=flat-square
+    :target: https://travis-ci.org/nephila/djangocms-installer
+    :alt: Latest Travis CI build status
 
-.. image:: https://img.shields.io/coveralls/nephila/djangocms-installer.svg
-        :target: https://coveralls.io/r/nephila/djangocms-installer
-        :alt: Test coverage
+.. image:: https://img.shields.io/coveralls/nephila/djangocms-installer/master.svg?style=flat-square
+    :target: https://coveralls.io/r/nephila/djangocms-installer?branch=master
+    :alt: Test coverage
+
+.. image:: https://img.shields.io/codecov/c/github/nephila/djangocms-installer/master.svg?style=flat-square
+    :target: https://codecov.io/github/nephila/djangocms-installer
+    :alt: Test coverage
+
+.. image:: https://codeclimate.com/github/nephila/djangocms-installer/badges/gpa.svg?style=flat-square
+   :target: https://codeclimate.com/github/nephila/djangocms-installer
+   :alt: Code Climate
 
 Command to easily bootstrap django CMS projects
 
