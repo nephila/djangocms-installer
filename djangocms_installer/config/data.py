@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
+import sys
 import time
 
 bust = {'bust': time.time()}
@@ -13,20 +14,40 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % time.time()
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
-DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', 'stable', 'develop')
+
+if sys.version_info < (2, 7):
+    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', 'stable', 'develop')
+    DJANGOCMS_STABLE = 3.2
+elif sys.version_info >= (3, 5):
+    DJANGOCMS_SUPPORTED = ('3.0', '3.1', '3.2', 'stable', 'develop')
+    DJANGOCMS_STABLE = 3.2
+else:
+    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', 'stable', 'develop')
+    DJANGOCMS_STABLE = 3.2
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?%s' % time.time()
-DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', '1.8', 'stable')
+if sys.version_info < (2, 7):
+    DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', 'stable')
+    DJANGO_STABLE = 1.6
+elif sys.version_info >= (3, 5):
+    DJANGO_SUPPORTED = ('1.8', 'stable')
+    DJANGO_STABLE = 1.8
+elif sys.version_info >= (3, 0):
+    DJANGO_SUPPORTED = ('1.5', '1.6', '1.7', '1.8', 'stable')
+    DJANGO_STABLE = 1.8
+else:
+    DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', '1.8', 'stable')
+    DJANGO_STABLE = 1.8
 
 CMS_VERSION_MATRIX = {
-    'stable': 3.1,
+    'stable': DJANGOCMS_STABLE,
     'rc': 3.2,
     'beta': 3.2,
     'develop': 3.2
 }
 DJANGO_VERSION_MATRIX = {
-    'stable': 1.7,
+    'stable': DJANGO_STABLE,
     'rc': 1.9,
     'beta': 1.9,
     'develop': 1.9
