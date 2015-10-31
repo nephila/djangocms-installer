@@ -251,9 +251,9 @@ def parse(args):
 
         if cms_version == 3:
             requirements.extend(data.REQUIREMENTS['cms-3.0'])
-        elif cms_version >= 3:
-            requirements.extend(data.REQUIREMENTS['cms-3.x'])
         elif cms_version >= 3.2:
+            requirements.extend(data.REQUIREMENTS['cms-3.x'])
+        elif cms_version >= 3:
             requirements.extend(data.REQUIREMENTS['cms-3.x'])
         else:
             requirements.extend(data.REQUIREMENTS['cms-2.x'])
