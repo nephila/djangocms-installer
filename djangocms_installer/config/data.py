@@ -98,16 +98,18 @@ REQUIREMENTS = {
         'django-treebeard>=2.0',
     ],
     'ckeditor-3.0': [
+        'djangocms-admin-style<0.3',
         'djangocms-text-ckeditor<2.7.0',
     ],
     'ckeditor-3.1': [
+        'djangocms-admin-style<0.3',
         'djangocms-text-ckeditor<2.8.0',
     ],
     'ckeditor-3.2': [
+        'djangocms-admin-style>=1.0.6',
         'djangocms-text-ckeditor>=2.8.0',
     ],
     'plugins-common': [
-        'djangocms-admin-style',
         'djangocms-column',
         'djangocms-flash',
         'djangocms-googlemap',
@@ -122,14 +124,12 @@ REQUIREMENTS = {
         'djangocms-video',
     ],
     'plugins-common-master': [
-        'https://github.com/divio/djangocms-admin-style/archive/master.zip?%(bust)s' % bust,
         'https://github.com/divio/djangocms-column/archive/master.zip?%(bust)s' % bust,
         'https://github.com/divio/djangocms-flash/archive/master.zip?%(bust)s' % bust,
         'https://github.com/divio/djangocms-googlemap/archive/master.zip?%(bust)s' % bust,
         'https://github.com/divio/djangocms-inherit/archive/master.zip?%(bust)s' % bust,
         'https://github.com/divio/djangocms-link/archive/master.zip?%(bust)s' % bust,
         'https://github.com/divio/djangocms-style/archive/master.zip?%(bust)s' % bust,
-        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?%(bust)s' % bust,
     ],
     'plugins-basic-master': [
         'https://github.com/divio/djangocms-file/archive/master.zip?%(bust)s' % bust,
