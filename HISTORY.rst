@@ -3,12 +3,12 @@
 History
 -------
 
-0.8.2 (XXXX-XX-XX)
+0.8.2 (2015-11-24)
 ++++++++++++++++++
 
+* Add support for django CMS 3.2
 * Add support for apphook reload middleware
 * Add viewport meta tag for mobile devices support
-
 
 0.8.1 (2015-10-11)
 ++++++++++++++++++
