@@ -83,7 +83,7 @@ REQUIREMENTS = {
         'django-reversion>=1.8.2,<1.8.6',
     ],
     'reversion-django-1.8': [
-        'django-reversion>=1.8.7',
+        'django-reversion>=1.8.7,<1.9',
     ],
     'cms-2.x': [
         'django-mptt>=0.5.1,<0.5.3',
