@@ -91,9 +91,20 @@ REQUIREMENTS = {
     'cms-3.0': [
         'django-mptt<0.7',
     ],
-
-    'cms-3.x': [
+    'cms-3.1': [
         'django-treebeard>=2.0',
+    ],
+    'cms-3.2': [
+        'django-treebeard>=2.0',
+    ],
+    'ckeditor-3.0': [
+        'djangocms-text-ckeditor<2.7.0',
+    ],
+    'ckeditor-3.1': [
+        'djangocms-text-ckeditor<2.8.0',
+    ],
+    'ckeditor-3.2': [
+        'djangocms-text-ckeditor>=2.8.0',
     ],
     'plugins-common': [
         'djangocms-admin-style',
@@ -102,7 +113,6 @@ REQUIREMENTS = {
         'djangocms-googlemap',
         'djangocms-inherit',
         'djangocms-style',
-        'djangocms-text-ckeditor>=2.3.0',
     ],
     'plugins-basic': [
         'djangocms-file',
