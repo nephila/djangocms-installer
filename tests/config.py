@@ -538,6 +538,7 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         if sys.version_info < (2, 7):
+            print(conf_data.requirements)
             self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
             self.assertTrue(conf_data.requirements.find('django-reversion>=1.8,<1.8.6') > -1)
             self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') == -1)
