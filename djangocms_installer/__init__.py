@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Iacopo Spalletti'
 __email__ = 'i.spalletti@nephila.it'
-__version__ = '0.8.3'
+__version__ = '0.8.3.post1'
