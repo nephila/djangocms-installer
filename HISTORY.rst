@@ -3,6 +3,12 @@
 History
 -------
 
+0.8.3 (2015-11-25)
+++++++++++++++++++
+
+* Improve text editor plugin version selection
+* Improve admin style version selection
+
 0.8.2 (2015-11-24)
 ++++++++++++++++++
 
