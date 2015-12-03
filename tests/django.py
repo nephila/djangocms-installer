@@ -386,7 +386,7 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
         self.assertFalse('djangocms_file' in project.settings.INSTALLED_APPS)
-        self.assertFalse('djangocms_flash' not in project.settings.INSTALLED_APPS)
+        self.assertFalse('djangocms_flash' in project.settings.INSTALLED_APPS)
         self.assertFalse('djangocms_googlemap' in project.settings.INSTALLED_APPS)
         self.assertFalse('djangocms_inherit' in project.settings.INSTALLED_APPS)
         self.assertFalse('djangocms_link' in project.settings.INSTALLED_APPS)
