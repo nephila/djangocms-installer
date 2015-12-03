@@ -111,7 +111,6 @@ REQUIREMENTS = {
     ],
     'plugins-common': [
         'djangocms-column',
-        'djangocms-flash',
         'djangocms-googlemap',
         'djangocms-inherit',
         'djangocms-style',
@@ -125,7 +124,6 @@ REQUIREMENTS = {
     ],
     'plugins-common-master': [
         'https://github.com/divio/djangocms-column/archive/master.zip?%(bust)s' % bust,
-        'https://github.com/divio/djangocms-flash/archive/master.zip?%(bust)s' % bust,
         'https://github.com/divio/djangocms-googlemap/archive/master.zip?%(bust)s' % bust,
         'https://github.com/divio/djangocms-inherit/archive/master.zip?%(bust)s' % bust,
         'https://github.com/divio/djangocms-link/archive/master.zip?%(bust)s' % bust,
@@ -176,7 +174,6 @@ PLUGIN_LIST_TEXT = """
 djangocms_installer will install and configure the following plugins:
  * djangocms_column (Column plugin)
  * djangocms-file (File plugin)
- * djangocms-flash (Flash plugin)
  * djangocms-googlemap (GoogleMap plugin)
  * djangocms-inherit (Inherit plugin)
  * djangocms-link (Link plugin)

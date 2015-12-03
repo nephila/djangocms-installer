@@ -33,7 +33,7 @@ class TestMain(IsolatedTestClass):
         self.assertTrue(stdout.find('djangocms-admin-style') > -1)
         self.assertTrue(stdout.find('djangocms-column') > -1)
         self.assertTrue(stdout.find('djangocms-file') > -1)
-        self.assertTrue(stdout.find('djangocms-flash') > -1)
+        self.assertTrue(stdout.find('djangocms-flash') == -1)
         self.assertTrue(stdout.find('djangocms-googlemap') > -1)
         self.assertTrue(stdout.find('djangocms-inherit') > -1)
         self.assertTrue(stdout.find('djangocms-link') > -1)
@@ -85,6 +85,8 @@ class TestMain(IsolatedTestClass):
                 # Checking we successfully completed the whole process
                 self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
 
+    @unittest.skipIf(sys.version_info < (2, 7),
+                     reason='django CMS develop does not support python 2.6')
     def test_develop(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
