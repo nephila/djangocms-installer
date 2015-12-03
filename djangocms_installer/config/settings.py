@@ -84,7 +84,6 @@ STANDARD_PLUGINS_2 = (
 )
 STANDARD_PLUGINS_3 = (
     'djangocms_file',
-    'djangocms_flash',
     'djangocms_googlemap',
     'djangocms_inherit',
     'djangocms_link',
@@ -117,7 +116,6 @@ FILER_PLUGINS_3 = (
     'cmsplugin_filer_teaser',
     'cmsplugin_filer_utils',
     'cmsplugin_filer_video',
-    'djangocms_flash',
     'djangocms_googlemap',
     'djangocms_inherit',
     'djangocms_link',
@@ -203,7 +201,6 @@ MIGRATIONS_CHECK_MODULES = (
     'cmsplugin_filer_video',
     'djangocms_text_ckeditor',
     'djangocms_column',
-    'djangocms_flash',
     'djangocms_googlemap',
     'djangocms_inherit',
     'djangocms_link',
