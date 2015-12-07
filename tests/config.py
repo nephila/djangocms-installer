@@ -755,7 +755,6 @@ class TestBaseConfig(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         self.config_not_exists = self.conf('config-dump.ini')
-
         super(TestBaseConfig, self).__init__(*args, **kwargs)
 
     def tearDown(self):
@@ -774,12 +773,10 @@ class TestBaseConfig(unittest.TestCase):
         if hasattr(config_data, 'requirements'):
             delattr(config_data, 'requirements')
 
-    #@patch('sys.stdout')
-    #@patch('sys.stderr')
     def test_parse_config_file(self, *args):
         """Tests .config.__init__._parse_config_file function."""
         with self.assertRaises(SystemExit) as error:
-            config_data = config.parse(self.args[0:1] + [self.conf('config-not-exists.ini')] + self.args[1:])
+            config.parse(self.args[0:1] + [self.conf('config-not-exists.ini')] + self.args[1:])
             self.assertEqual(7, error.exception.code)
 
         args = self.args[0:1] + [self.conf('config-01.ini')] + self.args[1:]
@@ -835,10 +832,10 @@ class TestBaseConfig(unittest.TestCase):
         config_exists = self.conf('config-01.ini')
 
         with self.assertRaises(SystemExit) as error:
-            config_data = config.parse(['--config-dump', config_exists] + self.args[1:] + ['-p', '.'])
+            config.parse(['--config-dump', config_exists] + self.args[1:] + ['-p', '.'])
             self.assertEqual(8, error.exception.code)
 
-        config_data = config.parse(['--config-dump', self.config_not_exists] + self.args[1:] + ['-p', '.'])
+        config.parse(['--config-dump', self.config_not_exists] + self.args[1:] + ['-p', '.'])
         self.assertTrue(os.path.isfile(self.config_not_exists))
 
         fixture = copy.copy(self.config_fixture)
