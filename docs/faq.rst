@@ -7,6 +7,14 @@ FAQ
    Use :ref:`dump_mode` to dump the requirements used by the installer, customize
    them and pass them again to the installer for the installation run
 
+#. Packages are not correctly installed / missing in my environment
+
+   If you're using Debina / Ubuntu, chances are that the version of pip in the
+   virtualenv is outdated and cannot connect with PyPi.
+   Usually upgrading pip in the virtualenv before running **djangocms-installer**
+   fixes the issue::
+
+        pip install -U pip
 
 #. After installing the virtualenv, the installer exit with "*Pillow is not
    compiled with ... support*" / "*Pillow is not installed*" errors, what can
