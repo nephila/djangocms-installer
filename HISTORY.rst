@@ -6,7 +6,8 @@ History
 0.8.4 (unreleased)
 ++++++++++++++++++
 
-*  Remove flash plugin from installed plugins
+* Remove flash plugin from installed plugins
+* Add ``--verbose`` option to improve debug
 
 0.8.3 (2015-11-25)
 ++++++++++++++++++

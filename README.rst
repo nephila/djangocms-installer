@@ -43,6 +43,9 @@ project.
 Refer to `django CMS Tutorial <http://django-cms.readthedocs.org/en/latest/introduction/index.html>`_
 on how to properly setup your first django CMS project.
 
+.. warning:: Version 0.9 will drop support for Python 2.6, Django <1.8 and django CMS < 3.2.
+             More 0.8.x may be released after 0.9 is out in case important bugfixes will be needed.
+
 Documentation
 -------------
 
@@ -60,7 +63,7 @@ Libraries you would want to check:
 
 * libjpeg (for JPEG support in ``Pillow``)
 * zlib (for PNG support in ``Pillow``)
-* postgresql (for ``psycopg``)
+* postgresql (for ``psycopg2``)
 * libmysqlclient (for ``Mysql-Python``)
 * python-dev (for compilation and linking)
 
