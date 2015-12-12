@@ -41,7 +41,7 @@ def create_project(config_data):
         if not os.path.exists(config_data.project_directory):
             os.makedirs(config_data.project_directory)
     start_cmd = os.path.join(os.path.dirname(sys.executable), 'django-admin.py')
-    cmd_args = ' '.join(map(shlex_quote, [sys.executable, start_cmd, 'startproject'] + args))
+    cmd_args = ' '.join([sys.executable, start_cmd, 'startproject'] + args)
     if config_data.verbose:
         sys.stdout.write('Project creation command: %s\n' % cmd_args)
     subprocess.check_call(cmd_args, shell=True)
@@ -421,8 +421,7 @@ def setup_database(config_data):
                 'Database setup commands: %s\n' % ', '.join([' '.join(cmd) for cmd in commands])
             )
         for command in commands:
-            cmd_args = map(shlex_quote, command)
-            subprocess.check_call(cmd_args, env=env)
+            subprocess.check_call(command, env=env)
 
 
 def load_starting_page(config_data):

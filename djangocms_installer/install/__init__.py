@@ -38,7 +38,6 @@ def check_install(config_data):
         try:
             im = Image.open(os.path.join(os.path.dirname(__file__), '../share/test_image.jpg'))
             im.load()
-            print(im)
         except IOError:  # pragma: no cover
             errors.append(
                 'Pillow is not compiled with JPEG support, see "Libraries installation issues" '
