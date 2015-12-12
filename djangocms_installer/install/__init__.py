@@ -115,7 +115,7 @@ def cleanup_directory(config_data):
     """
     if os.path.exists(config_data.project_directory):
         choice = 'N'
-        if config_data.noinput is False:
+        if config_data.noinput is False and not config_data.verbose:
             sys.stdout.write('Failure occurred. Do you want to cleanup by removing %s? '
                              '[Y/N] ' % os.path.abspath(config_data.project_directory))
             choice = compat.input().lower()
