@@ -94,6 +94,7 @@ class TestMain(IsolatedTestClass):
                                        '-len', '--cms-version=develop', '--django=1.8',
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
+                print(sys.argv)
                 main.execute()
                 # Checking we successfully completed the whole process
                 self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())

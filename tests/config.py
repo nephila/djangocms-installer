@@ -750,6 +750,7 @@ class TestBaseConfig(unittest.TestCase):
         'utc': False,
         'no_plugins': False,
         'apphooks_reload': False,
+        'verbose': False,
     })
 
     def __init__(self, *args, **kwargs):
@@ -816,6 +817,7 @@ class TestBaseConfig(unittest.TestCase):
             ('config-27.ini', 'utc', True),
             ('config-28.ini', 'no_plugins', True),
             ('config-29.ini', 'apphooks_reload', True),
+            ('config-30.ini', 'verbose', True),
         ]
         if sys.version_info < (2, 7):
             test_data[7] = ('config-09b.ini', 'django_version', 1.6)
