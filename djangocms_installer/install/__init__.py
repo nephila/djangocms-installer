@@ -38,6 +38,7 @@ def check_install(config_data):
         try:
             im = Image.open(os.path.join(os.path.dirname(__file__), '../share/test_image.jpg'))
             im.load()
+            print(im)
         except IOError:  # pragma: no cover
             errors.append(
                 'Pillow is not compiled with JPEG support, see "Libraries installation issues" '
@@ -77,16 +78,20 @@ def check_install(config_data):
         raise EnvironmentError('\n'.join(errors))
 
 
-def requirements(requirements, pip_options='', is_file=False):
-    args = ['install', '-q']
+def requirements(requirements, pip_options='', is_file=False, verbose=False):
+    args = ['install']
+    if not verbose:
+        args.append('-q')
     if pip_options:
-        args.append(pip_options)
+        args.extend([opt for opt in pip_options.split(' ') if opt])
     if 'Django<1.5' in requirements:
         args += ['--no-use-wheel']
     if is_file:  # pragma: no cover
         args += ['-r', requirements]
     else:
         args.extend(['%s' % package for package in requirements.split()])
+    if verbose:
+        sys.stdout.write('Package install command: %s\n' % ' '.join(args))
     subprocess.check_call(['pip'] + args)
     return True
 

@@ -89,6 +89,8 @@ def parse(args):
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
                         default=False, help='Don\'t run the configuration wizard, just use the '
                                             'provided values')
+    parser.add_argument('--verbose', dest='verbose', action='store_true',
+                        default=False, help='Be more verbose and don\' swallow subcommands output')
     parser.add_argument('--apphooks-reload', '-k', dest='apphooks_reload', action='store_true',
                         default=False, help='Use apphooks-reload middleware')
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
