@@ -56,6 +56,8 @@ The following options are not managed by the config wizard and are meant for
 advanced usage:
 
 * ``--no-input``, ``-q``: If given **djangocms installer** run in :ref:`batch_mode`;
+* ``--verbose``, : Provides output of the commands used to setup the project, namely ``pip`` and
+  ``django-admin``;
 * ``--filer``, ``-f``: Install and configure django-filer plugins;
 * ``--apphooks-reload``, ``-k``: Install and configure apphook reload middleware that enables the
   automatic reload of the urlconf whenever an apphook is configured; for django CMS 3.2 this is
