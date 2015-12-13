@@ -62,7 +62,7 @@ class TestMain(IsolatedTestClass):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                        '-len', '--cms-version=stable', '--django=%s' % dj_ver,
-                                       '-q', '-u', '-p'+self.project_dir,
+                                       '-q', '-u', '-p'+self.project_dir, '--verbose',
                                        'example_prj']
                 main.execute()
                 self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'static')))
@@ -72,6 +72,7 @@ class TestMain(IsolatedTestClass):
                     text = req_file.read()
                     self.assertTrue(text.find('djangocms-text-ckeditor') > -1)
                 # Checking we successfully completed the whole process
+                self.assertTrue('Successfully installed ' in self.stdout.getvalue())
                 self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
 
     def test_two_langs_invocation(self):

@@ -44,7 +44,8 @@ def create_project(config_data):
     cmd_args = ' '.join([sys.executable, start_cmd, 'startproject'] + args)
     if config_data.verbose:
         sys.stdout.write('Project creation command: %s\n' % cmd_args)
-    subprocess.check_call(cmd_args, shell=True)
+    output = subprocess.check_output(cmd_args, shell=True)
+    sys.stdout.write(output.decode('utf-8'))
 
 
 def _detect_migration_layout(vars, apps):
@@ -421,7 +422,8 @@ def setup_database(config_data):
                 'Database setup commands: %s\n' % ', '.join([' '.join(cmd) for cmd in commands])
             )
         for command in commands:
-            subprocess.check_call(command, env=env)
+            output = subprocess.check_output(command, env=env)
+            sys.stdout.write(output.decode('utf-8'))
 
 
 def load_starting_page(config_data):
@@ -432,8 +434,7 @@ def load_starting_page(config_data):
         env = deepcopy(dict(os.environ))
         env['DJANGO_SETTINGS_MODULE'] = ('{0}.settings'.format(config_data.project_name))
         env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
-        subprocess.check_call([sys.executable, 'starting_page.py'],
-                              env=env)
+        subprocess.check_call([sys.executable, 'starting_page.py'], env=env)
         for ext in ['py', 'pyc', 'json']:
             try:
                 os.remove('starting_page.%s' % ext)

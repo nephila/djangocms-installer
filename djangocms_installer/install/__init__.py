@@ -91,7 +91,8 @@ def requirements(requirements, pip_options='', is_file=False, verbose=False):
         args.extend(['%s' % package for package in requirements.split()])
     if verbose:
         sys.stdout.write('Package install command: %s\n' % ' '.join(args))
-    subprocess.check_call(['pip'] + args)
+    output = subprocess.check_output(['pip'] + args)
+    sys.stdout.write(output.decode('utf-8'))
     return True
 
 
