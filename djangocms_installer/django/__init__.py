@@ -12,9 +12,8 @@ import textwrap
 import zipfile
 from copy import copy, deepcopy
 
-from six import BytesIO
+from six import BytesIO, iteritems
 
-from ..compat import iteritems
 from ..config import data, get_settings
 from ..utils import chdir
 

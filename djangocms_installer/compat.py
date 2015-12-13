@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import subprocess
+
 import six
 
 if six.PY3:
@@ -26,11 +27,7 @@ else:
 
     unicode = unicode  # NOQA
 
-iteritems = six.iteritems
-
-StringIO = six.StringIO
-
-if 'check_output' not in dir(subprocess): # duck punch it in!
+if 'check_output' not in dir(subprocess):
     def f(*popenargs, **kwargs):
         if 'stdout' in kwargs:
             raise ValueError('stdout argument not allowed, it will be overridden.')
