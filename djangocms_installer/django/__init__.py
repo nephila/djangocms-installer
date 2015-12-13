@@ -12,9 +12,8 @@ import textwrap
 import zipfile
 from copy import copy, deepcopy
 
-from six import BytesIO
+from six import BytesIO, iteritems
 
-from ..compat import iteritems
 from ..config import data, get_settings
 from ..utils import chdir
 
@@ -41,7 +40,11 @@ def create_project(config_data):
         if not os.path.exists(config_data.project_directory):
             os.makedirs(config_data.project_directory)
     start_cmd = os.path.join(os.path.dirname(sys.executable), 'django-admin.py')
-    subprocess.check_call(' '.join([sys.executable, start_cmd, 'startproject'] + args), shell=True)
+    cmd_args = ' '.join([sys.executable, start_cmd, 'startproject'] + args)
+    if config_data.verbose:
+        sys.stdout.write('Project creation command: %s\n' % cmd_args)
+    output = subprocess.check_output(cmd_args, shell=True)
+    sys.stdout.write(output.decode('utf-8'))
 
 
 def _detect_migration_layout(vars, apps):
@@ -177,17 +180,17 @@ def patch_settings(config_data):
     else:
         original += 'STATIC_ROOT = os.path.join(DATA_DIR, \'static\')\n'
     if original.find('STATICFILES_DIRS') > -1:
-        original = original.replace(data.STATICFILES_DEFAULT, '''
+        original = original.replace(data.STATICFILES_DEFAULT, """
 STATICFILES_DIRS = (
     %s
 )
-''' % STATICFILES_DIR)
+""" % STATICFILES_DIR)
     else:
-        original += '''
+        original += """
 STATICFILES_DIRS = (
     %s
 )
-''' % STATICFILES_DIR
+""" % STATICFILES_DIR
     original = original.replace('# -*- coding: utf-8 -*-\n', '')
 
     # I18N
@@ -360,12 +363,12 @@ def _build_settings(config_data):
     text.append('CMS_PERMISSION = %s' % vars.CMS_PERMISSION)
     text.append('CMS_PLACEHOLDER_CONF = %s' % vars.CMS_PLACEHOLDER_CONF)
 
-    text.append(textwrap.dedent('''
+    text.append(textwrap.dedent("""
         DATABASES = {
             'default': {
                 %s
             }
-        }''').strip() % (',\n' + spacer * 2).join(['\'%s\': \'%s\'' % (key, val) for key, val in sorted(config_data.db_parsed.items(), key=lambda x: x[0])]))  # NOQA
+        }""").strip() % (',\n' + spacer * 2).join(['\'%s\': \'%s\'' % (key, val) for key, val in sorted(config_data.db_parsed.items(), key=lambda x: x[0])]))  # NOQA
 
     DJANGO_MIGRATION_MODULES, SOUTH_MIGRATION_MODULES = _detect_migration_layout(vars, apps)
 
@@ -387,35 +390,39 @@ def setup_database(config_data):
         env = deepcopy(dict(os.environ))
         env['DJANGO_SETTINGS_MODULE'] = ('{0}.settings'.format(config_data.project_name))
         env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
+        commands = []
 
         if config_data.django_version < 1.7:
             try:
                 import south  # NOQA
-                subprocess.check_call(
-                    [sys.executable, '-W', 'ignore', 'manage.py', 'syncdb', '--all', '--noinput'],
-                    env=env
+                commands.append(
+                    [sys.executable, '-W', 'ignore', 'manage.py', 'syncdb', '--all', '--noinput']
                 )
-                subprocess.check_call(
+                commands.append(
                     [sys.executable, '-W', 'ignore', 'manage.py', 'migrate', '--fake'],
-                    env=env
                 )
             except ImportError:
-                subprocess.check_call(
-                    [sys.executable, '-W', 'ignore', 'manage.py', 'syncdb', '--noinput'],
-                    env=env
+                commands.append(
+                    [sys.executable, '-W', 'ignore', 'manage.py', 'syncdb', '--noinput']
                 )
-                print('south not installed, migrations skipped')
+                sys.stdout.write('south not installed, migrations skipped\n')
         else:
-            subprocess.check_call(
-                [sys.executable, '-W', 'ignore', 'manage.py', 'migrate', '--noinput'],
-                env=env
+            commands.append(
+                [sys.executable, '-W', 'ignore', 'manage.py', 'migrate'],
             )
+
         if not config_data.no_user and not config_data.noinput:
-            print('\n\nCreating admin user')
-            subprocess.check_call(
-                [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser'],
-                env=env
+            sys.stdout.write('Creating admin user\n')
+            commands.append(
+                [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser']
             )
+        if config_data.verbose:
+            sys.stdout.write(
+                'Database setup commands: %s\n' % ', '.join([' '.join(cmd) for cmd in commands])
+            )
+        for command in commands:
+            output = subprocess.check_output(command, env=env)
+            sys.stdout.write(output.decode('utf-8'))
 
 
 def load_starting_page(config_data):
@@ -426,8 +433,7 @@ def load_starting_page(config_data):
         env = deepcopy(dict(os.environ))
         env['DJANGO_SETTINGS_MODULE'] = ('{0}.settings'.format(config_data.project_name))
         env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
-        subprocess.check_call([sys.executable, 'starting_page.py'],
-                              env=env)
+        subprocess.check_call([sys.executable, 'starting_page.py'], env=env)
         for ext in ['py', 'pyc', 'json']:
             try:
                 os.remove('starting_page.%s' % ext)

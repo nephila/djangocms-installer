@@ -77,17 +77,22 @@ def check_install(config_data):
         raise EnvironmentError('\n'.join(errors))
 
 
-def requirements(requirements, pip_options='', is_file=False):
-    args = ['install', '-q']
+def requirements(requirements, pip_options='', is_file=False, verbose=False):
+    args = ['install']
+    if not verbose:
+        args.append('-q')
     if pip_options:
-        args.append(pip_options)
+        args.extend([opt for opt in pip_options.split(' ') if opt])
     if 'Django<1.5' in requirements:
         args += ['--no-use-wheel']
     if is_file:  # pragma: no cover
         args += ['-r', requirements]
     else:
         args.extend(['%s' % package for package in requirements.split()])
-    subprocess.check_call(['pip'] + args)
+    if verbose:
+        sys.stdout.write('Package install command: %s\n' % ' '.join(args))
+    output = subprocess.check_output(['pip'] + args)
+    sys.stdout.write(output.decode('utf-8'))
     return True
 
 
@@ -111,7 +116,7 @@ def cleanup_directory(config_data):
     """
     if os.path.exists(config_data.project_directory):
         choice = 'N'
-        if config_data.noinput is False:
+        if config_data.noinput is False and not config_data.verbose:
             sys.stdout.write('Failure occurred. Do you want to cleanup by removing %s? '
                              '[Y/N] ' % os.path.abspath(config_data.project_directory))
             choice = compat.input().lower()

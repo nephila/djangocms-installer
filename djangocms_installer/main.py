@@ -26,13 +26,15 @@ def execute():
             if not config_data.no_deps:
                 if config_data.requirements_file:
                     install.requirements(
-                        config_data.requirements_file, config_data.pip_options, True
+                        config_data.requirements_file, config_data.pip_options, True,
+                        verbose=config_data.verbose
                     )
                 else:
                     install.requirements(
-                        config_data.requirements, config_data.pip_options
+                        config_data.requirements, config_data.pip_options,
+                        verbose=config_data.verbose
                     )
-            sys.stdout.write('Dependencies installed\nCreating the project')
+            sys.stdout.write('Dependencies installed\nCreating the project\n')
             install.check_install(config_data)
             django.create_project(config_data)
             django.patch_settings(config_data)
