@@ -8,6 +8,8 @@ History
 
 * Remove flash plugin from installed plugins
 * Add ``--verbose`` option to improve debug
+* Fix unicode errors
+* Improve documentation
 
 0.8.3 (2015-11-25)
 ++++++++++++++++++
