@@ -23,16 +23,41 @@ are using; you should make sure you have the library headers file installed
 Examples
 ^^^^^^^^
 
-Below  are provided examples for Debian/Ubuntu, for other Linux distributions or
-other operating system details may vary:
+The following are examples based on major distributions versions at the time of writing.
 
-* Pillow: ``sudo apt-get install -y libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev``
+This may may vary over time with distribution changes and may be out of date / unsuitable
+for you distribution.
+
+The rationale should stand over the time, though, even if package manager and packages may
+change name and if a package name does not match when your these commands, a quick search
+using your distribution package manager should help you to find the right name.
+
+
+Debian / Ubuntu
+---------------
+
+* Pillow: ``sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev``
 * Postgres: ``sudo apt-get install libqd-dev``
 * MySQL: ``sudo apt-get install libmysqlclient-dev``
 
-If you are using yum to install packages, use ``yum search xx`` to search for any missing packages
 
-* Pillow: ``sudo yum install libjpeg-devel libpng-devel libtiff-devel freetype-devel zlib-devel``
+Fedora
+------
+
+* Python: ``dnf install python3-devel gcc`` (or ``dnf install python-devel gcc``)
+* Pillow: ``dnf install libtiff-devel libjpeg-devel libzip-devel freetype-devel lcms2-devel libwebp-devel zlib-devel``
+* Postgres: ``dnf install postgresql-devel``
+* MySQL: ``dnf install mysql-devel`` (or ``yum install mariadb-devel``)
+
+
+CentOS / yum based distributions
+--------------------------------
+
+* Python: ``yum install python3-devel gcc`` (or ``yum install python-devel gcc``)
+* Pillow: ``yum install libjpeg-devel libpng-devel libtiff-devel freetype-devel zlib-devel``
+* Postgres: ``yum install postgresql-devel``
+* MySQL: ``yum install mysql-devel`` (or ``yum install mariadb-devel``)
+
 
 Fixing libraries installation issues
 ------------------------------------
@@ -47,7 +72,7 @@ an exception in case of errors.
 In case of package installation failure you can simply install the correct
 library and execute ``djangocms-installer`` again with the same parameters; if
 the package is compiled with some functionality missing, you have to first
-deinstall it (`pip uninstall *package-name*`), then install the correct library
+deinstall it (``pip uninstall *package-name*``), then install the correct library
 and the execute ``djangocms-installer`` again.
 
 * Reinstall ``pip install --upgrade --force-reinstall --no-deps djangocms-installer``
@@ -59,7 +84,7 @@ Manual installation
 -------------------
 
 If all else fails, you can use :ref:`dump_mode` to create a requirements file,
-install it by hand and run the installer with `-n` parameter.
+install it by hand and run the installer with ``-n`` parameter.
 
 
 .. _stackoverflow: http://stackoverflow.com/questions/23078303/getting-error-while-running-django-cms-demo-page#23086541
