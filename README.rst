@@ -43,28 +43,28 @@ project.
 Refer to `django CMS Tutorial <http://django-cms.readthedocs.org/en/latest/introduction/index.html>`_
 on how to properly setup your first django CMS project.
 
-.. note:: It used to be called **aldryn-installer**, but since version 0.2.0
-          it's been renamed **djangocms-installer** for clarity.
-
-Installation
-------------
-
-#. Create an empty virtualenv::
-
-    virtualenv /virtualenv/path/my_project
-
-#. Install `djangocms-installer`::
-
-    pip install djangocms-installer
-
-   or::
-
-    pip install -e git+https://github.com/nephila/djangocms-installer#egg=djangocms-installer
-
 Documentation
 -------------
 
-See http://djangocms-installer.readthedocs.org
+For detailed information see http://djangocms-installer.readthedocs.org
+
+Preliminary checks and system libraries
+---------------------------------------
+
+While this wizard try to handle most of the things for you, it doesn't check for
+all the proper native (non python) libraries to be installed.
+Before running this, please check you have the proper header and libraries
+installed and available for packages to be installed.
+
+Libraries you would want to check:
+
+* libjpeg (for JPEG support in ``Pillow``)
+* zlib (for PNG support in ``Pillow``)
+* postgresql (for ``psycopg``)
+* libmysqlclient (for ``Mysql-Python``)
+* python-dev (for compilation and linking)
+
+For additional information, check http://djangocms-installer.readthedocs.org/en/latest/libraries.html
 
 Supported versions
 ------------------
@@ -89,31 +89,13 @@ Any beta and develop version of Django and django CMS, by its very nature,
 it's not supported, while it still may work.
 
 ``djangocms-installer`` tries to support beta versions of django CMS when they
-will be considered sufficiently stable by the upstream project.
+are be considered sufficiently stable by the upstream project.
 
 Warning
 -------
 
 ``djangocms-installer`` assumes that ``django-admin.py`` is installed in the same directory
 as python executable, which is the standard virtualenv layout.
-
-Caveats
--------
-
-While this wizard try to handle most of the things for you, it doesn't check for
-all the proper native (non python) libraries to be installed.
-Before running this, please check you have the proper header and libraries
-installed and available for packages to be installed.
-
-Libraries you would want to check:
-
-* libjpeg (for JPEG support in ``Pillow``)
-* zlib (for PNG support in ``Pillow``)
-* postgresql (for ``psycopg``)
-* libmysqlclient (for ``Mysql-Python``)
-* python-dev (for compilation and linking)
-
-For additional information, check http://djangocms-installer.readthedocs.org/en/latest/libraries.html
 
 
 Windows support
