@@ -44,7 +44,7 @@ Refer to `django CMS Tutorial <http://django-cms.readthedocs.org/en/latest/intro
 on how to properly setup your first django CMS project.
 
 .. warning:: Version 0.9 will drop support for Python 2.6, Django <1.8 and django CMS < 3.2.
-             More 0.8.x version may be released after 0.9 is out in case important bugfixes will
+             More 0.8.x versions may be released after 0.9 is out in case important bugfixes will
              be needed.
 
 Documentation
