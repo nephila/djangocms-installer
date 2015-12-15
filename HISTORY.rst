@@ -3,7 +3,7 @@
 History
 -------
 
-0.8.4 (unreleased)
+0.8.4 (2015-12-21)
 ++++++++++++++++++
 
 * Remove flash plugin from installed plugins
