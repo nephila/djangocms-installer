@@ -196,7 +196,7 @@ configuration):
 DRIVERS = {
     'django.db.backends.postgresql_psycopg2': 'psycopg2',
     'django.db.backends.postgresql_postgis': 'postgis',
-    'django.db.backends.mysql': 'MySQL-python',
+    'django.db.backends.mysql': 'mysqlclient',
     'django.db.backends.sqlite3': '',
 }
 
