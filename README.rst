@@ -65,7 +65,7 @@ Libraries you would want to check:
 * libjpeg (for JPEG support in ``Pillow``)
 * zlib (for PNG support in ``Pillow``)
 * postgresql (for ``psycopg2``)
-* libmysqlclient (for ``Mysql-Python``)
+* libmysqlclient (for ``Mysql``)
 * python-dev (for compilation and linking)
 
 For additional information, check http://djangocms-installer.readthedocs.org/en/latest/libraries.html

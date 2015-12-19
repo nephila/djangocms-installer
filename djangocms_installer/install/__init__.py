@@ -64,7 +64,7 @@ def check_install(config_data):
             )
 
     # MySQL test
-    if config_data.db_driver == 'MySQL-python' and not config_data.no_db_driver:  # pragma: no cover  # NOQA
+    if config_data.db_driver == 'mysqlclient' and not config_data.no_db_driver:  # pragma: no cover  # NOQA
         try:
             import MySQLdb  # NOQA
         except ImportError:
