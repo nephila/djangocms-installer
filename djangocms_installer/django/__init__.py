@@ -28,8 +28,8 @@ def create_project(config_data):
     Call django-admin to create the project structure
     """
     env = deepcopy(dict(os.environ))
-    env['DJANGO_SETTINGS_MODULE'] = ('{0}.settings'.format(config_data.project_name))
-    env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
+    env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
+    env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
     kwargs = {}
     args = []
     if config_data.template:
@@ -388,8 +388,8 @@ def _build_settings(config_data):
 def setup_database(config_data):
     with chdir(config_data.project_directory):
         env = deepcopy(dict(os.environ))
-        env['DJANGO_SETTINGS_MODULE'] = ('{0}.settings'.format(config_data.project_name))
-        env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
+        env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
+        env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
         commands = []
 
         if config_data.django_version < 1.7:
@@ -431,8 +431,8 @@ def load_starting_page(config_data):
     """
     with chdir(config_data.project_directory):
         env = deepcopy(dict(os.environ))
-        env['DJANGO_SETTINGS_MODULE'] = ('{0}.settings'.format(config_data.project_name))
-        env['PYTHONPATH'] = os.pathsep.join(map(shlex_quote, sys.path))
+        env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
+        env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
         subprocess.check_call([sys.executable, 'starting_page.py'], env=env)
         for ext in ['py', 'pyc', 'json']:
             try:
