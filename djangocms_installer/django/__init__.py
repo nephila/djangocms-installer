@@ -411,11 +411,6 @@ def setup_database(config_data):
                 [sys.executable, '-W', 'ignore', 'manage.py', 'migrate'],
             )
 
-        if not config_data.no_user and not config_data.noinput:
-            sys.stdout.write('Creating admin user\n')
-            commands.append(
-                [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser']
-            )
         if config_data.verbose:
             sys.stdout.write(
                 'Database setup commands: %s\n' % ', '.join([' '.join(cmd) for cmd in commands])
@@ -423,6 +418,12 @@ def setup_database(config_data):
         for command in commands:
             output = subprocess.check_output(command, env=env)
             sys.stdout.write(output.decode('utf-8'))
+
+        if not config_data.no_user and not config_data.noinput:
+            sys.stdout.write('Creating admin user\n')
+            subprocess.check_call(' '.join(
+                [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser']
+            ), shell=True)
 
 
 def load_starting_page(config_data):
