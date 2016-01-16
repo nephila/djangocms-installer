@@ -31,13 +31,16 @@ if sys.version_info < (2, 7):
     DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', 'stable')
     DJANGO_STABLE = 1.6
 elif sys.version_info >= (3, 5):
-    DJANGO_SUPPORTED = ('1.8', 'stable')
+    DJANGO_SUPPORTED = ('1.8', '1.9', 'stable')
     DJANGO_STABLE = 1.8
-elif sys.version_info >= (3, 0):
+elif sys.version_info >= (3, 4):
+    DJANGO_SUPPORTED = ('1.5', '1.6', '1.7', '1.8', '1.9', 'stable')
+    DJANGO_STABLE = 1.8
+elif sys.version_info >= (3, 3):
     DJANGO_SUPPORTED = ('1.5', '1.6', '1.7', '1.8', 'stable')
     DJANGO_STABLE = 1.8
 else:
-    DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', '1.8', 'stable')
+    DJANGO_SUPPORTED = ('1.4', '1.5', '1.6', '1.7', '1.8', '1.9', 'stable')
     DJANGO_STABLE = 1.8
 
 CMS_VERSION_MATRIX = {
@@ -55,7 +58,7 @@ DJANGO_VERSION_MATRIX = {
 VERSION_MATRIX = {
     2.4: (1.4, 1.5),
     3.0: (1.4, 1.7),
-    3.1: (1.6, 1.9),
+    3.1: (1.6, 1.8),
     3.2: (1.6, 1.9),
 }
 
@@ -77,13 +80,16 @@ REQUIREMENTS = {
         'django-reversion>=1.7,<1.8',
     ],
     'reversion-django-1.6': [
-        'django-reversion>=1.8,<1.8.6',
+        'django-reversion>=1.8,<1.9',
     ],
     'reversion-django-1.7': [
-        'django-reversion>=1.8.2,<1.8.6',
+        'django-reversion>=1.8.2,<1.9',
     ],
     'reversion-django-1.8': [
         'django-reversion>=1.8.7,<1.9',
+    ],
+    'reversion-django-1.9': [
+        'django-reversion>=1.10,<1.11',
     ],
     'cms-2.x': [
         'django-mptt>=0.5.1,<0.5.3',
@@ -102,12 +108,12 @@ REQUIREMENTS = {
         'djangocms-text-ckeditor<2.7.0',
     ],
     'ckeditor-3.1': [
-        'djangocms-admin-style<0.3',
+        'djangocms-admin-style<1.0',
         'djangocms-text-ckeditor<2.8.0',
     ],
     'ckeditor-3.2': [
         'djangocms-admin-style>=1.0.6',
-        'djangocms-text-ckeditor>=2.8.0',
+        'djangocms-text-ckeditor>=2.8.1',
     ],
     'plugins-common': [
         'djangocms-column',
