@@ -30,7 +30,7 @@ class TestDjango(IsolatedTestClass):
     def test_create_project(self):
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                     '--cms-version=stable', '--django=%s' % dj_ver,
-                                    '-q', '-p'+self.project_dir, 'example_prj'])
+                                    '-q', '-p' + self.project_dir, 'example_prj'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'example_prj')))
@@ -43,7 +43,7 @@ class TestDjango(IsolatedTestClass):
         # Basic template
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                     '--cms-version=stable',
-                                    '-q', '-p'+self.project_dir, 'example_prj'])
+                                    '-q', '-p' + self.project_dir, 'example_prj'])
         os.makedirs(config_data.project_path)
         django.copy_files(config_data)
         starting_page_py = os.path.join(config_data.project_directory, 'starting_page.py')
@@ -59,7 +59,7 @@ class TestDjango(IsolatedTestClass):
         self._create_project_dir()
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                     '--cms-version=stable', '--bootstrap=yes',
-                                    '-q', '-p'+self.project_dir, 'example_prj'])
+                                    '-q', '-p' + self.project_dir, 'example_prj'])
         os.makedirs(config_data.project_path)
         django.copy_files(config_data)
         starting_page_py = os.path.join(config_data.project_directory, 'starting_page.py')
@@ -76,7 +76,7 @@ class TestDjango(IsolatedTestClass):
         tpl_path = os.path.join(os.path.dirname(__file__), 'test_templates')
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                     '--cms-version=stable', '--templates=%s' % tpl_path,
-                                    '-q', '-p'+self.project_dir, 'example_prj'])
+                                    '-q', '-p' + self.project_dir, 'example_prj'])
         os.makedirs(config_data.project_path)
         django.copy_files(config_data)
         basic_template = os.path.join(config_data.project_path, 'templates', 'fullwidth.html')
@@ -90,7 +90,7 @@ class TestDjango(IsolatedTestClass):
         self._create_project_dir()
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                     '--cms-version=stable', '--starting-page=yes',
-                                    '-q', '-p'+self.project_dir, 'example_prj'])
+                                    '-q', '-p' + self.project_dir, 'example_prj'])
         os.makedirs(config_data.project_path)
         django.copy_files(config_data)
         starting_page_py = os.path.join(config_data.project_directory, 'starting_page.py')
@@ -118,8 +118,8 @@ class TestDjango(IsolatedTestClass):
         # self.assertTrue(os.path.exists(static_js))
         # self.assertTrue(os.path.exists(aldryn_template))
 
-    @unittest.skipIf(sys.version_info > (3, 4),
-                     reason="django 1.6 does not support python 3.5")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 6), (2, 7), (3, 3), (3, 4)),
+                     reason="django 1.6 only supports python 2.6, 2.7, 3.3, 3.4")
     def test_patch_16_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -127,7 +127,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.6',
                                     '--cms-version=3.0', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_16_settigns'])
+                                    '-p' + self.project_dir, 'example_path_16_settigns'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -138,7 +138,8 @@ class TestDjango(IsolatedTestClass):
         project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
         # checking for django options
-        self.assertEqual(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(project.settings.MEDIA_ROOT,
+                         os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
         # Data from external settings file
@@ -146,16 +147,16 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(project.settings.CMS_PERMISSION, False)
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
 
-    @unittest.skipIf(sys.version_info > (3, 4),
-                     reason="django 1.6 does not support python 3.5")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 6), (2, 7), (3, 3), (3, 4)),
+                     reason="django 1.6 only supports python 2.6, 2.7, 3.3, 3.4")
     def disable_test_patch_16_aldryn(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
-                                    '--django-version=1.6', #'-a',
+                                    '--django-version=1.6',  # '-a',
                                     '--cms-version=3.0', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_16_aldryn'])
+                                    '-p' + self.project_dir, 'example_path_16_aldryn'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -166,8 +167,10 @@ class TestDjango(IsolatedTestClass):
         project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
         # checking for django options
-        self.assertEqual(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'dist', 'media'))
-        self.assertEqual(project.settings.TEMPLATE_DIRS, (os.path.join(config_data.project_directory, 'templates'),))
+        self.assertEqual(project.settings.MEDIA_ROOT,
+                         os.path.join(config_data.project_directory, 'dist', 'media'))
+        self.assertEqual(project.settings.TEMPLATE_DIRS,
+                         (os.path.join(config_data.project_directory, 'templates'),))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
         # Data from external settings file
@@ -176,15 +179,15 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
         self.assertTrue('compressor' in project.settings.INSTALLED_APPS)
 
-    @unittest.skipIf(sys.version_info > (3, 4),
-                     reason="django 1.6 does not support python 3.5")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 6), (2, 7), (3, 3), (3, 4)),
+                     reason="django 1.6 only supports python 2.6, 2.7, 3.3, 3.4")
     def test_patch_django_16(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
                                     '--django-version=1.6', '--apphooks-reload',
                                     '--cms-version=3.0', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_16'])
+                                    '-p' + self.project_dir, 'example_path_16'])
 
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -199,7 +202,8 @@ class TestDjango(IsolatedTestClass):
         project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
         # checking for django options
-        self.assertEqual(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(project.settings.MEDIA_ROOT,
+                         os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
         self.assertEqual(project.settings.TIME_ZONE, 'Europe/Moscow')
@@ -224,10 +228,14 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_teaser' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
         self.assertTrue('aldryn_apphook_reload' in project.settings.INSTALLED_APPS)
-        self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD in project.settings.MIDDLEWARE_CLASSES)
-        self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS not in project.settings.MIDDLEWARE_CLASSES)
-        self.assertTrue('cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
-        self.assertTrue('cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue(
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD in project.settings.MIDDLEWARE_CLASSES)
+        self.assertTrue(
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS not in project.settings.MIDDLEWARE_CLASSES)
+        self.assertTrue(
+            'cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue(
+            'cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
 
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_bootstrap)
 
@@ -236,10 +244,8 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
         self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
 
-    @unittest.skipIf(sys.version_info <= (2, 7),
-                     reason="django 1.7 does not support python 2.6")
-    @unittest.skipIf(sys.version_info > (3, 4),
-                     reason="django 1.7 does not support python 3.5")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4)),
+                     reason="django 1.7 only supports python 2.7, 3.3, 3.4")
     def test_patch_django_17_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -247,7 +253,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.7', '--cms-version=3.0',
                                     '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_17_settings'])
+                                    '-p' + self.project_dir, 'example_path_17_settings'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -262,15 +268,15 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('cms' in project.settings.MIGRATION_MODULES)
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
-    @unittest.skipIf(sys.version_info > (3, 4),
-                     reason="django 1.6 does not support python 3.5")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 6), (2, 7), (3, 3), (3, 4)),
+                     reason="django 1.7 only supports python 2.6, 2.7, 3.3, 3.4")
     def test_patch_31(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--cms=develop',
                                     '--django-version=1.6',
                                     '--timezone=Europe/Moscow',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_patch_31'])
+                                    '-p' + self.project_dir, 'example_path_patch_31'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -287,10 +293,8 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('mptt' in project.settings.INSTALLED_APPS)
         self.assertTrue('treebeard' in project.settings.INSTALLED_APPS)
 
-    @unittest.skipIf(sys.version_info <= (2, 7),
-                     reason="django 1.7 does not support python 2.6")
-    @unittest.skipIf(sys.version_info > (3, 4),
-                     reason="django 1.7 does not support python 3.5")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4),),
+                     reason="django 1.7 only supports python 2.7, 3.3, 3.4")
     def test_patch_django_17_31(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -298,7 +302,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.7', '-f',
                                     '--cms-version=develop', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_17_31_settings'])
+                                    '-p' + self.project_dir, 'example_path_17_31_settings'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -313,8 +317,8 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('filer' in project.settings.MIGRATION_MODULES)
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
-    @unittest.skipIf(sys.version_info <= (2, 7),
-                     reason="django 1.8 does not support python 2.6")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
+                     reason="django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5")
     def test_patch_django_18_31(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -322,7 +326,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.8', '-f',
                                     '--cms-version=stable', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_18_31_settings'])
+                                    '-p' + self.project_dir, 'example_path_18_31_settings'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -336,8 +340,8 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
 
-    @unittest.skipIf(sys.version_info <= (2, 7),
-                     reason="django 1.8 does not support python 2.6")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
+                     reason="django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5")
     def test_patch_django_18_32(self):
         # On django CMS 3.2 the reload apphooks middleware is enabled by default
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
@@ -346,7 +350,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.8', '-f',
                                     '--cms-version=develop', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_18_32_settings'])
+                                    '-p' + self.project_dir, 'example_path_18_32_settings'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -360,11 +364,42 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
         self.assertTrue('aldryn_apphook_reload' not in project.settings.INSTALLED_APPS)
-        self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in project.settings.MIDDLEWARE_CLASSES)
-        self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in project.settings.MIDDLEWARE_CLASSES)
+        self.assertTrue(
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in project.settings.MIDDLEWARE_CLASSES)
+        self.assertTrue(
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in project.settings.MIDDLEWARE_CLASSES)
 
-    @unittest.skipIf(sys.version_info <= (2, 7),
-                     reason="django 1.8 does not support python 2.6")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
+                     reason="django 1.9 only supports python 2.7, 3.4 and 3.5")
+    def test_patch_django_19_32(self):
+        # On django CMS 3.2 the reload apphooks middleware is enabled by default
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.9', '-f',
+                                    '--cms-version=develop', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p' + self.project_dir, 'example_path_19_32_settings'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
+
+        # checking for django options
+        self.assertTrue(project.settings.TEMPLATES)
+        self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
+        self.assertTrue('aldryn_apphook_reload' not in project.settings.INSTALLED_APPS)
+        self.assertTrue(
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in project.settings.MIDDLEWARE_CLASSES)
+        self.assertTrue(
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in project.settings.MIDDLEWARE_CLASSES)
+
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
+                     reason="django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5,")
     def test_patch_django_no_plugins(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -372,7 +407,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.8', '-f', '--no-plugins',
                                     '--cms-version=stable', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_no_plugin'])
+                                    '-p' + self.project_dir, 'example_path_no_plugin'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -412,7 +447,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.5',
                                     '--cms-version=2.4',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_24_s'])
+                                    '-p' + self.project_dir, 'example_path_24_s'])
 
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -427,10 +462,13 @@ class TestDjango(IsolatedTestClass):
         project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
         # checking for django options
-        self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertTrue(project.settings.MEDIA_ROOT,
+                        os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
-        self.assertTrue('cms.context_processors.cms_settings' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
-        self.assertTrue('cms.context_processors.media' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue(
+            'cms.context_processors.cms_settings' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue(
+            'cms.context_processors.media' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
         self.assertTrue('djangocms_file' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_flash' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_googlemap' not in project.settings.INSTALLED_APPS)
@@ -458,7 +496,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.5',
                                     '--cms-version=2.4',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_24_f'])
+                                    '-p' + self.project_dir, 'example_path_24_f'])
         reqs = config_data.requirements.replace('django-mptt>=0.5.1,<0.5.3', '')
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -473,7 +511,8 @@ class TestDjango(IsolatedTestClass):
         project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
         # checking for django options
-        self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertTrue(project.settings.MEDIA_ROOT,
+                        os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
         self.assertTrue('djangocms_file' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_flash' not in project.settings.INSTALLED_APPS)
@@ -494,15 +533,15 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('cmsplugin_filer_utils' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_video' in project.settings.INSTALLED_APPS)
 
-    @unittest.skipIf(sys.version_info > (3, 4),
-                     reason="django 1.5 does not support python 3.5")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 6), (2, 7), (3, 3)),
+                     reason="django 1.6 only supports python 2.6, 2.7, 3.3")
     def test_patch(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.5',
                                     '--cms-version=3.0', '--timezone=Europe/Moscow',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
-                                    '-p'+self.project_dir, 'example_path_patch'])
+                                    '-p' + self.project_dir, 'example_path_patch'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -520,12 +559,15 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse(project.settings.USE_TZ)
         self.assertEqual(project.settings.TIME_ZONE, 'Europe/Moscow')
         self.assertEqual(project.settings.LANGUAGE_CODE, 'en')
-        self.assertTrue(project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media'))
+        self.assertTrue(project.settings.MEDIA_ROOT,
+                        os.path.join(config_data.project_directory, 'media'))
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
         #
         # checking for standard CMS settings
-        self.assertTrue('sekizai.context_processors.sekizai' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
-        self.assertTrue('cms.middleware.toolbar.ToolbarMiddleware' in project.settings.MIDDLEWARE_CLASSES)
+        self.assertTrue(
+            'sekizai.context_processors.sekizai' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue(
+            'cms.middleware.toolbar.ToolbarMiddleware' in project.settings.MIDDLEWARE_CLASSES)
         self.assertTrue(project.settings.CMS_LANGUAGES['default']['redirect_on_fallback'])
         self.assertEqual(project.settings.CMS_LANGUAGES[1][0]['code'], 'en')
 
@@ -557,8 +599,10 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_teaser' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' not in project.settings.INSTALLED_APPS)
         self.assertTrue(hasattr(project.settings, 'THUMBNAIL_PROCESSORS'))
-        self.assertTrue('cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
-        self.assertTrue('cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue(
+            'cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertTrue(
+            'cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
 
         # basic urlconf check
         self.assertTrue('cms.urls' in urlconf)
@@ -566,14 +610,15 @@ class TestDjango(IsolatedTestClass):
 
         sys.path.remove(config_data.project_directory)
         del project
-        del(sys.modules["%s.settings" % config_data.project_name])
+        del (sys.modules["%s.settings" % config_data.project_name])
 
-    @unittest.skip("Currently unsupported test")
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
+                     reason="django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5,")
     def test_database_setup_filer(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '-f', '-q', '-u',
-                                    '--cms-version=3.0',
-                                    '-p'+self.project_dir, 'cms_project'])
+                                    '-f', '-q', '-u', '--django-version=1.8',
+                                    '--cms-version=3.1',
+                                    '-p' + self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -582,29 +627,9 @@ class TestDjango(IsolatedTestClass):
         project_db = sqlite3.connect(os.path.join(config_data.project_directory, 'test.db'))
 
         # Checking content type table to check for correct applications setup
-        query = project_db.execute('SELECT * FROM django_content_type WHERE app_label="cms" AND model="page"')
-        self.assertEqual(query.fetchone()[1], 'page')
-        query = project_db.execute('SELECT * FROM django_content_type WHERE app_label="filer" AND model="image"')
-        self.assertEqual(query.fetchone()[1], 'image')
-
-        # No data in CMS tables at setup time, but if query succeed database
-        # schema should be fine
-        query = project_db.execute('SELECT * FROM cms_page')
-        self.assertTrue(query)
-
-    def test_database_setup(self):
-        config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '-q', '--cms-version=3.1', '--django=%s' % dj_ver,
-                                    '-p'+self.project_dir, 'cms_project'])
-        install.requirements(config_data.requirements)
-        django.create_project(config_data)
-        django.patch_settings(config_data)
-        django.copy_files(config_data)
-        django.setup_database(config_data)
-        project_db = sqlite3.connect(os.path.join(config_data.project_directory, 'test.db'))
-
-        # Checking content type table to check for correct applications setup
-        query = project_db.execute('SELECT * FROM django_content_type WHERE app_label="cms" AND model="page"')
+        query = project_db.execute(
+            'SELECT * FROM django_content_type WHERE app_label="cms" AND model="page"'
+        )
         row = query.fetchone()
         self.assertTrue('page' in row)
         self.assertTrue('cms' in row)
@@ -617,6 +642,19 @@ class TestDjango(IsolatedTestClass):
         # No data in auth tables at setup time due to the no-input
         query = project_db.execute('SELECT * FROM auth_user')
         self.assertTrue(query)
+
+        # No data in CMS tables at setup time, but if query succeed database
+        # schema should be fine
+        query = project_db.execute('SELECT * FROM cms_page')
+        self.assertTrue(query)
+
+        # Check filer data
+        query = project_db.execute(
+            'SELECT * FROM django_content_type WHERE app_label="filer" AND model="image"'
+        )
+        row = query.fetchone()
+        self.assertTrue('filer' in row)
+        self.assertTrue('image' in row)
 
 
 class TestBaseDjango(unittest.TestCase):

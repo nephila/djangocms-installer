@@ -322,6 +322,8 @@ def parse(args):
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.7'])
             elif django_version == 1.8:
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.8'])
+            elif django_version == 1.9:
+                requirements.extend(data.REQUIREMENTS['reversion-django-1.9'])
 
         requirements.extend(data.REQUIREMENTS['default'])
 

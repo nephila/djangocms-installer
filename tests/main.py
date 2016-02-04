@@ -25,10 +25,10 @@ class TestMain(IsolatedTestClass):
         stdout = self.stdout.getvalue()
         if sys.version_info < (2, 7):
             self.assertTrue(stdout.find('Django<1.7') > -1)
-            self.assertTrue(stdout.find('django-reversion>=1.8,<1.8.6') > -1)
+            self.assertTrue(stdout.find('django-reversion>=1.8,<1.9') > -1)
         else:
             self.assertTrue(stdout.find('Django<1.9') > -1)
-            self.assertTrue(stdout.find('django-reversion>=1.8.7') > -1)
+            self.assertTrue(stdout.find('django-reversion>=1.8.7,<1.9') > -1)
         self.assertTrue(stdout.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(stdout.find('djangocms-admin-style') > -1)
         self.assertTrue(stdout.find('djangocms-column') > -1)
@@ -79,7 +79,8 @@ class TestMain(IsolatedTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '-lfr', '--cms-version=stable', '--django=%s' % dj_ver,
+                                       '-len', '-lfr', '--cms-version=stable',
+                                       '--django=%s' % dj_ver,
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()
