@@ -4,6 +4,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import sys
 
+from six import text_type
+
 from . import compat
 from .config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX, VERSION_MATRIX
 
@@ -69,8 +71,8 @@ def supported_versions(django, cms):
     try:
         if (
                 cms_version and django_version and
-                not (VERSION_MATRIX[cms_version][0] <= django_version
-                     <= VERSION_MATRIX[cms_version][1])
+                not (VERSION_MATRIX[cms_version][0] <= django_version <=
+                     VERSION_MATRIX[cms_version][1])
         ):
             raise RuntimeError(
                 'Django and django CMS versions doesn\'t match: '
@@ -109,3 +111,16 @@ class chdir(object):
 
     def __exit__(self, etype, value, traceback):
         os.chdir(self.savedPath)
+
+
+def format_val(val):
+    """
+    Returns val as integer or as escaped string according to its value
+    :param val: any value
+    :return: formatted string
+    """
+    val = text_type(val)
+    if val.isdigit():
+        return int(val)
+    else:
+        return '\'{0}\''.format(val)
