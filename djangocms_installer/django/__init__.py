@@ -217,8 +217,13 @@ STATICFILES_DIRS = (
         )
 
     for item in overridden_settings:
-        item_re = re.compile(r'%s = [^\)]+\)' % item, re.DOTALL | re.MULTILINE)
+        if config_data.django_version >= 1.9:
+            item_re = re.compile(r'%s = [^\]]+\)' % item, re.DOTALL | re.MULTILINE)
+        else:
+            item_re = re.compile(r'%s = [^\)]+\)' % item, re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
+        if 'LANGUAGE_CODE' not in original:
+            raise Exception()
     if config_data.django_version >= 1.8:
         # TEMPLATES is special, so custom regexp needed
         item_re = re.compile(r'TEMPLATES = .+\]$', re.DOTALL | re.MULTILINE)
