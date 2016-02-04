@@ -15,7 +15,7 @@ from copy import copy, deepcopy
 from six import BytesIO, iteritems
 
 from ..config import data, get_settings
-from ..utils import chdir
+from ..utils import chdir, format_val
 
 try:
     from shlex import quote as shlex_quote
@@ -363,12 +363,13 @@ def _build_settings(config_data):
     text.append('CMS_PERMISSION = %s' % vars.CMS_PERMISSION)
     text.append('CMS_PLACEHOLDER_CONF = %s' % vars.CMS_PLACEHOLDER_CONF)
 
+    database = ['\'%s\': %s' % (key, format_val(val)) for key, val in sorted(config_data.db_parsed.items(), key=lambda x: x[0])]  # NOQA
     text.append(textwrap.dedent("""
         DATABASES = {
             'default': {
                 %s
             }
-        }""").strip() % (',\n' + spacer * 2).join(['\'%s\': \'%s\'' % (key, val) for key, val in sorted(config_data.db_parsed.items(), key=lambda x: x[0])]))  # NOQA
+        }""").strip() % (',\n' + spacer * 2).join(database))  # NOQA
 
     DJANGO_MIGRATION_MODULES, SOUTH_MIGRATION_MODULES = _detect_migration_layout(vars, apps)
 

@@ -629,11 +629,12 @@ class TestBaseDjango(unittest.TestCase):
         self.assertTrue(textwrap.dedent('''
             DATABASES = {
                 'default': {
+                    'CONN_MAX_AGE': 0,
                     'ENGINE': 'django.db.backends.postgresql_psycopg2',
                     'HOST': 'host',
                     'NAME': 'dbname',
                     'PASSWORD': 'pwd',
-                    'PORT': '5432',
+                    'PORT': 5432,
                     'USER': 'user'
                 }
             }''').strip() in settings)

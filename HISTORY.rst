@@ -3,6 +3,11 @@
 History
 -------
 
+0.8.6 (unreleased)
+++++++++++++++++++
+
+* Fix formatting CONN_MAX_AGE
+
 0.8.5 (2015-12-24)
 ++++++++++++++++++
 
