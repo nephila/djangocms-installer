@@ -224,10 +224,9 @@ STATICFILES_DIRS = (
         original = item_re.sub('', original)
         if 'LANGUAGE_CODE' not in original:
             raise Exception()
-    if config_data.django_version >= 1.8:
-        # TEMPLATES is special, so custom regexp needed
-        item_re = re.compile(r'TEMPLATES = .+\]$', re.DOTALL | re.MULTILINE)
-        original = item_re.sub('', original)
+    # TEMPLATES is special, so custom regexp needed
+    item_re = re.compile(r'TEMPLATES = .+\]$', re.DOTALL | re.MULTILINE)
+    original = item_re.sub('', original)
     # DATABASES is a dictionary, so different regexp needed
     item_re = re.compile(r'DATABASES = [^\}]+\}[^\}]+\}', re.DOTALL | re.MULTILINE)
     original = item_re.sub('', original)
@@ -250,73 +249,31 @@ def _build_settings(config_data):
     text = []
     vars = get_settings()
 
-    if config_data.cms_version >= 3.2:
-        vars.MIDDLEWARE_CLASSES.insert(0, vars.APPHOOK_RELOAD_MIDDLEWARE_CLASS)
-    elif config_data.apphooks_reload:
-        vars.MIDDLEWARE_CLASSES.insert(0, vars.APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD)
+    vars.MIDDLEWARE_CLASSES.insert(0, vars.APPHOOK_RELOAD_MIDDLEWARE_CLASS)
 
-    if config_data.django_version < 1.6:
-        vars.MIDDLEWARE_CLASSES.extend(vars.MIDDLEWARE_CLASSES_DJANGO_15)
-
-    if config_data.cms_version < 3:
-        processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_2
-    else:
-        processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_3
-    if config_data.django_version < 1.8:
-        text.append('TEMPLATE_LOADERS = (\n%s%s\n)' % (
-            spacer, (',\n' + spacer).join(['\'%s\'' % var for var in vars.TEMPLATE_LOADERS])))
-
-        text.append('TEMPLATE_CONTEXT_PROCESSORS = (\n%s%s\n)' % (
-            spacer, (',\n' + spacer).join(['\'%s\'' % var for var in processors])))
-
-        if config_data.aldryn:  # pragma: no cover
-            text.append('TEMPLATE_DIRS = (\n%s%s\n)' % (
-                spacer, 'os.path.join(BASE_DIR, \'templates\'),'))
-        else:
-            text.append('TEMPLATE_DIRS = (\n%s%s\n)' % (
-                spacer, 'os.path.join(BASE_DIR, \'%s\', \'templates\'),' % config_data.project_name
-            ))
-    else:
-        text.append(data.TEMPLATES_1_8.format(
-            loaders=(',\n' + spacer).join(['\'%s\'' % var for var in vars.TEMPLATE_LOADERS]),
-            processors=(',\n' + spacer).join(['\'%s\'' % var for var in processors]),
-            dirs='os.path.join(BASE_DIR, \'%s\', \'templates\'),' % config_data.project_name
-        ))
+    processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_3
+    text.append(data.TEMPLATES_1_8.format(
+        loaders=(',\n' + spacer).join(['\'%s\'' % var for var in vars.TEMPLATE_LOADERS]),
+        processors=(',\n' + spacer).join(['\'%s\'' % var for var in processors]),
+        dirs='os.path.join(BASE_DIR, \'%s\', \'templates\'),' % config_data.project_name
+    ))
 
     text.append('MIDDLEWARE_CLASSES = (\n%s%s\n)' % (
         spacer, (',\n' + spacer).join(['\'%s\'' % var for var in vars.MIDDLEWARE_CLASSES])))
 
     apps = list(vars.INSTALLED_APPS)
-    if config_data.cms_version == 2.4:
-        apps.extend(vars.CMS_2_APPLICATIONS)
-        apps.extend(vars.MPTT_APPS)
-    elif config_data.cms_version == 3.0:
-        apps = list(vars.CMS_3_HEAD) + apps
-        apps.extend(vars.MPTT_APPS)
-        apps.extend(vars.CMS_3_APPLICATIONS)
-    else:
-        apps = list(vars.CMS_3_HEAD) + apps
-        apps.extend(vars.TREEBEARD_APPS)
-        apps.extend(vars.CMS_3_APPLICATIONS)
+    apps = list(vars.CMS_3_HEAD) + apps
+    apps.extend(vars.TREEBEARD_APPS)
+    apps.extend(vars.CMS_3_APPLICATIONS)
 
     if not config_data.no_plugins:
-        if config_data.cms_version == 2.4:
-            if config_data.filer:
-                apps.extend(vars.FILER_PLUGINS_2)
-            else:
-                apps.extend(vars.STANDARD_PLUGINS_2)
+        if config_data.filer:
+            apps.extend(vars.FILER_PLUGINS_3)
         else:
-            if config_data.filer:
-                apps.extend(vars.FILER_PLUGINS_3)
-            else:
-                apps.extend(vars.STANDARD_PLUGINS_3)
-    if config_data.django_version <= 1.6:
-        apps.extend(vars.SOUTH_APPLICATIONS)
+            apps.extend(vars.STANDARD_PLUGINS_3)
 
     if config_data.aldryn:  # pragma: no cover
         apps.extend(vars.ALDRYN_APPLICATIONS)
-    if config_data.apphooks_reload and config_data.cms_version < 3.2:
-        apps.extend(vars.APPHOOK_RELOAD_APPLICATIONS)
     if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
     text.append('INSTALLED_APPS = (\n%s%s\n)' % (
@@ -378,12 +335,8 @@ def _build_settings(config_data):
 
     DJANGO_MIGRATION_MODULES, SOUTH_MIGRATION_MODULES = _detect_migration_layout(vars, apps)
 
-    if config_data.django_version >= 1.7:
-        text.append('MIGRATION_MODULES = {\n%s%s\n}' % (
-            spacer, (',\n' + spacer).join(['\'%s\': \'%s\'' % item for item in DJANGO_MIGRATION_MODULES.items()])))  # NOQA
-    else:
-        text.append('SOUTH_MIGRATION_MODULES = {\n%s%s\n}' % (
-            spacer, (',\n' + spacer).join(['\'%s\': \'%s\'' % item for item in SOUTH_MIGRATION_MODULES.items()])))  # NOQA
+    text.append('MIGRATION_MODULES = {\n%s%s\n}' % (
+        spacer, (',\n' + spacer).join(['\'%s\': \'%s\'' % item for item in DJANGO_MIGRATION_MODULES.items()])))  # NOQA
 
     if config_data.filer:
         text.append('THUMBNAIL_PROCESSORS = (\n%s%s\n)' % (
@@ -398,24 +351,9 @@ def setup_database(config_data):
         env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
         commands = []
 
-        if config_data.django_version < 1.7:
-            try:
-                import south  # NOQA
-                commands.append(
-                    [sys.executable, '-W', 'ignore', 'manage.py', 'syncdb', '--all', '--noinput']
-                )
-                commands.append(
-                    [sys.executable, '-W', 'ignore', 'manage.py', 'migrate', '--fake'],
-                )
-            except ImportError:
-                commands.append(
-                    [sys.executable, '-W', 'ignore', 'manage.py', 'syncdb', '--noinput']
-                )
-                sys.stdout.write('south not installed, migrations skipped\n')
-        else:
-            commands.append(
-                [sys.executable, '-W', 'ignore', 'manage.py', 'migrate'],
-            )
+        commands.append(
+            [sys.executable, '-W', 'ignore', 'manage.py', 'migrate'],
+        )
 
         if config_data.verbose:
             sys.stdout.write(

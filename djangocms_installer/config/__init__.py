@@ -251,46 +251,23 @@ def parse(args):
         else:
             requirements.append('django-cms<%s' % less_than_version(cms_version))
 
-        if cms_version == 3:
-            requirements.extend(data.REQUIREMENTS['cms-3.0'])
-        elif cms_version >= 3.2:
+        if cms_version >= 3.2:
             requirements.extend(data.REQUIREMENTS['cms-3.2'])
-        elif cms_version == 3.1:
-            requirements.extend(data.REQUIREMENTS['cms-3.1'])
-        else:
-            requirements.extend(data.REQUIREMENTS['cms-2.x'])
 
         if not args.no_db_driver:
             requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.filer:
                 if cms_version >= 3:
-                    if django_version < 1.7:
-                        requirements.extend(data.REQUIREMENTS['plugins-common'])
-                        requirements.extend(data.REQUIREMENTS['filer'])
-                    else:
-                        requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                        requirements.extend(data.REQUIREMENTS['filer'])
-                else:
-                    requirements.extend(data.REQUIREMENTS['filer-cms-2.x'])
-            elif cms_version >= 3:
-                if django_version < 1.7:
-                    requirements.extend(data.REQUIREMENTS['plugins-common'])
-                    requirements.extend(data.REQUIREMENTS['plugins-basic'])
-                else:
                     requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                    requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
-            if cms_version == 3:
-                requirements.extend(data.REQUIREMENTS['ckeditor-3.0'])
-            elif cms_version >= 3.2:
+                    requirements.extend(data.REQUIREMENTS['filer'])
+            elif cms_version >= 3:
+                requirements.extend(data.REQUIREMENTS['plugins-common-master'])
+                requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
+            if cms_version >= 3.2:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.2'])
-            elif cms_version == 3.1:
-                requirements.extend(data.REQUIREMENTS['ckeditor-3.1'])
         if args.aldryn:  # pragma: no cover
             requirements.extend(data.REQUIREMENTS['aldryn'])
-
-        if args.apphooks_reload and cms_version < 3.2:
-            requirements.extend(data.REQUIREMENTS['apphooks-reload'])
 
         # Django version check
         if args.django_version == 'develop':
@@ -307,20 +284,12 @@ def parse(args):
             requirements.append('pytz')
 
         # Requirements dependendent on django version
-        if django_version < 1.7:
-            requirements.extend(data.REQUIREMENTS['django-legacy'])
+        # if django_version < 1.7:
+        #    requirements.extend(data.REQUIREMENTS['django-legacy'])
 
         # Reversion package version depends on django version
         if args.reversion:
-            if django_version < 1.5:
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.4'])
-            elif django_version == 1.5:
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.5'])
-            elif django_version == 1.6:
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.6'])
-            elif django_version == 1.7:
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.7'])
-            elif django_version == 1.8:
+            if django_version == 1.8:
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.8'])
             elif django_version == 1.9:
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.9'])
@@ -328,9 +297,6 @@ def parse(args):
         requirements.extend(data.REQUIREMENTS['default'])
 
         setattr(args, 'requirements', '\n'.join(requirements).strip())
-    if cms_version < 3 and args.aldryn:  # pragma: no cover
-        sys.stderr.write('Aldryn Boilerplate is not compatible with django CMS versions < 3\n')
-        sys.exit(5)
 
     # Convenient shortcuts
     setattr(args, 'cms_version', cms_version)

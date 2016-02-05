@@ -61,6 +61,9 @@ REQUIREMENTS = {
         'django-sekizai>=0.7',
         'six',
     ],
+    'reversion-django-1.8': [
+        'django-reversion>=1.10,<1.11',
+    ],
     'reversion-django-1.9': [
         'django-reversion>=1.10,<1.11',
     ],
