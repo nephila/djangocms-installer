@@ -276,6 +276,7 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(supported_versions('1.9', 'stable'), (1.9, 3.2))
         self.assertEqual(supported_versions('1.8', 'stable'), (1.8, 3.2))
+        self.assertEqual(supported_versions('1.8.3', 'stable'), (None, 3.2))
         self.assertEqual(supported_versions('beta', 'stable'), (1.9, 3.2))
         self.assertEqual(supported_versions('develop', 'stable'), (1.9, 3.2))
 

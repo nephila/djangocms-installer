@@ -66,7 +66,7 @@ def supported_versions(django, cms):
     except ValueError:
         try:
             django_version = DJANGO_VERSION_MATRIX[django]
-        except KeyError:
+        except KeyError:  # pragma: no cover
             pass
     try:
         if (

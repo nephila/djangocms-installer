@@ -82,8 +82,6 @@ def requirements(requirements, pip_options='', is_file=False, verbose=False):
         args.append('-q')
     if pip_options:
         args.extend([opt for opt in pip_options.split(' ') if opt])
-    if 'Django<1.5' in requirements:
-        args += ['--no-use-wheel']
     if is_file:  # pragma: no cover
         args += ['-r', requirements]
     else:

@@ -159,34 +159,11 @@ def patch_settings(config_data):
         DATA_DIR = 'DATA_DIR = os.path.dirname(os.path.dirname(__file__))\n'
         STATICFILES_DIR = 'os.path.join(BASE_DIR, \'%s\', \'static\'),' % config_data.project_name
 
-    if original.find('BASE_DIR') == -1:
-        original = data.DEFAULT_PROJECT_HEADER + data.BASE_DIR + DATA_DIR + original
-    else:
-        original = data.DEFAULT_PROJECT_HEADER + DATA_DIR + original
-    if original.find('MEDIA_URL') > -1:
-        original = original.replace('MEDIA_URL = \'\'', 'MEDIA_URL = \'/media/\'')
-    else:
-        original += 'MEDIA_URL = \'/media/\'\n'
-    if original.find('MEDIA_ROOT') > -1:
-        original = original.replace(
-            'MEDIA_ROOT = \'\'', 'MEDIA_ROOT = os.path.join(DATA_DIR, \'media\')'
-        )
-    else:
-        original += 'MEDIA_ROOT = os.path.join(DATA_DIR, \'media\')\n'
-    if original.find('STATIC_ROOT') > -1:
-        original = original.replace(
-            'STATIC_ROOT = \'\'', 'STATIC_ROOT = os.path.join(DATA_DIR, \'static\')'
-        )
-    else:
-        original += 'STATIC_ROOT = os.path.join(DATA_DIR, \'static\')\n'
-    if original.find('STATICFILES_DIRS') > -1:
-        original = original.replace(data.STATICFILES_DEFAULT, """
-STATICFILES_DIRS = (
-    %s
-)
-""" % STATICFILES_DIR)
-    else:
-        original += """
+    original = data.DEFAULT_PROJECT_HEADER + DATA_DIR + original
+    original += 'MEDIA_URL = \'/media/\'\n'
+    original += 'MEDIA_ROOT = os.path.join(DATA_DIR, \'media\')\n'
+    original += 'STATIC_ROOT = os.path.join(DATA_DIR, \'static\')\n'
+    original += """
 STATICFILES_DIRS = (
     %s
 )
@@ -222,8 +199,6 @@ STATICFILES_DIRS = (
         else:
             item_re = re.compile(r'%s = [^\)]+\)' % item, re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
-        if 'LANGUAGE_CODE' not in original:
-            raise Exception()
     # TEMPLATES is special, so custom regexp needed
     item_re = re.compile(r'TEMPLATES = .+\]$', re.DOTALL | re.MULTILINE)
     original = item_re.sub('', original)
