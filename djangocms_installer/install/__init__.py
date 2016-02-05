@@ -5,9 +5,8 @@ import os.path
 import shutil
 import subprocess
 import sys
-from distutils.util import strtobool
 
-from djangocms_installer import compat
+from djangocms_installer.utils import query_yes_no
 
 
 def check_install(config_data):
@@ -117,12 +116,15 @@ def cleanup_directory(config_data):
     if os.path.exists(config_data.project_directory):
         choice = 'N'
         if config_data.noinput is False and not config_data.verbose:
-            sys.stdout.write('Failure occurred. Do you want to cleanup by removing %s? '
-                             '[Y/N] ' % os.path.abspath(config_data.project_directory))
-            choice = compat.input().lower()
+            choice = query_yes_no(
+                'Failure occurred. Do you want to cleanup by removing {0}? '.format(
+                    os.path.abspath(config_data.project_directory)
+                ),
+                'yes'
+            )
         else:
             sys.stdout.write('Failure occurred.\n')
-        if strtobool(choice) or config_data.noinput:
+        if choice or config_data.noinput:
             sys.stdout.write('Removing everything under %s\n'
                              '' % os.path.abspath(config_data.project_directory))
             shutil.rmtree(config_data.project_directory, True)
