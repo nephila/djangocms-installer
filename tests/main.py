@@ -23,12 +23,8 @@ class TestMain(IsolatedTestClass):
                                        'example_prj']
                 main.execute()
         stdout = self.stdout.getvalue()
-        if sys.version_info < (2, 7):
-            self.assertTrue(stdout.find('Django<1.7') > -1)
-            self.assertTrue(stdout.find('django-reversion>=1.8,<1.9') > -1)
-        else:
-            self.assertTrue(stdout.find('Django<1.9') > -1)
-            self.assertTrue(stdout.find('django-reversion>=1.8.7,<1.9') > -1)
+        self.assertTrue(stdout.find('Django<1.9') > -1)
+        self.assertTrue(stdout.find('django-reversion>=1.8.7,<1.9') > -1)
         self.assertTrue(stdout.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(stdout.find('djangocms-admin-style') > -1)
         self.assertTrue(stdout.find('djangocms-column') > -1)
@@ -110,31 +106,3 @@ class TestMain(IsolatedTestClass):
                                            'example_prj']
                     main.execute()
         self.assertFalse(os.path.exists(self.project_dir))
-
-    @unittest.skipIf(sys.version_info >= (3, 0),
-                     reason='django 1.4 does not support python3')
-    def test_django_1_4(self):
-        with patch('sys.stdout', self.stdout):
-            with patch('sys.stderr', self.stderr):
-                sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--django-version=1.4',
-                                       '--cms-version=3.0',
-                                       '-q', '-u', '-p'+self.project_dir,
-                                       'example_prj']
-                main.execute()
-                # Checking we successfully completed the whole process
-                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
-
-    @unittest.skipIf(sys.version_info >= (3, 0),
-                     reason='django 1.5 does not support python3')
-    def test_django_1_5(self):
-        with patch('sys.stdout', self.stdout):
-            with patch('sys.stderr', self.stderr):
-                sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--django-version=1.5',
-                                       '--cms-version=3.0',
-                                       '-q', '-u', '-p'+self.project_dir,
-                                       'example_prj']
-                main.execute()
-                # Checking we successfully completed the whole process
-                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
