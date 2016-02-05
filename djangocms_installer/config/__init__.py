@@ -162,7 +162,8 @@ def parse(args):
         choices = default = ''
         input_value = getattr(args, action.dest)
         new_val = None
-        if not args.noinput:
+        # cannot count this until we find a way to test input
+        if not args.noinput:  # pragma: no cover
             if action.choices:
                 choices = ' (choices: %s)' % ', '.join(action.choices)
             if input_value:
