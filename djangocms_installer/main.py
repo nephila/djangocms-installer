@@ -5,8 +5,6 @@ import logging
 import os
 import sys
 
-import six
-
 from . import config, django, install
 
 
@@ -57,12 +55,10 @@ def execute():
                 sys.stdout.write('Get into "%s" directory and type '
                                  '"python manage.py runserver" to start your '
                                  'project\n' % os.path.abspath(config_data.project_directory))
-    except Exception as e:
+    except Exception:
         # Clean up your own mess
         install.cleanup_directory(config_data)
-        if six.PY3:
-            tb = sys.exc_info()[2]
-            raise EnvironmentError('%s\nDocumentation available at '
-                                   'http://djangocms-installer.rtfd.org\n' % e).with_traceback(tb)
-        else:
-            raise
+        doc_message = 'Check documentation at http://djangocms-installer.rtfd.org'
+        exception_message = '\n\n{0}\n\n{1}\n\n{0}\n\n'.format('*' * len(doc_message), doc_message)
+        sys.stdout.write(exception_message)
+        raise
