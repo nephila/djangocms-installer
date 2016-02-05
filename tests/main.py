@@ -24,7 +24,7 @@ class TestMain(IsolatedTestClass):
                 main.execute()
         stdout = self.stdout.getvalue()
         self.assertTrue(stdout.find('Django<1.9') > -1)
-        self.assertTrue(stdout.find('django-reversion>=1.8.7,<1.9') > -1)
+        self.assertTrue(stdout.find('django-reversion>=1.10,<1.11') > -1)
         self.assertTrue(stdout.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(stdout.find('djangocms-admin-style') > -1)
         self.assertTrue(stdout.find('djangocms-column') > -1)

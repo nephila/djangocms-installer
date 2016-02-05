@@ -120,7 +120,7 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
                      reason="django 1.9 only supports python 2.7, 3.4 and 3.5")
-    def test_patch_16_settings(self):
+    def test_patch_19_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
@@ -197,16 +197,16 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
         self.assertTrue('aldryn_apphook_reload' not in project.settings.INSTALLED_APPS)
         self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in project.settings.MIDDLEWARE_CLASSES)
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
+            project.settings.MIDDLEWARE_CLASSES
+        )
         self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in project.settings.MIDDLEWARE_CLASSES)
-        self.assertTrue(
-            'cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
-        self.assertTrue(
-            'cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
-
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in
+            project.settings.MIDDLEWARE_CLASSES
+        )
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_bootstrap)
 
+        self.assertTrue(project.settings.TEMPLATES)
         self.assertEqual(len(re.findall('BASE_DIR = ', settings)), 1)
         self.assertEqual(len(re.findall('STATIC_ROOT', settings)), 1)
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
@@ -261,9 +261,13 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
         self.assertTrue('aldryn_apphook_reload' not in project.settings.INSTALLED_APPS)
         self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in project.settings.MIDDLEWARE_CLASSES)
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
+            project.settings.MIDDLEWARE_CLASSES
+        )
         self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in project.settings.MIDDLEWARE_CLASSES)
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in
+            project.settings.MIDDLEWARE_CLASSES
+        )
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
                      reason="django 1.9 only supports python 2.7, 3.4 and 3.5")
@@ -290,9 +294,13 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
         self.assertTrue('aldryn_apphook_reload' not in project.settings.INSTALLED_APPS)
         self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in project.settings.MIDDLEWARE_CLASSES)
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
+            project.settings.MIDDLEWARE_CLASSES
+        )
         self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in project.settings.MIDDLEWARE_CLASSES)
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in
+            project.settings.MIDDLEWARE_CLASSES
+        )
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
                      reason="django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5,")
@@ -367,15 +375,18 @@ class TestDjango(IsolatedTestClass):
         #
         # checking for standard CMS settings
         self.assertTrue(
-            'sekizai.context_processors.sekizai' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+            'sekizai.context_processors.sekizai' in
+            project.settings.TEMPLATES[0]['OPTIONS']['context_processors']
+        )
         self.assertTrue(
-            'cms.middleware.toolbar.ToolbarMiddleware' in project.settings.MIDDLEWARE_CLASSES)
+            'cms.middleware.toolbar.ToolbarMiddleware' in project.settings.MIDDLEWARE_CLASSES
+        )
         self.assertTrue(project.settings.CMS_LANGUAGES['default']['redirect_on_fallback'])
         self.assertEqual(project.settings.CMS_LANGUAGES[1][0]['code'], 'en')
 
         # checking mptt / treebeard
-        self.assertTrue('mptt' in project.settings.INSTALLED_APPS)
-        self.assertFalse('treebeard' in project.settings.INSTALLED_APPS)
+        self.assertFalse('mptt' in project.settings.INSTALLED_APPS)
+        self.assertTrue('treebeard' in project.settings.INSTALLED_APPS)
 
         # checking for filer (optional) settings
         self.assertTrue('filer' in project.settings.INSTALLED_APPS)
@@ -402,9 +413,13 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_video' not in project.settings.INSTALLED_APPS)
         self.assertTrue(hasattr(project.settings, 'THUMBNAIL_PROCESSORS'))
         self.assertTrue(
-            'cms.context_processors.cms_settings' in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+            'cms.context_processors.cms_settings' in
+            project.settings.TEMPLATES[0]['OPTIONS']['context_processors']
+        )
         self.assertTrue(
-            'cms.context_processors.media' not in project.settings.TEMPLATE_CONTEXT_PROCESSORS)
+            'cms.context_processors.media' not in
+            project.settings.TEMPLATES[0]['OPTIONS']['context_processors']
+        )
 
         # basic urlconf check
         self.assertTrue('cms.urls' in urlconf)
@@ -419,7 +434,7 @@ class TestDjango(IsolatedTestClass):
     def test_database_setup_filer(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-f', '-q', '-u', '--django-version=1.8',
-                                    '--cms-version=3.1',
+                                    '--cms-version=3.2',
                                     '-p' + self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
