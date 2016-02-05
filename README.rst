@@ -40,7 +40,7 @@ Features
 ``djangocms-installer`` is a console wizard to help bootstrapping a django CMS
 project.
 
-Refer to `django CMS Tutorial <http://django-cms.readthedocs.org/en/latest/introduction/index.html>`_
+Refer to `django CMS Tutorial`_
 on how to properly setup your first django CMS project.
 
 .. warning:: Version 0.9 will drop support for Python 2.6, Django <1.8 and django CMS < 3.2.
@@ -75,19 +75,15 @@ Supported versions
 
 The current supported version matrix is the following:
 
-+----------------+-------------+-------------+-------------+-------------+-------------+-------------+
-|                | Django 1.4  | Django 1.5  | Django 1.6  | Django 1.7  | Django 1.8  | Django 1.9  |
-+----------------+-------------+-------------+-------------+-------------+-------------+-------------+
-| django CMS 2.4 | Supported   | Supported   | Unsupported | Unsupported | Unsupported | Unsupported |
-+----------------+-------------+-------------+-------------+-------------+-------------+-------------+
-| django CMS 3.0 | Supported   | Supported   | Supported   | Supported   | Unsupported | Unsupported |
-+----------------+-------------+-------------+-------------+-------------+-------------+-------------+
-| django CMS 3.1 | Unsupported | Unsupported | Supported   | Supported   | Supported   | Unsupported |
-+----------------+-------------+-------------+-------------+-------------+-------------+-------------+
-| django CMS 3.2 | Unsupported | Unsupported | Supported   | Supported   | Supported   | Supported   |
-+----------------+-------------+-------------+-------------+-------------+-------------+-------------+
-| django CMS dev | Unsupported | Unsupported | Unsupported | Supported   | Supported   | Supported   |
-+----------------+-------------+-------------+-------------+-------------+-------------+-------------+
++----------------+-------------+-------------+---------------+
+|                | Django 1.8  | Django 1.9  | Django master |
++----------------+-------------+-------------+---------------+
+| django CMS 3.2 | Supported   | Supported   | Unsupported   |
++----------------+-------------+-------------+---------------+
+| django CMS dev | Supported   | Supported   | Unsupported   |
++----------------+-------------+-------------+---------------+
+
+Check `version 0.8`_ for older Django / django CMS versions support
 
 Any beta and develop version of Django and django CMS, by its very nature,
 it's not supported, while it still may work.
@@ -116,3 +112,6 @@ Please check that the ``.py`` extension is associated correctly with Python inte
     c:\>ftype Python.File
     Python.File="C:\Windows\py.exe" "%1" %*
 
+
+.. _version 0.8: https://github.com/nephila/djangocms-installer/tree/release/0.8.x#supported-versions
+.. _django CMS Tutorial: http://django-cms.readthedocs.org/en/latest/introduction/index.html
