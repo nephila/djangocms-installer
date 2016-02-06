@@ -26,6 +26,8 @@ except ImportError:
 def create_project(config_data):
     """
     Call django-admin to create the project structure
+
+    :param config_data: configuration data
     """
     env = deepcopy(dict(os.environ))
     env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
@@ -48,6 +50,11 @@ def create_project(config_data):
 
 
 def _detect_migration_layout(vars, apps):
+    """
+    Detect migrations layout for plugins
+    :param vars: installer settings
+    :param apps: installed applications
+    """
     SOUTH_MODULES = {}
     DJANGO_MODULES = {}
 
@@ -63,6 +70,11 @@ def _detect_migration_layout(vars, apps):
 
 
 def _install_aldryn(config_data):  # pragma: no cover
+    """
+    Install aldryn boilerplate
+
+    :param config_data: configuration data
+    """
     import requests
     media_project = os.path.join(config_data.project_directory, 'dist', 'media')
     static_main = False
@@ -87,6 +99,8 @@ def copy_files(config_data):
     """
     It's a little rude actually: it just overwrites the django-generated urls.py
     with a custom version and put other files in the project directory.
+
+    :param config_data: configuration data
     """
     urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls.py')
     share_path = os.path.join(os.path.dirname(__file__), '../share')
@@ -128,6 +142,8 @@ def patch_settings(config_data):
     """
     Modify the settings file created by Django injecting the django CMS
     configuration
+
+    :param config_data: configuration data
     """
     overridden_settings = (
         'MIDDLEWARE_CLASSES', 'INSTALLED_APPS', 'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS',
@@ -219,6 +235,8 @@ STATICFILES_DIRS = (
 def _build_settings(config_data):
     """
     Build the django CMS settings dictionary
+
+    :param config_data: configuration data
     """
     spacer = '    '
     text = []
@@ -320,6 +338,11 @@ def _build_settings(config_data):
 
 
 def setup_database(config_data):
+    """
+    Run the migrate command to create the database schema
+
+    :param config_data: configuration data
+    """
     with chdir(config_data.project_directory):
         env = deepcopy(dict(os.environ))
         env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
@@ -348,6 +371,8 @@ def setup_database(config_data):
 def load_starting_page(config_data):
     """
     Load starting page into the CMS
+
+    :param config_data: configuration data
     """
     with chdir(config_data.project_directory):
         env = deepcopy(dict(os.environ))
