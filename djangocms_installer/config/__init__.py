@@ -130,10 +130,10 @@ def parse(args):
 
     # First of all, check if the project name is valid
     if not validate_project(args.project_name):
-        sys.stderr.write('Project name "%s" is not a valid app name, '
-                         'or it\'s already defined. '
-                         'Please use only numbers, letters and underscores.\n'
-                         % args.project_name)
+        sys.stderr.write(
+            'Project name "{0}" is not a valid app name, or it\'s already defined. '
+            'Please use only numbers, letters and underscores.\n'.format(args.project_name)
+        )
         sys.exit(3)
 
     # Checking the given path
@@ -142,63 +142,26 @@ def parse(args):
     if not args.skip_project_dir_check:
         if (os.path.exists(args.project_directory) and
                 [path for path in os.listdir(args.project_directory) if not path.startswith('.')]):
-            sys.stderr.write('Path "%s" already exists and is not empty, '
-                             'please choose a different one\nIf you want to use this path anyway '
-                             'use the -s flag to skip this check.\n' % args.project_directory)
+            sys.stderr.write(
+                'Path "{0}" already exists and is not empty, please choose a different one\n'
+                'If you want to use this path anyway use the -s flag to skip this check.\n'
+                ''.format(args.project_directory)
+            )
             sys.exit(4)
 
     if os.path.exists(args.project_path):
-        sys.stderr.write('Path "%s" already exists, '
-                         'please choose a different one\n' % args.project_path)
+        sys.stderr.write(
+            'Path "{0}" already exists, please choose a different one\n'.format(args.project_path)
+        )
         sys.exit(4)
 
     if args.config_dump and os.path.isfile(args.config_dump):
-        sys.stdout.write('Cannot dump because given configuration file "%s" '
-                         'is exists.\n' % args.config_dump)
+        sys.stdout.write(
+            'Cannot dump because given configuration file "{0}" exists.\n'.format(args.config_dump)
+        )
         sys.exit(8)
 
-    for item in data.CONFIGURABLE_OPTIONS:
-        action = parser._option_string_actions[item]
-        choices = default = ''
-        input_value = getattr(args, action.dest)
-        new_val = None
-        if not args.noinput:
-            if action.choices:
-                choices = ' (choices: %s)' % ', '.join(action.choices)
-            if input_value:
-                if type(input_value) == list:
-                    default = ' [default %s]' % ', '.join(input_value)
-                else:
-                    default = ' [default %s]' % input_value
-
-            while not new_val:
-                prompt = '%s%s%s: ' % (action.help, choices, default)
-                if action.choices in ('yes', 'no'):
-                    new_val = utils.query_yes_no(prompt)
-                else:
-                    new_val = compat.input(prompt)
-                new_val = compat.clean(new_val)
-                if not new_val and input_value:
-                    new_val = input_value
-                if new_val and action.dest == 'templates':
-                    if new_val != 'no' and not os.path.isdir(new_val):
-                        sys.stdout.write('Given directory does not exists, retry\n')
-                        new_val = False
-                if new_val and action.dest == 'db':
-                    action(parser, args, new_val, action.option_strings)
-                    new_val = getattr(args, action.dest)
-        else:
-            if not input_value and action.required:
-                raise ValueError('Option %s is required when in no-input mode' % action.dest)
-            new_val = input_value
-            if action.dest == 'db':
-                action(parser, args, new_val, action.option_strings)
-                new_val = getattr(args, action.dest)
-        if action.dest == 'templates' and (new_val == 'no' or not os.path.isdir(new_val)):
-            new_val = False
-        if action.dest in ('bootstrap', 'starting_page'):
-            new_val = (new_val == 'yes')
-        setattr(args, action.dest, new_val)
+    args = _manage_args(parser,  args)
 
     # what do we want here?!
     # * if languages are given as multiple arguments, let's use it as is
@@ -228,12 +191,16 @@ def parse(args):
         sys.stderr.write(compat.unicode(e))
         sys.exit(6)
     if django_version is None:
-        sys.stderr.write('Please provide a Django supported version: %s. Only Major.Minor '
-                         'version selector is accepted\n' % ', '.join(data.DJANGO_SUPPORTED))
+        sys.stderr.write(
+            'Please provide a Django supported version: {0}. Only Major.Minor '
+            'version selector is accepted\n'.format(', '.join(data.DJANGO_SUPPORTED))
+        )
         sys.exit(6)
     if django_version is None:
-        sys.stderr.write('Please provide a django CMS supported version: %s. Only Major.Minor '
-                         'version selector is accepted\n' % ', '.join(data.DJANGOCMS_SUPPORTED))
+        sys.stderr.write(
+            'Please provide a django CMS supported version: {0}. Only Major.Minor '
+            'version selector is accepted\n'.format(', '.join(data.DJANGOCMS_SUPPORTED))
+        )
         sys.exit(6)
 
     if not getattr(args, 'requirements_file'):
@@ -242,85 +209,54 @@ def parse(args):
         # django CMS version check
         if args.cms_version == 'develop':
             requirements.append(data.DJANGOCMS_DEVELOP)
-            warnings.warn(data.VERSION_WARNING % ('develop', 'django CMS'))
-        elif args.cms_version == 'rc':
+            warnings.warn(data.VERSION_WARNING.format('develop', 'django CMS'))
+        elif args.cms_version == 'rc':  # pragma: no cover
             requirements.append(data.DJANGOCMS_RC)
-        elif args.cms_version == 'beta':
+        elif args.cms_version == 'beta':  # pragma: no cover
             requirements.append(data.DJANGOCMS_BETA)
-            warnings.warn(data.VERSION_WARNING % ('beta', 'django CMS'))
+            warnings.warn(data.VERSION_WARNING.format('beta', 'django CMS'))
         else:
-            requirements.append('django-cms<%s' % less_than_version(cms_version))
+            requirements.append('django-cms<{0}'.format(less_than_version(cms_version)))
 
-        if cms_version == 3:
-            requirements.extend(data.REQUIREMENTS['cms-3.0'])
-        elif cms_version >= 3.2:
+        if cms_version >= 3.2:
             requirements.extend(data.REQUIREMENTS['cms-3.2'])
-        elif cms_version == 3.1:
-            requirements.extend(data.REQUIREMENTS['cms-3.1'])
-        else:
-            requirements.extend(data.REQUIREMENTS['cms-2.x'])
 
         if not args.no_db_driver:
             requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.filer:
                 if cms_version >= 3:
-                    if django_version < 1.7:
-                        requirements.extend(data.REQUIREMENTS['plugins-common'])
-                        requirements.extend(data.REQUIREMENTS['filer'])
-                    else:
-                        requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                        requirements.extend(data.REQUIREMENTS['filer'])
-                else:
-                    requirements.extend(data.REQUIREMENTS['filer-cms-2.x'])
-            elif cms_version >= 3:
-                if django_version < 1.7:
-                    requirements.extend(data.REQUIREMENTS['plugins-common'])
-                    requirements.extend(data.REQUIREMENTS['plugins-basic'])
-                else:
                     requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                    requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
-            if cms_version == 3:
-                requirements.extend(data.REQUIREMENTS['ckeditor-3.0'])
-            elif cms_version >= 3.2:
+                    requirements.extend(data.REQUIREMENTS['filer'])
+            elif cms_version >= 3:
+                requirements.extend(data.REQUIREMENTS['plugins-common-master'])
+                requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
+            if cms_version >= 3.2:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.2'])
-            elif cms_version == 3.1:
-                requirements.extend(data.REQUIREMENTS['ckeditor-3.1'])
         if args.aldryn:  # pragma: no cover
             requirements.extend(data.REQUIREMENTS['aldryn'])
 
-        if args.apphooks_reload and cms_version < 3.2:
-            requirements.extend(data.REQUIREMENTS['apphooks-reload'])
-
         # Django version check
-        if args.django_version == 'develop':
+        if args.django_version == 'develop':  # pragma: no cover
             requirements.append(data.DJANGO_DEVELOP)
-            warnings.warn(data.VERSION_WARNING % ('develop', 'Django'))
-        elif args.django_version == 'beta':
+            warnings.warn(data.VERSION_WARNING.format('develop', 'Django'))
+        elif args.django_version == 'beta':  # pragma: no cover
             requirements.append(data.DJANGO_BETA)
-            warnings.warn(data.VERSION_WARNING % ('beta', 'Django'))
+            warnings.warn(data.VERSION_WARNING.format('beta', 'Django'))
         else:
-            requirements.append('Django<%s' % less_than_version(django_version))
+            requirements.append('Django<{0}'.format(less_than_version(django_version)))
 
         # Timezone support
         if args.use_timezone:
             requirements.append('pytz')
 
         # Requirements dependendent on django version
-        if django_version < 1.7:
-            requirements.extend(data.REQUIREMENTS['django-legacy'])
+        # if django_version < 1.7:
+        #    requirements.extend(data.REQUIREMENTS['django-legacy'])
 
         # Reversion package version depends on django version
         if args.reversion:
-            if django_version < 1.5:
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.4'])
-            elif django_version == 1.5:
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.5'])
-            elif django_version == 1.6:
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.6'])
-            elif django_version == 1.7:
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.7'])
-            elif django_version == 1.8:
+            if django_version == 1.8:
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.8'])
             elif django_version == 1.9:
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.9'])
@@ -328,9 +264,6 @@ def parse(args):
         requirements.extend(data.REQUIREMENTS['default'])
 
         setattr(args, 'requirements', '\n'.join(requirements).strip())
-    if cms_version < 3 and args.aldryn:  # pragma: no cover
-        sys.stderr.write('Aldryn Boilerplate is not compatible with django CMS versions < 3\n')
-        sys.exit(5)
 
     # Convenient shortcuts
     setattr(args, 'cms_version', cms_version)
@@ -367,3 +300,55 @@ def show_requirements(args):
     Prints the list of requirements according to the arguments provided
     """
     sys.stdout.write(compat.unicode(args.requirements))
+
+
+def _manage_args(parser,  args):
+    """
+    Checks and validate provided input
+    """
+    for item in data.CONFIGURABLE_OPTIONS:
+        action = parser._option_string_actions[item]
+        choices = default = ''
+        input_value = getattr(args, action.dest)
+        new_val = None
+        # cannot count this until we find a way to test input
+        if not args.noinput:  # pragma: no cover
+            if action.choices:
+                choices = ' (choices: {0})'.format(', '.join(action.choices))
+            if input_value:
+                if type(input_value) == list:
+                    default = ' [default {0}]'.format(', '.join(input_value))
+                else:
+                    default = ' [default {0}]'.format(input_value)
+
+            while not new_val:
+                prompt = '{0}{1}{2}: '.format(action.help, choices, default)
+                if action.choices in ('yes', 'no'):
+                    new_val = utils.query_yes_no(prompt)
+                else:
+                    new_val = compat.input(prompt)
+                new_val = compat.clean(new_val)
+                if not new_val and input_value:
+                    new_val = input_value
+                if new_val and action.dest == 'templates':
+                    if new_val != 'no' and not os.path.isdir(new_val):
+                        sys.stdout.write('Given directory does not exists, retry\n')
+                        new_val = False
+                if new_val and action.dest == 'db':
+                    action(parser, args, new_val, action.option_strings)
+                    new_val = getattr(args, action.dest)
+        else:
+            if not input_value and action.required:
+                raise ValueError(
+                    'Option {0} is required when in no-input mode'.format(action.dest)
+                )
+            new_val = input_value
+            if action.dest == 'db':
+                action(parser, args, new_val, action.option_strings)
+                new_val = getattr(args, action.dest)
+        if action.dest == 'templates' and (new_val == 'no' or not os.path.isdir(new_val)):
+            new_val = False
+        if action.dest in ('bootstrap', 'starting_page'):
+            new_val = (new_val == 'yes')
+        setattr(args, action.dest, new_val)
+    return args

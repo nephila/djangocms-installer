@@ -6,18 +6,13 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import unittest
 from copy import copy
 
 from six import StringIO
 
-if sys.version_info[:2] < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
 
-if sys.version_info < (2, 7):
-    dj_ver = '1.6'
-elif sys.version_info < (3, 4):
+if sys.version_info < (3, 4):
     dj_ver = '1.8'
 else:
     dj_ver = '1.9'

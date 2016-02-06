@@ -37,7 +37,6 @@ def create_pages():
     except Placeholder.DoesNotExist:
         # fallback, add it to the
         add_plugin(placeholder['main'], 'TextPlugin', lang, body=content['feature'])
-        pass
 
     # Add main content to a MultiColumnPlugin
     multi_columns_plugin = add_plugin(placeholder['main'], 'MultiColumnPlugin', lang)

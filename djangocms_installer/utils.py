@@ -32,7 +32,7 @@ def query_yes_no(question, default=None):  # pragma: no cover
     elif default == 'no':
         prompt = ' [y/N] '
     else:
-        raise ValueError('invalid default answer: "%s"' % default)
+        raise ValueError('invalid default answer: "{0}"'.format(default))
 
     while True:
         sys.stdout.write(question + prompt)
@@ -66,7 +66,7 @@ def supported_versions(django, cms):
     except ValueError:
         try:
             django_version = DJANGO_VERSION_MATRIX[django]
-        except KeyError:
+        except KeyError:  # pragma: no cover
             pass
     try:
         if (
@@ -76,12 +76,12 @@ def supported_versions(django, cms):
         ):
             raise RuntimeError(
                 'Django and django CMS versions doesn\'t match: '
-                'Django %s is not supported by django CMS %s' % (django_version, cms_version)
+                'Django {0} is not supported by django CMS {1}'.format(django_version, cms_version)
             )
     except KeyError:
         raise RuntimeError(
             'Django and django CMS versions doesn\'t match: '
-            'Django %s is not supported by django CMS %s' % (django_version, cms_version)
+            'Django {0} is not supported by django CMS {1}'.format(django_version, cms_version)
         )
     return django_version, cms_version
 

@@ -19,8 +19,8 @@ class DbAction(Action):
                 sys.stdout.write('postgis installation is not supported at the moment.\n'
                                  'You need to install and configure the backend.\n')
             setattr(namespace, self.dest, values)
-            setattr(namespace, '%s_parsed' % self.dest, parsed)
-            setattr(namespace, '%s_driver' % self.dest, DRIVERS[parsed['ENGINE']])
+            setattr(namespace, '{0}_parsed'.format(self.dest), parsed)
+            setattr(namespace, '{0}_driver'.format(self.dest), DRIVERS[parsed['ENGINE']])
         else:
             raise ValueError('Database URL not recognized, try again')
 
