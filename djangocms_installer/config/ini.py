@@ -39,7 +39,7 @@ def parse_config_file(parser, stdin_args):
 
     config = ConfigParser()
     if not config.read(parsed_args.config_file):
-        sys.stderr.write('Config file "%s" doesn\'t exists\n' % parsed_args.config_file)
+        sys.stderr.write('Config file "{0}" doesn\'t exists\n'.format(parsed_args.config_file))
         sys.exit(7)  # It isn't used anythere.
 
     config_args = _convert_config_to_stdin(config, parser)
@@ -105,7 +105,7 @@ def _convert_config_to_stdin(config, parser):
         '--extra-settings', '--languages', '--requirements', '--template', '--timezone')
     args = []
     for key, val in config.items(SECTION):
-        keyp = '--%s' % key
+        keyp = '--{0}'.format(key)
         action = parser._option_string_actions[keyp]
 
         if action.const:

@@ -130,10 +130,10 @@ def parse(args):
 
     # First of all, check if the project name is valid
     if not validate_project(args.project_name):
-        sys.stderr.write('Project name "%s" is not a valid app name, '
-                         'or it\'s already defined. '
-                         'Please use only numbers, letters and underscores.\n'
-                         % args.project_name)
+        sys.stderr.write(
+            'Project name "{0}" is not a valid app name, or it\'s already defined. '
+            'Please use only numbers, letters and underscores.\n'.format(args.project_name)
+        )
         sys.exit(3)
 
     # Checking the given path
@@ -142,19 +142,23 @@ def parse(args):
     if not args.skip_project_dir_check:
         if (os.path.exists(args.project_directory) and
                 [path for path in os.listdir(args.project_directory) if not path.startswith('.')]):
-            sys.stderr.write('Path "%s" already exists and is not empty, '
-                             'please choose a different one\nIf you want to use this path anyway '
-                             'use the -s flag to skip this check.\n' % args.project_directory)
+            sys.stderr.write(
+                'Path "{0}" already exists and is not empty, please choose a different one\n'
+                'If you want to use this path anyway use the -s flag to skip this check.\n'
+                ''.format(args.project_directory)
+            )
             sys.exit(4)
 
     if os.path.exists(args.project_path):
-        sys.stderr.write('Path "%s" already exists, '
-                         'please choose a different one\n' % args.project_path)
+        sys.stderr.write(
+            'Path "{0}" already exists, please choose a different one\n'.format(args.project_path)
+        )
         sys.exit(4)
 
     if args.config_dump and os.path.isfile(args.config_dump):
-        sys.stdout.write('Cannot dump because given configuration file "%s" '
-                         'is exists.\n' % args.config_dump)
+        sys.stdout.write(
+            'Cannot dump because given configuration file "{0}" exists.\n'.format(args.config_dump)
+        )
         sys.exit(8)
 
     args = _manage_args(parser,  args)
@@ -187,12 +191,16 @@ def parse(args):
         sys.stderr.write(compat.unicode(e))
         sys.exit(6)
     if django_version is None:
-        sys.stderr.write('Please provide a Django supported version: %s. Only Major.Minor '
-                         'version selector is accepted\n' % ', '.join(data.DJANGO_SUPPORTED))
+        sys.stderr.write(
+            'Please provide a Django supported version: {0}. Only Major.Minor '
+            'version selector is accepted\n'.format(', '.join(data.DJANGO_SUPPORTED))
+        )
         sys.exit(6)
     if django_version is None:
-        sys.stderr.write('Please provide a django CMS supported version: %s. Only Major.Minor '
-                         'version selector is accepted\n' % ', '.join(data.DJANGOCMS_SUPPORTED))
+        sys.stderr.write(
+            'Please provide a django CMS supported version: {0}. Only Major.Minor '
+            'version selector is accepted\n'.format(', '.join(data.DJANGOCMS_SUPPORTED))
+        )
         sys.exit(6)
 
     if not getattr(args, 'requirements_file'):
@@ -201,14 +209,14 @@ def parse(args):
         # django CMS version check
         if args.cms_version == 'develop':
             requirements.append(data.DJANGOCMS_DEVELOP)
-            warnings.warn(data.VERSION_WARNING % ('develop', 'django CMS'))
+            warnings.warn(data.VERSION_WARNING.format('develop', 'django CMS'))
         elif args.cms_version == 'rc':
             requirements.append(data.DJANGOCMS_RC)
         elif args.cms_version == 'beta':
             requirements.append(data.DJANGOCMS_BETA)
-            warnings.warn(data.VERSION_WARNING % ('beta', 'django CMS'))
+            warnings.warn(data.VERSION_WARNING.format('beta', 'django CMS'))
         else:
-            requirements.append('django-cms<%s' % less_than_version(cms_version))
+            requirements.append('django-cms<{0}'.format(less_than_version(cms_version)))
 
         if cms_version >= 3.2:
             requirements.extend(data.REQUIREMENTS['cms-3.2'])
@@ -231,12 +239,12 @@ def parse(args):
         # Django version check
         if args.django_version == 'develop':
             requirements.append(data.DJANGO_DEVELOP)
-            warnings.warn(data.VERSION_WARNING % ('develop', 'Django'))
+            warnings.warn(data.VERSION_WARNING.format('develop', 'Django'))
         elif args.django_version == 'beta':
             requirements.append(data.DJANGO_BETA)
-            warnings.warn(data.VERSION_WARNING % ('beta', 'Django'))
+            warnings.warn(data.VERSION_WARNING.format('beta', 'Django'))
         else:
-            requirements.append('Django<%s' % less_than_version(django_version))
+            requirements.append('Django<{0}'.format(less_than_version(django_version)))
 
         # Timezone support
         if args.use_timezone:
@@ -306,15 +314,15 @@ def _manage_args(parser,  args):
         # cannot count this until we find a way to test input
         if not args.noinput:  # pragma: no cover
             if action.choices:
-                choices = ' (choices: %s)' % ', '.join(action.choices)
+                choices = ' (choices: {0})'.format(', '.join(action.choices))
             if input_value:
                 if type(input_value) == list:
-                    default = ' [default %s]' % ', '.join(input_value)
+                    default = ' [default {0}]'.format(', '.join(input_value))
                 else:
-                    default = ' [default %s]' % input_value
+                    default = ' [default {0}]'.format(input_value)
 
             while not new_val:
-                prompt = '%s%s%s: ' % (action.help, choices, default)
+                prompt = '{0}{1}{2}: '.format(action.help, choices, default)
                 if action.choices in ('yes', 'no'):
                     new_val = utils.query_yes_no(prompt)
                 else:
@@ -331,7 +339,9 @@ def _manage_args(parser,  args):
                     new_val = getattr(args, action.dest)
         else:
             if not input_value and action.required:
-                raise ValueError('Option %s is required when in no-input mode' % action.dest)
+                raise ValueError(
+                    'Option {0} is required when in no-input mode'.format(action.dest)
+                )
             new_val = input_value
             if action.dest == 'db':
                 action(parser, args, new_val, action.option_strings)

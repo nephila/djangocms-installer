@@ -85,9 +85,9 @@ def requirements(requirements, pip_options='', is_file=False, verbose=False):
     if is_file:  # pragma: no cover
         args += ['-r', requirements]
     else:
-        args.extend(['%s' % package for package in requirements.split()])
+        args.extend(['{0}'.format(package) for package in requirements.split()])
     if verbose:
-        sys.stdout.write('Package install command: %s\n' % ' '.join(args))
+        sys.stdout.write('Package install command: {0}\n'.format(' '.join(args)))
     output = subprocess.check_output(['pip'] + args)
     sys.stdout.write(output.decode('utf-8'))
     return True
@@ -123,6 +123,7 @@ def cleanup_directory(config_data):
         else:
             sys.stdout.write('Failure occurred.\n')
         if choice or config_data.noinput:
-            sys.stdout.write('Removing everything under %s\n'
-                             '' % os.path.abspath(config_data.project_directory))
+            sys.stdout.write('Removing everything under {0}\n'.format(
+                os.path.abspath(config_data.project_directory)
+            ))
             shutil.rmtree(config_data.project_directory, True)

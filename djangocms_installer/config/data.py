@@ -60,6 +60,7 @@ REQUIREMENTS = {
         'Pillow>=2.3',
         'django-sekizai>=0.7',
         'six',
+        'ipdb',
     ],
     'reversion-django-1.8': [
         'django-reversion>=1.10,<1.11',
@@ -173,4 +174,4 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 ALDRYN_BOILERPLATE = 'https://github.com/aldryn/aldryn-boilerplate/archive/master.zip'
 
-VERSION_WARNING = '%s version of %s is not supported and it may not work as expected'
+VERSION_WARNING = '{0} version of {1} is not supported and it may not work as expected'

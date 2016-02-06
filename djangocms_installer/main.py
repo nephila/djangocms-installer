@@ -52,9 +52,10 @@ def execute():
                                  'for more information.\n')
             else:
                 sys.stdout.write('All done!\n')
-                sys.stdout.write('Get into "%s" directory and type '
-                                 '"python manage.py runserver" to start your '
-                                 'project\n' % os.path.abspath(config_data.project_directory))
+                sys.stdout.write(
+                    'Get into "{0}" directory and type "python manage.py runserver" to start your '
+                    'project\n'.format(os.path.abspath(config_data.project_directory))
+                )
     except Exception:
         # Clean up your own mess
         install.cleanup_directory(config_data)
