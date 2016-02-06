@@ -55,7 +55,6 @@ def _detect_migration_layout(vars, apps):
     :param vars: installer settings
     :param apps: installed applications
     """
-    SOUTH_MODULES = {}
     DJANGO_MODULES = {}
 
     for module in vars.MIGRATIONS_CHECK_MODULES:
@@ -63,10 +62,9 @@ def _detect_migration_layout(vars, apps):
             try:
                 __ = __import__('{0}.migrations_django'.format(module))  # NOQA
                 DJANGO_MODULES[module] = '{0}.migrations_django'.format(module)
-                SOUTH_MODULES[module] = '{0}.migrations'.format(module)
             except Exception:
                 pass
-    return DJANGO_MODULES, SOUTH_MODULES
+    return DJANGO_MODULES
 
 
 def _install_aldryn(config_data):  # pragma: no cover
@@ -335,7 +333,7 @@ def _build_settings(config_data):
             }}
         }}""").strip().format((',\n' + spacer * 2).join(database)))  # NOQA
 
-    DJANGO_MIGRATION_MODULES, SOUTH_MIGRATION_MODULES = _detect_migration_layout(vars, apps)
+    DJANGO_MIGRATION_MODULES = _detect_migration_layout(vars, apps)
 
     text.append('MIGRATION_MODULES = {{\n{0}{1}\n}}'.format(
         spacer, (',\n' + spacer).join(
