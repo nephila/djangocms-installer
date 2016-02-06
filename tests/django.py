@@ -477,7 +477,7 @@ class TestDjango(IsolatedTestClass):
                      reason='django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5,')
     def test_starting_page(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '-f', '-q', '-u', '--django-version=1.8',
+                                    '-q', '-u', '--django-version=1.8',
                                     '--cms-version=3.2', '--starting-page=yes',
                                     '-p' + self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
