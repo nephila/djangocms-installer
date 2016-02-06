@@ -11,7 +11,7 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--permissions', '--bootstrap', '--templates',
                         '--starting-page']
 
-DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip{bust}'.format(**bust)
+DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.format(**bust)
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
@@ -22,8 +22,8 @@ else:
     DJANGOCMS_SUPPORTED = ('3.2', 'stable', 'develop')
     DJANGOCMS_STABLE = 3.2
 
-DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip{bust}'.format(**bust)
-DJANGO_BETA = 'https://github.com/django/django/archive/master.zip{bust}'.format(**bust)
+DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
+DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 if sys.version_info >= (3, 5):
     DJANGO_SUPPORTED = ('1.8', '1.9', 'stable')
     DJANGO_STABLE = 1.8
