@@ -61,7 +61,7 @@ def _detect_migration_layout(vars, apps):
     for module in vars.MIGRATIONS_CHECK_MODULES:
         if module in apps:
             try:
-                __import__('{0}.migrations_django'.format(module))
+                __ = __import__('{0}.migrations_django'.format(module))  # NOQA
                 DJANGO_MODULES[module] = '{0}.migrations_django'.format(module)
                 SOUTH_MODULES[module] = '{0}.migrations'.format(module)
             except Exception:
