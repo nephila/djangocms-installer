@@ -210,9 +210,9 @@ def parse(args):
         if args.cms_version == 'develop':
             requirements.append(data.DJANGOCMS_DEVELOP)
             warnings.warn(data.VERSION_WARNING.format('develop', 'django CMS'))
-        elif args.cms_version == 'rc':
+        elif args.cms_version == 'rc':  # pragma: no cover
             requirements.append(data.DJANGOCMS_RC)
-        elif args.cms_version == 'beta':
+        elif args.cms_version == 'beta':  # pragma: no cover
             requirements.append(data.DJANGOCMS_BETA)
             warnings.warn(data.VERSION_WARNING.format('beta', 'django CMS'))
         else:
@@ -237,10 +237,10 @@ def parse(args):
             requirements.extend(data.REQUIREMENTS['aldryn'])
 
         # Django version check
-        if args.django_version == 'develop':
+        if args.django_version == 'develop':  # pragma: no cover
             requirements.append(data.DJANGO_DEVELOP)
             warnings.warn(data.VERSION_WARNING.format('develop', 'Django'))
-        elif args.django_version == 'beta':
+        elif args.django_version == 'beta':  # pragma: no cover
             requirements.append(data.DJANGO_BETA)
             warnings.warn(data.VERSION_WARNING.format('beta', 'Django'))
         else:
