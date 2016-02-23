@@ -115,13 +115,17 @@ def cleanup_directory(config_data):
         choice = 'N'
         if config_data.noinput is False and not config_data.verbose:
             choice = query_yes_no(
-                'Failure occurred. Do you want to cleanup by removing {0}? '.format(
+                'The installation failed.\n'
+                'Do you want to clean up by removing {0}?\n'
+                '\tWarning: this will delete all files in:\n'
+                '\t\t{0}\n'
+                'Do you want to cleanup?'.format(
                     os.path.abspath(config_data.project_directory)
                 ),
-                'yes'
+                'no'
             )
         else:
-            sys.stdout.write('Failure occurred.\n')
+            sys.stdout.write('The installation failed.\n')
         if choice or config_data.noinput:
             sys.stdout.write('Removing everything under {0}\n'.format(
                 os.path.abspath(config_data.project_directory)
