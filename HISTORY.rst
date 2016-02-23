@@ -3,7 +3,7 @@
 History
 -------
 
-0.8.7 (unreleased)
+0.8.7 (2016-02-23)
 ++++++++++++++++++
 
 * Add clearer cleanup message
