@@ -3,6 +3,11 @@
 History
 -------
 
+0.8.8 (unreleased)
+++++++++++++++++++
+
+* Force language codes to lowercase
+
 0.8.7 (2016-02-23)
 ++++++++++++++++++
 

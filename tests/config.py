@@ -59,7 +59,7 @@ class TestConfig(BaseTestClass):
             '--permissions=no',
             '--use-tz=no',
             '-tEurope/Rome',
-            '-len', '-lde', '-lit',
+            '-len-CA', '-lde', '-lit',
             '-p'+self.project_dir,
             'example_prj'])
 
@@ -76,7 +76,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.permissions, 'no')
         self.assertEqual(conf_data.use_timezone, 'no')
         self.assertEqual(conf_data.timezone, 'Europe/Rome')
-        self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
+        self.assertEqual(conf_data.languages, ['en-ca', 'de', 'it'])
         self.assertEqual(conf_data.project_directory, self.project_dir)
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
         self.assertEqual(conf_data.db_driver, 'psycopg2')
