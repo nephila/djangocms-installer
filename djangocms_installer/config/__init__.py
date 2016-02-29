@@ -176,11 +176,10 @@ def parse(args):
             args.languages = ['en']
     elif isinstance(args.languages, six.string_types):
         args.languages = args.languages.split(',')
-    elif len(args.languages) == 1 and isinstance(args.languages[0],
-                                                 six.string_types):
+    elif len(args.languages) == 1 and isinstance(args.languages[0], six.string_types):
         args.languages = args.languages[0].split(',')
 
-    args.languages = [lang.strip() for lang in args.languages]
+    args.languages = [lang.strip().lower() for lang in args.languages]
     args.aldryn = False
 
     # Convert version to numeric format for easier checking
