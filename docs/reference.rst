@@ -33,8 +33,8 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--permissions``: Activate CMS permission management; choices: ``yes|no``, default: ``yes``
 * ``--languages``, ``-l``: Languages available for the project. Option can be provided multiple
   times, or as a comma separated list.
-  Only language codes supported by Django can be used here.
-  Refer to `django source`_ for a list of supported codes.
+  Only language codes supported by Django can be used here;
+  refer to `django source`_ for a list of supported codes. 
 * ``--django-version``: Django version;  choices: ``1.4|1.5|1.6|1.7|stable``, default: ``stable``
 * ``--cms-version``, ``-v``: django CMS version, choices: ``2.4|3.0|3.1|stable|develop``.
   default: ``stable``
