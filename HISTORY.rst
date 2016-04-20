@@ -7,6 +7,7 @@ History
 ++++++++++++++++++
 
 * Force language codes to lowercase
+* Force i18n if multiple languages is provided
 
 0.8.7 (2016-02-23)
 ++++++++++++++++++
