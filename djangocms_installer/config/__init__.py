@@ -32,7 +32,9 @@ def parse(args):
                         help='Database configuration (in URL format)')
     parser.add_argument('--i18n', '-i', dest='i18n', action='store',
                         choices=('yes', 'no'),
-                        default='yes', help='Activate Django I18N / L10N setting')
+                        default='yes', help='Activate Django I18N / L10N setting; this is '
+                                            'automatically activated if more than '
+                                            'language is provided')
     parser.add_argument('--use-tz', '-z', dest='use_timezone', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='Activate Django timezone support')
@@ -217,6 +219,8 @@ def parse(args):
         args.languages = args.languages[0].split(',')
 
     args.languages = [lang.strip().lower() for lang in args.languages]
+    if len(args.languages) > 1:
+        args.i18n = 'yes'
     args.aldryn = False
 
     # Convert version to numeric format for easier checking
