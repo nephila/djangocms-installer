@@ -500,7 +500,7 @@ class TestConfig(BaseTestClass):
         else:
             self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
             self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.7') > -1)
-        self.assertTrue(conf_data.requirements.find('django-mptt') == -1)
+        self.assertTrue(conf_data.requirements.find('django-mptt<0.9') >= -1)
         self.assertTrue(conf_data.requirements.find('django-treebeard') > -1)
 
         conf_data = config.parse([
@@ -584,6 +584,7 @@ class TestConfig(BaseTestClass):
         else:
             self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
             self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.7') > -1)
+            self.assertTrue(conf_data.requirements.find('django-mptt<0.9') > -1)
             self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor/archive/master.zip') == -1)
             self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') == -1)
             self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)

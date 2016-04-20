@@ -73,6 +73,20 @@ REQUIREMENTS = {
     'django-legacy': [
         'south>=1.0.0',
     ],
+    'django-1.4': [
+    ],
+    'django-1.5': [
+    ],
+    'django-1.6': [
+    ],
+    'django-1.7': [
+    ],
+    'django-1.8': [
+        'django-mptt<0.9',
+    ],
+    'django-1.9': [
+        'django-mptt<0.9',
+    ],
     'reversion-django-1.4': [
         'django-reversion<1.7',
     ],
@@ -95,7 +109,7 @@ REQUIREMENTS = {
         'django-mptt>=0.5.1,<0.5.3',
     ],
     'cms-3.0': [
-        'django-mptt<0.7',
+        'django-mptt<0.8',
     ],
     'cms-3.1': [
         'django-treebeard>=2.0',
@@ -120,10 +134,10 @@ REQUIREMENTS = {
         'djangocms-googlemap',
         'djangocms-inherit',
         'djangocms-style',
+        'djangocms-link',
     ],
     'plugins-basic': [
         'djangocms-file',
-        'djangocms-link',
         'djangocms-picture',
         'djangocms-teaser',
         'djangocms-video',

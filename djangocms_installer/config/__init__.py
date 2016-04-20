@@ -328,6 +328,19 @@ def parse(args):
             elif django_version == 1.9:
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.9'])
 
+        if django_version < 1.5:
+            requirements.extend(data.REQUIREMENTS['django-1.4'])
+        elif django_version == 1.5:
+            requirements.extend(data.REQUIREMENTS['django-1.5'])
+        elif django_version == 1.6:
+            requirements.extend(data.REQUIREMENTS['django-1.6'])
+        elif django_version == 1.7:
+            requirements.extend(data.REQUIREMENTS['django-1.7'])
+        elif django_version == 1.8:
+            requirements.extend(data.REQUIREMENTS['django-1.8'])
+        elif django_version == 1.9:
+            requirements.extend(data.REQUIREMENTS['django-1.9'])
+
         requirements.extend(data.REQUIREMENTS['default'])
 
         setattr(args, 'requirements', '\n'.join(requirements).strip())
