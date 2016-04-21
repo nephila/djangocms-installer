@@ -8,6 +8,7 @@ History
 
 * Force language codes to lowercase
 * Force i18n if multiple languages is provided
+* Fix some errors in selecting dependencies
 
 0.8.7 (2016-02-23)
 ++++++++++++++++++
