@@ -3,12 +3,13 @@
 History
 -------
 
-0.8.8 (unreleased)
+0.8.8 (2016-05-06)
 ++++++++++++++++++
 
 * Force language codes to lowercase
 * Force i18n if multiple languages is provided
 * Fix some errors in selecting dependencies
+* Fix error in Django 1.9 regexp
 
 0.8.7 (2016-02-23)
 ++++++++++++++++++
