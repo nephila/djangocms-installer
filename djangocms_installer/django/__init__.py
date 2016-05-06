@@ -218,7 +218,7 @@ STATICFILES_DIRS = (
 
     for item in overridden_settings:
         if config_data.django_version >= 1.9:
-            item_re = re.compile(r'%s = [^\]]+\)' % item, re.DOTALL | re.MULTILINE)
+            item_re = re.compile(r'%s = [^\]]+\]' % item, re.DOTALL | re.MULTILINE)
         else:
             item_re = re.compile(r'%s = [^\)]+\)' % item, re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
@@ -283,7 +283,7 @@ def _build_settings(config_data):
             dirs='os.path.join(BASE_DIR, \'%s\', \'templates\'),' % config_data.project_name
         ))
 
-    text.append('MIDDLEWARE_CLASSES = (\n%s%s\n)' % (
+    text.append('MIDDLEWARE_CLASSES = [\n%s%s\n]' % (
         spacer, (',\n' + spacer).join(['\'%s\'' % var for var in vars.MIDDLEWARE_CLASSES])))
 
     apps = list(vars.INSTALLED_APPS)
@@ -319,7 +319,7 @@ def _build_settings(config_data):
         apps.extend(vars.APPHOOK_RELOAD_APPLICATIONS)
     if config_data.reversion:
         apps.extend(vars.REVERSION_APPLICATIONS)
-    text.append('INSTALLED_APPS = (\n%s%s\n)' % (
+    text.append('INSTALLED_APPS = [\n%s%s\n]' % (
         spacer, (',\n' + spacer).join(['\'%s\'' % var for var in apps] + ['\'%s\'' % config_data.project_name])))  # NOQA
 
     text.append('LANGUAGES = (\n%s%s\n%s%s\n)' % (
