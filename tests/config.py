@@ -453,14 +453,13 @@ class TestConfig(BaseTestClass):
             '-p'+self.project_dir,
             'example_prj'])
 
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         if sys.version_info < (2, 7):
             self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
             self.assertTrue(conf_data.requirements.find('django-reversion>=1.8,<1.9') > -1)
         else:
             self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
             self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.7') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor/archive/develop') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('django-filer') > -1)
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') > -1)
