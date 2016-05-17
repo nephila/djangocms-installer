@@ -285,7 +285,7 @@ def parse(args):
                     requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
             if cms_version == 3:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.0'])
-            if cms_version >= 3.3 or cms_version == 'rc':
+            elif cms_version >= 3.3 or cms_version == 'rc':
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.3'])
             elif cms_version >= 3.2:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.2'])
