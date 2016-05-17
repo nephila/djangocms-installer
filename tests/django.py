@@ -272,7 +272,7 @@ class TestDjango(IsolatedTestClass):
                      reason="django 1.7 only supports python 2.6, 2.7, 3.3, 3.4")
     def test_patch_31(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
-                                    '--lang=en', '--cms=develop',
+                                    '--lang=en', '--cms=3.1',
                                     '--django-version=1.6',
                                     '--timezone=Europe/Moscow',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
@@ -300,7 +300,7 @@ class TestDjango(IsolatedTestClass):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
                                     '--django-version=1.7', '-f',
-                                    '--cms-version=develop', '--timezone=Europe/Moscow',
+                                    '--cms-version=3.1', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p' + self.project_dir, 'example_path_17_31_settings'])
         install.requirements(config_data.requirements)
