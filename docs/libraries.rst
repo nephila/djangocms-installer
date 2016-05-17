@@ -37,7 +37,7 @@ Debian / Ubuntu
 ---------------
 
 * Pillow: ``sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev``
-* Postgres: ``sudo apt-get install libqd-dev``
+* Postgres: ``sudo apt-get install libpq-dev``
 * MySQL: ``sudo apt-get install libmysqlclient-dev``
 
 
