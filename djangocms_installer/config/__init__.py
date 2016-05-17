@@ -230,8 +230,11 @@ def parse(args):
             elif cms_version >= 3:
                 requirements.extend(data.REQUIREMENTS['plugins-common-master'])
                 requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
-            if cms_version >= 3.2:
+            if cms_version >= 3.3 or cms_version == 'rc':
+                requirements.extend(data.REQUIREMENTS['ckeditor-3.3'])
+            elif cms_version >= 3.2:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.2'])
+
         if args.aldryn:  # pragma: no cover
             requirements.extend(data.REQUIREMENTS['aldryn'])
 
