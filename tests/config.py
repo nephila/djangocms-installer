@@ -317,9 +317,7 @@ class TestConfig(BaseTestClass):
             self.assertEqual(supported_versions('stable', 'stable'), (1.6, 3.2))
             self.assertEqual(supported_versions('stable', '3.0'), (1.6, 3.0))
             self.assertEqual(supported_versions('stable', '3.0.10'), (1.6, None))
-            self.assertEqual(supported_versions('stable', 'rc'), (1.6, 3.3))
-            self.assertEqual(supported_versions('stable', 'beta'), (1.6, 3.3))
-            self.assertEqual(supported_versions('stable', 'develop'), (1.6, 3.3))
+            self.assertEqual(supported_versions('stable', '3.2'), (1.6, 3.2))
 
             with self.assertRaises(RuntimeError):
                 supported_versions('stable', '2.4'), (1.5, 2.4)
@@ -447,7 +445,7 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
-            '--cms-version=develop',
+            '--cms-version=3.2',
             '--django-version=stable',
             '-f',
             '--apphooks-reload',
