@@ -12,17 +12,17 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--starting-page']
 
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % time.time()
-DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
+DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % time.time()
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
 if sys.version_info < (2, 7):
     DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', 'stable', 'develop')
     DJANGOCMS_STABLE = 3.2
 elif sys.version_info >= (3, 5):
-    DJANGOCMS_SUPPORTED = ('3.0', '3.1', '3.2', 'stable', 'develop')
+    DJANGOCMS_SUPPORTED = ('3.0', '3.1', '3.2', 'stable', 'rc', 'develop')
     DJANGOCMS_STABLE = 3.2
 else:
-    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', 'stable', 'develop')
+    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', 'stable', 'rc', 'develop')
     DJANGOCMS_STABLE = 3.2
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()
@@ -45,9 +45,9 @@ else:
 
 CMS_VERSION_MATRIX = {
     'stable': DJANGOCMS_STABLE,
-    'rc': 3.2,
-    'beta': 3.2,
-    'develop': 3.2
+    'rc': 3.3,
+    'beta': 3.3,
+    'develop': 3.3
 }
 DJANGO_VERSION_MATRIX = {
     'stable': DJANGO_STABLE,
@@ -60,6 +60,7 @@ VERSION_MATRIX = {
     3.0: (1.4, 1.7),
     3.1: (1.6, 1.8),
     3.2: (1.6, 1.9),
+    3.3: (1.8, 1.9),
 }
 
 REQUIREMENTS = {
@@ -128,6 +129,10 @@ REQUIREMENTS = {
     'ckeditor-3.2': [
         'djangocms-admin-style>=1.0.6',
         'djangocms-text-ckeditor>=2.8.1',
+    ],
+    'ckeditor-3.3': [
+        'djangocms-admin-style>=1.1.1',
+        'https://github.com/divio/djangocms-text-ckeditor/archive/develop.zip'
     ],
     'plugins-common': [
         'djangocms-column',
