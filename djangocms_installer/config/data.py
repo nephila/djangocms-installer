@@ -12,14 +12,14 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--starting-page']
 
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.format(**bust)
-DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/3.0c2.zip'
+DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.format(**bust)
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
 if sys.version_info >= (3, 5):
-    DJANGOCMS_SUPPORTED = ('3.2', 'stable', 'develop')
+    DJANGOCMS_SUPPORTED = ('3.2', 'stable', 'rc', 'develop')
     DJANGOCMS_STABLE = 3.2
 else:
-    DJANGOCMS_SUPPORTED = ('3.2', 'stable', 'develop')
+    DJANGOCMS_SUPPORTED = ('3.2', 'stable', 'rc', 'develop')
     DJANGOCMS_STABLE = 3.2
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
@@ -39,9 +39,9 @@ else:
 
 CMS_VERSION_MATRIX = {
     'stable': DJANGOCMS_STABLE,
-    'rc': 3.2,
-    'beta': 3.2,
-    'develop': 3.2
+    'rc': 3.3,
+    'beta': 3.3,
+    'develop': 3.3
 }
 DJANGO_VERSION_MATRIX = {
     'stable': DJANGO_STABLE,
@@ -51,16 +51,20 @@ DJANGO_VERSION_MATRIX = {
 }
 VERSION_MATRIX = {
     3.2: (1.8, 1.9),
+    3.3: (1.8, 1.9),
 }
 
 REQUIREMENTS = {
     'default': [
-        'django-classy-tags>=0.3.4.1',
-        'html5lib',
-        'Pillow>=2.3',
-        'django-sekizai>=0.7',
+        'django-classy-tags>=0.7',
+        'html5lib>=0.999999',
+        'Pillow>=3.0',
+        'django-sekizai>=0.9',
         'six',
-        'ipdb',
+    ],
+    'django-1.8': [
+    ],
+    'django-1.9': [
     ],
     'reversion-django-1.8': [
         'django-reversion>=1.10,<1.11',
@@ -69,21 +73,28 @@ REQUIREMENTS = {
         'django-reversion>=1.10,<1.11',
     ],
     'cms-3.2': [
-        'django-treebeard>=2.0',
+        'djangocms-admin-style>=1.1.1',
+        'django-treebeard>=4.0',
+    ],
+    'cms-3.3': [
+        'djangocms-admin-style>=1.1.1',
+        'django-treebeard>=4.0',
     ],
     'ckeditor-3.2': [
-        'djangocms-admin-style>=1.0.6',
-        'djangocms-text-ckeditor>=2.8.1',
+        'djangocms-text-ckeditor>=2.8.1,<=2.9.3',
+    ],
+    'ckeditor-3.3': [
+        'https://github.com/divio/djangocms-text-ckeditor/archive/develop.zip'
     ],
     'plugins-common': [
         'djangocms-column',
         'djangocms-googlemap',
         'djangocms-inherit',
         'djangocms-style',
+        'djangocms-link',
     ],
     'plugins-basic': [
         'djangocms-file',
-        'djangocms-link',
         'djangocms-picture',
         'djangocms-teaser',
         'djangocms-video',
@@ -106,8 +117,8 @@ REQUIREMENTS = {
     ],
     'filer': [
         'easy_thumbnails',
-        'django-filer>=0.9.12',
-        'cmsplugin-filer>=0.10.2',
+        'django-filer>=1.2',
+        'cmsplugin-filer>=1.0',
     ],
 }
 

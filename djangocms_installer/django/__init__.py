@@ -209,7 +209,7 @@ STATICFILES_DIRS = (
 
     for item in overridden_settings:
         if config_data.django_version >= 1.9:
-            item_re = re.compile(r'{0} = [^\]]+\)'.format(item), re.DOTALL | re.MULTILINE)
+            item_re = re.compile(r'{0} = [^\]]+\]'.format(item), re.DOTALL | re.MULTILINE)
         else:
             item_re = re.compile(r'{0} = [^\)]+\)'.format(item), re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)

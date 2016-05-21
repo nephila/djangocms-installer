@@ -60,7 +60,7 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(conf_data.cms_version, 3.2)
         self.assertEqual(conf_data.django_version, 1.8)
-        self.assertEqual(conf_data.i18n, 'no')
+        self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'no')
         self.assertEqual(conf_data.permissions, 'no')
         self.assertEqual(conf_data.use_timezone, 'no')
@@ -91,12 +91,43 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(str(conf_data.cms_version), cms_version)
         self.assertEqual(str(conf_data.django_version), dj_version)
-        self.assertEqual(conf_data.i18n, 'no')
+        self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'no')
         self.assertEqual(conf_data.permissions, 'no')
         self.assertEqual(conf_data.use_timezone, 'no')
         self.assertEqual(conf_data.timezone, 'Europe/Rome')
         self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
+        self.assertEqual(conf_data.project_directory, self.project_dir)
+        self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
+        self.assertEqual(conf_data.db_driver, 'psycopg2')
+
+        dj_version = '1.8'
+        cms_version = '3.2'
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--cms-version=stable',
+            '--django-version={0}'.format(dj_version),
+            '--cms-version={0}'.format(cms_version),
+            '--i18n=no',
+            '--reversion=no',
+            '--permissions=no',
+            '--use-tz=no',
+            '-tEurope/Rome',
+            '-len',
+            '-p' + self.project_dir,
+            'example_prj'])
+
+        self.assertEqual(conf_data.project_name, 'example_prj')
+
+        self.assertEqual(str(conf_data.cms_version), cms_version)
+        self.assertEqual(str(conf_data.django_version), dj_version)
+        self.assertEqual(conf_data.i18n, 'no')
+        self.assertEqual(conf_data.reversion, 'no')
+        self.assertEqual(conf_data.permissions, 'no')
+        self.assertEqual(conf_data.use_timezone, 'no')
+        self.assertEqual(conf_data.timezone, 'Europe/Rome')
+        self.assertEqual(conf_data.languages, ['en'])
         self.assertEqual(conf_data.project_directory, self.project_dir)
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
         self.assertEqual(conf_data.db_driver, 'psycopg2')
@@ -265,9 +296,9 @@ class TestConfig(BaseTestClass):
     def test_supported_versions(self):
         self.assertEqual(supported_versions('stable', 'stable'), (1.8, 3.2))
         self.assertEqual(supported_versions('stable', '3.1.10'), (1.8, None))
-        self.assertEqual(supported_versions('stable', 'rc'), (1.8, 3.2))
-        self.assertEqual(supported_versions('stable', 'beta'), (1.8, 3.2))
-        self.assertEqual(supported_versions('stable', 'develop'), (1.8, 3.2))
+        self.assertEqual(supported_versions('stable', 'rc'), (1.8, 3.3))
+        self.assertEqual(supported_versions('stable', 'beta'), (1.8, 3.3))
+        self.assertEqual(supported_versions('stable', 'develop'), (1.8, 3.3))
 
         with self.assertRaises(RuntimeError):
             supported_versions('stable', '2.4'), (1.5, 2.4)
@@ -300,7 +331,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=2.8.1') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.0.6') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.1.1') > -1)
         self.assertTrue(conf_data.requirements.find('django-filer') > -1)
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
@@ -320,7 +351,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=2.8') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.0.6') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.1.1') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)
@@ -415,9 +446,9 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=2.8') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.0.6') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-text-ckeditor/archive/develop.zip') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.1.1') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser') > -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
         dj_version = '1.8'
@@ -489,6 +520,17 @@ class TestConfig(BaseTestClass):
             '-p'+self.project_dir,
             'example_prj'])
         self.assertTrue(conf_data.starting_page)
+
+    def test_auto_i18n(self):
+        """
+        Verify setting automatic i18n support if multiple languages
+        """
+        conf_data = config.parse([
+            '-q', '-len,de'
+            '--i18n=no',
+            '-p' + self.project_dir,
+            'example_prj'])
+        self.assertTrue(conf_data.i18n)
 
     def test_utc(self):
         """
@@ -584,10 +626,7 @@ class TestConfig(BaseTestClass):
 
     def test_show_requirements(self):
         sys.stdout = StringIO()
-        if sys.version_info < (2, 7):
-            dj_version = '1.6'
-        else:
-            dj_version = '1.8'
+        dj_version = '1.8'
         try:
             conf_data = config.parse([
                 '-q',
@@ -671,7 +710,6 @@ class TestBaseConfig(unittest.TestCase):
         self.unused(config_data)
         self.assertEqual(self.config_fixture, config_data)
 
-        fixture = copy.copy(self.config_fixture)
         test_data = [
             ('config-02.ini', 'db', 'postgres://user:pwd@host:54321/dbname'),
             ('config-03.ini', 'i18n', 'no'),
@@ -679,9 +717,9 @@ class TestBaseConfig(unittest.TestCase):
             ('config-05.ini', 'timezone', 'Europe/London'),
             ('config-06.ini', 'reversion', 'no'),
             ('config-07.ini', 'permissions', 'no'),
-            ('config-08.ini', 'languages', ['en', 'ru']),
-            ('config-09.ini', 'django_version', 1.8),
-            ('config-10.ini', 'i18n', 'no'),
+            ('config-08.ini', None, (('i18n', 'no'), ('languages', ['ru']))),
+            ('config-09.ini', None, (('i18n', 'yes'), ('languages', ['en', 'ru']))),
+            ('config-10.ini', 'django_version', 1.8),
             ('config-11.ini', 'project_directory', '/test/me'),
             ('config-12.ini', 'bootstrap', True),
             ('config-13.ini', 'templates', '.'),
@@ -703,8 +741,13 @@ class TestBaseConfig(unittest.TestCase):
             ('config-29.ini', 'apphooks_reload', True),
             ('config-30.ini', 'verbose', True),
         ]
+        fixture = copy.copy(self.config_fixture)
         for filename, key, val in test_data:
-            setattr(fixture, key, val)  # Change value.
+            if type(val) == tuple:
+                for subkey, subval in val:
+                    setattr(fixture, subkey, subval)  # Change value.
+            else:
+                setattr(fixture, key, val)  # Change value.
             args = self.args[0:1] + [self.conf(filename)] + self.args[1:]  # Load new config.
             config_data = config.parse(args)
             self.unused(config_data)

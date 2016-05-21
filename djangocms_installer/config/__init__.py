@@ -32,7 +32,9 @@ def parse(args):
                         help='Database configuration (in URL format)')
     parser.add_argument('--i18n', '-i', dest='i18n', action='store',
                         choices=('yes', 'no'),
-                        default='yes', help='Activate Django I18N / L10N setting')
+                        default='yes', help='Activate Django I18N / L10N setting; this is '
+                                            'automatically activated if more than '
+                                            'language is provided')
     parser.add_argument('--use-tz', '-z', dest='use_timezone', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='Activate Django timezone support')
@@ -180,6 +182,8 @@ def parse(args):
         args.languages = args.languages[0].split(',')
 
     args.languages = [lang.strip().lower() for lang in args.languages]
+    if len(args.languages) > 1:
+        args.i18n = 'yes'
     args.aldryn = False
 
     # Convert version to numeric format for easier checking
@@ -224,13 +228,14 @@ def parse(args):
             requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.filer:
-                if cms_version >= 3:
-                    requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                    requirements.extend(data.REQUIREMENTS['filer'])
-            elif cms_version >= 3:
-                requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
-            if cms_version >= 3.2:
+                requirements.extend(data.REQUIREMENTS['plugins-common'])
+                requirements.extend(data.REQUIREMENTS['filer'])
+            else:
+                requirements.extend(data.REQUIREMENTS['plugins-common'])
+                requirements.extend(data.REQUIREMENTS['plugins-basic'])
+            if cms_version >= 3.3 or cms_version == 'rc':
+                requirements.extend(data.REQUIREMENTS['ckeditor-3.3'])
+            else:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.2'])
         if args.aldryn:  # pragma: no cover
             requirements.extend(data.REQUIREMENTS['aldryn'])
@@ -259,6 +264,11 @@ def parse(args):
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.8'])
             elif django_version == 1.9:
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.9'])
+
+        if django_version == 1.8:
+            requirements.extend(data.REQUIREMENTS['django-1.8'])
+        elif django_version == 1.9:
+            requirements.extend(data.REQUIREMENTS['django-1.9'])
 
         requirements.extend(data.REQUIREMENTS['default'])
 
