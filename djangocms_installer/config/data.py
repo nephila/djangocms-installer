@@ -16,13 +16,13 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % ti
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
 if sys.version_info < (2, 7):
-    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', 'stable', 'develop')
+    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', '3.3', 'stable', 'develop')
     DJANGOCMS_STABLE = 3.2
 elif sys.version_info >= (3, 5):
-    DJANGOCMS_SUPPORTED = ('3.0', '3.1', '3.2', 'stable', 'rc', 'develop')
+    DJANGOCMS_SUPPORTED = ('3.0', '3.1', '3.2', '3.3', 'stable', 'rc', 'develop')
     DJANGOCMS_STABLE = 3.2
 else:
-    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', 'stable', 'rc', 'develop')
+    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', '3.3', 'stable', 'rc', 'develop')
     DJANGOCMS_STABLE = 3.2
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()
@@ -116,7 +116,10 @@ REQUIREMENTS = {
         'django-treebeard>=2.0',
     ],
     'cms-3.2': [
-        'django-treebeard>=2.0',
+        'django-treebeard>=4.0',
+    ],
+    'cms-3.3': [
+        'django-treebeard>=4.0',
     ],
     'ckeditor-3.0': [
         'djangocms-admin-style<0.3',
@@ -128,11 +131,11 @@ REQUIREMENTS = {
     ],
     'ckeditor-3.2': [
         'djangocms-admin-style>=1.0.6',
-        'djangocms-text-ckeditor>=2.8.1',
+        'djangocms-text-ckeditor>=2.8.1,<3.0',
     ],
     'ckeditor-3.3': [
         'djangocms-admin-style>=1.1.1',
-        'https://github.com/divio/djangocms-text-ckeditor/archive/develop.zip'
+        'djangocms-text-ckeditor>=3.0',
     ],
     'plugins-common': [
         'djangocms-column',
