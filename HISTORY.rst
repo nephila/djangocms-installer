@@ -10,6 +10,11 @@ History
 * Drop support for Django < 1.8
 * Drop support for django CMS < 3.2
 
+0.8.10 (2016-05-28)
++++++++++++++++++++
+
+* Add support for django CMS 3.3 final
+
 0.8.9 (2016-05-19)
 ++++++++++++++++++
 

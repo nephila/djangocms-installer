@@ -431,6 +431,25 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
 
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--i18n=no',
+            '--cms-version=3.3',
+            '--django-version=stable',
+            '-f',
+            '--reversion=yes',
+            '-z=yes',
+            '-p'+self.project_dir,
+            'example_prj'])
+
+        self.assertTrue(conf_data.requirements.find('django-cms<3.4') > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
+        self.assertTrue(conf_data.requirements.find('pytz') > -1)
+
         dj_version = '1.8'
         conf_data = config.parse([
             '-q',
@@ -446,8 +465,8 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
-        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-text-ckeditor/archive/develop.zip') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.1.1') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.2') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') > -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
@@ -468,6 +487,27 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor/archive/master.zip') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)
+        self.assertTrue(conf_data.requirements.find('south') == -1)
+
+        dj_version = '1.8'
+        conf_data = config.parse([
+            '-q',
+            '--db=postgres://user:pwd@host/dbname',
+            '--i18n=no',
+            '--cms-version=develop',
+            '--django-version={0}'.format(dj_version),
+            '--reversion=yes',
+            '--no-plugins',
+            '-z=yes',
+            '-p'+self.project_dir,
+            'example_prj'])
+
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
+        self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
+        self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)

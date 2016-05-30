@@ -16,10 +16,10 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
 if sys.version_info >= (3, 5):
-    DJANGOCMS_SUPPORTED = ('3.2', 'stable', 'rc', 'develop')
+    DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'develop')
     DJANGOCMS_STABLE = 3.2
 else:
-    DJANGOCMS_SUPPORTED = ('3.2', 'stable', 'rc', 'develop')
+    DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'develop')
     DJANGOCMS_STABLE = 3.2
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
@@ -77,14 +77,14 @@ REQUIREMENTS = {
         'django-treebeard>=4.0',
     ],
     'cms-3.3': [
-        'djangocms-admin-style>=1.1.1',
+        'djangocms-admin-style>=1.2',
         'django-treebeard>=4.0',
     ],
     'ckeditor-3.2': [
         'djangocms-text-ckeditor>=2.8.1,<=2.9.3',
     ],
     'ckeditor-3.3': [
-        'https://github.com/divio/djangocms-text-ckeditor/archive/develop.zip'
+        'djangocms-text-ckeditor>=3.0',
     ],
     'plugins-common': [
         'djangocms-column',

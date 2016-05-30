@@ -221,7 +221,9 @@ def parse(args):
         else:
             requirements.append('django-cms<{0}'.format(less_than_version(cms_version)))
 
-        if cms_version >= 3.2:
+        if cms_version >= 3.3:
+            requirements.extend(data.REQUIREMENTS['cms-3.3'])
+        elif cms_version >= 3.2:
             requirements.extend(data.REQUIREMENTS['cms-3.2'])
 
         if not args.no_db_driver:
@@ -237,6 +239,7 @@ def parse(args):
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.3'])
             else:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.2'])
+
         if args.aldryn:  # pragma: no cover
             requirements.extend(data.REQUIREMENTS['aldryn'])
 
