@@ -50,7 +50,7 @@ on how to properly setup your first django CMS project.
 Documentation
 -------------
 
-For detailed information see http://djangocms-installer.readthedocs.org
+For detailed information see https://djangocms-installer.readthedocs.io
 
 Preliminary checks and system libraries
 ---------------------------------------
@@ -68,7 +68,7 @@ Libraries you would want to check:
 * libmysqlclient (for ``Mysql``)
 * python-dev (for compilation and linking)
 
-For additional information, check http://djangocms-installer.readthedocs.org/en/latest/libraries.html
+For additional information, check https://djangocms-installer.readthedocs.io/en/latest/libraries.html
 
 Supported versions
 ------------------
@@ -114,4 +114,4 @@ Please check that the ``.py`` extension is associated correctly with Python inte
 
 
 .. _version 0.8: https://github.com/nephila/djangocms-installer/tree/release/0.8.x#supported-versions
-.. _django CMS Tutorial: http://django-cms.readthedocs.org/en/latest/introduction/index.html
+.. _django CMS Tutorial: https://django-cms.readthedocs.io/en/latest/introduction/index.html

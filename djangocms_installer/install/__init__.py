@@ -31,7 +31,7 @@ def check_install(config_data):
         except IOError:  # pragma: no cover
             errors.append(
                 'Pillow is not compiled with PNG support, see "Libraries installation issues" '
-                'documentation section: http://djangocms-installer.readthedocs.org/en/latest/'
+                'documentation section: https://djangocms-installer.readthedocs.io/en/latest/'
                 'libraries.html.'
             )
         try:
@@ -40,13 +40,13 @@ def check_install(config_data):
         except IOError:  # pragma: no cover
             errors.append(
                 'Pillow is not compiled with JPEG support, see "Libraries installation issues" '
-                'documentation section: http://djangocms-installer.readthedocs.org/en/latest/'
+                'documentation section: https://djangocms-installer.readthedocs.io/en/latest/'
                 'libraries.html'
             )
     except ImportError:  # pragma: no cover
         errors.append(
             'Pillow is not installed check for installation errors and see "Libraries installation'
-            ' issues" documentation section: http://djangocms-installer.readthedocs.org/en/latest/'
+            ' issues" documentation section: https://djangocms-installer.readthedocs.io/en/latest/'
             'libraries.html'
         )
 
@@ -58,7 +58,7 @@ def check_install(config_data):
             errors.append(
                 'PostgreSQL driver is not installed, but you configured a PostgreSQL database, '
                 'please check your installation and see "Libraries installation issues" '
-                'documentation section: http://djangocms-installer.readthedocs.org/en/latest/'
+                'documentation section: https://djangocms-installer.readthedocs.io/en/latest/'
                 'libraries.html'
             )
 
@@ -70,7 +70,7 @@ def check_install(config_data):
             errors.append(
                 'MySQL driver is not installed, but you configured a MySQL database, please check '
                 'your installation and see "Libraries installation issues" documentation section: '
-                'http://djangocms-installer.readthedocs.org/en/latest/libraries.html'
+                'https://djangocms-installer.readthedocs.io/en/latest/libraries.html'
             )
     if errors:  # pragma: no cover
         raise EnvironmentError('\n'.join(errors))

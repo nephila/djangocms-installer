@@ -96,5 +96,5 @@ advanced usage:
 .. _dj-database-url: https://github.com/kennethreitz/dj-database-url
 .. _django source: https://github.com/django/django/blob/master/django/conf/global_settings.py#L50
 .. _aldryn-boilerplate: https://github.com/aldryn/aldryn-boilerplate
-.. _aldryn-boilerplate documentation: http://aldryn-boilerplate.readthedocs.org/en/latest/general/requirements.html
+.. _aldryn-boilerplate documentation: https://aldryn-boilerplate.readthedocs.io/en/latest/general/requirements.html
 .. _aldryn-apphook-reload: https://github.com/aldryn/aldryn-apphook-reload
