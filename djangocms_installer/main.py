@@ -48,7 +48,7 @@ def execute():
                 sys.stdout.write('aldryn boilerplate requires action before '
                                  'you can actually run the project.\n'
                                  'See documentation at '
-                                 'http://aldryn-boilerplate.readthedocs.org/'
+                                 'https://aldryn-boilerplate.readthedocs.io/'
                                  'for more information.\n')
             else:
                 sys.stdout.write('All done!\n')
@@ -59,7 +59,7 @@ def execute():
     except Exception:
         # Clean up your own mess
         install.cleanup_directory(config_data)
-        doc_message = 'Check documentation at http://djangocms-installer.rtfd.org'
+        doc_message = 'Check documentation at https://djangocms-installer.readthedocs.io'
         exception_message = '\n\n{0}\n\n{1}\n\n{0}\n\n'.format('*' * len(doc_message), doc_message)
         sys.stdout.write(exception_message)
         raise
