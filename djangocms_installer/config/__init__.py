@@ -270,16 +270,16 @@ def parse(args):
         if not args.no_plugins:
             if args.filer:
                 if cms_version >= 3:
-                    if django_version < 1.7:
+                    if django_version < 1.8:
                         requirements.extend(data.REQUIREMENTS['plugins-common'])
-                        requirements.extend(data.REQUIREMENTS['filer'])
+                        requirements.extend(data.REQUIREMENTS['filer-1.6'])
                     else:
                         requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                        requirements.extend(data.REQUIREMENTS['filer'])
+                        requirements.extend(data.REQUIREMENTS['filer-1.8'])
                 else:
                     requirements.extend(data.REQUIREMENTS['filer-cms-2.x'])
             elif cms_version >= 3:
-                if django_version < 1.7:
+                if django_version < 1.8:
                     requirements.extend(data.REQUIREMENTS['plugins-common'])
                     requirements.extend(data.REQUIREMENTS['plugins-basic'])
                 else:
@@ -314,7 +314,7 @@ def parse(args):
         if args.use_timezone:
             requirements.append('pytz')
 
-        # Requirements dependendent on django version
+        # Requirements dependent on django version
         if django_version < 1.7:
             requirements.extend(data.REQUIREMENTS['django-legacy'])
 

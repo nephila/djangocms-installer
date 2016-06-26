@@ -104,7 +104,7 @@ REQUIREMENTS = {
         'django-reversion>=1.8.7,<1.9',
     ],
     'reversion-django-1.9': [
-        'django-reversion>=1.10,<1.11',
+        'django-reversion>=1.10,<2.0',
     ],
     'cms-2.x': [
         'django-mptt>=0.5.1,<0.5.3',
@@ -142,7 +142,7 @@ REQUIREMENTS = {
         'djangocms-googlemap',
         'djangocms-inherit',
         'djangocms-style',
-        'djangocms-link',
+        'djangocms-link<1.8',
     ],
     'plugins-basic': [
         'djangocms-file',
@@ -166,15 +166,20 @@ REQUIREMENTS = {
     'aldryn': [
         'django-compressor',
     ],
-    'filer': [
+    'filer-1.6': [
         'easy_thumbnails',
-        'django-filer>=0.9.12',
-        'cmsplugin-filer>=0.10.2',
+        'django-filer>=0.9.12,<1.2',
+        'cmsplugin-filer>=0.10.2,<1.1',
+    ],
+    'filer-1.8': [
+        'easy_thumbnails',
+        'django-filer>=1.2',
+        'cmsplugin-filer>=1.1',
     ],
     'filer-cms-2.x': [
         'easy_thumbnails',
         'django-filer<=0.9.6',
-        'cmsplugin-filer',
+        'cmsplugin-filer<1.0',
     ],
     'apphooks-reload': [
         'aldryn-apphook-reload>=0.2.2'
