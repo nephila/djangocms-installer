@@ -85,13 +85,13 @@ Is it possible to either provide all the values in the config file:
 
 .. code-block:: shell
 
-    djangocms_installer --config-file /path/to/config.ini project_name
+    djangocms --config-file /path/to/config.ini project_name
 
 Or just some, or overriding by using the command line arguments:
 
 .. code-block:: shell
 
-    djangocms_installer --config-file /path/general-config.ini -p /path/other/proj -s -q project_name
+    djangocms --config-file /path/general-config.ini -p /path/other/proj -s -q project_name
 
 .. note:: If config.ini not contains `no-input = true` and `-q` argument isn't set then one
           act as a placeholder with default values for wizard.
@@ -104,16 +104,16 @@ Values passed to the installer can be dumped for later reuse:
 
 .. code-block:: shell
 
-    djangocms_installer --config-dump /path/config.ini -p . project_name
+    djangocms --config-dump /path/config.ini -p . project_name
 
 if installation fails dump can be used to fix some arguments and re-run installer with dumped config:
 
 .. code-block:: shell
 
-    djangocms_installer --config-dump /path/config.ini --db postgres://wrong-usr:pwd@host/db -p . project_name
+    djangocms --config-dump /path/config.ini --db postgres://wrong-usr:pwd@host/db -p . project_name
     # fails
 
-    djangocms_installer --config-file /path/config.ini --db postgres://correct-user:pwd@host/db -p . project_name
+    djangocms --config-file /path/config.ini --db postgres://correct-user:pwd@host/db -p . project_name
     # succeed
 
 Custom settings
@@ -142,7 +142,7 @@ HOWTO
 
 #. Execute the wizard::
 
-    djangocms-start -p /path/whatever project_name
+    djangocms -p /path/whatever project_name
 
 #. Answer the wizard questions;
 
