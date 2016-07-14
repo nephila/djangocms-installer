@@ -8,6 +8,7 @@ History
 
 * Better plugins version pinning
 * Move sitemaps to non-language prefix url
+* Fallback to UTC when timezone cannot be detected
 
 0.8.10 (2016-05-28)
 +++++++++++++++++++
