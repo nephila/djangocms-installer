@@ -3,6 +3,12 @@
 History
 -------
 
+0.8.11 (unreleased)
++++++++++++++++++++
+
+* Better plugins version pinning
+* Move sitemaps to non-language prefix url
+
 0.8.10 (2016-05-28)
 +++++++++++++++++++
 
