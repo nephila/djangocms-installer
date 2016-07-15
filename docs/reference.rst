@@ -34,7 +34,7 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--languages``, ``-l``: Languages available for the project. Option can be provided multiple
   times, or as a comma separated list.
   Only language codes supported by Django can be used here;
-  refer to `django source`_ for a list of supported codes. 
+  refer to `django source`_ for a list of supported codes.
 * ``--django-version``: Django version;  choices: ``1.4|1.5|1.6|1.7|stable``, default: ``stable``
 * ``--cms-version``, ``-v``: django CMS version, choices: ``2.4|3.0|3.1|stable|develop``.
   default: ``stable``
@@ -82,19 +82,10 @@ advanced usage:
 * ``--extra-settings``: Path to a file with extra variables to append to generated settings file.
   It doesn't need to be a Python file, its content is blindly copied in the project settings.
 * ``--skip-empty-check``, ``-s``: Skip the check if the project dir contains files or directory;
-  in case of error when setting up the project, ``djangocms-installer`` may ask you to remove
-  the directory, be careful if using this option as you may remove files not related to the
-  project set up by the installer.
+  in case of error when setting up the project the existing directory will be preserved.
 
-
-..  ``--aldryn``, ``-a``: Use `aldryn-boilerplate`_; this downloads **aldryn-boilerplate** and copies
-    it to the project, adapting the project layout according to boilerplate specifications; the use
-    of aldryn-boilerplate requires manual actions, look at `aldryn-boilerplate documentation`_ for
-    further informations.
 
 
 .. _dj-database-url: https://github.com/kennethreitz/dj-database-url
 .. _django source: https://github.com/django/django/blob/master/django/conf/global_settings.py#L50
-.. _aldryn-boilerplate: https://github.com/aldryn/aldryn-boilerplate
-.. _aldryn-boilerplate documentation: https://aldryn-boilerplate.readthedocs.io/en/latest/general/requirements.html
 .. _aldryn-apphook-reload: https://github.com/aldryn/aldryn-apphook-reload
