@@ -9,6 +9,9 @@ History
 * Drop support for Python 2.6
 * Drop support for Django < 1.8
 * Drop support for django CMS < 3.2
+* Improve inline documentation
+* If -s option is used, original directory is not removed
+
 
 0.8.11 (2016-07-15)
 +++++++++++++++++++
