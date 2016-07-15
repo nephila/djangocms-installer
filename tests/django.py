@@ -152,7 +152,7 @@ class TestDjango(IsolatedTestClass):
     def test_patch_django_19(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
-                                    '--django-version=1.9', '--apphooks-reload',
+                                    '--django-version=1.9',
                                     '--cms-version=3.2', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p' + self.project_dir, 'example_path_16'])
@@ -195,7 +195,6 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_teaser' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
-        self.assertTrue('aldryn_apphook_reload' not in project.settings.INSTALLED_APPS)
         self.assertTrue(
             config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
             project.settings.MIDDLEWARE_CLASSES
@@ -259,7 +258,6 @@ class TestDjango(IsolatedTestClass):
         # checking for django options
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
-        self.assertTrue('aldryn_apphook_reload' not in project.settings.INSTALLED_APPS)
         self.assertTrue(
             config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
             project.settings.MIDDLEWARE_CLASSES
@@ -292,7 +290,6 @@ class TestDjango(IsolatedTestClass):
         # checking for django options
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
-        self.assertTrue('aldryn_apphook_reload' not in project.settings.INSTALLED_APPS)
         self.assertTrue(
             config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
             project.settings.MIDDLEWARE_CLASSES

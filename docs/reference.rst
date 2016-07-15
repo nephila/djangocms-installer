@@ -59,10 +59,6 @@ advanced usage:
 * ``--verbose``, : Provides output of the commands used to setup the project, namely ``pip`` and
   ``django-admin``;
 * ``--filer``, ``-f``: Install and configure django-filer plugins;
-* ``--apphooks-reload``, ``-k``: Install and configure apphook reload middleware that enables the
-  automatic reload of the urlconf whenever an apphook is configured; for django CMS 3.2 this is
-  handled by a core middleware, available as external application for lower versions in
-  `aldryn-apphook-reload`_;
 * ``--config-file``: Provides the configuration options via a ini file; see :ref:`ini_mode`;
 * ``--config-dump``: Dumps the configuration in a format suitable for ``-config-file``
   option; see :ref:`ini_mode`;
@@ -88,4 +84,3 @@ advanced usage:
 
 .. _dj-database-url: https://github.com/kennethreitz/dj-database-url
 .. _django source: https://github.com/django/django/blob/master/django/conf/global_settings.py#L50
-.. _aldryn-apphook-reload: https://github.com/aldryn/aldryn-apphook-reload
