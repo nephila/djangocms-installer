@@ -126,7 +126,7 @@ def cleanup_directory(config_data):
             )
         else:
             sys.stdout.write('The installation failed.\n')
-        if choice or config_data.noinput:
+        if config_data.skip_project_dir_check is False and (choice or config_data.noinput):
             sys.stdout.write('Removing everything under {0}\n'.format(
                 os.path.abspath(config_data.project_directory)
             ))

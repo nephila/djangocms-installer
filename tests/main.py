@@ -45,13 +45,29 @@ class TestMain(IsolatedTestClass):
                     '-q',
                     '--db=postgres://user:pwd@host/dbname',
                     '--i18n=no',
-                    '--cms-version=2.4',
-                    '--django-version=1.7',
+                    '--cms-version=3.2',
+                    '--django-version=1.9',
                     '-f',
                     '-p'+self.project_dir,
                     'example_prj'])
                 install.cleanup_directory(conf_data)
                 self.assertFalse(os.path.exists(self.project_dir))
+
+    def cleanup_skip(self):
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                conf_data = config.parse([
+                    '-q',
+                    '-s',
+                    '--db=postgres://user:pwd@host/dbname',
+                    '--i18n=no',
+                    '--cms-version=3.2',
+                    '--django-version=1.9',
+                    '-f',
+                    '-p'+self.project_dir,
+                    'example_prj'])
+                install.cleanup_directory(conf_data)
+                self.assertTrue(os.path.exists(self.project_dir))
 
     def test_main_invocation(self):
         with patch('sys.stdout', self.stdout):
