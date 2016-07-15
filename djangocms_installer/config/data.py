@@ -66,7 +66,7 @@ VERSION_MATRIX = {
 REQUIREMENTS = {
     'default': [
         'django-classy-tags>=0.3.4.1',
-        'html5lib',
+        'html5lib>=0.90,!=0.9999,!=0.99999,<0.99999999',
         'Pillow>=2.3',
         'django-sekizai>=0.7',
         'six',
