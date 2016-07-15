@@ -24,7 +24,20 @@ def parse(args):
         timezone = get_localzone()
     except:
         timezone = 'UTC'
-    parser = argparse.ArgumentParser(description='Bootstrap a django CMS project.')
+    parser = argparse.ArgumentParser(description="""Bootstrap a django CMS project.
+Major usage modes:
+
+- wizard: djangocms -p /path/whatever project_name: ask for all the options through a CLI wizard.
+
+- batch: djangocms -q -p /path/whatever project_name: runs with the default values plus any
+         additional option provided (see below) with no question asked.
+
+- config file: djangocms_installer --config-file /path/to/config.ini project_name: reads values
+               from an ini-style config file.
+
+Check https://djangocms-installer.readthedocs.io/en/latest/usage.html for detailed usage
+information.
+""", formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('--config-file', dest='config_file', action='store',
                         default=None,
                         help='Configuration file for djangocms_installer')
@@ -33,7 +46,8 @@ def parse(args):
                         help='Dump configuration file with current args')
     parser.add_argument('--db', '-d', dest='db', action=DbAction,
                         default='sqlite://localhost/project.db',
-                        help='Database configuration (in URL format)')
+                        help='Database configuration (in URL format). '
+                             'Example: sqlite://localhost/project.db')
     parser.add_argument('--i18n', '-i', dest='i18n', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='Activate Django I18N / L10N setting; this is '
@@ -44,7 +58,7 @@ def parse(args):
                         default='yes', help='Activate Django timezone support')
     parser.add_argument('--timezone', '-t', dest='timezone',
                         required=False, default=timezone,
-                        action='store', help='Optional default time zone')
+                        action='store', help='Optional default time zone. Example: Europe/Rome')
     parser.add_argument('--reversion', '-e', dest='reversion', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='Install and configure reversion support')
@@ -55,7 +69,7 @@ def parse(args):
     parser.add_argument('--languages', '-l', dest='languages', action='append',
                         help='Languages to enable. Option can be provided multiple times, or as a '
                              'comma separated list. Only language codes supported by Django can '
-                             'be used here')
+                             'be used here. Example: en, fr-FR, it-IT')
     parser.add_argument('--django-version', dest='django_version', action='store',
                         choices=data.DJANGO_SUPPORTED,
                         default='stable', help='Django version')
@@ -88,17 +102,14 @@ def parse(args):
                              'parameters given. Together with --requirements argument is useful '
                              'for customizing the virtualenv')
 
-    # Advanced options. These have a predefined default and are not managed
+    # Advanced options. These have a predefined default and are not asked
     # by config wizard.
-    # parser.add_argument('--aldryn', '-a', dest='aldryn', action='store_true',
-    #                    default=False, help='Use Aldryn-boilerplate as project template')
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
                         default=False, help='Don\'t run the configuration wizard, just use the '
                                             'provided values')
     parser.add_argument('--verbose', dest='verbose', action='store_true',
-                        default=False, help='Be more verbose and don\' swallow subcommands output')
-    parser.add_argument('--apphooks-reload', '-k', dest='apphooks_reload', action='store_true',
-                        default=False, help='Use apphooks-reload middleware')
+                        default=False,
+                        help='Be more verbose and don\'t swallow subcommands output')
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
                         default=False, help='Install and configure django-filer plugins')
     parser.add_argument('--requirements', '-r', dest='requirements_file', action='store',

@@ -322,7 +322,6 @@ class TestConfig(BaseTestClass):
             '--cms-version=3.2',
             '--django-version={0}'.format(dj_version),
             '--i18n=no',
-            '--apphooks-reload',
             '-f',
             '-p'+self.project_dir,
             'example_prj'])
@@ -335,7 +334,6 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('django-filer') > -1)
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
-        self.assertTrue(conf_data.requirements.find('aldryn-apphook-reload') == -1)
 
         conf_data = config.parse([
             '-q',
@@ -370,7 +368,6 @@ class TestConfig(BaseTestClass):
             '--cms-version=develop',
             '--django-version=stable',
             '-f',
-            '--apphooks-reload',
             '--reversion=yes',
             '-p'+self.project_dir,
             'example_prj'])
@@ -392,7 +389,6 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-style') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-video') == -1)
-        self.assertTrue(conf_data.requirements.find('aldryn-apphook-reload') == -1)
 
         dj_version = '1.8'
         conf_data = config.parse([
@@ -715,7 +711,6 @@ class TestBaseConfig(unittest.TestCase):
         'use_timezone': 'yes',
         'utc': False,
         'no_plugins': False,
-        'apphooks_reload': False,
         'verbose': False,
     })
 
@@ -778,7 +773,6 @@ class TestBaseConfig(unittest.TestCase):
             ('config-26.ini', 'skip_project_dir_check', True),
             ('config-27.ini', 'utc', True),
             ('config-28.ini', 'no_plugins', True),
-            ('config-29.ini', 'apphooks_reload', True),
             ('config-30.ini', 'verbose', True),
         ]
         fixture = copy.copy(self.config_fixture)
