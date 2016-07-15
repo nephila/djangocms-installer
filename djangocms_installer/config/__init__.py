@@ -20,6 +20,10 @@ def parse(args):
     """
     Define the available arguments
     """
+    try:
+        timezone = get_localzone()
+    except:
+        timezone = 'UTC'
     parser = argparse.ArgumentParser(description='Bootstrap a django CMS project.')
     parser.add_argument('--config-file', dest='config_file', action='store',
                         default=None,
@@ -39,7 +43,7 @@ def parse(args):
                         choices=('yes', 'no'),
                         default='yes', help='Activate Django timezone support')
     parser.add_argument('--timezone', '-t', dest='timezone',
-                        required=False, default=get_localzone(),
+                        required=False, default=timezone,
                         action='store', help='Optional default time zone')
     parser.add_argument('--reversion', '-e', dest='reversion', action='store',
                         choices=('yes', 'no'),
@@ -256,10 +260,6 @@ def parse(args):
         # Timezone support
         if args.use_timezone:
             requirements.append('pytz')
-
-        # Requirements dependendent on django version
-        # if django_version < 1.7:
-        #    requirements.extend(data.REQUIREMENTS['django-legacy'])
 
         # Reversion package version depends on django version
         if args.reversion:

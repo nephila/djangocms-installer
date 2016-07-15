@@ -57,7 +57,7 @@ VERSION_MATRIX = {
 REQUIREMENTS = {
     'default': [
         'django-classy-tags>=0.7',
-        'html5lib>=0.999999',
+        'html5lib>=0.999999,<0.99999999',
         'Pillow>=3.0',
         'django-sekizai>=0.9',
         'six',
@@ -70,7 +70,7 @@ REQUIREMENTS = {
         'django-reversion>=1.10,<1.11',
     ],
     'reversion-django-1.9': [
-        'django-reversion>=1.10,<1.11',
+        'django-reversion>=1.10,<2.0',
     ],
     'cms-3.2': [
         'djangocms-admin-style>=1.1.1',
@@ -88,10 +88,10 @@ REQUIREMENTS = {
     ],
     'plugins-common': [
         'djangocms-column',
-        'djangocms-googlemap',
+        'djangocms-googlemap>=0.5',
         'djangocms-inherit',
         'djangocms-style',
-        'djangocms-link',
+        'djangocms-link>=1.8',
     ],
     'plugins-basic': [
         'djangocms-file',
@@ -118,7 +118,7 @@ REQUIREMENTS = {
     'filer': [
         'easy_thumbnails',
         'django-filer>=1.2',
-        'cmsplugin-filer>=1.0',
+        'cmsplugin-filer>=1.1',
     ],
 }
 

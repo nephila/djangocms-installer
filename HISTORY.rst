@@ -10,6 +10,14 @@ History
 * Drop support for Django < 1.8
 * Drop support for django CMS < 3.2
 
+0.8.11 (2016-07-15)
++++++++++++++++++++
+
+* Better plugins version pinning
+* Move sitemaps to non-language prefix url
+* Fallback to UTC when timezone cannot be detected
+* Pin html5lib version
+
 0.8.10 (2016-05-28)
 +++++++++++++++++++
 

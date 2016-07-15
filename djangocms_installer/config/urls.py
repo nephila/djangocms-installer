@@ -10,11 +10,14 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 admin.autodiscover()
 
-urlpatterns = i18n_patterns(
-    url(r'^admin/', include(admin.site.urls)),  # NOQA
+urlpatterns = [
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
         {'sitemaps': {'cmspages': CMSSitemap}}),
     url(r'^select2/', include('django_select2.urls')),
+]
+
+urlpatterns += i18n_patterns('',
+    url(r'^admin/', include(admin.site.urls)),  # NOQA
     url(r'^', include('cms.urls')),
 )
 
