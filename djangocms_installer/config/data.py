@@ -17,10 +17,10 @@ DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
 if sys.version_info >= (3, 5):
     DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'develop')
-    DJANGOCMS_STABLE = 3.2
+    DJANGOCMS_STABLE = 3.3
 else:
     DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'develop')
-    DJANGOCMS_STABLE = 3.2
+    DJANGOCMS_STABLE = 3.3
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)

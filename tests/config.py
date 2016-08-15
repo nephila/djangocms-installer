@@ -26,7 +26,7 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(conf_data.project_name, 'example_prj')
 
-        self.assertEqual(conf_data.cms_version, 3.2)
+        self.assertEqual(conf_data.cms_version, 3.3)
         self.assertEqual(conf_data.django_version, 1.8)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
@@ -58,7 +58,7 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(conf_data.project_name, 'example_prj')
 
-        self.assertEqual(conf_data.cms_version, 3.2)
+        self.assertEqual(conf_data.cms_version, 3.3)
         self.assertEqual(conf_data.django_version, 1.8)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'no')
@@ -294,7 +294,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(less_than_version('3.0.1'), '3.1.1')
 
     def test_supported_versions(self):
-        self.assertEqual(supported_versions('stable', 'stable'), (1.8, 3.2))
+        self.assertEqual(supported_versions('stable', 'stable'), (1.8, 3.3))
         self.assertEqual(supported_versions('stable', '3.1.10'), (1.8, None))
         self.assertEqual(supported_versions('stable', 'rc'), (1.8, 3.3))
         self.assertEqual(supported_versions('stable', 'beta'), (1.8, 3.3))
@@ -305,11 +305,11 @@ class TestConfig(BaseTestClass):
         with self.assertRaises(RuntimeError):
             supported_versions('1.5', 'stable'), (1.8, 3.1)
 
-        self.assertEqual(supported_versions('1.9', 'stable'), (1.9, 3.2))
-        self.assertEqual(supported_versions('1.8', 'stable'), (1.8, 3.2))
-        self.assertEqual(supported_versions('1.8.3', 'stable'), (None, 3.2))
-        self.assertEqual(supported_versions('beta', 'stable'), (1.9, 3.2))
-        self.assertEqual(supported_versions('develop', 'stable'), (1.9, 3.2))
+        self.assertEqual(supported_versions('1.9', 'stable'), (1.9, 3.3))
+        self.assertEqual(supported_versions('1.8', 'stable'), (1.8, 3.3))
+        self.assertEqual(supported_versions('1.8.3', 'stable'), (None, 3.3))
+        self.assertEqual(supported_versions('beta', 'stable'), (1.9, 3.3))
+        self.assertEqual(supported_versions('develop', 'stable'), (1.9, 3.3))
 
     def test_requirements(self):
         """
@@ -345,11 +345,11 @@ class TestConfig(BaseTestClass):
             '-p'+self.project_dir,
             'example_prj'])
 
-        self.assertTrue(conf_data.requirements.find('django-cms<3.3') > -1)
+        self.assertTrue(conf_data.requirements.find('django-cms<3.4') > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=2.8') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.1.1') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.2') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)

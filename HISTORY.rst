@@ -11,7 +11,7 @@ History
 * Drop support for django CMS < 3.2
 * Improve inline documentation
 * If -s option is used, original directory is not removed
-
+* Set django CMS 3.3 as stabl
 
 0.8.11 (2016-07-15)
 +++++++++++++++++++
