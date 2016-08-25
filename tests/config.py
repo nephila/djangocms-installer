@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import copy
+import locale
 import os
 import sys
 from argparse import Namespace
@@ -30,7 +31,7 @@ class TestConfig(BaseTestClass):
             self.assertEqual(conf_data.cms_version, 3.2)
             self.assertEqual(conf_data.django_version, 1.6)
         else:
-            self.assertEqual(conf_data.cms_version, 3.2)
+            self.assertEqual(conf_data.cms_version, 3.3)
             self.assertEqual(conf_data.django_version, 1.8)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
@@ -69,7 +70,7 @@ class TestConfig(BaseTestClass):
             self.assertEqual(conf_data.cms_version, 3.2)
             self.assertEqual(conf_data.django_version, 1.6)
         else:
-            self.assertEqual(conf_data.cms_version, 3.2)
+            self.assertEqual(conf_data.cms_version, 3.3)
             self.assertEqual(conf_data.django_version, 1.8)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'no')
@@ -331,12 +332,12 @@ class TestConfig(BaseTestClass):
             self.assertEqual(supported_versions('beta', 'stable'), (1.9, 3.2))
             self.assertEqual(supported_versions('develop', 'stable'), (1.9, 3.2))
         else:
-            self.assertEqual(supported_versions('stable', 'stable'), (1.8, 3.2))
+            self.assertEqual(supported_versions('stable', 'stable'), (1.8, 3.3))
             self.assertEqual(supported_versions('stable', '3.1'), (1.8, 3.1))
             self.assertEqual(supported_versions('stable', '3.0.10'), (1.8, None))
-            self.assertEqual(supported_versions('stable', 'rc'), (1.8, 3.3))
-            self.assertEqual(supported_versions('stable', 'beta'), (1.8, 3.3))
-            self.assertEqual(supported_versions('stable', 'develop'), (1.8, 3.3))
+            self.assertEqual(supported_versions('stable', 'rc'), (1.8, 3.4))
+            self.assertEqual(supported_versions('stable', 'beta'), (1.8, 3.4))
+            self.assertEqual(supported_versions('stable', 'develop'), (1.8, 3.4))
 
             with self.assertRaises(RuntimeError):
                 supported_versions('stable', '2.4'), (1.5, 2.4)
@@ -344,11 +345,12 @@ class TestConfig(BaseTestClass):
                 supported_versions('1.5', 'stable'), (1.8, 3.1)
 
             self.assertEqual(supported_versions('1.5', '2.4'), (1.5, 2.4))
-            self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.2))
-            self.assertEqual(supported_versions('1.6.9', 'stable'), (None, 3.2))
-            self.assertEqual(supported_versions('1.7', 'stable'), (1.7, 3.2))
-            self.assertEqual(supported_versions('beta', 'stable'), (1.9, 3.2))
-            self.assertEqual(supported_versions('develop', 'stable'), (1.9, 3.2))
+            with self.assertRaises(RuntimeError):
+                self.assertEqual(supported_versions('1.6', 'stable'), (1.6, 3.2))
+            self.assertEqual(supported_versions('1.6.9', 'stable'), (None, 3.3))
+            self.assertEqual(supported_versions('1.8', 'stable'), (1.8, 3.3))
+            self.assertEqual(supported_versions('beta', 'stable'), (1.9, 3.3))
+            self.assertEqual(supported_versions('develop', 'stable'), (1.9, 3.3))
 
     def test_requirements(self):
         """
@@ -421,15 +423,18 @@ class TestConfig(BaseTestClass):
             '-p'+self.project_dir,
             'example_prj'])
 
-        self.assertTrue(conf_data.requirements.find('django-cms<3.3') > -1)
         if sys.version_info < (2, 7):
+            self.assertTrue(conf_data.requirements.find('django-cms<3.3') > -1)
             self.assertTrue(conf_data.requirements.find('Django<1.7') > -1)
             self.assertTrue(conf_data.requirements.find('django-reversion>=1.8,<1.9') > -1)
+            self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=2.8.1,<3.0') > -1)
+            self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.0.6') > -1)
         else:
+            self.assertTrue(conf_data.requirements.find('django-cms<3.4') > -1)
             self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
             self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.7') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=2.8') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.0.6') > -1)
+            self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') > -1)
+            self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.1.1') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)
@@ -779,6 +784,10 @@ class TestBaseConfig(unittest.TestCase):
     base_dir = os.path.dirname(os.path.dirname(__file__))
     config_dir = os.path.join(base_dir, 'tests/fixtures/configs')
     args = ['--config-file', '-s', '-q', 'example_prj']
+    try:
+        languages = [locale.getdefaultlocale()[0].split('_')[0]]
+    except:
+        languages = ['en']
     config_fixture = Namespace(**{
         'bootstrap': False,
         'cms_version': CMS_VERSION_MATRIX['stable'],
@@ -788,7 +797,7 @@ class TestBaseConfig(unittest.TestCase):
         'extra_settings': None,
         'filer': False,
         'i18n': 'yes',
-        'languages': ['en'],
+        'languages': languages,
         'no_db_driver': False,
         'no_deps': False,
         'noinput': True,
