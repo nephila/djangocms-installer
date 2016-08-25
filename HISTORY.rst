@@ -3,6 +3,12 @@
 History
 -------
 
+0.8.12 (2016-08-25)
++++++++++++++++++++
+
+* Set django CMS 3.3 as stable
+* Add option to install rc and develop
+
 0.8.11 (2016-07-15)
 +++++++++++++++++++
 

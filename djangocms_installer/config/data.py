@@ -16,14 +16,14 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/develop.zip?%s' % ti
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
 if sys.version_info < (2, 7):
-    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', '3.3', 'stable', 'develop')
+    DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', 'stable', 'develop')
     DJANGOCMS_STABLE = 3.2
 elif sys.version_info >= (3, 5):
     DJANGOCMS_SUPPORTED = ('3.0', '3.1', '3.2', '3.3', 'stable', 'rc', 'develop')
-    DJANGOCMS_STABLE = 3.2
+    DJANGOCMS_STABLE = 3.3
 else:
     DJANGOCMS_SUPPORTED = ('2.4', '3.0', '3.1', '3.2', '3.3', 'stable', 'rc', 'develop')
-    DJANGOCMS_STABLE = 3.2
+    DJANGOCMS_STABLE = 3.3
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?%s' % time.time()
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?%s' % time.time()
@@ -45,9 +45,9 @@ else:
 
 CMS_VERSION_MATRIX = {
     'stable': DJANGOCMS_STABLE,
-    'rc': 3.3,
-    'beta': 3.3,
-    'develop': 3.3
+    'rc': 3.4,
+    'beta': 3.4,
+    'develop': 3.4
 }
 DJANGO_VERSION_MATRIX = {
     'stable': DJANGO_STABLE,
@@ -61,6 +61,7 @@ VERSION_MATRIX = {
     3.1: (1.6, 1.8),
     3.2: (1.6, 1.9),
     3.3: (1.8, 1.9),
+    3.4: (1.8, 1.9),
 }
 
 REQUIREMENTS = {
