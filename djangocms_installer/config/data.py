@@ -16,10 +16,10 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
 if sys.version_info >= (3, 5):
-    DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'develop')
+    DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'rc', 'develop')
     DJANGOCMS_STABLE = 3.3
 else:
-    DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'develop')
+    DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'rc', 'develop')
     DJANGOCMS_STABLE = 3.3
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
@@ -39,9 +39,9 @@ else:
 
 CMS_VERSION_MATRIX = {
     'stable': DJANGOCMS_STABLE,
-    'rc': 3.3,
-    'beta': 3.3,
-    'develop': 3.3
+    'rc': 3.4,
+    'beta': 3.4,
+    'develop': 3.4
 }
 DJANGO_VERSION_MATRIX = {
     'stable': DJANGO_STABLE,
@@ -52,6 +52,7 @@ DJANGO_VERSION_MATRIX = {
 VERSION_MATRIX = {
     3.2: (1.8, 1.9),
     3.3: (1.8, 1.9),
+    3.4: (1.8, 1.9),
 }
 
 REQUIREMENTS = {
@@ -80,24 +81,52 @@ REQUIREMENTS = {
         'djangocms-admin-style>=1.2,<1.3',
         'django-treebeard>=4.0,<5.0',
     ],
+    'cms-3.4': [
+        'djangocms-admin-style>=1.2,<1.3',
+        'django-treebeard>=4.0,<5.0',
+    ],
+    'cms-master': [
+        'https://github.com/divio/djangocms-admin-style/archive/master.zip?{bust}'.format(**bust),
+        'django-treebeard>=4.0,<5.0',
+    ],
     'ckeditor-3.2': [
         'djangocms-text-ckeditor>=2.8.1,<=2.9.3',
     ],
     'ckeditor-3.3': [
-        'djangocms-text-ckeditor>=3.0,<3.1',
+        'djangocms-text-ckeditor>=3.0,<3.2',
+    ],
+    'ckeditor-3.4': [
+        'djangocms-text-ckeditor>=3.2',
+    ],
+    'ckeditor-master': [
+        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
+        ''.format(**bust),
     ],
     'plugins-common': [
-        'djangocms-column>=1.6,<1.7',
-        'djangocms-googlemap>=0.5,<1.6',
-        'djangocms-inherit>=0.2.1,<1.03',
-        'djangocms-style>=1.7,<1.8',
         'djangocms-link>=1.8,<1.9',
+        'djangocms-style>=1.7,<1.8',
+        'djangocms-googlemap>=0.4,<0.6',
+        'djangocms-snippet>=1.8,<2',
+        'djangocms-video>=1.1,<2.0',
+        'djangocms-column>=1.6',
     ],
     'plugins-basic': [
         'djangocms-file>=1.0,<1.1',
         'djangocms-picture>=0.2.0,<0.3',
         'djangocms-teaser>=0.2.0,<0.3',
-        'djangocms-video>=1.0,<1.1',
+    ],
+    'plugins-common-master': [
+        'https://github.com/divio/djangocms-link/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-style/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-googlemap/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-snippet/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-video/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-column/archive/master.zip?{bust}'.format(**bust),
+    ],
+    'plugins-basic-master': [
+        'https://github.com/divio/djangocms-file/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-picture/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-teaser/archive/master.zip?{bust}'.format(**bust),
     ],
     'filer': [
         'easy_thumbnails',
@@ -124,26 +153,16 @@ TEMPLATES = [
 """
 
 PLUGIN_LIST_TEXT = """
-djangocms_installer will install and configure the following plugins:
- * djangocms_column (Column plugin)
- * djangocms-file (File plugin)
- * djangocms-googlemap (GoogleMap plugin)
- * djangocms-inherit (Inherit plugin)
- * djangocms-link (Link plugin)
- * djangocms-picture (Picture plugin)
- * djangocms_style (Style plugin)
- * djangocms-teaser (Teaser plugin)
+djangocms installer will install and configure the following plugins:
  * djangocms-text-ckeditor (Text plugin)
- * djangocms-video (Video plugin)
-
-It will optionally install cmsplugin-filer plugins (if requested during
-configuration):
+ * djangocms-link (Link plugin)
  * cmsplugin_filer_file (File plugin, replaces djangocms-file)
  * cmsplugin_filer_folder (Folder plugin)
  * cmsplugin_filer_image (Image plugin, replaces djangocms-picture)
- * djangocms-link (Link plugin)
- * cmsplugin_filer_teaser (Teaser plugin, replaces djangocms-teaser)
- * cmsplugin_filer_video (Video plugin, replaces djangocms-video)
+ * djangocms-style (Style plugin)
+ * djangocms-snippet (Snippet plugin)
+ * djangocms-googlemap (GoogleMap plugin)
+ * djangocms-video (Video plugin)
 """
 
 DRIVERS = {

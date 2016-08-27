@@ -11,7 +11,10 @@ History
 * Drop support for django CMS < 3.2
 * Improve inline documentation
 * If -s option is used, original directory is not removed
-* Set django CMS 3.3 as stabl
+* Set django CMS 3.3 as stable
+* Add support for 'rc' releases
+* Only "core" plugins are now supported
+* Drop support for django-reversion in django CMS 3.4 (due to upstream drop)
 
 0.8.11 (2016-07-15)
 +++++++++++++++++++

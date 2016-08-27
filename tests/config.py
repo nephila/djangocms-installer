@@ -296,9 +296,9 @@ class TestConfig(BaseTestClass):
     def test_supported_versions(self):
         self.assertEqual(supported_versions('stable', 'stable'), (1.8, 3.3))
         self.assertEqual(supported_versions('stable', '3.1.10'), (1.8, None))
-        self.assertEqual(supported_versions('stable', 'rc'), (1.8, 3.3))
-        self.assertEqual(supported_versions('stable', 'beta'), (1.8, 3.3))
-        self.assertEqual(supported_versions('stable', 'develop'), (1.8, 3.3))
+        self.assertEqual(supported_versions('stable', 'rc'), (1.8, 3.4))
+        self.assertEqual(supported_versions('stable', 'beta'), (1.8, 3.4))
+        self.assertEqual(supported_versions('stable', 'develop'), (1.8, 3.4))
 
         with self.assertRaises(RuntimeError):
             supported_versions('stable', '2.4'), (1.5, 2.4)
@@ -351,14 +351,14 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.2') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-file') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-googlemap') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-inherit') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-inherit') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-link') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-picture') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-picture') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-style') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-teaser') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-video') > -1)
 
         conf_data = config.parse([
@@ -374,7 +374,7 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
-        self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
+        self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('django-filer') > -1)
@@ -383,12 +383,12 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-file') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-googlemap') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-inherit') > -1)
-        #self.assertTrue(conf_data.requirements.find('djangocms-link') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-inherit') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-link') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-picture') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-style') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-video') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-video') > -1)
 
         dj_version = '1.8'
         conf_data = config.parse([
@@ -404,7 +404,7 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
-        self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
+        self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('django-mptt') == -1)
         self.assertTrue(conf_data.requirements.find('django-treebeard') > -1)
 
@@ -412,7 +412,7 @@ class TestConfig(BaseTestClass):
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
-            '--cms-version=develop',
+            '--cms-version=rc',
             '--django-version=stable',
             '-f',
             '--reversion=yes',
@@ -422,9 +422,16 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
-        self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
+        self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-link') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-style') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-googlemap') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-snippet') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-video') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-column') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-admin-style') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-text-ckeditor') > -1)
+
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
 
         conf_data = config.parse([
@@ -460,10 +467,10 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
-        self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.2') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-teaser') > -1)
+        self.assertFalse(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
         dj_version = '1.8'
@@ -481,10 +488,10 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
-        self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor/archive/master.zip') == -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') == -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)
+        self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
         dj_version = '1.8'
@@ -502,9 +509,9 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
-        self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') == -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') == -1)
+        self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') == -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
@@ -688,7 +695,7 @@ class TestBaseConfig(unittest.TestCase):
         'django_version': DJANGO_VERSION_MATRIX['stable'],
         'dump_reqs': False,
         'extra_settings': None,
-        'filer': False,
+        'filer': True,
         'i18n': 'yes',
         'languages': ['en'],
         'no_db_driver': False,

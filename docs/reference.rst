@@ -29,14 +29,15 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--use-tz``, ``-z``: Activate Django timezone support;  choices: ``yes|no``, default: ``yes``
 * ``--timezone``, ``-t``: Optional default time zone, default: *local timezone*
 * ``--reversion``, ``-e``: Install and configure reversion support, choices: ``yes|no``,
-  default: ``yes``
+  default: ``yes``; this will ignored for RC/develop/3.4 versions of django CMS as support has
+  been dropped upstream;
 * ``--permissions``: Activate CMS permission management; choices: ``yes|no``, default: ``yes``
 * ``--languages``, ``-l``: Languages available for the project. Option can be provided multiple
   times, or as a comma separated list.
   Only language codes supported by Django can be used here;
   refer to `django source`_ for a list of supported codes.
-* ``--django-version``: Django version;  choices: ``1.4|1.5|1.6|1.7|stable``, default: ``stable``
-* ``--cms-version``, ``-v``: django CMS version, choices: ``2.4|3.0|3.1|stable|develop``.
+* ``--django-version``: Django version;  choices: ``1.8|1.9|stable``, default: ``stable``
+* ``--cms-version``, ``-v``: django CMS version, choices: ``3.2|3.3|stable|rc|develop``.
   default: ``stable``
 * ``--bootstrap``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
 * ``--starting-page``: Load a starting page with examples (available for english language only)
@@ -44,8 +45,8 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--templates``: Use a custom directory as template source; is checked to be a valid path,
   otherwise the shipped templates are used
 
-.. note:: ``stable`` keyword is expanded to Django version 1.7
-.. note:: ``stable`` keyword is expanded to django CMS version 3.1
+.. note:: ``stable`` keyword is expanded to Django version 1.8
+.. note:: ``stable`` keyword is expanded to django CMS version 3.3
 .. warning:: if an unsupported combination of Django and django CMS version is selected, the
              wizard exits reporting the error.
 
@@ -58,7 +59,8 @@ advanced usage:
 * ``--no-input``, ``-q``: If given **djangocms installer** run in :ref:`batch_mode`;
 * ``--verbose``, : Provides output of the commands used to setup the project, namely ``pip`` and
   ``django-admin``;
-* ``--filer``, ``-f``: Install and configure django-filer plugins;
+* ``--filer``, ``-f``: Install and configure django-filer plugins; since 0.9 this is enabled by default
+  and can't be disabled;
 * ``--config-file``: Provides the configuration options via a ini file; see :ref:`ini_mode`;
 * ``--config-dump``: Dumps the configuration in a format suitable for ``-config-file``
   option; see :ref:`ini_mode`;
