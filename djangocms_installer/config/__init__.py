@@ -61,7 +61,8 @@ information.
                         action='store', help='Optional default time zone. Example: Europe/Rome')
     parser.add_argument('--reversion', '-e', dest='reversion', action='store',
                         choices=('yes', 'no'),
-                        default='yes', help='Install and configure reversion support')
+                        default='yes', help='Install and configure reversion support '
+                                            '(only for django CMS 3.2 and 3.3)')
     parser.add_argument('--permissions', dest='permissions', action='store',
                         choices=('yes', 'no'),
                         default='yes', help='Activate CMS permission management')
@@ -111,7 +112,8 @@ information.
                         default=False,
                         help='Be more verbose and don\'t swallow subcommands output')
     parser.add_argument('--filer', '-f', dest='filer', action='store_true',
-                        default=False, help='Install and configure django-filer plugins')
+                        default=True, help='Install and configure django-filer plugins '
+                                           '- Always enabled')
     parser.add_argument('--requirements', '-r', dest='requirements_file', action='store',
                         default=None, help='Externally defined requirements file')
     parser.add_argument('--no-deps', '-n', dest='no_deps', action='store_true',
@@ -200,6 +202,7 @@ information.
     if len(args.languages) > 1:
         args.i18n = 'yes'
     args.aldryn = False
+    args.filer = True
 
     # Convert version to numeric format for easier checking
     try:
@@ -236,7 +239,11 @@ information.
         else:
             requirements.append('django-cms<{0}'.format(less_than_version(cms_version)))
 
-        if cms_version >= 3.3:
+        if args.cms_version in ('rc', 'develop'):
+            requirements.extend(data.REQUIREMENTS['cms-master'])
+        # elif cms_version >= 3.4:
+        #    requirements.extend(data.REQUIREMENTS['cms-3.4'])
+        elif cms_version >= 3.3:
             requirements.extend(data.REQUIREMENTS['cms-3.3'])
         elif cms_version >= 3.2:
             requirements.extend(data.REQUIREMENTS['cms-3.2'])
@@ -245,12 +252,20 @@ information.
             requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.filer:
-                requirements.extend(data.REQUIREMENTS['plugins-common'])
-                requirements.extend(data.REQUIREMENTS['filer'])
-            else:
-                requirements.extend(data.REQUIREMENTS['plugins-common'])
-                requirements.extend(data.REQUIREMENTS['plugins-basic'])
-            if cms_version >= 3.3 or cms_version == 'rc':
+                if args.cms_version in ('rc', 'develop'):
+                    requirements.extend(data.REQUIREMENTS['plugins-common-master'])
+                    requirements.extend(data.REQUIREMENTS['filer'])
+                else:
+                    requirements.extend(data.REQUIREMENTS['plugins-common'])
+                    requirements.extend(data.REQUIREMENTS['filer'])
+            # else:
+            #    requirements.extend(data.REQUIREMENTS['plugins-common'])
+            #    requirements.extend(data.REQUIREMENTS['plugins-basic'])
+            if args.cms_version in ('rc', 'develop'):
+                requirements.extend(data.REQUIREMENTS['ckeditor-master'])
+            # elif cms_version >= 3.4:
+            #    requirements.extend(data.REQUIREMENTS['ckeditor-3.4'])
+            elif cms_version >= 3.3:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.3'])
             else:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.2'])
@@ -273,7 +288,7 @@ information.
             requirements.append('pytz')
 
         # Reversion package version depends on django version
-        if args.reversion:
+        if args.reversion and cms_version in (3.2, 3.3):
             if django_version == 1.8:
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.8'])
             elif django_version == 1.9:

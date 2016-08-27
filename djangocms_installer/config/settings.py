@@ -21,10 +21,6 @@ MIDDLEWARE_CLASSES = [
     'cms.middleware.language.LanguageCookieMiddleware',
 ]
 
-MIDDLEWARE_CLASSES_DJANGO_15 = [
-    'django.middleware.transaction.TransactionMiddleware',
-]
-
 
 TEMPLATE_CONTEXT_PROCESSORS = [
     'django.contrib.auth.context_processors.auth',
@@ -38,9 +34,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     'sekizai.context_processors.sekizai',
     'django.core.context_processors.static',
 ]
-TEMPLATE_CONTEXT_PROCESSORS_2 = [
-    'cms.context_processors.media',
-]
+
 TEMPLATE_CONTEXT_PROCESSORS_3 = [
     'cms.context_processors.cms_settings',
 ]
@@ -70,18 +64,6 @@ TREEBEARD_APPS = (
     'treebeard',
 )
 
-STANDARD_PLUGINS_2 = (
-    'cms.plugins.file',
-    'cms.plugins.flash',
-    'cms.plugins.googlemap',
-    'cms.plugins.inherit',
-    'cms.plugins.link',
-    'cms.plugins.picture',
-    'cms.plugins.teaser',
-    'cms.plugins.text',
-    'cms.plugins.twitter',
-    'cms.plugins.video',
-)
 STANDARD_PLUGINS_3 = (
     'djangocms_file',
     'djangocms_googlemap',
@@ -92,33 +74,19 @@ STANDARD_PLUGINS_3 = (
     'djangocms_video',
 )
 
-FILER_PLUGINS_2 = (
-    'filer',
-    'easy_thumbnails',
-    'cmsplugin_filer_image',
-    'cmsplugin_filer_file',
-    'cmsplugin_filer_folder',
-    'cmsplugin_filer_teaser',
-    'cmsplugin_filer_utils',
-    'cmsplugin_filer_video',
-    'cms.plugins.flash',
-    'cms.plugins.googlemap',
-    'cms.plugins.inherit',
-    'djangocms_link',
-)
-
 FILER_PLUGINS_3 = (
     'filer',
     'easy_thumbnails',
-    'cmsplugin_filer_image',
+    'djangocms_column',
+    'djangocms_link',
     'cmsplugin_filer_file',
     'cmsplugin_filer_folder',
-    'cmsplugin_filer_teaser',
+    'cmsplugin_filer_image',
     'cmsplugin_filer_utils',
-    'cmsplugin_filer_video',
+    'djangocms_style',
+    'djangocms_snippet',
     'djangocms_googlemap',
-    'djangocms_inherit',
-    'djangocms_link',
+    'djangocms_video',
 )
 
 CMS_3_HEAD = (
@@ -127,12 +95,6 @@ CMS_3_HEAD = (
 
 CMS_3_APPLICATIONS = (
     'djangocms_text_ckeditor',
-    'djangocms_style',
-    'djangocms_column',
-)
-
-CMS_2_APPLICATIONS = (
-    'cms.plugins.text',
 )
 
 REVERSION_APPLICATIONS = (
@@ -207,6 +169,7 @@ MIGRATIONS_CHECK_MODULES = (
     'djangocms_style',
     'djangocms_file',
     'djangocms_picture',
+    'djangocms_snippet',
     'djangocms_teaser',
     'djangocms_video',
 )

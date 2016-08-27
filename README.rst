@@ -43,7 +43,7 @@ project.
 Refer to `django CMS Tutorial`_
 on how to properly setup your first django CMS project.
 
-.. warning:: Version 0.9 will drop support for Python 2.6, Django <1.8 and django CMS < 3.2.
+.. warning:: Version 0.9 dropped support for Python 2.6, Django <1.8 and django CMS < 3.2.
              More 0.8.x versions may be released after 0.9 is out in case important bugfixes will
              be needed.
 
@@ -76,14 +76,16 @@ Supported versions
 The current supported version matrix is the following:
 
 +----------------+-------------+-------------+---------------+
-|                | Django 1.8  | Django 1.9  | Django master |
+|                | Django 1.8  | Django 1.9  | Django 1.10   |
 +----------------+-------------+-------------+---------------+
 | django CMS 3.2 | Supported   | Supported   | Unsupported   |
 +----------------+-------------+-------------+---------------+
-| django CMS dev | Supported   | Supported   | Unsupported   |
+| django CMS 3.3 | Supported   | Supported   | Unsupported   |
++----------------+-------------+-------------+---------------+
+| django CMS 3.4 | Supported   | Supported   | WiP           |
 +----------------+-------------+-------------+---------------+
 
-Check `version 0.8`_ for older Django / django CMS versions support
+See `version 0.8`_ for older Django / django CMS versions support
 
 Any beta and develop version of Django and django CMS, by its very nature,
 it's not supported, while it still may work.

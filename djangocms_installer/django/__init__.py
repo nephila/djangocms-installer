@@ -259,14 +259,11 @@ def _build_settings(config_data):
     apps.extend(vars.CMS_3_APPLICATIONS)
 
     if not config_data.no_plugins:
-        if config_data.filer:
-            apps.extend(vars.FILER_PLUGINS_3)
-        else:
-            apps.extend(vars.STANDARD_PLUGINS_3)
+        apps.extend(vars.FILER_PLUGINS_3)
 
     if config_data.aldryn:  # pragma: no cover
         apps.extend(vars.ALDRYN_APPLICATIONS)
-    if config_data.reversion:
+    if config_data.reversion and config_data.cms_version < 3.4:
         apps.extend(vars.REVERSION_APPLICATIONS)
     text.append('INSTALLED_APPS = (\n{0}{1}\n)'.format(
         spacer, (',\n' + spacer).join(['\'{0}\''.format(var) for var in apps] +

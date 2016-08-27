@@ -120,7 +120,7 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
                      reason='django 1.9 only supports python 2.7, 3.4 and 3.5')
-    def test_patch_19_settings(self):
+    def test_patch_19_32_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
@@ -149,7 +149,7 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
                      reason='django 1.9 only supports python 2.7, 3.4 and 3.5')
-    def test_patch_django_19(self):
+    def test_patch_django_19_32(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
                                     '--django-version=1.9',
@@ -175,25 +175,25 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
         self.assertEqual(project.settings.TIME_ZONE, 'Europe/Moscow')
-        self.assertTrue('cmsplugin_filer_image' not in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_file' not in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_folder' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_image' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_file' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_folder' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_link' not in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_teaser' not in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_utils' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_utils' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_video' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_text_ckeditor' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_admin_style' in project.settings.INSTALLED_APPS)
-        self.assertTrue('filer' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('filer' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_column' in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_file' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_file' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_flash' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_googlemap' in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_inherit' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_inherit' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_link' in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_picture' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_picture' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_teaser' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_teaser' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
         self.assertTrue(
             config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
@@ -213,7 +213,7 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
                      reason='django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5')
-    def test_patch_django_17_settings(self):
+    def test_patch_django_18_32(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
@@ -237,7 +237,7 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
                      reason='django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5')
-    def test_patch_django_18_32(self):
+    def test_patch_django_18_develop(self):
         # On django CMS 3.2 the reload apphooks middleware is enabled by default
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -269,7 +269,7 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
                      reason='django 1.9 only supports python 2.7, 3.4 and 3.5')
-    def test_patch_django_19_32(self):
+    def test_patch_django_19_develop(self):
         # On django CMS 3.2 the reload apphooks middleware is enabled by default
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -392,22 +392,22 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('cmsplugin_filer_file' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_folder' in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_link' not in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_teaser' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_teaser' not in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_utils' in project.settings.INSTALLED_APPS)
-        self.assertTrue('cmsplugin_filer_video' in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_video' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_text_ckeditor' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_admin_style' in project.settings.INSTALLED_APPS)
         self.assertTrue('filer' in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_column' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_file' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_flash' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_googlemap' in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_inherit' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_inherit' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_link' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_picture' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_teaser' not in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_video' not in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_column' in project.settings.INSTALLED_APPS)
         self.assertTrue(hasattr(project.settings, 'THUMBNAIL_PROCESSORS'))
         self.assertTrue(
             'cms.context_processors.cms_settings' in
