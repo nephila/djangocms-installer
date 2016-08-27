@@ -278,7 +278,7 @@ def parse(args):
                         requirements.extend(data.REQUIREMENTS['plugins-common'])
                         requirements.extend(data.REQUIREMENTS['filer-1.6'])
                     else:
-                        requirements.extend(data.REQUIREMENTS['plugins-common-master'])
+                        requirements.extend(data.REQUIREMENTS['plugins-common'])
                         requirements.extend(data.REQUIREMENTS['filer-1.8'])
                 else:
                     requirements.extend(data.REQUIREMENTS['filer-cms-2.x'])
@@ -287,8 +287,8 @@ def parse(args):
                     requirements.extend(data.REQUIREMENTS['plugins-common'])
                     requirements.extend(data.REQUIREMENTS['plugins-basic'])
                 else:
-                    requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                    requirements.extend(data.REQUIREMENTS['plugins-basic-master'])
+                    requirements.extend(data.REQUIREMENTS['plugins-common'])
+                    requirements.extend(data.REQUIREMENTS['plugins-basic'])
             if cms_version >= 3.3:
                 requirements.extend(data.REQUIREMENTS['ckeditor-3.3'])
             elif cms_version == 3.2:

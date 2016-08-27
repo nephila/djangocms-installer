@@ -567,7 +567,8 @@ class TestConfig(BaseTestClass):
                 self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.7') > -1)
                 self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') > -1)
                 self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.1.1') > -1)
-                self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') > -1)
+                self.assertFalse(conf_data.requirements.find('djangocms-teaser/archive/master.zip') > -1)
+                self.assertTrue(conf_data.requirements.find('djangocms-teaser') > -1)
                 self.assertTrue(conf_data.requirements.find('south') == -1)
 
             if sys.version_info < (2, 7):
@@ -599,8 +600,8 @@ class TestConfig(BaseTestClass):
                 self.assertTrue(conf_data.requirements.find('django-reversion>=1.8.7') > -1)
                 self.assertTrue(conf_data.requirements.find('django-mptt<0.9') > -1)
                 self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') == -1)
-                self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') == -1)
-                self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)
+                self.assertTrue(conf_data.requirements.find('djangocms-admin-style') == -1)
+                self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
                 self.assertTrue(conf_data.requirements.find('south') == -1)
 
     def disabled_test_aldryn_compatibility(self):

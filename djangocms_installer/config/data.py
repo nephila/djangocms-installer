@@ -124,31 +124,34 @@ REQUIREMENTS = {
     'ckeditor-3.0': [
         'djangocms-admin-style<0.3',
         'djangocms-text-ckeditor<2.7.0',
+        'djangocms-link<1.8',
     ],
     'ckeditor-3.1': [
         'djangocms-admin-style<1.0',
         'djangocms-text-ckeditor<2.8.0',
+        'djangocms-link<1.8',
     ],
     'ckeditor-3.2': [
         'djangocms-admin-style>=1.0.6',
         'djangocms-text-ckeditor>=2.8.1,<3.0',
+        'djangocms-link<1.8',
     ],
     'ckeditor-3.3': [
         'djangocms-admin-style>=1.1.1',
         'djangocms-text-ckeditor>=3.0',
+        'djangocms-link>=1.8,<1.9',
     ],
     'plugins-common': [
-        'djangocms-column',
-        'djangocms-googlemap',
-        'djangocms-inherit',
-        'djangocms-style',
-        'djangocms-link<1.8',
+        'djangocms-column<1.7',
+        'djangocms-googlemap<0.5.2',
+        'djangocms-inherit<0.2.2',
+        'djangocms-style<1.8',
     ],
     'plugins-basic': [
-        'djangocms-file',
-        'djangocms-picture',
-        'djangocms-teaser',
-        'djangocms-video',
+        'djangocms-file==1.0',
+        'djangocms-picture==1.0',
+        'djangocms-teaser==0.2.0',
+        'djangocms-video==1.1.0',
     ],
     'plugins-common-master': [
         'https://github.com/divio/djangocms-column/archive/master.zip?%(bust)s' % bust,
