@@ -43,7 +43,7 @@ sphinx.environment.BuildEnvironment.warn_node = _warn_node
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.intersphinx',
-              'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.imgmath',
+              'sphinx.ext.todo', 'sphinx.ext.coverage',
               'sphinx.ext.ifconfig', 'sphinx.ext.viewcode']
 
 # Add any paths that contain templates here, relative to this directory.
