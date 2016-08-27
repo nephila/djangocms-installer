@@ -15,17 +15,16 @@ By default it:
 **djangocms installer** works as a batch script and as a command line wizard.
 
 
-
 .. _batch_mode:
 
 Batch mode (default)
 --------------------
 
 In batch mode **djangocms installer** will use the arguments
-provided to create and configure the project.
-All the paramaters asked by the wizard can be passed as command line arguments.
+provided to create and configure the project. See the complete list of
+:ref:`arguments` for reference.
 
-See :ref:`arguments` for arguments reference
+    djangocms my_project
 
 
 .. _wizard_mode:
