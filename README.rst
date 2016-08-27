@@ -40,12 +40,32 @@ Features
 ``djangocms-installer`` is a console wizard to help bootstrapping a django CMS
 project.
 
-Refer to `django CMS Tutorial`_
-on how to properly setup your first django CMS project.
+Refer to `django CMS Tutorial`_ on how to properly setup your first django CMS project.
 
 .. warning:: Version 0.9 dropped support for Python 2.6, Django <1.8 and django CMS < 3.2.
              More 0.8.x versions may be released after 0.9 is out in case important bugfixes will
              be needed.
+
+Usage
+-----
+
+To create your first django CMS project run::
+
+    djangocms my_project
+
+That's all!
+
+This command will:
+
+* Create a Django project
+* Install django CMS and its core plugins
+* Create and populate the database
+* Install default templates
+
+Just run ``manage.py runserver``, go to http://localhost:8000 , login with user *admin* (same password)
+and enjoy your first django CMS project.
+
+More at `django CMS Tutorial`_ and `installer usage page`_
 
 Documentation
 -------------
@@ -117,3 +137,4 @@ Please check that the ``.py`` extension is associated correctly with Python inte
 
 .. _version 0.8: https://github.com/nephila/djangocms-installer/tree/release/0.8.x#supported-versions
 .. _django CMS Tutorial: https://django-cms.readthedocs.io/en/latest/introduction/index.html
+.. _installer usage page: http://djangocms-installer.readthedocs.io/en/latest/usage.html
