@@ -3,7 +3,7 @@
 History
 -------
 
-0.8.12 (Unreleased)
+0.8.12 (2016-08-27)
 +++++++++++++++++++
 
 * Pin plugins versions
