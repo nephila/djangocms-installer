@@ -6,10 +6,12 @@ Arguments reference
 Required arguments
 ------------------
 
-You must always provide the following arguments when invoking **djangocms installer**:
+You must always provide the following argument when invoking **djangocms installer**:
 
 * ``project_name``: Name of the project to be created
-* ``--parent-dir``, ``-p``: Optional project directory;
+
+Optionally you can provide a project directory, otherwise a directory named after the project name
+will be created in the current directory.
 
 .. warning:: project directory dir is the main project directory (the one where ``manage.py``
              will be created); by default the installer check if it's empty (minus hidden files)
@@ -56,7 +58,9 @@ Advanced options
 The following options are not managed by the config wizard and are meant for
 advanced usage:
 
-* ``--no-input``, ``-q``: If given **djangocms installer** run in :ref:`batch_mode`;
+* ``--no-input``, ``-q``: If given **djangocms installer** run in :ref:`batch_mode` (default behavior);
+* ``--wizard``, ``-w``: If given **djangocms installer** run in :ref:`wizard_mode`;
+* ``--parent-dir``, ``-p``: Optional project directory;
 * ``--verbose``, : Provides output of the commands used to setup the project, namely ``pip`` and
   ``django-admin``;
 * ``--filer``, ``-f``: Install and configure django-filer plugins; since 0.9 this is enabled by default

@@ -719,6 +719,7 @@ class TestBaseConfig(unittest.TestCase):
         'utc': False,
         'no_plugins': False,
         'verbose': False,
+        'wizard': False,
     })
 
     def __init__(self, *args, **kwargs):

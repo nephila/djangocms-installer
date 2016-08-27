@@ -15,32 +15,32 @@ By default it:
 **djangocms installer** works as a batch script and as a command line wizard.
 
 
+
+.. _batch_mode:
+
+Batch mode (default)
+--------------------
+
+In batch mode **djangocms installer** will use the arguments
+provided to create and configure the project.
+All the paramaters asked by the wizard can be passed as command line arguments.
+
+See :ref:`arguments` for arguments reference
+
+
 .. _wizard_mode:
 
 Wizard mode
 -----------
 
-Wizard mode works by asking relevant questions to the user; it must be called with
-the `-p` option (which is the project main directory) and the `project_name`
-argument::
+Wizard mode works by asking relevant questions to the user; it can be invoked with ``-w`` option::
 
-    djangocms -p /path/whatever project_name
+    djangocms -w -p /path/whatever project_name
 
 A wizard will ask for the missing parameters; for most of them sane defaults are
 provided, but you're free to adapt to your own needs.
 The only required parameters are the database name, in url format, and the
 project languages, as a comma separated list.
-
-.. _batch_mode:
-
-Batch mode
-----------
-
-By giving the `-q` parameter **djangocms installer** will use the arguments
-provided to create and configure the project.
-All the paramaters asked by the wizard can be passed as command line arguments.
-
-See :ref:`arguments` for arguments reference
 
 
 .. _dump_mode:
@@ -142,7 +142,7 @@ HOWTO
 
 #. Execute the wizard::
 
-    djangocms -p /path/whatever project_name
+    djangocms project_name
 
 #. Answer the wizard questions;
 
