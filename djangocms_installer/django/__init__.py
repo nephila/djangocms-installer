@@ -42,6 +42,16 @@ def create_project(config_data):
         if not os.path.exists(config_data.project_directory):
             os.makedirs(config_data.project_directory)
     start_cmd = os.path.join(os.path.dirname(sys.executable), 'django-admin.py')
+    start_cmds = [start_cmd]
+    start_cmd_pnodes = ['Scripts']
+    start_cmds.extend([
+        os.path.join(os.path.dirname(sys.executable), pnode, 'django-admin.py')
+        for pnode in start_cmd_pnodes
+    ])
+    for p in start_cmds:
+        if os.path.exists(p):
+            start_cmd = p
+        break
     cmd_args = ' '.join([sys.executable, start_cmd, 'startproject'] + args)
     if config_data.verbose:
         sys.stdout.write('Project creation command: {0}\n'.format(cmd_args))
