@@ -15,6 +15,14 @@ History
 * Add support for 'rc' releases
 * Only "core" plugins are now supported
 * Drop support for django-reversion in django CMS 3.4 (due to upstream drop)
+* Make project-path option optional
+* Quiet mode is now the default one
+* Add support for conda package manager
+
+0.8.12 (2016-08-27)
++++++++++++++++++++
+
+* Pin plugins versions
 
 0.8.11 (2016-07-15)
 +++++++++++++++++++
