@@ -4,8 +4,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import sys
 from subprocess import CalledProcessError
+from tempfile import mkdtemp
 
 from mock import patch
+from shutil import rmtree
 
 from djangocms_installer import config, install, main
 
@@ -72,22 +74,28 @@ class TestMain(IsolatedTestClass):
                 self.assertTrue(os.path.exists(self.project_dir))
 
     def test_main_invocation(self):
+        base_dir = mkdtemp()
+        project_dir = os.path.join(base_dir, 'example_prj')
+        original_dir = os.getcwd()
+        os.chdir(base_dir)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                        '-len', '--cms-version=stable', '--django=%s' % dj_ver,
-                                       '-q', '-u', '-p'+self.project_dir, '--verbose',
+                                       '-q', '-u', '--verbose',
                                        'example_prj']
                 main.execute()
-                self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'static')))
-                self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'requirements.txt')))
-                self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'example_prj', 'static')))
-                with open(os.path.join(self.project_dir, 'requirements.txt'), 'r') as req_file:
+                self.assertTrue(os.path.exists(os.path.join(project_dir, 'static')))
+                self.assertTrue(os.path.exists(os.path.join(project_dir, 'requirements.txt')))
+                self.assertTrue(os.path.exists(os.path.join(project_dir, 'example_prj', 'static')))
+                with open(os.path.join(project_dir, 'requirements.txt'), 'r') as req_file:
                     text = req_file.read()
                     self.assertTrue(text.find('djangocms-text-ckeditor') > -1)
                 # Checking we successfully completed the whole process
                 self.assertTrue('Successfully installed ' in self.stdout.getvalue())
-                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
+                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % project_dir) in self.stdout.getvalue())
+        os.chdir(original_dir)
+        rmtree(base_dir)
 
     def test_two_langs_invocation(self):
         with patch('sys.stdout', self.stdout):

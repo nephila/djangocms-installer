@@ -27,9 +27,10 @@ def parse(args):
     parser = argparse.ArgumentParser(description="""Bootstrap a django CMS project.
 Major usage modes:
 
-- wizard: djangocms -p /path/whatever project_name: ask for all the options through a CLI wizard.
+- wizard: djangocms -w -p /path/whatever project_name: ask for all the options through a
+          CLI wizard.
 
-- batch: djangocms -q -p /path/whatever project_name: runs with the default values plus any
+- batch: djangocms project_name: runs with the default values plus any
          additional option provided (see below) with no question asked.
 
 - config file: djangocms_installer --config-file /path/to/config.ini project_name: reads values
@@ -78,7 +79,7 @@ information.
                         choices=data.DJANGOCMS_SUPPORTED,
                         default='stable', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
-                        required=True, default='',
+                        default='',
                         action='store', help='Optional project parent directory')
     parser.add_argument('--bootstrap', dest='bootstrap', action='store',
                         choices=('yes', 'no'),
@@ -106,8 +107,10 @@ information.
     # Advanced options. These have a predefined default and are not asked
     # by config wizard.
     parser.add_argument('--no-input', '-q', dest='noinput', action='store_true',
-                        default=False, help='Don\'t run the configuration wizard, just use the '
-                                            'provided values')
+                        default=True, help='Don\'t run the configuration wizard, just use the '
+                                           'provided values')
+    parser.add_argument('--wizard', '-w', dest='wizard', action='store_true',
+                        default=False, help='Run the configuration wizard')
     parser.add_argument('--verbose', dest='verbose', action='store_true',
                         default=False,
                         help='Be more verbose and don\'t swallow subcommands output')
@@ -146,6 +149,11 @@ information.
     # If config_args then pretend that config args came from the stdin and run parser again.
     config_args = ini.parse_config_file(parser, args)
     args = parser.parse_args(config_args + args)
+    if not args.wizard:
+        args.noinput = True
+
+    if not args.project_directory:
+        args.project_directory = args.project_name
 
     # First of all, check if the project name is valid
     if not validate_project(args.project_name):
@@ -156,8 +164,7 @@ information.
         sys.exit(3)
 
     # Checking the given path
-    setattr(args, 'project_path',
-            os.path.join(args.project_directory, args.project_name).strip())
+    setattr(args, 'project_path', os.path.join(args.project_directory, args.project_name).strip())
     if not args.skip_project_dir_check:
         if (os.path.exists(args.project_directory) and
                 [path for path in os.listdir(args.project_directory) if not path.startswith('.')]):
@@ -206,8 +213,7 @@ information.
 
     # Convert version to numeric format for easier checking
     try:
-        django_version, cms_version = supported_versions(args.django_version,
-                                                         args.cms_version)
+        django_version, cms_version = supported_versions(args.django_version, args.cms_version)
     except RuntimeError as e:
         sys.stderr.write(compat.unicode(e))
         sys.exit(6)
