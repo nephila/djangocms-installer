@@ -383,7 +383,7 @@ def setup_database(config_data):
             output = subprocess.check_output(command, env=env)
             sys.stdout.write(output.decode('utf-8'))
 
-        if not config_data.no_user and not config_data.noinput:
+        if not config_data.no_user:
             sys.stdout.write('Creating admin user\n')
             subprocess.check_call(' '.join(
                 [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser']

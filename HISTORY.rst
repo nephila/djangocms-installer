@@ -16,8 +16,9 @@ History
 * Only "core" plugins are now supported
 * Drop support for django-reversion in django CMS 3.4 (due to upstream drop)
 * Make project-path option optional
-* Quiet mode is now the default one
+* Batch mode is now the default one
 * Add support for conda package manager
+* Admin user is now created in batch mode by default. Use --no-user option to skip user creation.
 
 0.8.12 (2016-08-27)
 +++++++++++++++++++
