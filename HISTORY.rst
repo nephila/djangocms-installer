@@ -9,14 +9,14 @@ History
 * Drop support for Python 2.6
 * Drop support for Django < 1.8
 * Drop support for django CMS < 3.2
-* Improve inline documentation
-* If -s option is used, original directory is not removed
-* Set django CMS 3.3 as stable
-* Add support for 'rc' releases
-* Only "core" plugins are now supported
-* Drop support for django-reversion in django CMS 3.4 (due to upstream drop)
-* Make project-path option optional
+* Add support for django CMS 3.4 release
+* Set django CMS 3.4 as stable
 * Batch mode is now the default one
+* Improve inline documentation
+* Drop support for django-reversion in django CMS 3.4 (due to upstream drop)
+* Only "core" plugins are now supported
+* If -s option is used, original directory is not removed
+* Make project-path option optional
 * Add support for conda package manager
 * Admin user is now created in batch mode by default. Use --no-user option to skip user creation.
 
