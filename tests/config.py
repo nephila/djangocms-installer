@@ -720,6 +720,7 @@ class TestBaseConfig(unittest.TestCase):
         'no_plugins': False,
         'verbose': False,
         'wizard': False,
+        'delete_project_dir': False,
     })
 
     def __init__(self, *args, **kwargs):
@@ -782,6 +783,7 @@ class TestBaseConfig(unittest.TestCase):
             ('config-27.ini', 'utc', True),
             ('config-28.ini', 'no_plugins', True),
             ('config-30.ini', 'verbose', True),
+            ('config-32.ini', 'delete_project_dir', True),
         ]
         fixture = copy.copy(self.config_fixture)
         for filename, key, val in test_data:
