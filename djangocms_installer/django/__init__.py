@@ -140,6 +140,11 @@ def copy_files(config_data):
         if os.path.isfile(filename):
             shutil.copy(filename, template_target)
 
+    if config_data.noinput and not config_data.no_user:
+        script_path = os.path.join(share_path, 'create_user.py')
+        if os.path.isfile(script_path):
+            shutil.copy(script_path, os.path.join(config_data.project_path, '..'))
+
     if config_data.starting_page:
         for filename in glob.glob(os.path.join(share_path, 'starting_page.*')):
             if os.path.isfile(filename):
@@ -385,9 +390,31 @@ def setup_database(config_data):
 
         if not config_data.no_user:
             sys.stdout.write('Creating admin user\n')
-            subprocess.check_call(' '.join(
-                [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser']
-            ), shell=True)
+            if config_data.noinput:
+                create_user(config_data)
+            else:
+                subprocess.check_call(' '.join(
+                    [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser']
+                ), shell=True)
+
+
+def create_user(config_data):
+    """
+    Create admin user without user input
+
+    :param config_data: configuration data
+    """
+    with chdir(os.path.join(config_data.project_directory, '..')):
+        env = deepcopy(dict(os.environ))
+        env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
+        env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
+        print(os.getcwd())
+        subprocess.check_call([sys.executable, 'create_user.py'], env=env)
+        for ext in ['py', 'pyc']:
+            try:
+                os.remove('create_user.{0}'.format(ext))
+            except OSError:
+                pass
 
 
 def load_starting_page(config_data):
