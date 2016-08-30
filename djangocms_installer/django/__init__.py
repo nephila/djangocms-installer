@@ -408,7 +408,6 @@ def create_user(config_data):
         env = deepcopy(dict(os.environ))
         env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
         env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
-        print(os.getcwd())
         subprocess.check_call([sys.executable, 'create_user.py'], env=env)
         for ext in ['py', 'pyc']:
             try:
