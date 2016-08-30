@@ -2,12 +2,15 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
+import subprocess
 import sys
 from subprocess import CalledProcessError
 from tempfile import mkdtemp
 
 from mock import patch
 from shutil import rmtree
+
+from six import binary_type
 
 from djangocms_installer import config, install, main
 
@@ -94,6 +97,29 @@ class TestMain(IsolatedTestClass):
                 # Checking we successfully completed the whole process
                 self.assertTrue('Successfully installed ' in self.stdout.getvalue())
                 self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % project_dir) in self.stdout.getvalue())
+        os.chdir(original_dir)
+        rmtree(base_dir)
+
+    def test_base_invocation(self):
+        base_dir = mkdtemp()
+        project_dir = os.path.join(base_dir, 'example_prj')
+        original_dir = os.getcwd()
+        os.chdir(base_dir)
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                sys.argv = ['main'] + ['example_prj']
+                main.execute()
+                self.assertTrue(os.path.exists(os.path.join(project_dir, 'static')))
+                self.assertTrue(os.path.exists(os.path.join(project_dir, 'requirements.txt')))
+                self.assertTrue(os.path.exists(os.path.join(project_dir, 'example_prj', 'static')))
+                with open(os.path.join(project_dir, 'requirements.txt'), 'r') as req_file:
+                    text = req_file.read()
+                    self.assertTrue(text.find('djangocms-text-ckeditor') > -1)
+                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % project_dir) in self.stdout.getvalue())
+        os.chdir(project_dir)
+        with patch('sys.stdout', self.stdout):
+            out = subprocess.check_output(['sqlite3', 'project.db', 'SELECT COUNT(*) FROM auth_user WHERE username="admin"'])
+            self.assertEqual(binary_type(out), binary_type(b'1\n'))
         os.chdir(original_dir)
         rmtree(base_dir)
 
