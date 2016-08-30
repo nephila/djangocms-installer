@@ -137,6 +137,9 @@ information.
     parser.add_argument('--skip-empty-check', '-s', dest='skip_project_dir_check',
                         action='store_true',
                         default=False, help='Skip the check if project dir is empty.')
+    parser.add_argument('--delete-project-dir', '-c', dest='delete_project_dir',
+                        action='store_true',
+                        default=False, help='Delete project directory on creation failure.')
     parser.add_argument('--utc', dest='utc',
                         action='store_true',
                         default=False, help='Use UTC timezone.')
@@ -151,6 +154,8 @@ information.
     args = parser.parse_args(config_args + args)
     if not args.wizard:
         args.noinput = True
+    else:
+        args.noinput = False
 
     if not args.project_directory:
         args.project_directory = args.project_name

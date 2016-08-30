@@ -153,8 +153,20 @@ class TestMain(IsolatedTestClass):
             with patch('sys.stderr', self.stderr):
                 with self.assertRaises((CalledProcessError, EnvironmentError)):
                     sys.argv = ['main'] + ['--db=postgres://user:pwd@host/dbname',
-                                           '-len', '--no-db-driver',
+                                           '-len', '--no-db-driver', '-c',
                                            '-q', '-u', '-p'+self.project_dir,
                                            'example_prj']
                     main.execute()
         self.assertFalse(os.path.exists(self.project_dir))
+
+    def test_no_cleanup(self):
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises((CalledProcessError, EnvironmentError)):
+                    sys.argv = ['main'] + ['--db=postgres://user:pwd@host/dbname',
+                                           '-len', '--no-db-driver',
+                                           '-q', '-u', '-p' + self.project_dir,
+                                           'example_prj']
+                    main.execute()
+        self.assertTrue(os.path.exists(self.project_dir))
+
