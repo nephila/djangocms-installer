@@ -20,6 +20,7 @@ History
 * Add support for conda package manager
 * Admin user is now created in batch mode by default. Use --no-user option to skip user creation
 * In batch mode directory is not removed in case of cleanup unless --delete-project-dir is given
+* Disable permission by default
 
 0.8.12 (2016-08-27)
 +++++++++++++++++++

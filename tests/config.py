@@ -30,7 +30,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.django_version, 1.8)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
-        self.assertEqual(conf_data.permissions, 'yes')
+        self.assertEqual(conf_data.permissions, 'no')
         self.assertEqual(conf_data.use_timezone, 'yes')
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
 

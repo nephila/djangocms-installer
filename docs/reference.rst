@@ -33,7 +33,7 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--reversion``, ``-e``: Install and configure reversion support, choices: ``yes|no``,
   default: ``yes``; this will ignored for RC/develop/3.4 versions of django CMS as support has
   been dropped upstream;
-* ``--permissions``: Activate CMS permission management; choices: ``yes|no``, default: ``yes``
+* ``--permissions``: Activate CMS permission management; choices: ``yes|no``, default: ``no``
 * ``--languages``, ``-l``: Languages available for the project. Option can be provided multiple
   times, or as a comma separated list.
   Only language codes supported by Django can be used here;
