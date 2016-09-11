@@ -66,7 +66,7 @@ information.
                                             '(only for django CMS 3.2 and 3.3)')
     parser.add_argument('--permissions', dest='permissions', action='store',
                         choices=('yes', 'no'),
-                        default='yes', help='Activate CMS permission management')
+                        default='no', help='Activate CMS permission management')
     parser.add_argument('--pip-options', help='pass custom pip options', default='')
     parser.add_argument('--languages', '-l', dest='languages', action='append',
                         help='Languages to enable. Option can be provided multiple times, or as a '
