@@ -348,7 +348,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('django-cms<3.4') > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.2.1') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.2') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') == -1)
@@ -449,7 +449,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('django-cms<3.4') > -1)
         self.assertTrue(conf_data.requirements.find('Django<1.9') > -1)
         self.assertTrue(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.0') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.2') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
 

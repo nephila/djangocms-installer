@@ -89,39 +89,47 @@ REQUIREMENTS = {
         'https://github.com/divio/djangocms-admin-style/archive/master.zip?{bust}'.format(**bust),
         'django-treebeard>=4.0,<5.0',
     ],
-    'ckeditor-3.2': [
-        'djangocms-text-ckeditor>=2.8.1,<=2.9.3',
-    ],
-    'ckeditor-3.3': [
-        'djangocms-text-ckeditor>=3.0,<3.2',
-    ],
-    'ckeditor-3.4': [
-        'djangocms-text-ckeditor>=3.2',
-    ],
-    'ckeditor-master': [
-        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
-        ''.format(**bust),
-    ],
-    'plugins-common': [
-        'djangocms-link>=1.8,<1.9',
-        'djangocms-style>=1.7,<1.8',
-        'djangocms-googlemap>=0.4,<0.6',
-        'djangocms-snippet>=1.8,<2',
+    'plugins-3.2': [
+        'djangocms-text-ckeditor>=2.8.1,<3.0',
+        'djangocms-link>=1.8,<2.0',
+        'djangocms-style>=1.7,<2.0',
+        'djangocms-googlemap>=0.5,<1.0',
+        'djangocms-snippet>=1.9,<2.0',
         'djangocms-video>=1.1,<2.0',
+        'djangocms-column>=1.6,<2.0',
+    ],
+    'plugins-3.3': [
+        'djangocms-text-ckeditor>=3.2.1',
+        'djangocms-link>=1.8',
+        'djangocms-style>=1.7',
+        'djangocms-googlemap>=0.5',
+        'djangocms-snippet>=1.9',
+        'djangocms-video>=2.0',
         'djangocms-column>=1.6',
     ],
-    'plugins-basic': [
-        'djangocms-file>=1.0,<1.1',
-        'djangocms-picture>=0.2.0,<0.3',
-        'djangocms-teaser>=0.2.0,<0.3',
+    'plugins-3.4': [
+        'djangocms-text-ckeditor>=3.2.1',
+        'djangocms-link>=1.8',
+        'djangocms-style>=1.7',
+        'djangocms-googlemap>=0.5',
+        'djangocms-snippet>=1.9',
+        'djangocms-video>=2.0',
+        'djangocms-column>=1.6',
     ],
-    'plugins-common-master': [
+    'plugins-master': [
+        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
+        ''.format(**bust),
         'https://github.com/divio/djangocms-link/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-style/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-googlemap/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-snippet/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-video/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-column/archive/master.zip?{bust}'.format(**bust),
+    ],
+    'plugins-basic': [
+        'djangocms-file>=1.0,<1.1',
+        'djangocms-picture>=0.2.0,<0.3',
+        'djangocms-teaser>=0.2.0,<0.3',
     ],
     'plugins-basic-master': [
         'https://github.com/divio/djangocms-file/archive/master.zip?{bust}'.format(**bust),
