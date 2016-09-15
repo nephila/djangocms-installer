@@ -3,7 +3,7 @@
 History
 -------
 
-0.9.0 (unreleased)
+0.9.0 (2016-09-15)
 ++++++++++++++++++
 
 * Drop support for Python 2.6
