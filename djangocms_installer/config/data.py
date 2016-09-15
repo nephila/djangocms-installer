@@ -11,16 +11,20 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--permissions', '--bootstrap', '--templates',
                         '--starting-page']
 
-DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.format(**bust)
-DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.format(**bust)
+DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.format(
+    **bust
+)
+DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/release/3.4.x.zip?{bust}'.format(
+    **bust
+)
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
 if sys.version_info >= (3, 5):
-    DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'rc', 'develop')
-    DJANGOCMS_STABLE = 3.3
+    DJANGOCMS_SUPPORTED = ('3.2', '3.3', '3.4', 'stable', 'develop')
+    DJANGOCMS_STABLE = 3.4
 else:
-    DJANGOCMS_SUPPORTED = ('3.2', '3.3', 'stable', 'rc', 'develop')
-    DJANGOCMS_STABLE = 3.3
+    DJANGOCMS_SUPPORTED = ('3.2', '3.3', '3.4', 'stable', 'develop')
+    DJANGOCMS_STABLE = 3.4
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
@@ -39,9 +43,9 @@ else:
 
 CMS_VERSION_MATRIX = {
     'stable': DJANGOCMS_STABLE,
-    'rc': 3.4,
-    'beta': 3.4,
-    'develop': 3.4
+    'rc': 3.5,
+    'beta': 3.5,
+    'develop': 3.5
 }
 DJANGO_VERSION_MATRIX = {
     'stable': DJANGO_STABLE,
@@ -52,7 +56,8 @@ DJANGO_VERSION_MATRIX = {
 VERSION_MATRIX = {
     3.2: (1.8, 1.9),
     3.3: (1.8, 1.9),
-    3.4: (1.8, 1.9),
+    3.4: (1.8, 1.9, 1.10),
+    3.5: (1.8, 1.9, 1.10),
 }
 
 REQUIREMENTS = {
@@ -61,6 +66,7 @@ REQUIREMENTS = {
         'html5lib>=0.999999,<0.99999999',
         'Pillow>=3.0',
         'django-sekizai>=0.9',
+        'django-select2<5.0'
         'six',
     ],
     'django-1.8': [
@@ -89,39 +95,47 @@ REQUIREMENTS = {
         'https://github.com/divio/djangocms-admin-style/archive/master.zip?{bust}'.format(**bust),
         'django-treebeard>=4.0,<5.0',
     ],
-    'ckeditor-3.2': [
-        'djangocms-text-ckeditor>=2.8.1,<=2.9.3',
-    ],
-    'ckeditor-3.3': [
-        'djangocms-text-ckeditor>=3.0,<3.2',
-    ],
-    'ckeditor-3.4': [
-        'djangocms-text-ckeditor>=3.2',
-    ],
-    'ckeditor-master': [
-        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
-        ''.format(**bust),
-    ],
-    'plugins-common': [
-        'djangocms-link>=1.8,<1.9',
-        'djangocms-style>=1.7,<1.8',
-        'djangocms-googlemap>=0.4,<0.6',
-        'djangocms-snippet>=1.8,<2',
+    'plugins-3.2': [
+        'djangocms-text-ckeditor>=2.8.1,<3.0',
+        'djangocms-link>=1.8,<2.0',
+        'djangocms-style>=1.7,<2.0',
+        'djangocms-googlemap>=0.5,<1.0',
+        'djangocms-snippet>=1.9,<2.0',
         'djangocms-video>=1.1,<2.0',
+        'djangocms-column>=1.6,<1.7',
+    ],
+    'plugins-3.3': [
+        'djangocms-text-ckeditor>=3.2.1',
+        'djangocms-link>=1.8',
+        'djangocms-style>=1.7',
+        'djangocms-googlemap>=0.5',
+        'djangocms-snippet>=1.9',
+        'djangocms-video>=2.0',
         'djangocms-column>=1.6',
     ],
-    'plugins-basic': [
-        'djangocms-file>=1.0,<1.1',
-        'djangocms-picture>=0.2.0,<0.3',
-        'djangocms-teaser>=0.2.0,<0.3',
+    'plugins-3.4': [
+        'djangocms-text-ckeditor>=3.2.1',
+        'djangocms-link>=1.8',
+        'djangocms-style>=1.7',
+        'djangocms-googlemap>=0.5',
+        'djangocms-snippet>=1.9',
+        'djangocms-video>=2.0',
+        'djangocms-column>=1.6',
     ],
-    'plugins-common-master': [
+    'plugins-master': [
+        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
+        ''.format(**bust),
         'https://github.com/divio/djangocms-link/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-style/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-googlemap/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-snippet/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-video/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-column/archive/master.zip?{bust}'.format(**bust),
+    ],
+    'plugins-basic': [
+        'djangocms-file>=1.0,<1.1',
+        'djangocms-picture>=0.2.0,<0.3',
+        'djangocms-teaser>=0.2.0,<0.3',
     ],
     'plugins-basic-master': [
         'https://github.com/divio/djangocms-file/archive/master.zip?{bust}'.format(**bust),

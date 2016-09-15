@@ -252,8 +252,8 @@ information.
 
         if args.cms_version in ('rc', 'develop'):
             requirements.extend(data.REQUIREMENTS['cms-master'])
-        # elif cms_version >= 3.4:
-        #    requirements.extend(data.REQUIREMENTS['cms-3.4'])
+        elif cms_version >= 3.4:
+            requirements.extend(data.REQUIREMENTS['cms-3.4'])
         elif cms_version >= 3.3:
             requirements.extend(data.REQUIREMENTS['cms-3.3'])
         elif cms_version >= 3.2:
@@ -262,24 +262,15 @@ information.
         if not args.no_db_driver:
             requirements.append(args.db_driver)
         if not args.no_plugins:
-            if args.filer:
-                if args.cms_version in ('rc', 'develop'):
-                    requirements.extend(data.REQUIREMENTS['plugins-common-master'])
-                    requirements.extend(data.REQUIREMENTS['filer'])
-                else:
-                    requirements.extend(data.REQUIREMENTS['plugins-common'])
-                    requirements.extend(data.REQUIREMENTS['filer'])
-            # else:
-            #    requirements.extend(data.REQUIREMENTS['plugins-common'])
-            #    requirements.extend(data.REQUIREMENTS['plugins-basic'])
             if args.cms_version in ('rc', 'develop'):
-                requirements.extend(data.REQUIREMENTS['ckeditor-master'])
-            # elif cms_version >= 3.4:
-            #    requirements.extend(data.REQUIREMENTS['ckeditor-3.4'])
+                requirements.extend(data.REQUIREMENTS['plugins-master'])
+            elif cms_version >= 3.4:
+                requirements.extend(data.REQUIREMENTS['plugins-3.4'])
             elif cms_version >= 3.3:
-                requirements.extend(data.REQUIREMENTS['ckeditor-3.3'])
+                requirements.extend(data.REQUIREMENTS['plugins-3.3'])
             else:
-                requirements.extend(data.REQUIREMENTS['ckeditor-3.2'])
+                requirements.extend(data.REQUIREMENTS['plugins-3.2'])
+            requirements.extend(data.REQUIREMENTS['filer'])
 
         if args.aldryn:  # pragma: no cover
             requirements.extend(data.REQUIREMENTS['aldryn'])
