@@ -3,6 +3,11 @@
 History
 -------
 
+0.9.1 (unreleased)
+++++++++++++++++++
+
+* Fixed issue with -p parameter
+
 0.9.0 (2016-09-15)
 ++++++++++++++++++
 
