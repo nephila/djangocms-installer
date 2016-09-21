@@ -159,6 +159,7 @@ information.
 
     if not args.project_directory:
         args.project_directory = args.project_name
+    args.project_directory = os.path.abspath(args.project_directory)
 
     # First of all, check if the project name is valid
     if not validate_project(args.project_name):
