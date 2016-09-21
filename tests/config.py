@@ -725,7 +725,7 @@ class TestBaseConfig(unittest.TestCase):
         'permissions': 'yes',
         'pip_options': '',
         'plugins': False,
-        'project_directory': '.',
+        'project_directory': os.path.abspath('.'),
         'project_name': 'example_prj',
         'requirements_file': None,
         'reversion': 'yes',
