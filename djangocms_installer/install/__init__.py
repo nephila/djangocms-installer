@@ -5,8 +5,11 @@ import os.path
 import shutil
 import subprocess
 import sys
-
+import logging
 from djangocms_installer.utils import query_yes_no
+
+
+logger = logging.getLogger('')
 
 
 def check_install(config_data):
@@ -88,8 +91,13 @@ def requirements(requirements, pip_options='', is_file=False, verbose=False):
         args.extend(['{0}'.format(package) for package in requirements.split()])
     if verbose:
         sys.stdout.write('Package install command: {0}\n'.format(' '.join(args)))
-    output = subprocess.check_output(['pip'] + args)
-    sys.stdout.write(output.decode('utf-8'))
+    try:
+        output = subprocess.check_output(['pip'] + args, stderr=subprocess.STDOUT)
+        sys.stdout.write(output.decode('utf-8'))
+    except Exception, e:
+        logger.error('cmd : %s :%s' % (e.cmd, e.output))
+        raise e
+    
     return True
 
 
