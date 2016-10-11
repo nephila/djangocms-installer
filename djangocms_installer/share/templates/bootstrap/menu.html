@@ -1,18 +1,25 @@
 {% load i18n menu_tags cache %}
 
 {% for child in children %}
-    <li class="{% if child.ancestor %}ancestor{% endif %}
+    <li class="nav-item
+        {% if child.ancestor %} ancestor{% endif %}
         {% if child.selected %} active{% endif %}
         {% if child.children %} dropdown{% endif %}">
+
         {% if child.children %}
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                {{ child.get_menu_title }} <span class="caret"></span>
+            <a href="{{ child.get_absolute_url }}" class="nav-link dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                {{ child.get_menu_title }}
             </a>
             <ul class="dropdown-menu">
                 {% show_menu from_level to_level extra_inactive extra_active template "" "" child %}
             </ul>
         {% else %}
-            <a href="{{ child.get_absolute_url }}"><span>{{ child.get_menu_title }}</span></a>
+            <a href="{{ child.get_absolute_url }}" class="nav-link">
+                {{ child.get_menu_title }}
+                {% if child.selected %}<span class="sr-only">(current)</span>{% endif %}
+            </a>
         {% endif %}
     </li>
     {% if class and forloop.last and not forloop.parentloop %}{% endif %}
