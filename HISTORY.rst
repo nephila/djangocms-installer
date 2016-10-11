@@ -7,6 +7,7 @@ History
 ++++++++++++++++++
 
 * Fixed search 'django-admin.py' 
+* Improved error reporting during package installation
 
 0.9.1 (2016-10-02)
 ++++++++++++++++++
