@@ -3,7 +3,12 @@
 History
 -------
 
-0.9.1 (unreleased)
+0.9.2 (2016-11-12)
+++++++++++++++++++
+
+* Fixed search 'django-admin.py' 
+
+0.9.1 (2016-10-02)
 ++++++++++++++++++
 
 * Fixed issue with -p parameter
