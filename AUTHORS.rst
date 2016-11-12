@@ -14,8 +14,10 @@ Contributors
 
 * Aaron Boman
 * Alexander Pervakov
+* Boussard
 * Carlo Ascani <c.ascani@nephila.it>
 * Claudio Luck
+* Comedy
 * Enkel Mitrushi
 * growlf
 * Henning Sprang <henning.sprang@gmail.com>
