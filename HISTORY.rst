@@ -3,10 +3,15 @@
 History
 -------
 
+0.9.3 (unreleased)
+++++++++++++++++++
+
+* Fixed issue with create_user command
+
 0.9.2 (2016-11-12)
 ++++++++++++++++++
 
-* Fixed search 'django-admin.py' 
+* Fixed search 'django-admin.py'
 * Improved error reporting during package installation
 
 0.9.1 (2016-10-02)
