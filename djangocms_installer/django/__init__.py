@@ -51,7 +51,7 @@ def create_project(config_data):
     for p in start_cmds:
         if os.path.exists(p):
             start_cmd = p
-        break
+            break
     cmd_args = ' '.join([sys.executable, start_cmd, 'startproject'] + args)
     if config_data.verbose:
         sys.stdout.write('Project creation command: {0}\n'.format(cmd_args))
