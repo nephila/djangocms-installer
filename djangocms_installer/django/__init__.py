@@ -404,7 +404,7 @@ def create_user(config_data):
 
     :param config_data: configuration data
     """
-    with chdir(os.path.join(config_data.project_directory, '..')):
+    with chdir(os.path.abspath(config_data.project_directory)):
         env = deepcopy(dict(os.environ))
         env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
         env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
@@ -422,7 +422,7 @@ def load_starting_page(config_data):
 
     :param config_data: configuration data
     """
-    with chdir(config_data.project_directory):
+    with chdir(os.path.abspath(config_data.project_directory)):
         env = deepcopy(dict(os.environ))
         env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
         env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
