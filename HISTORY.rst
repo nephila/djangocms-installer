@@ -3,7 +3,7 @@
 History
 -------
 
-0.9.3 (unreleased)
+0.9.3 (2016-11-16)
 ++++++++++++++++++
 
 * Fixed issue with create_user command
