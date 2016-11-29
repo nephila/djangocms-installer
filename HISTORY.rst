@@ -3,6 +3,11 @@
 History
 -------
 
+1.0.0 (unreleased)
+++++++++++++++++++
+
+* Dropped cmsplugin-filer in favor of core plugins which now use filer
+
 0.9.3 (2016-11-16)
 ++++++++++++++++++
 

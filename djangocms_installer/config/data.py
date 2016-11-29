@@ -103,6 +103,8 @@ REQUIREMENTS = {
         'djangocms-snippet>=1.9,<2.0',
         'djangocms-video>=1.1,<2.0',
         'djangocms-column>=1.6,<1.7',
+        'djangocms-file>=1.0,<1.1',
+        'djangocms-picture>=0.2.0,<0.3',
     ],
     'plugins-3.3': [
         'djangocms-text-ckeditor>=3.2.1',
@@ -112,6 +114,8 @@ REQUIREMENTS = {
         'djangocms-snippet>=1.9',
         'djangocms-video>=2.0',
         'djangocms-column>=1.6',
+        'djangocms-file>=1.0,<1.1',
+        'djangocms-picture>=0.2.0,<0.3',
     ],
     'plugins-3.4': [
         'djangocms-text-ckeditor>=3.2.1',
@@ -121,31 +125,28 @@ REQUIREMENTS = {
         'djangocms-snippet>=1.9',
         'djangocms-video>=2.0',
         'djangocms-column>=1.6',
+        'djangocms-file>=2.0,<3.0',
+        'djangocms-picture>=2.0,<3.0',
     ],
     'plugins-master': [
         'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
         ''.format(**bust),
+        'https://github.com/divio/djangocms-file/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-link/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-style/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-googlemap/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-snippet/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-picture/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-video/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-column/archive/master.zip?{bust}'.format(**bust),
     ],
     'plugins-basic': [
-        'djangocms-file>=1.0,<1.1',
-        'djangocms-picture>=0.2.0,<0.3',
-        'djangocms-teaser>=0.2.0,<0.3',
     ],
     'plugins-basic-master': [
-        'https://github.com/divio/djangocms-file/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-picture/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-teaser/archive/master.zip?{bust}'.format(**bust),
     ],
     'filer': [
         'easy_thumbnails',
         'django-filer>=1.2',
-        'cmsplugin-filer>=1.1',
     ],
 }
 
@@ -170,9 +171,8 @@ PLUGIN_LIST_TEXT = """
 djangocms installer will install and configure the following plugins:
  * djangocms-text-ckeditor (Text plugin)
  * djangocms-link (Link plugin)
- * cmsplugin_filer_file (File plugin, replaces djangocms-file)
- * cmsplugin_filer_folder (Folder plugin)
- * cmsplugin_filer_image (Image plugin, replaces djangocms-picture)
+ * djangocms-file (File plugin)
+ * djangocms-picture (Image plugin)
  * djangocms-style (Style plugin)
  * djangocms-snippet (Snippet plugin)
  * djangocms-googlemap (GoogleMap plugin)
