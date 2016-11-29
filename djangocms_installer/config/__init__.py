@@ -24,6 +24,8 @@ def parse(args):
         timezone = get_localzone()
     except:
         timezone = 'UTC'
+    if timezone == 'local':
+        timezone = 'UTC'
     parser = argparse.ArgumentParser(description="""Bootstrap a django CMS project.
 Major usage modes:
 
