@@ -102,7 +102,7 @@ The current supported version matrix is the following:
 +----------------+-------------+-------------+---------------+
 | django CMS 3.3 | Supported   | Supported   | Unsupported   |
 +----------------+-------------+-------------+---------------+
-| django CMS 3.4 | Supported   | Supported   | WiP           |
+| django CMS 3.4 | Supported   | Supported   | Supported     |
 +----------------+-------------+-------------+---------------+
 
 See `version 0.8`_ for older Django / django CMS versions support
