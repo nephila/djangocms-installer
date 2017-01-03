@@ -11,6 +11,7 @@ import tempfile
 import textwrap
 import zipfile
 from copy import copy, deepcopy
+from distutils.version import LooseVersion
 
 from six import BytesIO, iteritems
 
@@ -223,7 +224,7 @@ STATICFILES_DIRS = (
         )
 
     for item in overridden_settings:
-        if config_data.django_version >= 1.9:
+        if LooseVersion(config_data.django_version) >= LooseVersion('1.9'):
             item_re = re.compile(r'{0} = [^\]]+\]'.format(item), re.DOTALL | re.MULTILINE)
         else:
             item_re = re.compile(r'{0} = [^\)]+\)'.format(item), re.DOTALL | re.MULTILINE)
@@ -278,7 +279,7 @@ def _build_settings(config_data):
 
     if config_data.aldryn:  # pragma: no cover
         apps.extend(vars.ALDRYN_APPLICATIONS)
-    if config_data.reversion and config_data.cms_version < 3.4:
+    if config_data.reversion and LooseVersion(config_data.cms_version) < LooseVersion('3.4'):
         apps.extend(vars.REVERSION_APPLICATIONS)
     text.append('INSTALLED_APPS = (\n{0}{1}\n)'.format(
         spacer, (',\n' + spacer).join(['\'{0}\''.format(var) for var in apps] +

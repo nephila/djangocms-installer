@@ -38,17 +38,19 @@ The following arguments can be overridden in :ref:`wizard_mode`
   times, or as a comma separated list.
   Only language codes supported by Django can be used here;
   refer to `django source`_ for a list of supported codes.
-* ``--django-version``: Django version;  choices: ``1.8|1.9|stable``, default: ``stable``
-* ``--cms-version``, ``-v``: django CMS version, choices: ``3.2|3.3|stable|rc|develop``.
-  default: ``stable``
+* ``--django-version``: Django version;  choices: ``1.8|1.9|1.10|stable|lts``, default: ``lts```
+* ``--cms-version``, ``-v``: django CMS version, choices: ``3.2|3.3|3.4|stable|lts``.
+  default: ``lts``
 * ``--bootstrap``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
 * ``--starting-page``: Load a starting page with examples (available for english language only)
   after installation, choices: ``yes|no``, default: ``no``
 * ``--templates``: Use a custom directory as template source; is checked to be a valid path,
   otherwise the shipped templates are used
 
-.. note:: ``stable`` keyword is expanded to Django version 1.8
-.. note:: ``stable`` keyword is expanded to django CMS version 3.3
+.. note:: Django ``stable`` keyword is expanded to latest released Django version
+.. note:: Django ``lts`` keyword is expanded to latest released Django LTSrsion
+.. note:: django-cms ``stable`` keyword is expanded to latest released django-cms version
+.. note:: django-cms ``lts`` keyword is expanded to latest released django-cms version
 .. warning:: if an unsupported combination of Django and django CMS version is selected, the
              wizard exits reporting the error.
 
