@@ -4,6 +4,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import sys
 
+from decimal import Decimal, InvalidOperation
+from distutils.version import LooseVersion
+
 from six import text_type
 
 from . import compat
@@ -43,8 +46,7 @@ def query_yes_no(question, default=None):  # pragma: no cover
         elif choice in valid:
             return valid[choice]
         else:
-            sys.stdout.write('Please answer with "yes" or "no" '
-                             '(or "y" or "n").\n')
+            sys.stdout.write('Please answer with "yes" or "no" (or "y" or "n").\n')
 
 
 def supported_versions(django, cms):
@@ -53,26 +55,29 @@ def supported_versions(django, cms):
     """
     cms_version = None
     django_version = None
+
     try:
-        cms_version = float(cms)
-    except ValueError:
+        cms_version = Decimal(cms)
+    except (ValueError, InvalidOperation):
         try:
-            cms_version = CMS_VERSION_MATRIX[cms]
+            cms_version = CMS_VERSION_MATRIX[str(cms)]
         except KeyError:
             pass
 
     try:
-        django_version = float(django)
-    except ValueError:
+        django_version = Decimal(django)
+    except (ValueError, InvalidOperation):
         try:
-            django_version = DJANGO_VERSION_MATRIX[django]
+            django_version = DJANGO_VERSION_MATRIX[str(django)]
         except KeyError:  # pragma: no cover
             pass
+
     try:
         if (
                 cms_version and django_version and
-                not (VERSION_MATRIX[cms_version][0] <= django_version <=
-                     VERSION_MATRIX[cms_version][1])
+                not (LooseVersion(VERSION_MATRIX[compat.unicode(cms_version)][0]) <=
+                     LooseVersion(compat.unicode(django_version)) <=
+                     LooseVersion(VERSION_MATRIX[compat.unicode(cms_version)][1]))
         ):
             raise RuntimeError(
                 'Django and django CMS versions doesn\'t match: '
@@ -83,7 +88,10 @@ def supported_versions(django, cms):
             'Django and django CMS versions doesn\'t match: '
             'Django {0} is not supported by django CMS {1}'.format(django_version, cms_version)
         )
-    return django_version, cms_version
+    return (
+        compat.unicode(django_version) if django_version else django_version,
+        compat.unicode(cms_version) if cms_version else cms_version
+    )
 
 
 def less_than_version(value):
