@@ -3,7 +3,7 @@
 History
 -------
 
-0.9.4 (unreleased)
+0.9.4 (2017-01-03)
 ++++++++++++++++++
 
 * Added support for Django 1.10
