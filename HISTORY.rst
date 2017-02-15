@@ -8,6 +8,12 @@ History
 
 * Dropped cmsplugin-filer in favor of core plugins which now use filer
 
+0.9.4 (2017-01-03)
+++++++++++++++++++
+
+* Added support for Django 1.10
+* Added 'lts' keyword (it's now the default instead of 'stable')
+
 0.9.3 (2016-11-16)
 ++++++++++++++++++
 
