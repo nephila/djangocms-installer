@@ -3,7 +3,29 @@
 History
 -------
 
-0.9.1 (unreleased)
+0.9.5 (2017-02-16)
+++++++++++++++++++
+
+* Added more Django 1.10 fixes / cleanups
+
+0.9.4 (2017-01-03)
+++++++++++++++++++
+
+* Added support for Django 1.10
+* Added 'lts' keyword (it's now the default instead of 'stable')
+
+0.9.3 (2016-11-16)
+++++++++++++++++++
+
+* Fixed issue with create_user command
+
+0.9.2 (2016-11-12)
+++++++++++++++++++
+
+* Fixed search 'django-admin.py'
+* Improved error reporting during package installation
+
+0.9.1 (2016-10-02)
 ++++++++++++++++++
 
 * Fixed issue with -p parameter

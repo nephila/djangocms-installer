@@ -54,6 +54,7 @@ def create_pages():
             # supporting old cms versions
             publish_page(page, User.objects.all()[0])
 
+
 if __name__ == '__main__':
     import django
 

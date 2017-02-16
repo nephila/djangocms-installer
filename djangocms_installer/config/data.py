@@ -20,44 +20,52 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/release/3.4.x.zip?{b
 DJANGOCMS_BETA = 'https://github.com/divio/django-cms/archive/3.0.0.beta3.zip'
 
 if sys.version_info >= (3, 5):
-    DJANGOCMS_SUPPORTED = ('3.2', '3.3', '3.4', 'stable', 'develop')
-    DJANGOCMS_STABLE = 3.4
+    DJANGOCMS_SUPPORTED = ('3.2', '3.3', '3.4', 'stable', 'lts', 'develop')
+    DJANGOCMS_STABLE = '3.4'
+    DJANGOCMS_LTS = '3.4'
 else:
-    DJANGOCMS_SUPPORTED = ('3.2', '3.3', '3.4', 'stable', 'develop')
-    DJANGOCMS_STABLE = 3.4
+    DJANGOCMS_SUPPORTED = ('3.2', '3.3', '3.4', 'stable', 'lts', 'develop')
+    DJANGOCMS_STABLE = '3.4'
+    DJANGOCMS_LTS = '3.4'
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 if sys.version_info >= (3, 5):
-    DJANGO_SUPPORTED = ('1.8', '1.9', 'stable')
-    DJANGO_STABLE = 1.8
+    DJANGO_SUPPORTED = ('1.8', '1.9', '1.10', 'stable', 'lts')
+    DJANGO_STABLE = '1.10'
+    DJANGO_LTS = '1.8'
 elif sys.version_info >= (3, 4):
-    DJANGO_SUPPORTED = ('1.8', '1.9', 'stable')
-    DJANGO_STABLE = 1.8
+    DJANGO_SUPPORTED = ('1.8', '1.9', '1.10', 'stable', 'lts')
+    DJANGO_STABLE = '1.10'
+    DJANGO_LTS = '1.8'
 elif sys.version_info >= (3, 3):
-    DJANGO_SUPPORTED = ('1.8', 'stable')
-    DJANGO_STABLE = 1.8
+    DJANGO_SUPPORTED = ('1.8', 'stable', 'lts')
+    DJANGO_STABLE = '1.8'
+    DJANGO_LTS = '1.8'
 else:
-    DJANGO_SUPPORTED = ('1.8', '1.9', 'stable')
-    DJANGO_STABLE = 1.8
+    DJANGO_SUPPORTED = ('1.8', '1.9', '1.10', 'stable', 'lts')
+    DJANGO_STABLE = '1.10'
+    DJANGO_LTS = '1.8'
 
 CMS_VERSION_MATRIX = {
     'stable': DJANGOCMS_STABLE,
-    'rc': 3.5,
-    'beta': 3.5,
-    'develop': 3.5
+    'lts': DJANGOCMS_LTS,
+    'rc': '3.5',
+    'beta': '3.5',
+    'develop': '3.5'
 }
 DJANGO_VERSION_MATRIX = {
     'stable': DJANGO_STABLE,
-    'rc': 1.9,
-    'beta': 1.9,
-    'develop': 1.9
+    'lts': DJANGO_LTS,
+    'rc': '1.11',
+    'beta': '1.11',
+    'develop': '1.11'
 }
 VERSION_MATRIX = {
-    3.2: (1.8, 1.9),
-    3.3: (1.8, 1.9),
-    3.4: (1.8, 1.9, 1.10),
-    3.5: (1.8, 1.9, 1.10),
+    '3.2': ('1.8', '1.9'),
+    '3.3': ('1.8', '1.9'),
+    '3.4': ('1.8', '1.10'),
+    '3.5': ('1.8', '1.10'),
 }
 
 REQUIREMENTS = {
@@ -66,18 +74,22 @@ REQUIREMENTS = {
         'html5lib>=0.999999,<0.99999999',
         'Pillow>=3.0',
         'django-sekizai>=0.9',
-        'django-select2<5.0'
         'six',
     ],
     'django-1.8': [
     ],
     'django-1.9': [
     ],
+    'django-1.10': [
+    ],
     'reversion-django-1.8': [
         'django-reversion>=1.10,<1.11',
     ],
     'reversion-django-1.9': [
         'django-reversion>=1.10,<2.0',
+    ],
+    'reversion-django-1.10': [
+        'django-reversion>=2.0,<2.1',
     ],
     'cms-3.2': [
         'djangocms-admin-style>=1.1.1,<1.3',

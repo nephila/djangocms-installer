@@ -6,6 +6,7 @@ import locale
 import os.path
 import sys
 import warnings
+from distutils.version import LooseVersion
 
 import six
 from tzlocal import get_localzone
@@ -23,6 +24,8 @@ def parse(args):
     try:
         timezone = get_localzone()
     except:
+        timezone = 'UTC'
+    if timezone == 'local':
         timezone = 'UTC'
     parser = argparse.ArgumentParser(description="""Bootstrap a django CMS project.
 Major usage modes:
@@ -74,10 +77,10 @@ information.
                              'be used here. Example: en, fr-FR, it-IT')
     parser.add_argument('--django-version', dest='django_version', action='store',
                         choices=data.DJANGO_SUPPORTED,
-                        default='stable', help='Django version')
+                        default='lts', help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
                         choices=data.DJANGOCMS_SUPPORTED,
-                        default='stable', help='django CMS version')
+                        default='lts', help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
                         default='',
                         action='store', help='Optional project parent directory')
@@ -159,6 +162,7 @@ information.
 
     if not args.project_directory:
         args.project_directory = args.project_name
+    args.project_directory = os.path.abspath(args.project_directory)
 
     # First of all, check if the project name is valid
     if not validate_project(args.project_name):
@@ -252,11 +256,11 @@ information.
 
         if args.cms_version in ('rc', 'develop'):
             requirements.extend(data.REQUIREMENTS['cms-master'])
-        elif cms_version >= 3.4:
+        elif LooseVersion(cms_version) >= LooseVersion('3.4'):
             requirements.extend(data.REQUIREMENTS['cms-3.4'])
-        elif cms_version >= 3.3:
+        elif LooseVersion(cms_version) >= LooseVersion('3.3'):
             requirements.extend(data.REQUIREMENTS['cms-3.3'])
-        elif cms_version >= 3.2:
+        elif LooseVersion(cms_version) >= LooseVersion('3.2'):
             requirements.extend(data.REQUIREMENTS['cms-3.2'])
 
         if not args.no_db_driver:
@@ -264,9 +268,9 @@ information.
         if not args.no_plugins:
             if args.cms_version in ('rc', 'develop'):
                 requirements.extend(data.REQUIREMENTS['plugins-master'])
-            elif cms_version >= 3.4:
+            elif LooseVersion(cms_version) >= LooseVersion('3.4'):
                 requirements.extend(data.REQUIREMENTS['plugins-3.4'])
-            elif cms_version >= 3.3:
+            elif LooseVersion(cms_version) >= LooseVersion('3.3'):
                 requirements.extend(data.REQUIREMENTS['plugins-3.3'])
             else:
                 requirements.extend(data.REQUIREMENTS['plugins-3.2'])
@@ -290,16 +294,18 @@ information.
             requirements.append('pytz')
 
         # Reversion package version depends on django version
-        if args.reversion and cms_version in (3.2, 3.3):
-            if django_version == 1.8:
+        if args.reversion and cms_version in ('3.2', '3.3'):
+            if django_version == '1.8':
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.8'])
-            elif django_version == 1.9:
+            elif django_version == '1.9':
                 requirements.extend(data.REQUIREMENTS['reversion-django-1.9'])
 
-        if django_version == 1.8:
+        if django_version == '1.8':
             requirements.extend(data.REQUIREMENTS['django-1.8'])
-        elif django_version == 1.9:
+        elif django_version == '1.9':
             requirements.extend(data.REQUIREMENTS['django-1.9'])
+        elif django_version == '1.10':
+            requirements.extend(data.REQUIREMENTS['django-1.10'])
 
         requirements.extend(data.REQUIREMENTS['default'])
 
