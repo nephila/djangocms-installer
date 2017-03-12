@@ -7,6 +7,7 @@ History
 ++++++++++++++++++
 
 * Added more Django 1.10 fixes / cleanups
+* Added python 3.6 compatibility
 
 0.9.5 (2017-02-16)
 ++++++++++++++++++

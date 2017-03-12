@@ -5,6 +5,7 @@ language: python
 sudo: false
 
 python:
+  - 3.6
   - 3.5
   - 3.4
   - 3.3
@@ -31,6 +32,7 @@ install:
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then export TOX_ENV=py33; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.4' ]]; then export TOX_ENV=py34; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then export TOX_ENV=py35; fi"
+  - "if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then export TOX_ENV=py36; fi"
   - "if [[ $TEST != '1' ]]; then export TOX_ENV=$TEST; fi"
 
 # command to run tests, e.g. python setup.py test
@@ -61,6 +63,12 @@ matrix:
   - python: 3.4
     env: TEST='isort'
   - python: 3.4
+    env: TEST='docs'
+  - python: 3.5
+    env: TEST='pep8'
+  - python: 3.5
+    env: TEST='isort'
+  - python: 3.5
     env: TEST='docs'
 
 notifications:
