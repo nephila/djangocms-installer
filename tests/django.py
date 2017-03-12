@@ -118,8 +118,36 @@ class TestDjango(IsolatedTestClass):
         # self.assertTrue(os.path.exists(static_js))
         # self.assertTrue(os.path.exists(aldryn_template))
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
-                     reason='django 1.9 only supports python 2.7, 3.4 and 3.5')
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.10 only supports python 2.7, 3.4, 3.5 and 3.6')
+    def test_patch_110_settings(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.10',
+                                    '--cms-version=3.4', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p' + self.project_dir, 'example_path_110_settings'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
+
+        # checking for django options
+        self.assertEqual(project.settings.MEDIA_ROOT,
+                         os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(project.settings.MEDIA_URL, '/media/')
+
+        # Data from external settings files
+        self.assertIsNotNone(getattr(project.settings, 'MIDDLEWARE', None))
+        self.assertIsNone(getattr(project.settings, 'MIDDLEWARE_CLASSES', None))
+
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.9 only supports python 2.7, 3.4, 3.5 and 3.6')
     def test_patch_19_32_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -127,7 +155,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.9',
                                     '--cms-version=3.2', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p' + self.project_dir, 'example_path_16_settigns'])
+                                    '-p' + self.project_dir, 'example_path_19_settings'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -146,9 +174,11 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(project.settings.CUSTOM_SETTINGS_VAR, True)
         self.assertEqual(project.settings.CMS_PERMISSION, False)
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
+        self.assertIsNone(getattr(project.settings, 'MIDDLEWARE', None))
+        self.assertIsNotNone(getattr(project.settings, 'MIDDLEWARE_CLASSES', None))
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
-                     reason='django 1.9 only supports python 2.7, 3.4 and 3.5')
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.9 only supports python 2.7, 3.4, 3.5 and 3.6')
     def test_patch_django_19_32(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
@@ -211,8 +241,8 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
         self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
-                     reason='django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5')
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.8 only supports python 2.7, 3.3, 3.4, 3.5 and 3.6')
     def test_patch_django_18_32(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -235,8 +265,8 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('cms' in project.settings.MIGRATION_MODULES)
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
-                     reason='django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5')
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.8 only supports python 2.7, 3.3, 3.4, 3.5 and 3.6')
     def test_patch_django_18_develop(self):
         # On django CMS 3.2 the reload apphooks middleware is enabled by default
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
@@ -267,8 +297,8 @@ class TestDjango(IsolatedTestClass):
             project.settings.MIDDLEWARE_CLASSES
         )
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
-                     reason='django 1.9 only supports python 2.7, 3.4 and 3.5')
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.9 only supports python 2.7, 3.4, 3.5 and 3.6')
     def test_patch_django_19_develop(self):
         # On django CMS 3.2 the reload apphooks middleware is enabled by default
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
@@ -299,8 +329,8 @@ class TestDjango(IsolatedTestClass):
             project.settings.MIDDLEWARE_CLASSES
         )
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
-                     reason='django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5,')
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.8 only supports python 2.7, 3.3, 3.4, 3.5 and 3.6,')
     def test_patch_django_no_plugins(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -340,8 +370,8 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('cms.plugins.twitter' in project.settings.INSTALLED_APPS)
         self.assertFalse('cms.plugins.video' in project.settings.INSTALLED_APPS)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
-                     reason='django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5,')
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.8 only supports python 2.7, 3.3, 3.4, 3.5 and 3.6,')
     def test_patch(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
@@ -426,8 +456,8 @@ class TestDjango(IsolatedTestClass):
         del project
         del (sys.modules["%s.settings" % config_data.project_name])
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
-                     reason='django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5,')
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.8 only supports python 2.7, 3.3, 3.4, 3.5 and 3.6,')
     def test_database_setup_filer(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-f', '-q', '-u', '--django-version=1.8',
@@ -470,8 +500,8 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('filer' in row)
         self.assertTrue('image' in row)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5),),
-                     reason='django 1.8 only supports python 2.7, 3.3, 3.4 and 3.5,')
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5), (3, 6),),
+                     reason='django 1.8 only supports python 2.7, 3.3, 3.4, 3.5 and 3.6,')
     def test_starting_page(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-q', '-u', '--django-version=1.8',
