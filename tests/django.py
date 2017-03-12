@@ -119,6 +119,34 @@ class TestDjango(IsolatedTestClass):
         # self.assertTrue(os.path.exists(aldryn_template))
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
+                     reason='django 1.10 only supports python 2.7, 3.4 and 3.5')
+    def test_patch_110_settings(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--django-version=1.10',
+                                    '--cms-version=3.4', '--timezone=Europe/Moscow',
+                                    '-q', '-u', '-zno', '--i18n=no',
+                                    '-p' + self.project_dir, 'example_path_110_settings'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
+
+        # checking for django options
+        self.assertEqual(project.settings.MEDIA_ROOT,
+                         os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(project.settings.MEDIA_URL, '/media/')
+
+        # Data from external settings files
+        self.assertIsNotNone(getattr(project.settings, 'MIDDLEWARE', None))
+        self.assertIsNone(getattr(project.settings, 'MIDDLEWARE_CLASSES', None))
+
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
                      reason='django 1.9 only supports python 2.7, 3.4 and 3.5')
     def test_patch_19_32_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
@@ -127,7 +155,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.9',
                                     '--cms-version=3.2', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p' + self.project_dir, 'example_path_16_settigns'])
+                                    '-p' + self.project_dir, 'example_path_19_settings'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -146,6 +174,8 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(project.settings.CUSTOM_SETTINGS_VAR, True)
         self.assertEqual(project.settings.CMS_PERMISSION, False)
         self.assertEqual(set(project.settings.CMS_TEMPLATES), self.templates_basic)
+        self.assertIsNone(getattr(project.settings, 'MIDDLEWARE', None))
+        self.assertIsNotNone(getattr(project.settings, 'MIDDLEWARE_CLASSES', None))
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5),),
                      reason='django 1.9 only supports python 2.7, 3.4 and 3.5')

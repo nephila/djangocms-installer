@@ -160,8 +160,8 @@ def patch_settings(config_data):
     :param config_data: configuration data
     """
     overridden_settings = (
-        'MIDDLEWARE_CLASSES', 'INSTALLED_APPS', 'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS',
-        'TEMPLATE_DIRS', 'LANGUAGES'
+        'MIDDLEWARE_CLASSES', 'MIDDLEWARE', 'INSTALLED_APPS', 'TEMPLATE_LOADERS',
+        'TEMPLATE_CONTEXT_PROCESSORS', 'TEMPLATE_DIRS', 'LANGUAGES'
     )
     extra_settings = ''
 
@@ -265,9 +265,16 @@ def _build_settings(config_data):
         dirs='os.path.join(BASE_DIR, \'{0}\', \'templates\'),'.format(config_data.project_name)
     ))
 
-    text.append('MIDDLEWARE_CLASSES = (\n{0}{1}\n)'.format(
-        spacer, (',\n' + spacer).join(['\'{0}\''.format(var) for var in vars.MIDDLEWARE_CLASSES])
-    ))
+    if LooseVersion(config_data.django_version) >= LooseVersion('1.10'):
+        text.append('MIDDLEWARE = (\n{0}{1}\n)'.format(
+            spacer, (',\n' + spacer).join(['\'{0}\''.format(var)
+                                           for var in vars.MIDDLEWARE_CLASSES])
+        ))
+    else:
+        text.append('MIDDLEWARE_CLASSES = (\n{0}{1}\n)'.format(
+            spacer, (',\n' + spacer).join(['\'{0}\''.format(var)
+                                           for var in vars.MIDDLEWARE_CLASSES])
+        ))
 
     apps = list(vars.INSTALLED_APPS)
     apps = list(vars.CMS_3_HEAD) + apps

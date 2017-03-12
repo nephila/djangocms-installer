@@ -3,6 +3,11 @@
 History
 -------
 
+0.9.6 (unreleased)
+++++++++++++++++++
+
+* Added more Django 1.10 fixes / cleanups
+
 0.9.5 (2017-02-16)
 ++++++++++++++++++
 
