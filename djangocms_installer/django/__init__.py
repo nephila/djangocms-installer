@@ -53,9 +53,10 @@ def create_project(config_data):
         if os.path.exists(p):
             start_cmd = p
             break
-    cmd_args = ' '.join([sys.executable, start_cmd, 'startproject'] + args)
+    cmd_args = [sys.executable, start_cmd, 'startproject'] + args
     if config_data.verbose:
-        sys.stdout.write('Project creation command: {0}\n'.format(cmd_args))
+        cmd_args_str = ' '.join(cmd_args)
+        sys.stdout.write('Project creation command: {0}\n'.format(cmd_args_str))
     output = subprocess.check_output(cmd_args, shell=True)
     sys.stdout.write(output.decode('utf-8'))
 
