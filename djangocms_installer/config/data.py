@@ -74,7 +74,6 @@ REQUIREMENTS = {
         'html5lib>=0.999999,<0.99999999',
         'Pillow>=3.0',
         'django-sekizai>=0.9',
-        'django-select2<5.0'
         'six',
     ],
     'django-1.8': [

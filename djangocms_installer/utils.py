@@ -3,7 +3,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 import sys
-
 from decimal import Decimal, InvalidOperation
 from distutils.version import LooseVersion
 

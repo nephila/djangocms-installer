@@ -117,7 +117,8 @@ Warning
 -------
 
 ``djangocms-installer`` assumes that ``django-admin.py`` is installed in the same directory
-as python executable, which is the standard virtualenv layout.
+as python executable, which is the standard virtualenv layout. Other installation layouts
+might work, but are not officially supported.
 
 
 Windows support

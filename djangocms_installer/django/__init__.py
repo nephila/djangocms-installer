@@ -42,21 +42,22 @@ def create_project(config_data):
         args.append(config_data.project_directory)
         if not os.path.exists(config_data.project_directory):
             os.makedirs(config_data.project_directory)
-    start_cmd = os.path.join(os.path.dirname(sys.executable), 'django-admin.py')
-    start_cmds = [start_cmd]
+    base_cmd = 'django-admin.py'
+    start_cmds = [os.path.join(os.path.dirname(sys.executable), base_cmd)]
     start_cmd_pnodes = ['Scripts']
     start_cmds.extend([
-        os.path.join(os.path.dirname(sys.executable), pnode, 'django-admin.py')
+        os.path.join(os.path.dirname(sys.executable), pnode, base_cmd)
         for pnode in start_cmd_pnodes
     ])
+    start_cmd = [base_cmd]
     for p in start_cmds:
         if os.path.exists(p):
-            start_cmd = p
+            start_cmd = [sys.executable, p]
             break
-    cmd_args = ' '.join([sys.executable, start_cmd, 'startproject'] + args)
+    cmd_args = start_cmd + ['startproject'] + args
     if config_data.verbose:
-        sys.stdout.write('Project creation command: {0}\n'.format(cmd_args))
-    output = subprocess.check_output(cmd_args, shell=True)
+        sys.stdout.write('Project creation command: {0}\n'.format(' '.join(cmd_args)))
+    output = subprocess.check_output(cmd_args)
     sys.stdout.write(output.decode('utf-8'))
 
 
@@ -160,8 +161,8 @@ def patch_settings(config_data):
     :param config_data: configuration data
     """
     overridden_settings = (
-        'MIDDLEWARE_CLASSES', 'INSTALLED_APPS', 'TEMPLATE_LOADERS', 'TEMPLATE_CONTEXT_PROCESSORS',
-        'TEMPLATE_DIRS', 'LANGUAGES'
+        'MIDDLEWARE_CLASSES', 'MIDDLEWARE', 'INSTALLED_APPS', 'TEMPLATE_LOADERS',
+        'TEMPLATE_CONTEXT_PROCESSORS', 'TEMPLATE_DIRS', 'LANGUAGES'
     )
     extra_settings = ''
 
@@ -260,14 +261,21 @@ def _build_settings(config_data):
 
     processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_3
     text.append(data.TEMPLATES_1_8.format(
-        loaders=(',\n' + spacer).join(['\'{0}\''.format(var) for var in vars.TEMPLATE_LOADERS]),
-        processors=(',\n' + spacer).join(['\'{0}\''.format(var) for var in processors]),
-        dirs='os.path.join(BASE_DIR, \'{0}\', \'templates\'),'.format(config_data.project_name)
+        loaders=(',\n' + spacer * 4).join(["'{0}'".format(var) for var in vars.TEMPLATE_LOADERS]),
+        processors=(',\n' + spacer * 4).join(["'{0}'".format(var) for var in processors]),
+        dirs="os.path.join(BASE_DIR, '{0}', 'templates'),".format(config_data.project_name)
     ))
 
-    text.append('MIDDLEWARE_CLASSES = (\n{0}{1}\n)'.format(
-        spacer, (',\n' + spacer).join(['\'{0}\''.format(var) for var in vars.MIDDLEWARE_CLASSES])
-    ))
+    if LooseVersion(config_data.django_version) >= LooseVersion('1.10'):
+        text.append('MIDDLEWARE = (\n{0}{1}\n)'.format(
+            spacer, (',\n' + spacer).join(['\'{0}\''.format(var)
+                                           for var in vars.MIDDLEWARE_CLASSES])
+        ))
+    else:
+        text.append('MIDDLEWARE_CLASSES = (\n{0}{1}\n)'.format(
+            spacer, (',\n' + spacer).join(["'{0}'".format(var)
+                                           for var in vars.MIDDLEWARE_CLASSES])
+        ))
 
     apps = list(vars.INSTALLED_APPS)
     apps = list(vars.CMS_3_HEAD) + apps

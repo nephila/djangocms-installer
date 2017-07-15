@@ -8,6 +8,22 @@ History
 
 * Dropped cmsplugin-filer in favor of core plugins which now use filer
 
+0.9.7 (2017-07-15)
+++++++++++++++++++
+
+* Improve django-admin invocation to support more python environments layouts
+
+0.9.6 (2017-03-12)
+++++++++++++++++++
+
+* Added more Django 1.10 fixes / cleanups
+* Added python 3.6 compatibility
+
+0.9.5 (2017-02-16)
+++++++++++++++++++
+
+* Added more Django 1.10 fixes / cleanups
+
 0.9.4 (2017-01-03)
 ++++++++++++++++++
 
