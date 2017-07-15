@@ -3,7 +3,7 @@
 History
 -------
 
-0.9.7 (unreleased)
+0.9.7 (2017-07-15)
 ++++++++++++++++++
 
 * Improve django-admin invocation to support more python environments layouts
