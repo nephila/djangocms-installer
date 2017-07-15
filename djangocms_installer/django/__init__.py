@@ -261,9 +261,9 @@ def _build_settings(config_data):
 
     processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_3
     text.append(data.TEMPLATES_1_8.format(
-        loaders=(',\n' + spacer).join(['\'{0}\''.format(var) for var in vars.TEMPLATE_LOADERS]),
-        processors=(',\n' + spacer).join(['\'{0}\''.format(var) for var in processors]),
-        dirs='os.path.join(BASE_DIR, \'{0}\', \'templates\'),'.format(config_data.project_name)
+        loaders=(',\n' + spacer * 4).join(["'{0}'".format(var) for var in vars.TEMPLATE_LOADERS]),
+        processors=(',\n' + spacer * 4).join(["'{0}'".format(var) for var in processors]),
+        dirs="os.path.join(BASE_DIR, '{0}', 'templates'),".format(config_data.project_name)
     ))
 
     if LooseVersion(config_data.django_version) >= LooseVersion('1.10'):
@@ -273,7 +273,7 @@ def _build_settings(config_data):
         ))
     else:
         text.append('MIDDLEWARE_CLASSES = (\n{0}{1}\n)'.format(
-            spacer, (',\n' + spacer).join(['\'{0}\''.format(var)
+            spacer, (',\n' + spacer).join(["'{0}'".format(var)
                                            for var in vars.MIDDLEWARE_CLASSES])
         ))
 
