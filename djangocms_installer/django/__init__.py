@@ -42,21 +42,22 @@ def create_project(config_data):
         args.append(config_data.project_directory)
         if not os.path.exists(config_data.project_directory):
             os.makedirs(config_data.project_directory)
-    start_cmd = os.path.join(os.path.dirname(sys.executable), 'django-admin.py')
-    start_cmds = [start_cmd]
+    base_cmd = 'django-admin.py'
+    start_cmds = [os.path.join(os.path.dirname(sys.executable), base_cmd)]
     start_cmd_pnodes = ['Scripts']
     start_cmds.extend([
-        os.path.join(os.path.dirname(sys.executable), pnode, 'django-admin.py')
+        os.path.join(os.path.dirname(sys.executable), pnode, base_cmd)
         for pnode in start_cmd_pnodes
     ])
+    start_cmd = [base_cmd]
     for p in start_cmds:
         if os.path.exists(p):
-            start_cmd = p
+            start_cmd = [sys.executable, p]
             break
-    cmd_args = ' '.join([sys.executable, start_cmd, 'startproject'] + args)
+    cmd_args = start_cmd + ['startproject'] + args
     if config_data.verbose:
-        sys.stdout.write('Project creation command: {0}\n'.format(cmd_args))
-    output = subprocess.check_output(cmd_args, shell=True)
+        sys.stdout.write('Project creation command: {0}\n'.format(' '.join(cmd_args)))
+    output = subprocess.check_output(cmd_args)
     sys.stdout.write(output.decode('utf-8'))
 
 
