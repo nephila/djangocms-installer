@@ -394,8 +394,13 @@ def setup_database(config_data):
                 )
             )
         for command in commands:
-            output = subprocess.check_output(command, env=env)
-            sys.stdout.write(output.decode('utf-8'))
+            try:
+                output = subprocess.check_output(
+                    command, env=env, stderr=subprocess.STDOUT
+                )
+                sys.stdout.write(output.decode('utf-8'))
+            except subprocess.CalledProcessError:
+                raise
 
         if not config_data.no_user:
             sys.stdout.write('Creating admin user\n')
@@ -404,7 +409,7 @@ def setup_database(config_data):
             else:
                 subprocess.check_call(' '.join(
                     [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser']
-                ), shell=True)
+                ), shell=True, stderr=subprocess.STDOUT)
 
 
 def create_user(config_data):
@@ -417,7 +422,9 @@ def create_user(config_data):
         env = deepcopy(dict(os.environ))
         env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
         env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
-        subprocess.check_call([sys.executable, 'create_user.py'], env=env)
+        subprocess.check_call(
+            [sys.executable, 'create_user.py'], env=env, stderr=subprocess.STDOUT
+        )
         for ext in ['py', 'pyc']:
             try:
                 os.remove('create_user.{0}'.format(ext))
@@ -435,7 +442,9 @@ def load_starting_page(config_data):
         env = deepcopy(dict(os.environ))
         env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
         env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
-        subprocess.check_call([sys.executable, 'starting_page.py'], env=env)
+        subprocess.check_call(
+            [sys.executable, 'starting_page.py'], env=env, stderr=subprocess.STDOUT
+        )
         for ext in ['py', 'pyc', 'json']:
             try:
                 os.remove('starting_page.{0}'.format(ext))

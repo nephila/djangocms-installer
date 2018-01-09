@@ -23,7 +23,7 @@ def parse(args):
     """
     try:
         timezone = get_localzone()
-    except:
+    except Exception:  # pragma: no cover
         timezone = 'UTC'
     if timezone == 'local':
         timezone = 'UTC'
@@ -207,7 +207,7 @@ information.
     if not args.languages:
         try:
             args.languages = [locale.getdefaultlocale()[0].split('_')[0]]
-        except:
+        except Exception:  # pragma: no cover
             args.languages = ['en']
     elif isinstance(args.languages, six.string_types):
         args.languages = args.languages.split(',')
