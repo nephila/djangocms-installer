@@ -3,10 +3,16 @@
 History
 -------
 
+0.9.8 (2018-01-10)
+++++++++++++++++++
+
+* Raised more informative messages on command failures
+* Fixed tests for django CMS develop
+
 0.9.7 (2017-07-15)
 ++++++++++++++++++
 
-* Improve django-admin invocation to support more python environments layouts
+* Improved django-admin invocation to support more python environments layouts
 
 0.9.6 (2017-03-12)
 ++++++++++++++++++
