@@ -57,8 +57,13 @@ def create_project(config_data):
     cmd_args = start_cmd + ['startproject'] + args
     if config_data.verbose:
         sys.stdout.write('Project creation command: {0}\n'.format(' '.join(cmd_args)))
-    output = subprocess.check_output(cmd_args)
-    sys.stdout.write(output.decode('utf-8'))
+    try:
+        output = subprocess.check_output(cmd_args, stderr=subprocess.STDOUT)
+        sys.stdout.write(output.decode('utf-8'))
+    except subprocess.CalledProcessError as e:  # pragma: no cover
+        if config_data.verbose:
+            sys.stdout.write(e.output.decode('utf-8'))
+        raise
 
 
 def _detect_migration_layout(vars, apps):
@@ -401,7 +406,9 @@ def setup_database(config_data):
                     command, env=env, stderr=subprocess.STDOUT
                 )
                 sys.stdout.write(output.decode('utf-8'))
-            except subprocess.CalledProcessError:
+            except subprocess.CalledProcessError as e:  # pragma: no cover
+                if config_data.verbose:
+                    sys.stdout.write(e.output.decode('utf-8'))
                 raise
 
         if not config_data.no_user:
