@@ -23,7 +23,7 @@ def parse(args):
     """
     try:
         timezone = get_localzone()
-    except:
+    except Exception:  # pragma: no cover
         timezone = 'UTC'
     if timezone == 'local':
         timezone = 'UTC'
@@ -207,7 +207,7 @@ information.
     if not args.languages:
         try:
             args.languages = [locale.getdefaultlocale()[0].split('_')[0]]
-        except:
+        except Exception:  # pragma: no cover
             args.languages = ['en']
     elif isinstance(args.languages, six.string_types):
         args.languages = args.languages.split(',')
@@ -256,24 +256,20 @@ information.
 
         if args.cms_version in ('rc', 'develop'):
             requirements.extend(data.REQUIREMENTS['cms-master'])
+        elif LooseVersion(cms_version) >= LooseVersion('3.5'):
+            requirements.extend(data.REQUIREMENTS['cms-3.5'])
         elif LooseVersion(cms_version) >= LooseVersion('3.4'):
             requirements.extend(data.REQUIREMENTS['cms-3.4'])
-        elif LooseVersion(cms_version) >= LooseVersion('3.3'):
-            requirements.extend(data.REQUIREMENTS['cms-3.3'])
-        elif LooseVersion(cms_version) >= LooseVersion('3.2'):
-            requirements.extend(data.REQUIREMENTS['cms-3.2'])
 
         if not args.no_db_driver:
             requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.cms_version in ('rc', 'develop'):
                 requirements.extend(data.REQUIREMENTS['plugins-master'])
+            elif LooseVersion(cms_version) >= LooseVersion('3.5'):
+                requirements.extend(data.REQUIREMENTS['plugins-3.5'])
             elif LooseVersion(cms_version) >= LooseVersion('3.4'):
                 requirements.extend(data.REQUIREMENTS['plugins-3.4'])
-            elif LooseVersion(cms_version) >= LooseVersion('3.3'):
-                requirements.extend(data.REQUIREMENTS['plugins-3.3'])
-            else:
-                requirements.extend(data.REQUIREMENTS['plugins-3.2'])
             requirements.extend(data.REQUIREMENTS['filer'])
 
         if args.aldryn:  # pragma: no cover
@@ -293,19 +289,16 @@ information.
         if args.use_timezone:
             requirements.append('pytz')
 
-        # Reversion package version depends on django version
-        if args.reversion and cms_version in ('3.2', '3.3'):
-            if django_version == '1.8':
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.8'])
-            elif django_version == '1.9':
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.9'])
-
         if django_version == '1.8':
             requirements.extend(data.REQUIREMENTS['django-1.8'])
         elif django_version == '1.9':
             requirements.extend(data.REQUIREMENTS['django-1.9'])
         elif django_version == '1.10':
             requirements.extend(data.REQUIREMENTS['django-1.10'])
+        elif django_version == '1.11':
+            requirements.extend(data.REQUIREMENTS['django-1.11'])
+        elif django_version == '2.0':
+            requirements.extend(data.REQUIREMENTS['django-2.0'])
 
         requirements.extend(data.REQUIREMENTS['default'])
 

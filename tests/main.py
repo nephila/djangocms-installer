@@ -28,7 +28,7 @@ class TestMain(IsolatedTestClass):
                                        'example_prj']
                 main.execute()
         stdout = self.stdout.getvalue()
-        self.assertTrue(stdout.find('Django<1.9') > -1)
+        self.assertTrue(stdout.find('Django<1.11') > -1)
         self.assertFalse(stdout.find('django-reversion') > -1)
         self.assertTrue(stdout.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(stdout.find('djangocms-admin-style') > -1)
@@ -52,8 +52,7 @@ class TestMain(IsolatedTestClass):
                     '-q',
                     '--db=postgres://user:pwd@host/dbname',
                     '--i18n=no',
-                    '--cms-version=3.2',
-                    '--django-version=1.9',
+                    '--django-version=1.11',
                     '-f',
                     '-p'+self.project_dir,
                     'example_prj'])
@@ -68,8 +67,7 @@ class TestMain(IsolatedTestClass):
                     '-s',
                     '--db=postgres://user:pwd@host/dbname',
                     '--i18n=no',
-                    '--cms-version=3.2',
-                    '--django-version=1.9',
+                    '--django-version=1.11',
                     '-f',
                     '-p'+self.project_dir,
                     'example_prj'])
