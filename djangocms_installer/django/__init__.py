@@ -57,8 +57,13 @@ def create_project(config_data):
     cmd_args = start_cmd + ['startproject'] + args
     if config_data.verbose:
         sys.stdout.write('Project creation command: {0}\n'.format(' '.join(cmd_args)))
-    output = subprocess.check_output(cmd_args)
-    sys.stdout.write(output.decode('utf-8'))
+    try:
+        output = subprocess.check_output(cmd_args, stderr=subprocess.STDOUT)
+        sys.stdout.write(output.decode('utf-8'))
+    except subprocess.CalledProcessError as e:  # pragma: no cover
+        if config_data.verbose:
+            sys.stdout.write(e.output.decode('utf-8'))
+        raise
 
 
 def _detect_migration_layout(vars, apps):
@@ -284,6 +289,8 @@ def _build_settings(config_data):
 
     if not config_data.no_plugins:
         apps.extend(vars.FILER_PLUGINS_3)
+    if LooseVersion(config_data.cms_version) > LooseVersion('3.4'):
+        apps.remove('djangocms_snippet')
 
     if config_data.aldryn:  # pragma: no cover
         apps.extend(vars.ALDRYN_APPLICATIONS)
@@ -394,8 +401,15 @@ def setup_database(config_data):
                 )
             )
         for command in commands:
-            output = subprocess.check_output(command, env=env)
-            sys.stdout.write(output.decode('utf-8'))
+            try:
+                output = subprocess.check_output(
+                    command, env=env, stderr=subprocess.STDOUT
+                )
+                sys.stdout.write(output.decode('utf-8'))
+            except subprocess.CalledProcessError as e:  # pragma: no cover
+                if config_data.verbose:
+                    sys.stdout.write(e.output.decode('utf-8'))
+                raise
 
         if not config_data.no_user:
             sys.stdout.write('Creating admin user\n')
@@ -404,7 +418,7 @@ def setup_database(config_data):
             else:
                 subprocess.check_call(' '.join(
                     [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser']
-                ), shell=True)
+                ), shell=True, stderr=subprocess.STDOUT)
 
 
 def create_user(config_data):
@@ -417,7 +431,9 @@ def create_user(config_data):
         env = deepcopy(dict(os.environ))
         env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
         env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
-        subprocess.check_call([sys.executable, 'create_user.py'], env=env)
+        subprocess.check_call(
+            [sys.executable, 'create_user.py'], env=env, stderr=subprocess.STDOUT
+        )
         for ext in ['py', 'pyc']:
             try:
                 os.remove('create_user.{0}'.format(ext))
@@ -435,7 +451,9 @@ def load_starting_page(config_data):
         env = deepcopy(dict(os.environ))
         env[str('DJANGO_SETTINGS_MODULE')] = str('{0}.settings'.format(config_data.project_name))
         env[str('PYTHONPATH')] = str(os.pathsep.join(map(shlex_quote, sys.path)))
-        subprocess.check_call([sys.executable, 'starting_page.py'], env=env)
+        subprocess.check_call(
+            [sys.executable, 'starting_page.py'], env=env, stderr=subprocess.STDOUT
+        )
         for ext in ['py', 'pyc', 'json']:
             try:
                 os.remove('starting_page.{0}'.format(ext))
