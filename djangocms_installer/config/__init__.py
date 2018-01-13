@@ -223,6 +223,9 @@ information.
     # Convert version to numeric format for easier checking
     try:
         django_version, cms_version = supported_versions(args.django_version, args.cms_version)
+        cms_package = data.PACKAGE_MATRIX.get(
+            cms_version, data.PACKAGE_MATRIX[data.DJANGOCMS_LTS]
+        )
     except RuntimeError as e:
         sys.stderr.write(compat.unicode(e))
         sys.exit(6)
@@ -244,15 +247,15 @@ information.
 
         # django CMS version check
         if args.cms_version == 'develop':
-            requirements.append(data.DJANGOCMS_DEVELOP)
+            requirements.append(cms_package)
             warnings.warn(data.VERSION_WARNING.format('develop', 'django CMS'))
         elif args.cms_version == 'rc':  # pragma: no cover
-            requirements.append(data.DJANGOCMS_RC)
+            requirements.append(cms_package)
         elif args.cms_version == 'beta':  # pragma: no cover
-            requirements.append(data.DJANGOCMS_BETA)
+            requirements.append(cms_package)
             warnings.warn(data.VERSION_WARNING.format('beta', 'django CMS'))
         else:
-            requirements.append('django-cms<{0}'.format(less_than_version(cms_version)))
+            requirements.append(cms_package)
 
         if args.cms_version in ('rc', 'develop'):
             requirements.extend(data.REQUIREMENTS['cms-master'])
