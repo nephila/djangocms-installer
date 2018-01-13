@@ -226,16 +226,16 @@ information.
         cms_package = data.PACKAGE_MATRIX.get(
             cms_version, data.PACKAGE_MATRIX[data.DJANGOCMS_LTS]
         )
-    except RuntimeError as e:
+    except RuntimeError as e:  # pragma: no cover
         sys.stderr.write(compat.unicode(e))
         sys.exit(6)
-    if django_version is None:
+    if django_version is None:  # pragma: no cover
         sys.stderr.write(
             'Please provide a Django supported version: {0}. Only Major.Minor '
             'version selector is accepted\n'.format(', '.join(data.DJANGO_SUPPORTED))
         )
         sys.exit(6)
-    if django_version is None:
+    if cms_version is None:  # pragma: no cover
         sys.stderr.write(
             'Please provide a django CMS supported version: {0}. Only Major.Minor '
             'version selector is accepted\n'.format(', '.join(data.DJANGOCMS_SUPPORTED))
@@ -300,7 +300,7 @@ information.
             requirements.extend(data.REQUIREMENTS['django-1.10'])
         elif django_version == '1.11':
             requirements.extend(data.REQUIREMENTS['django-1.11'])
-        elif django_version == '2.0':
+        elif django_version == '2.0':  # pragma: no cover
             requirements.extend(data.REQUIREMENTS['django-2.0'])
 
         requirements.extend(data.REQUIREMENTS['default'])

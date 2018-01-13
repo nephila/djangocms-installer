@@ -839,7 +839,6 @@ class TestBaseConfig(unittest.TestCase):
             args = self.args[0:1] + [self.conf(filename)] + self.args[1:]  # Load new config.
             config_data = config.parse(args)
             self.unused(config_data)
-            print(filename)
             self.assertEqual(fixture, config_data)  # Check if config value and changed value equals.
 
     @patch('sys.stdout')
