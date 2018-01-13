@@ -70,9 +70,11 @@ Supported versions
 The current supported version matrix is the following:
 
 +----------------+-------------+-------------+---------------+---------------+
-|                | Django 1.8  | Django 1.9  | Django 1.10   | Django 1.10   |
+|                | Django 1.8  | Django 1.9  | Django 1.10   | Django 1.11   |
 +----------------+-------------+-------------+---------------+---------------+
 | django CMS 3.4 | Supported   | Supported   | Supported     | Supported     |
++----------------+-------------+-------------+---------------+---------------+
+| django CMS 3.5 | Supported   | Supported   | Supported     | Supported     |
 +----------------+-------------+-------------+---------------+---------------+
 
 See `version 0.9`_ for older Django / django CMS versions support
@@ -109,7 +111,6 @@ Please check that the ``.py`` extension is associated correctly with Python inte
 .. _version 0.9: https://github.com/nephila/djangocms-installer/tree/release/0.9.x#supported-versions
 .. _django CMS Tutorial: https://django-cms.readthedocs.io/en/latest/introduction/index.html
 .. _installer usage page: http://djangocms-installer.readthedocs.io/en/latest/usage.html
-
 
 
 .. |Gitter| image:: https://img.shields.io/badge/GITTER-join%20chat-brightgreen.svg?style=flat-square
