@@ -148,12 +148,12 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6),),
                      reason='django 1.9 only supports python 2.7, 3.4, 3.5 and 3.6')
-    def test_patch_19_32_settings(self):
+    def test_patch_19_34_settings(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
                                     '--django-version=1.9',
-                                    '--cms-version=3.2', '--timezone=Europe/Moscow',
+                                    '--cms-version=3.4', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p' + self.project_dir, 'example_path_19_settings'])
         install.requirements(config_data.requirements)
@@ -179,11 +179,11 @@ class TestDjango(IsolatedTestClass):
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6),),
                      reason='django 1.9 only supports python 2.7, 3.4, 3.5 and 3.6')
-    def test_patch_django_19_32(self):
+    def test_patch_django_19_34(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
                                     '--django-version=1.9',
-                                    '--cms-version=3.2', '--timezone=Europe/Moscow',
+                                    '--cms-version=3.4', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p' + self.project_dir, 'example_path_16'])
 
@@ -241,13 +241,13 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
         self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5), (3, 6),),
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6),),
                      reason='django 1.8 only supports python 2.7, 3.3, 3.4, 3.5 and 3.6')
-    def test_patch_django_18_32(self):
+    def test_patch_django_18_34(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
-                                    '--django-version=1.8', '--cms-version=3.2',
+                                    '--django-version=1.8', '--cms-version=3.4',
                                     '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p' + self.project_dir, 'example_path_17_settings'])
@@ -265,17 +265,17 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('cms' in project.settings.MIGRATION_MODULES)
         self.assertFalse('djangocms_text_ckeditor' in project.settings.MIGRATION_MODULES)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 3), (3, 4), (3, 5), (3, 6),),
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6),),
                      reason='django 1.8 only supports python 2.7, 3.3, 3.4, 3.5 and 3.6')
     def test_patch_django_18_develop(self):
-        # On django CMS 3.2 the reload apphooks middleware is enabled by default
+        # On django CMS 3.4 the reload apphooks middleware is enabled by default
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
                                     '--django-version=1.8', '-f',
                                     '--cms-version=develop', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p' + self.project_dir, 'example_path_18_32_settings'])
+                                    '-p' + self.project_dir, 'example_path_18_34_settings'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -300,14 +300,14 @@ class TestDjango(IsolatedTestClass):
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6),),
                      reason='django 1.9 only supports python 2.7, 3.4, 3.5 and 3.6')
     def test_patch_django_19_develop(self):
-        # On django CMS 3.2 the reload apphooks middleware is enabled by default
+        # On django CMS 3.4 the reload apphooks middleware is enabled by default
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
                                     '--django-version=1.9', '-f',
                                     '--cms-version=develop', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p' + self.project_dir, 'example_path_19_32_settings'])
+                                    '-p' + self.project_dir, 'example_path_19_34_settings'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -376,7 +376,7 @@ class TestDjango(IsolatedTestClass):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
                                     '--django-version=1.8',
-                                    '--cms-version=3.2', '--timezone=Europe/Moscow',
+                                    '--cms-version=3.4', '--timezone=Europe/Moscow',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
                                     '-p' + self.project_dir, 'example_path_patch'])
         install.requirements(config_data.requirements)
@@ -461,7 +461,7 @@ class TestDjango(IsolatedTestClass):
     def test_database_setup_filer(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-f', '-q', '-u', '--django-version=1.8',
-                                    '--cms-version=3.2',
+                                    '--cms-version=3.4',
                                     '-p' + self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -505,7 +505,7 @@ class TestDjango(IsolatedTestClass):
     def test_starting_page(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-q', '-u', '--django-version=1.8',
-                                    '--cms-version=3.2', '--starting-page=yes',
+                                    '--cms-version=3.4', '--starting-page=yes',
                                     '-p' + self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)

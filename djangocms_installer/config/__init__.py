@@ -223,16 +223,19 @@ information.
     # Convert version to numeric format for easier checking
     try:
         django_version, cms_version = supported_versions(args.django_version, args.cms_version)
-    except RuntimeError as e:
+        cms_package = data.PACKAGE_MATRIX.get(
+            cms_version, data.PACKAGE_MATRIX[data.DJANGOCMS_LTS]
+        )
+    except RuntimeError as e:  # pragma: no cover
         sys.stderr.write(compat.unicode(e))
         sys.exit(6)
-    if django_version is None:
+    if django_version is None:  # pragma: no cover
         sys.stderr.write(
             'Please provide a Django supported version: {0}. Only Major.Minor '
             'version selector is accepted\n'.format(', '.join(data.DJANGO_SUPPORTED))
         )
         sys.exit(6)
-    if django_version is None:
+    if cms_version is None:  # pragma: no cover
         sys.stderr.write(
             'Please provide a django CMS supported version: {0}. Only Major.Minor '
             'version selector is accepted\n'.format(', '.join(data.DJANGOCMS_SUPPORTED))
@@ -244,36 +247,32 @@ information.
 
         # django CMS version check
         if args.cms_version == 'develop':
-            requirements.append(data.DJANGOCMS_DEVELOP)
+            requirements.append(cms_package)
             warnings.warn(data.VERSION_WARNING.format('develop', 'django CMS'))
         elif args.cms_version == 'rc':  # pragma: no cover
-            requirements.append(data.DJANGOCMS_RC)
+            requirements.append(cms_package)
         elif args.cms_version == 'beta':  # pragma: no cover
-            requirements.append(data.DJANGOCMS_BETA)
+            requirements.append(cms_package)
             warnings.warn(data.VERSION_WARNING.format('beta', 'django CMS'))
         else:
-            requirements.append('django-cms<{0}'.format(less_than_version(cms_version)))
+            requirements.append(cms_package)
 
         if args.cms_version in ('rc', 'develop'):
             requirements.extend(data.REQUIREMENTS['cms-master'])
+        elif LooseVersion(cms_version) >= LooseVersion('3.5'):
+            requirements.extend(data.REQUIREMENTS['cms-3.5'])
         elif LooseVersion(cms_version) >= LooseVersion('3.4'):
             requirements.extend(data.REQUIREMENTS['cms-3.4'])
-        elif LooseVersion(cms_version) >= LooseVersion('3.3'):
-            requirements.extend(data.REQUIREMENTS['cms-3.3'])
-        elif LooseVersion(cms_version) >= LooseVersion('3.2'):
-            requirements.extend(data.REQUIREMENTS['cms-3.2'])
 
         if not args.no_db_driver:
             requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.cms_version in ('rc', 'develop'):
                 requirements.extend(data.REQUIREMENTS['plugins-master'])
+            elif LooseVersion(cms_version) >= LooseVersion('3.5'):
+                requirements.extend(data.REQUIREMENTS['plugins-3.5'])
             elif LooseVersion(cms_version) >= LooseVersion('3.4'):
                 requirements.extend(data.REQUIREMENTS['plugins-3.4'])
-            elif LooseVersion(cms_version) >= LooseVersion('3.3'):
-                requirements.extend(data.REQUIREMENTS['plugins-3.3'])
-            else:
-                requirements.extend(data.REQUIREMENTS['plugins-3.2'])
             requirements.extend(data.REQUIREMENTS['filer'])
 
         if args.aldryn:  # pragma: no cover
@@ -293,19 +292,16 @@ information.
         if args.use_timezone:
             requirements.append('pytz')
 
-        # Reversion package version depends on django version
-        if args.reversion and cms_version in ('3.2', '3.3'):
-            if django_version == '1.8':
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.8'])
-            elif django_version == '1.9':
-                requirements.extend(data.REQUIREMENTS['reversion-django-1.9'])
-
         if django_version == '1.8':
             requirements.extend(data.REQUIREMENTS['django-1.8'])
         elif django_version == '1.9':
             requirements.extend(data.REQUIREMENTS['django-1.9'])
         elif django_version == '1.10':
             requirements.extend(data.REQUIREMENTS['django-1.10'])
+        elif django_version == '1.11':
+            requirements.extend(data.REQUIREMENTS['django-1.11'])
+        elif django_version == '2.0':  # pragma: no cover
+            requirements.extend(data.REQUIREMENTS['django-2.0'])
 
         requirements.extend(data.REQUIREMENTS['default'])
 

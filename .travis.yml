@@ -8,7 +8,6 @@ python:
   - 3.6
   - 3.5
   - 3.4
-  - 3.3
   - 2.7
 
 env:
@@ -29,7 +28,6 @@ before_install:
 install:
   - pip install -U tox virtualenv coveralls
   - "if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then export TOX_ENV=py27; fi"
-  - "if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then export TOX_ENV=py33; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.4' ]]; then export TOX_ENV=py34; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then export TOX_ENV=py35; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then export TOX_ENV=py36; fi"

@@ -7,6 +7,7 @@ History
 ++++++++++++++++++
 
 * Dropped cmsplugin-filer in favor of core plugins which now use filer
+* Added django CMS 3.5
 
 0.9.8 (2018-01-10)
 ++++++++++++++++++

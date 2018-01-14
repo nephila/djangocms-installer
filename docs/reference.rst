@@ -31,15 +31,15 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--use-tz``, ``-z``: Activate Django timezone support;  choices: ``yes|no``, default: ``yes``
 * ``--timezone``, ``-t``: Optional default time zone, default: *local timezone*
 * ``--reversion``, ``-e``: Install and configure reversion support, choices: ``yes|no``,
-  default: ``yes``; this will ignored for RC/develop/3.4 versions of django CMS as support has
+  default: ``yes``; this will ignored for 3.4 and higher versions of django CMS as support has
   been dropped upstream;
 * ``--permissions``: Activate CMS permission management; choices: ``yes|no``, default: ``no``
 * ``--languages``, ``-l``: Languages available for the project. Option can be provided multiple
   times, or as a comma separated list.
   Only language codes supported by Django can be used here;
   refer to `django source`_ for a list of supported codes.
-* ``--django-version``: Django version;  choices: ``1.8|1.9|1.10|stable|lts``, default: ``lts```
-* ``--cms-version``, ``-v``: django CMS version, choices: ``3.2|3.3|3.4|stable|lts``.
+* ``--django-version``: Django version;  choices: ``1.8|1.9|1.10|1.11|stable|lts``, default: ``lts```
+* ``--cms-version``, ``-v``: django CMS version, choices: ``3.4|3.5|stable|lts``.
   default: ``lts``
 * ``--bootstrap``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
 * ``--starting-page``: Load a starting page with examples (available for english language only)
@@ -47,8 +47,8 @@ The following arguments can be overridden in :ref:`wizard_mode`
 * ``--templates``: Use a custom directory as template source; is checked to be a valid path,
   otherwise the shipped templates are used
 
-.. note:: Django ``stable`` keyword is expanded to latest released Django version
-.. note:: Django ``lts`` keyword is expanded to latest released Django LTSrsion
+.. note:: Django ``stable`` keyword is expanded to latest released Django version supported by django CMS
+.. note:: Django ``lts`` keyword is expanded to latest released Django LTS supported by django CMS
 .. note:: django-cms ``stable`` keyword is expanded to latest released django-cms version
 .. note:: django-cms ``lts`` keyword is expanded to latest released django-cms version
 .. warning:: if an unsupported combination of Django and django CMS version is selected, the

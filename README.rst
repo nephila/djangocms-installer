@@ -2,33 +2,7 @@
 django CMS Installer
 ====================
 
-.. image:: https://img.shields.io/pypi/v/djangocms-installer.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/djangocms-installer
-    :alt: Latest PyPI version
-
-.. image:: https://img.shields.io/pypi/dm/djangocms-installer.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/djangocms-installer
-    :alt: Monthly downloads
-
-.. image:: https://img.shields.io/pypi/pyversions/djangocms-installer.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/djangocms-installer
-    :alt: Python versions
-
-.. image:: https://img.shields.io/travis/nephila/djangocms-installer.svg?style=flat-square
-    :target: https://travis-ci.org/nephila/djangocms-installer
-    :alt: Latest Travis CI build status
-
-.. image:: https://img.shields.io/coveralls/nephila/djangocms-installer/master.svg?style=flat-square
-    :target: https://coveralls.io/r/nephila/djangocms-installer?branch=master
-    :alt: Test coverage
-
-.. image:: https://img.shields.io/codecov/c/github/nephila/djangocms-installer/master.svg?style=flat-square
-    :target: https://codecov.io/github/nephila/djangocms-installer
-    :alt: Test coverage
-
-.. image:: https://codeclimate.com/github/nephila/djangocms-installer/badges/gpa.svg?style=flat-square
-   :target: https://codeclimate.com/github/nephila/djangocms-installer
-   :alt: Code Climate
+|Gitter| |PyPiVersion| |PyVersion| |Status| |TestCoverage| |CodeClimate| |License|
 
 Command to easily bootstrap django CMS projects
 
@@ -42,8 +16,8 @@ project.
 
 Refer to `django CMS Tutorial`_ on how to properly setup your first django CMS project.
 
-.. warning:: Version 0.9 dropped support for Python 2.6, Django <1.8 and django CMS < 3.2.
-             More 0.8.x versions may be released after 0.9 is out in case important bugfixes will
+.. warning:: Version 1.0 dropped support for Python 3.3 and django CMS < 3.4.
+             More 0.9.x versions may be released after 1.0 is out in case important bugfixes will
              be needed.
 
 Usage
@@ -95,17 +69,15 @@ Supported versions
 
 The current supported version matrix is the following:
 
-+----------------+-------------+-------------+---------------+
-|                | Django 1.8  | Django 1.9  | Django 1.10   |
-+----------------+-------------+-------------+---------------+
-| django CMS 3.2 | Supported   | Supported   | Unsupported   |
-+----------------+-------------+-------------+---------------+
-| django CMS 3.3 | Supported   | Supported   | Unsupported   |
-+----------------+-------------+-------------+---------------+
-| django CMS 3.4 | Supported   | Supported   | Supported     |
-+----------------+-------------+-------------+---------------+
++----------------+-------------+-------------+---------------+---------------+
+|                | Django 1.8  | Django 1.9  | Django 1.10   | Django 1.11   |
++----------------+-------------+-------------+---------------+---------------+
+| django CMS 3.4 | Supported   | Supported   | Supported     | Supported     |
++----------------+-------------+-------------+---------------+---------------+
+| django CMS 3.5 | Supported   | Supported   | Supported     | Supported     |
++----------------+-------------+-------------+---------------+---------------+
 
-See `version 0.8`_ for older Django / django CMS versions support
+See `version 0.9`_ for older Django / django CMS versions support
 
 Any beta and develop version of Django and django CMS, by its very nature,
 it's not supported, while it still may work.
@@ -136,6 +108,35 @@ Please check that the ``.py`` extension is associated correctly with Python inte
     Python.File="C:\Windows\py.exe" "%1" %*
 
 
-.. _version 0.8: https://github.com/nephila/djangocms-installer/tree/release/0.8.x#supported-versions
+.. _version 0.9: https://github.com/nephila/djangocms-installer/tree/release/0.9.x#supported-versions
 .. _django CMS Tutorial: https://django-cms.readthedocs.io/en/latest/introduction/index.html
 .. _installer usage page: http://djangocms-installer.readthedocs.io/en/latest/usage.html
+
+
+.. |Gitter| image:: https://img.shields.io/badge/GITTER-join%20chat-brightgreen.svg?style=flat-square
+    :target: https://gitter.im/nephila/applications
+    :alt: Join the Gitter chat
+
+.. |PyPiVersion| image:: https://img.shields.io/pypi/v/djangocms-installer.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/djangocms-installer
+    :alt: Latest PyPI version
+
+.. |PyVersion| image:: https://img.shields.io/pypi/pyversions/djangocms-installer.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/djangocms-installer
+    :alt: Python versions
+
+.. |Status| image:: https://img.shields.io/travis/nephila/djangocms-installer.svg?style=flat-square
+    :target: https://travis-ci.org/nephila/djangocms-installer
+    :alt: Latest Travis CI build status
+
+.. |TestCoverage| image:: https://img.shields.io/coveralls/nephila/djangocms-installer/master.svg?style=flat-square
+    :target: https://coveralls.io/r/nephila/djangocms-installer?branch=master
+    :alt: Test coverage
+
+.. |License| image:: https://img.shields.io/github/license/nephila/djangocms-installer.svg?style=flat-square
+   :target: https://pypi.python.org/pypi/djangocms-installer/
+    :alt: License
+
+.. |CodeClimate| image:: https://codeclimate.com/github/nephila/djangocms-installer/badges/gpa.svg?style=flat-square
+   :target: https://codeclimate.com/github/nephila/djangocms-installer
+   :alt: Code Climate

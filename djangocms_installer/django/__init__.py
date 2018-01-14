@@ -289,8 +289,6 @@ def _build_settings(config_data):
 
     if not config_data.no_plugins:
         apps.extend(vars.FILER_PLUGINS_3)
-    if LooseVersion(config_data.cms_version) > LooseVersion('3.4'):
-        apps.remove('djangocms_snippet')
 
     if config_data.aldryn:  # pragma: no cover
         apps.extend(vars.ALDRYN_APPLICATIONS)

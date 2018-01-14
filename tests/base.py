@@ -15,7 +15,7 @@ from six import StringIO
 if sys.version_info < (3, 4):
     dj_ver = '1.8'
 else:
-    dj_ver = '1.9'
+    dj_ver = '1.10'
 
 
 SYSTEM_ACTIVATE = os.path.join(os.path.dirname(sys.executable), 'activate_this.py')
