@@ -67,7 +67,7 @@ Ready to contribute? Here's how to set up `djangocms-installer` for local develo
     $ mkvirtualenv djangocms-installer
     $ cd djangocms-installer/
     $ python setup.py develop
-    $ pip install -r requirements.txt
+    $ pip install -r requirements-test.txt
 
 the last one is to get the requirements including testing and development
 tools installed.
