@@ -168,3 +168,48 @@ class TestMain(IsolatedTestClass):
                     main.execute()
         self.assertTrue(os.path.exists(self.project_dir))
 
+    def test_i18n_urls(self):
+        base_dir = mkdtemp()
+        project_dir = os.path.join(base_dir, 'example_prj')
+        original_dir = os.getcwd()
+        os.chdir(base_dir)
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                sys.argv = ['main'] + ['--i18n=yes', 'example_prj']
+                main.execute()
+                self.assertTrue(
+                    os.path.exists(
+                        os.path.join(project_dir, 'example_prj', 'urls.py')
+                    )
+                )
+                with open(os.path.join(project_dir, 'example_prj', 'urls.py'),
+                          'r') as urls_file:
+                    urls = urls_file.read()
+                    self.assertTrue(
+                        urls.find('urlpatterns += i18n_patterns(') > -1
+                    )
+        os.chdir(original_dir)
+        rmtree(base_dir)
+
+    def test_noi18n_urls(self):
+        base_dir = mkdtemp()
+        project_dir = os.path.join(base_dir, 'example_prj')
+        original_dir = os.getcwd()
+        os.chdir(base_dir)
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                sys.argv = ['main'] + ['--i18n=no', 'example_prj']
+                main.execute()
+                self.assertTrue(
+                    os.path.exists(
+                        os.path.join(project_dir, 'example_prj', 'urls.py')
+                    )
+                )
+                with open(os.path.join(project_dir, 'example_prj', 'urls.py'),
+                          'r') as urls_file:
+                    urls = urls_file.read()
+                    self.assertTrue(
+                        urls.find('urlpatterns += i18n_patterns(') == -1
+                    )
+        os.chdir(original_dir)
+        rmtree(base_dir)

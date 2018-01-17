@@ -118,9 +118,9 @@ def copy_files(config_data):
     :param config_data: configuration data
     """
     if config_data.i18n == 'yes':
-        urlconf_path = os.path.join(os.path.dirname(__file__), '../config/i18n/urls.py')
+        urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls_i18n.py')
     else:
-        urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls.py')
+        urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls_noi18n.py')
     share_path = os.path.join(os.path.dirname(__file__), '../share')
     template_path = os.path.join(share_path, 'templates')
     if config_data.aldryn:  # pragma: no cover
