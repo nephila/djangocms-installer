@@ -6,7 +6,8 @@ omit =
     djangocms_installer/__main__.py
     djangocms_installer/main.py
     djangocms_installer/compat.py
-    djangocms_installer/config/urls.py
+    djangocms_installer/config/urls_i18n.py
+    djangocms_installer/config/urls_noi18n.py
     djangocms_installer/config/settings.py
     tests/*
 

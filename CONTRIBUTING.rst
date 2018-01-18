@@ -3,7 +3,7 @@ Contributing
 ============
 
 Contributions are welcome, and they are greatly appreciated! Every
-little bit helps, and credit will always be given. 
+little bit helps, and credit will always be given.
 
 You can contribute in many ways:
 
@@ -36,7 +36,7 @@ is open to whoever wants to implement it.
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-django CMS Installer could always use more documentation, whether as part of the 
+django CMS Installer could always use more documentation, whether as part of the
 official django CMS Installer docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
@@ -67,7 +67,7 @@ Ready to contribute? Here's how to set up `djangocms-installer` for local develo
     $ mkvirtualenv djangocms-installer
     $ cd djangocms-installer/
     $ python setup.py develop
-    $ pip install -r requirements_dev.txt
+    $ pip install -r requirements-test.txt
 
 the last one is to get the requirements including testing and development
 tools installed.
@@ -102,7 +102,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 2.6, 2.7, and 3.3, and for PyPy. Check 
+3. The pull request should work for Python 2.6, 2.7, and 3.3, and for PyPy. Check
    https://travis-ci.org/nephila/djangocms-installer/pull_requests
    and make sure that the tests pass for all supported Python versions.
 
