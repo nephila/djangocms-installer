@@ -188,7 +188,7 @@ DRIVERS = {
 }
 
 DEFAULT_PROJECT_HEADER = """# -*- coding: utf-8 -*-
-import os
+import os  # isort:skip
 gettext = lambda s: s
 """
 STATICFILES_DEFAULT = """STATICFILES_DIRS = (
