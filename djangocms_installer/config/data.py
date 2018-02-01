@@ -19,7 +19,7 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.
 )
 DJANGOCMS_BETA = DJANGOCMS_DEVELOP
 DJANGOCMS_34 = 'django-cms>=3.4,<3.5'
-DJANGOCMS_35 = DJANGOCMS_RC
+DJANGOCMS_35 = 'django-cms>=3.5,<3.6'
 
 if sys.version_info >= (3, 4):
     DJANGOCMS_SUPPORTED = ('3.4', '3.5', 'stable', 'lts', 'develop')
@@ -29,6 +29,7 @@ else:
     DJANGOCMS_SUPPORTED = ('3.4', '3.5', 'stable', 'lts', 'develop')
     DJANGOCMS_STABLE = '3.5'
     DJANGOCMS_LTS = '3.4'
+DJANGOCMS_DEFAULT = DJANGOCMS_STABLE
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
@@ -40,6 +41,7 @@ else:
     DJANGO_SUPPORTED = ('1.8', '1.9', '1.10', '1.11', 'stable', 'lts')
     DJANGO_STABLE = '1.11'
     DJANGO_LTS = '1.11'
+DJANGO_DEFAULT = DJANGO_STABLE
 
 CMS_VERSION_MATRIX = {
     'stable': DJANGOCMS_STABLE,
