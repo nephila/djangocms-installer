@@ -77,10 +77,10 @@ information.
                              'be used here. Example: en, fr-FR, it-IT')
     parser.add_argument('--django-version', dest='django_version', action='store',
                         choices=data.DJANGO_SUPPORTED,
-                        default='lts', help='Django version')
+                        default=data.DJANGO_DEFAULT, help='Django version')
     parser.add_argument('--cms-version', '-v', dest='cms_version', action='store',
                         choices=data.DJANGOCMS_SUPPORTED,
-                        default='lts', help='django CMS version')
+                        default=data.DJANGOCMS_DEFAULT, help='django CMS version')
     parser.add_argument('--parent-dir', '-p', dest='project_directory',
                         default='',
                         action='store', help='Optional project parent directory')

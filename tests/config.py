@@ -12,7 +12,7 @@ from tzlocal import get_localzone
 import six
 
 from djangocms_installer import config
-from djangocms_installer.config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX
+from djangocms_installer.config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX, DJANGO_DEFAULT, DJANGOCMS_DEFAULT
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
 
@@ -26,7 +26,7 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(conf_data.project_name, 'example_prj')
 
-        self.assertEqual(conf_data.cms_version, '3.4')
+        self.assertEqual(conf_data.cms_version, '3.5')
         self.assertEqual(conf_data.django_version, '1.11')
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
@@ -731,10 +731,10 @@ class TestBaseConfig(unittest.TestCase):
     base_dir = os.path.dirname(os.path.dirname(__file__))
     config_dir = os.path.join(base_dir, 'tests/fixtures/configs')
     args = ['--config-file', '-s', '-q', 'example_prj']
-    django_version = DJANGO_VERSION_MATRIX['lts']
+    django_version = DJANGO_VERSION_MATRIX['stable']
     config_fixture = Namespace(**{
         'bootstrap': False,
-        'cms_version': CMS_VERSION_MATRIX['lts'],
+        'cms_version': CMS_VERSION_MATRIX['stable'],
         'db': 'sqlite://localhost/project.db',
         'django_version': django_version,
         'dump_reqs': False,
