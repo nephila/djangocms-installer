@@ -4,3 +4,7 @@ tox
 mock
 pillow
 coverage
+pytest
+pytest-xdist
+pytest-cov
+pytest-runner

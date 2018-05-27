@@ -56,6 +56,5 @@ setup(
         'Framework :: Django :: 1.11',
         'Topic :: Software Development',
     ],
-    test_suite='tests',
     tests_require=test_requirements
 )

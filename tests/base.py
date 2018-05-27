@@ -29,7 +29,8 @@ class BaseTestClass(unittest.TestCase):
 
     def _remove_project_dir(self):
         if self.project_dir and os.path.exists(self.project_dir):
-            shutil.rmtree(self.project_dir)
+            if not os.environ.get('INSTALLER_KEEP_VIRTUALENV', False):
+                shutil.rmtree(self.project_dir)
             self.project_dir = None
 
     def _create_project_dir(self):
@@ -65,7 +66,8 @@ class IsolatedTestClass(BaseTestClass):
         if self.virtualenv_dir and not os.environ.get('INSTALLER_TEST_VIRTUALENV', False):
             if self.verbose:
                 print('remove virtualenv', self.virtualenv_dir)
-            shutil.rmtree(self.virtualenv_dir)
+            if not os.environ.get('INSTALLER_KEEP_VIRTUALENV', False):
+                shutil.rmtree(self.virtualenv_dir)
             self.virtualenv_dir = None
 
     def _create_project_dir(self):

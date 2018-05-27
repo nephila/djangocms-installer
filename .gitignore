@@ -49,3 +49,4 @@ docs/_build
 
 # Vim
 .*.swp
+/.pytest_cache/

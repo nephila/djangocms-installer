@@ -34,7 +34,7 @@ install:
   - "if [[ $TEST != '1' ]]; then export TOX_ENV=$TEST; fi"
 
 # command to run tests, e.g. python setup.py test
-script: COMMAND='coverage run --source=djangocms_installer' tox -e$TOX_ENV
+script: tox -e$TOX_ENV
 
 after_success:
   - codecov

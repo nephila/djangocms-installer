@@ -24,8 +24,8 @@ class TestMain(IsolatedTestClass):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                        '-len', '--cms-version=stable', '-R',
-                                       '-q', '-u', '-p'+self.project_dir,
-                                       'example_prj']
+                                       '-q', '-u', '-p%s' % self.project_dir,
+                                       'example_prj_req']
                 main.execute()
         stdout = self.stdout.getvalue()
         self.assertTrue(stdout.find('Django<2.0') > -1)
@@ -54,8 +54,8 @@ class TestMain(IsolatedTestClass):
                     '--i18n=no',
                     '--django-version=1.11',
                     '-f',
-                    '-p'+self.project_dir,
-                    'example_prj'])
+                    '-p%s' % self.project_dir,
+                    'example_prj_ask'])
                 install.cleanup_directory(conf_data)
                 self.assertFalse(os.path.exists(self.project_dir))
 
@@ -69,26 +69,27 @@ class TestMain(IsolatedTestClass):
                     '--i18n=no',
                     '--django-version=1.11',
                     '-f',
-                    '-p'+self.project_dir,
-                    'example_prj'])
+                    '-p%s' % self.project_dir,
+                    'example_prj_clean'])
                 install.cleanup_directory(conf_data)
                 self.assertTrue(os.path.exists(self.project_dir))
 
     def test_main_invocation(self):
         base_dir = mkdtemp()
-        project_dir = os.path.join(base_dir, 'example_prj')
+        project_base = 'project_prj_main'
+        project_dir = os.path.join(base_dir, project_base)
         original_dir = os.getcwd()
         os.chdir(base_dir)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                        '-len', '--cms-version=stable', '--django=%s' % dj_ver,
-                                       '-q', '-u', '--verbose',
-                                       'example_prj']
+                                       '-q', '-u', '--verbose', '-p%s' % project_base,
+                                       'example_prj_main']
                 main.execute()
                 self.assertTrue(os.path.exists(os.path.join(project_dir, 'static')))
                 self.assertTrue(os.path.exists(os.path.join(project_dir, 'requirements.txt')))
-                self.assertTrue(os.path.exists(os.path.join(project_dir, 'example_prj', 'static')))
+                self.assertTrue(os.path.exists(os.path.join(project_dir, 'example_prj_main', 'static')))
                 with open(os.path.join(project_dir, 'requirements.txt'), 'r') as req_file:
                     text = req_file.read()
                     self.assertTrue(text.find('djangocms-text-ckeditor') > -1)
@@ -100,23 +101,26 @@ class TestMain(IsolatedTestClass):
 
     def test_base_invocation(self):
         base_dir = mkdtemp()
-        project_dir = os.path.join(base_dir, 'example_prj')
+        project_base = 'project_prj_base'
+        project_dir = os.path.join(base_dir, project_base)
         original_dir = os.getcwd()
         os.chdir(base_dir)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                sys.argv = ['main'] + ['example_prj']
+                sys.argv = ['main'] + ['example_prj_base', '-p%s' % project_base]
                 main.execute()
                 self.assertTrue(os.path.exists(os.path.join(project_dir, 'static')))
                 self.assertTrue(os.path.exists(os.path.join(project_dir, 'requirements.txt')))
-                self.assertTrue(os.path.exists(os.path.join(project_dir, 'example_prj', 'static')))
+                self.assertTrue(os.path.exists(os.path.join(project_dir, 'example_prj_base', 'static')))
                 with open(os.path.join(project_dir, 'requirements.txt'), 'r') as req_file:
                     text = req_file.read()
                     self.assertTrue(text.find('djangocms-text-ckeditor') > -1)
                 self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % project_dir) in self.stdout.getvalue())
         os.chdir(project_dir)
         with patch('sys.stdout', self.stdout):
-            out = subprocess.check_output(['sqlite3', 'project.db', 'SELECT COUNT(*) FROM auth_user WHERE username="admin"'])
+            out = subprocess.check_output(
+                ['sqlite3', 'project.db', 'SELECT COUNT(*) FROM auth_user WHERE username="admin"']
+            )
             self.assertEqual(binary_type(out), binary_type(b'1\n'))
         os.chdir(original_dir)
         rmtree(base_dir)
@@ -127,24 +131,24 @@ class TestMain(IsolatedTestClass):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                        '-len-GB', '-lfr-fr', '--cms-version=stable',
                                        '--django=%s' % dj_ver,
-                                       '-q', '-u', '-p'+self.project_dir,
-                                       'example_prj']
+                                       '-q', '-u', '-p%s' % self.project_dir,
+                                       'example_prj_two']
                 main.execute()
                 # Checking we successfully completed the whole process
-                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
+                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to '
+                                 'start your project' % self.project_dir) in self.stdout.getvalue())
 
-    @unittest.skipIf(sys.version_info < (2, 7),
-                     reason='django CMS develop does not support python 2.6')
     def test_develop(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                        '-len', '--cms-version=develop', '--django=1.8',
-                                       '-q', '-u', '-p'+self.project_dir,
-                                       'example_prj']
+                                       '-q', '-u', '-p%s' % self.project_dir,
+                                       'example_prj_dev']
                 main.execute()
                 # Checking we successfully completed the whole process
-                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
+                self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to '
+                                 'start your project' % self.project_dir) in self.stdout.getvalue())
 
     def test_cleanup(self):
         with patch('sys.stdout', self.stdout):
@@ -152,8 +156,8 @@ class TestMain(IsolatedTestClass):
                 with self.assertRaises((CalledProcessError, EnvironmentError)):
                     sys.argv = ['main'] + ['--db=postgres://user:pwd@host/dbname',
                                            '-len', '--no-db-driver', '-c',
-                                           '-q', '-u', '-p'+self.project_dir,
-                                           'example_prj']
+                                           '-q', '-u', '-p%s' % self.project_dir,
+                                           'example_prj_cleanup']
                     main.execute()
         self.assertFalse(os.path.exists(self.project_dir))
 
@@ -163,26 +167,29 @@ class TestMain(IsolatedTestClass):
                 with self.assertRaises((CalledProcessError, EnvironmentError)):
                     sys.argv = ['main'] + ['--db=postgres://user:pwd@host/dbname',
                                            '-len', '--no-db-driver',
-                                           '-q', '-u', '-p' + self.project_dir,
-                                           'example_prj']
+                                           '-q', '-u', '-p%s' % self.project_dir,
+                                           'example_prj_noclean']
                     main.execute()
         self.assertTrue(os.path.exists(self.project_dir))
 
     def test_i18n_urls(self):
         base_dir = mkdtemp()
-        project_dir = os.path.join(base_dir, 'example_prj')
+        project_base = 'project_prj_i18n'
+        project_dir = os.path.join(base_dir, project_base)
         original_dir = os.getcwd()
         os.chdir(base_dir)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                sys.argv = ['main'] + ['--i18n=yes', 'example_prj']
+                sys.argv = ['main'] + [
+                    '--i18n=yes', 'example_prj_i18n', '--verbose', '-p%s' % project_base
+                ]
                 main.execute()
                 self.assertTrue(
                     os.path.exists(
-                        os.path.join(project_dir, 'example_prj', 'urls.py')
+                        os.path.join(project_dir, 'example_prj_i18n', 'urls.py')
                     )
                 )
-                with open(os.path.join(project_dir, 'example_prj', 'urls.py'),
+                with open(os.path.join(project_dir, 'example_prj_i18n', 'urls.py'),
                           'r') as urls_file:
                     urls = urls_file.read()
                     self.assertTrue(
@@ -193,19 +200,22 @@ class TestMain(IsolatedTestClass):
 
     def test_noi18n_urls(self):
         base_dir = mkdtemp()
-        project_dir = os.path.join(base_dir, 'example_prj')
+        project_base = 'project_prj_noi18n'
+        project_dir = os.path.join(base_dir, project_base)
         original_dir = os.getcwd()
         os.chdir(base_dir)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                sys.argv = ['main'] + ['--i18n=no', 'example_prj']
+                sys.argv = ['main'] + [
+                    '--i18n=no', 'example_prj_noi18n', '--verbose', '-p%s' % project_base
+                ]
                 main.execute()
                 self.assertTrue(
                     os.path.exists(
-                        os.path.join(project_dir, 'example_prj', 'urls.py')
+                        os.path.join(project_dir, 'example_prj_noi18n', 'urls.py')
                     )
                 )
-                with open(os.path.join(project_dir, 'example_prj', 'urls.py'),
+                with open(os.path.join(project_dir, 'example_prj_noi18n', 'urls.py'),
                           'r') as urls_file:
                     urls = urls_file.read()
                     self.assertTrue(
