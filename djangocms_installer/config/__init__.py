@@ -8,8 +8,8 @@ import sys
 import warnings
 from distutils.version import LooseVersion
 
+import pytz
 import six
-from tzlocal import get_localzone
 
 from . import data, ini
 from .. import compat, utils
@@ -21,8 +21,12 @@ def parse(args):
     """
     Define the available arguments
     """
+    from tzlocal import get_localzone
+
     try:
         timezone = get_localzone()
+        if isinstance(timezone, pytz.BaseTzInfo):
+            timezone = timezone.zone
     except Exception:  # pragma: no cover
         timezone = 'UTC'
     if timezone == 'local':
