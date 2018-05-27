@@ -75,10 +75,13 @@ REQUIREMENTS = {
         'six',
     ],
     'django-1.8': [
+        'django-polymorphic<2.0',
     ],
     'django-1.9': [
+        'django-polymorphic<2.0',
     ],
     'django-1.10': [
+        'django-polymorphic<2.0',
     ],
     'django-1.11': [
     ],
