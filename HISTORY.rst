@@ -3,6 +3,11 @@
 History
 -------
 
+1.0.1 (unreleased)
+++++++++++++++++++
+
+* Pinned django-polymorphic version to fix issues with django < 1.11
+
 1.0.0 (2018-02-01)
 ++++++++++++++++++
 
