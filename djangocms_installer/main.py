@@ -19,8 +19,11 @@ def execute():
         elif config_data.dump_reqs:
             config.show_requirements(config_data)
         else:
-            sys.stdout.write('Creating the project\n'
-                             'Please wait while I install dependencies\n')
+            sys.stdout.write(
+                'Creating the project\n'
+                'Please wait while I install dependencies\n'
+                'If I am stuck for a long time, please check for connectivity / PyPi issues\n'
+            )
             if not config_data.no_deps:
                 if config_data.requirements_file:
                     install.requirements(
