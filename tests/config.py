@@ -352,7 +352,7 @@ class TestConfig(BaseTestClass):
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
-        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-text-ckeditor') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.6') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)

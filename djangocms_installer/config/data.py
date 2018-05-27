@@ -121,16 +121,15 @@ REQUIREMENTS = {
         'djangocms-picture>=2.0,<3.0',
     ],
     'plugins-3.5': [
-        'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
-        ''.format(**bust),
-        'https://github.com/divio/djangocms-file/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-link/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-style/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-googlemap/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-snippet/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-picture/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-video/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-column/archive/master.zip?{bust}'.format(**bust),
+        'djangocms-text-ckeditor>=3.6.0',
+        'djangocms-link>=2.1',
+        'djangocms-style>=2.0',
+        'djangocms-googlemap>=1.1',
+        'djangocms-snippet>=2.0',
+        'djangocms-video>=2.0',
+        'djangocms-column>=1.7',
+        'djangocms-file>=2.0,<3.0',
+        'djangocms-picture>=2.0,<3.0',
     ],
     'plugins-master': [
         'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
