@@ -3,10 +3,11 @@
 History
 -------
 
-1.0.1 (unreleased)
+1.0.1 (2018-06-03)
 ++++++++++++++++++
 
 * Pinned django-polymorphic version to fix issues with django < 1.11
+* Pinned djangocms core plugins versions
 
 1.0.0 (2018-02-01)
 ++++++++++++++++++
