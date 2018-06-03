@@ -66,9 +66,7 @@ def dump_config_file(filename, args, parser=None):
             option_name = keyp.lstrip('-')
             option_value = getattr(args, action.dest)
             if any([i for i in keys_empty_values_not_pass if i in action.option_strings]):
-                if action.dest == 'timezone':
-                    config.set(SECTION, option_name, option_value.zone)
-                elif action.dest == 'languages':
+                if action.dest == 'languages':
                     if len(option_value) == 1 and option_value[0] == 'en':
                         config.set(SECTION, option_name, '')
                     else:

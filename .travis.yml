@@ -21,6 +21,10 @@ env:
     - TEST='isort'
     - TEST='docs'
 
+before_script:
+  - echo "Europe/Rome" | sudo tee /etc/timezone
+  - sudo dpkg-reconfigure --frontend noninteractive tzdata
+
 before_install:
   - pip install codecov
 

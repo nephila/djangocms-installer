@@ -6,16 +6,15 @@ import os
 import sys
 from argparse import Namespace
 
+import six
 from mock import patch
 from six import StringIO, text_type
 from tzlocal import get_localzone
-import six
 
 from djangocms_installer import config
-from djangocms_installer.config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX, DJANGO_DEFAULT, DJANGOCMS_DEFAULT
+from djangocms_installer.config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
-
 from .base import BaseTestClass, unittest
 
 
@@ -636,8 +635,20 @@ class TestConfig(BaseTestClass):
             'example_prj'])
         self.assertEqual(conf_data.timezone, 'UTC')
 
-    def test_templates(self):
+    @patch('tzlocal.get_localzone')
+    def test_timezone(self, mock_get_localzone):
         """
+        Verify handling problem with detecting timezone
+        """
+        mock_get_localzone.return_value = 'local'
+        conf_data = config.parse([
+            '-q',
+            '-p'+self.project_dir,
+            'example_prj'])
+        self.assertEqual(text_type(conf_data.timezone), 'UTC')
+
+    def test_templates(self):
+        """-
         Verify handling of valid (existing) and invalid (non-existing) templates directory parameter
         """
         conf_data = config.parse([
@@ -758,7 +769,7 @@ class TestBaseConfig(unittest.TestCase):
         'starting_page': False,
         'template': None,
         'templates': False,
-        'timezone': get_localzone(),
+        'timezone': get_localzone().zone,
         'use_timezone': 'yes',
         'utc': False,
         'no_plugins': False,
