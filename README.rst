@@ -69,13 +69,13 @@ Supported versions
 
 The current supported version matrix is the following:
 
-+----------------+-------------+-------------+---------------+---------------+
-|                | Django 1.8  | Django 1.9  | Django 1.10   | Django 1.11   |
-+----------------+-------------+-------------+---------------+---------------+
-| django CMS 3.4 | Supported   | Supported   | Supported     | Supported     |
-+----------------+-------------+-------------+---------------+---------------+
-| django CMS 3.5 | Supported   | Supported   | Supported     | Supported     |
-+----------------+-------------+-------------+---------------+---------------+
++----------------+-------------+-------------+---------------+---------------+---------------+
+|                | Django 1.8  | Django 1.9  | Django 1.10   | Django 1.11   | Django 2.0    |
++----------------+-------------+-------------+---------------+---------------+---------------+
+| django CMS 3.4 | Supported   | Supported   | Supported     | Supported     | Unsupported   |
++----------------+-------------+-------------+---------------+---------------+---------------+
+| django CMS 3.5 | Supported   | Supported   | Supported     | Supported     | Unsupported   |
++----------------+-------------+-------------+---------------+---------------+---------------+
 
 See `version 0.9`_ for older Django / django CMS versions support
 
