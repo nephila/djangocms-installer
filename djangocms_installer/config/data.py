@@ -69,7 +69,7 @@ PACKAGE_MATRIX = {
 REQUIREMENTS = {
     'default': [
         'django-classy-tags>=0.7',
-        'html5lib>=0.999999,<0.99999999',
+        'html5lib>=1.0.1',
         'Pillow>=3.0',
         'django-sekizai>=0.9',
         'six',
