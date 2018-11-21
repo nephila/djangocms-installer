@@ -69,7 +69,7 @@ PACKAGE_MATRIX = {
 REQUIREMENTS = {
     'default': [
         'django-classy-tags>=0.7',
-        'html5lib>=0.999999,<0.99999999',
+        'html5lib>=1.0.1',
         'Pillow>=3.0',
         'django-sekizai>=0.9',
         'six',
@@ -110,7 +110,7 @@ REQUIREMENTS = {
         'django-treebeard>=4.0,<5.0',
     ],
     'plugins-3.4': [
-        'djangocms-text-ckeditor>=3.2.1',
+        'djangocms-text-ckeditor>=3.6.1',
         'djangocms-link>=1.8',
         'djangocms-style>=1.7',
         'djangocms-googlemap>=0.5',
@@ -121,7 +121,7 @@ REQUIREMENTS = {
         'djangocms-picture>=2.0,<3.0',
     ],
     'plugins-3.5': [
-        'djangocms-text-ckeditor>=3.6.0',
+        'djangocms-text-ckeditor>=3.6.1',
         'djangocms-link>=2.1',
         'djangocms-style>=2.0',
         'djangocms-googlemap>=1.1',
