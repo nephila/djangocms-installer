@@ -3,6 +3,11 @@
 History
 -------
 
+1.0.2 (2018-21-11)
+++++++++++++++++++
+
+* Bumped html5lib / djangocms-text-ckeditor version
+
 1.0.1 (2018-06-03)
 ++++++++++++++++++
 
