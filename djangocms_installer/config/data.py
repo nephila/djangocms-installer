@@ -110,7 +110,7 @@ REQUIREMENTS = {
         'django-treebeard>=4.0,<5.0',
     ],
     'plugins-3.4': [
-        'djangocms-text-ckeditor>=3.2.1',
+        'djangocms-text-ckeditor>=3.6.1',
         'djangocms-link>=1.8',
         'djangocms-style>=1.7',
         'djangocms-googlemap>=0.5',
@@ -121,7 +121,7 @@ REQUIREMENTS = {
         'djangocms-picture>=2.0,<3.0',
     ],
     'plugins-3.5': [
-        'djangocms-text-ckeditor>=3.6.0',
+        'djangocms-text-ckeditor>=3.6.1',
         'djangocms-link>=2.1',
         'djangocms-style>=2.0',
         'djangocms-googlemap>=1.1',
