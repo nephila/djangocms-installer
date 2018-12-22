@@ -28,7 +28,10 @@ class BaseTestClass(unittest.TestCase):
     verbose = False
 
     def _remove_project_dir(self):
-        if self.project_dir and os.path.exists(self.project_dir):
+        if (
+            self.project_dir and os.path.exists(self.project_dir) and
+            not os.environ.get('INSTALLER_TEST_KEEP_VIRTUALENV')
+        ):
             shutil.rmtree(self.project_dir)
             self.project_dir = None
 
@@ -62,7 +65,10 @@ class IsolatedTestClass(BaseTestClass):
 
     def _remove_project_dir(self):
         super(IsolatedTestClass, self)._remove_project_dir()
-        if self.virtualenv_dir and not os.environ.get('INSTALLER_TEST_VIRTUALENV', False):
+        if (
+            self.virtualenv_dir and not os.environ.get('INSTALLER_TEST_VIRTUALENV', False) and
+            not os.environ.get('INSTALLER_TEST_KEEP_VIRTUALENV')
+        ):
             if self.verbose:
                 print('remove virtualenv', self.virtualenv_dir)
             shutil.rmtree(self.virtualenv_dir)
@@ -78,7 +84,6 @@ class IsolatedTestClass(BaseTestClass):
             print('creating virtualenv', self.virtualenv_dir)
 
     def tearDown(self):
-        from djangocms_installer.config.settings import MIGRATIONS_CHECK_MODULES
         if self.verbose:
             print('deactivating virtualenv', self.virtualenv_dir)
         if os.path.exists(SYSTEM_ACTIVATE):
@@ -98,7 +103,10 @@ class IsolatedTestClass(BaseTestClass):
     def setUp(self):
         super(IsolatedTestClass, self).setUp()
         if os.path.exists(SYSTEM_ACTIVATE):
-            subprocess.check_call(['virtualenv', '-q', '--python=%s' % sys.executable, self.virtualenv_dir])
+            subprocess.check_call([
+                'virtualenv', '--always-copy', '-q', '--python=%s' % sys.executable,
+                self.virtualenv_dir
+            ])
             activate_temp = os.path.join(self.virtualenv_dir, 'bin', 'activate_this.py')
             try:
                 execfile(activate_temp, dict(__file__=activate_temp))
@@ -109,3 +117,4 @@ class IsolatedTestClass(BaseTestClass):
             if self.verbose:
                 print('activating virtualenv', self.virtualenv_dir)
             sys.executable = os.path.join(self.virtualenv_dir, 'bin', 'python')
+            os.environ['VIRTUAL_ENV'] = self.virtualenv_dir

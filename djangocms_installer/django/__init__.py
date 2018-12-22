@@ -239,7 +239,10 @@ STATICFILES_DIRS = (
             item_re = re.compile(r'{0} = [^\)]+\)'.format(item), re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
     # TEMPLATES is special, so custom regexp needed
-    item_re = re.compile(r'TEMPLATES = .+\]$', re.DOTALL | re.MULTILINE)
+    if LooseVersion(config_data.django_version) >= LooseVersion('2.0'):
+        item_re = re.compile(r'TEMPLATES = .+\},\n\s+\},\n]$', re.DOTALL | re.MULTILINE)
+    else:
+        item_re = re.compile(r'TEMPLATES = .+\]$', re.DOTALL | re.MULTILINE)
     original = item_re.sub('', original)
     # DATABASES is a dictionary, so different regexp needed
     item_re = re.compile(r'DATABASES = [^\}]+\}[^\}]+\}', re.DOTALL | re.MULTILINE)
@@ -269,7 +272,13 @@ def _build_settings(config_data):
 
     processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_3
     text.append(data.TEMPLATES_1_8.format(
-        loaders=(',\n' + spacer * 4).join(["'{0}'".format(var) for var in vars.TEMPLATE_LOADERS]),
+        loaders=(',\n' + spacer * 4).join([
+            "'{0}'".format(var) for var in vars.TEMPLATE_LOADERS
+            if (
+                LooseVersion(config_data.django_version) < LooseVersion('2.0') or
+                'eggs' not in var
+            )
+        ]),
         processors=(',\n' + spacer * 4).join(["'{0}'".format(var) for var in processors]),
         dirs="os.path.join(BASE_DIR, '{0}', 'templates'),".format(config_data.project_name)
     ))

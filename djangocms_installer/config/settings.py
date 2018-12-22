@@ -32,7 +32,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     'django.template.context_processors.csrf',
     'django.template.context_processors.tz',
     'sekizai.context_processors.sekizai',
-    'django.template.context_processors.static',
+    'django.template.context_processors.static'
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS_3 = [

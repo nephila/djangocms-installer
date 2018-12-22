@@ -1,5 +1,4 @@
 dj-database-url>=0.4
 pip
 six
-argparse
 tzlocal
