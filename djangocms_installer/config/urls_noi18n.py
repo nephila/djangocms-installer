@@ -17,7 +17,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    url(r'^admin/', include(admin.site.urls)),  # NOQA
+    url(r'^admin/', admin.site.urls),  # NOQA
     url(r'^', include('cms.urls')),
 ]
 

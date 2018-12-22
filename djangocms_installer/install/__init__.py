@@ -79,20 +79,23 @@ def check_install(config_data):
         raise EnvironmentError('\n'.join(errors))
 
 
-def requirements(requirements, pip_options='', is_file=False, verbose=False):
+def requirements(req_file, pip_options='', is_file=False, verbose=False):
     args = ['install']
     if not verbose:
         args.append('-q')
     if pip_options:
         args.extend([opt for opt in pip_options.split(' ') if opt])
     if is_file:  # pragma: no cover
-        args += ['-r', requirements]
+        args += ['-r', req_file]
     else:
-        args.extend(['{0}'.format(package) for package in requirements.split()])
+        args.extend(['{0}'.format(package) for package in req_file.split()])
+    cmd = [sys.executable, '-mpip'] + args
     if verbose:
-        sys.stdout.write('Package install command: {0}\n'.format(' '.join(args)))
+        sys.stdout.write('python path: {0}\n'.format(sys.executable))
+        sys.stdout.write('packages install command: {0}\n'.format(' '.join(cmd)))
     try:
-        output = subprocess.check_output(['pip'] + args, stderr=subprocess.STDOUT)
+        subprocess.check_output(['python', '-msite'], stderr=subprocess.STDOUT)
+        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
         sys.stdout.write(output.decode('utf-8'))
     except Exception as e:
         logger.error('cmd : %s :%s' % (e.cmd, e.output))

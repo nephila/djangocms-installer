@@ -133,13 +133,13 @@ class TestMain(IsolatedTestClass):
                 # Checking we successfully completed the whole process
                 self.assertTrue(('Get into "%s" directory and type "python manage.py runserver" to start your project' % self.project_dir) in self.stdout.getvalue())
 
-    @unittest.skipIf(sys.version_info < (2, 7),
-                     reason='django CMS develop does not support python 2.6')
+    @unittest.skipIf(sys.version_info < (3.0,),
+                     reason='django 2.1 does not support python 2.6')
     def test_develop(self):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--cms-version=develop', '--django=1.8',
+                                       '-len', '--cms-version=develop', '--django=2.1',
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()

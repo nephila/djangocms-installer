@@ -3,7 +3,12 @@
 History
 -------
 
-1.0.2 (2018-21-11)
+1.1.0 (unreleased)
+++++++++++++++++++
+
+* Add support for django CMS 3.6 (as develop version until release)
+
+1.0.2 (2018-11-21)
 ++++++++++++++++++
 
 * Bumped html5lib / djangocms-text-ckeditor version

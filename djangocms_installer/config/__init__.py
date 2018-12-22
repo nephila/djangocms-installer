@@ -263,6 +263,8 @@ information.
 
         if args.cms_version in ('rc', 'develop'):
             requirements.extend(data.REQUIREMENTS['cms-master'])
+        elif LooseVersion(cms_version) >= LooseVersion('3.6'):
+            requirements.extend(data.REQUIREMENTS['cms-3.6'])
         elif LooseVersion(cms_version) >= LooseVersion('3.5'):
             requirements.extend(data.REQUIREMENTS['cms-3.5'])
         elif LooseVersion(cms_version) >= LooseVersion('3.4'):
@@ -273,6 +275,8 @@ information.
         if not args.no_plugins:
             if args.cms_version in ('rc', 'develop'):
                 requirements.extend(data.REQUIREMENTS['plugins-master'])
+            elif LooseVersion(cms_version) >= LooseVersion('3.6'):
+                requirements.extend(data.REQUIREMENTS['plugins-3.6'])
             elif LooseVersion(cms_version) >= LooseVersion('3.5'):
                 requirements.extend(data.REQUIREMENTS['plugins-3.5'])
             elif LooseVersion(cms_version) >= LooseVersion('3.4'):
@@ -292,10 +296,6 @@ information.
         else:
             requirements.append('Django<{0}'.format(less_than_version(django_version)))
 
-        # Timezone support
-        if args.use_timezone:
-            requirements.append('pytz')
-
         if django_version == '1.8':
             requirements.extend(data.REQUIREMENTS['django-1.8'])
         elif django_version == '1.9':
@@ -304,8 +304,10 @@ information.
             requirements.extend(data.REQUIREMENTS['django-1.10'])
         elif django_version == '1.11':
             requirements.extend(data.REQUIREMENTS['django-1.11'])
-        elif django_version == '2.0':  # pragma: no cover
+        elif django_version == '2.0':
             requirements.extend(data.REQUIREMENTS['django-2.0'])
+        elif django_version == '2.1':
+            requirements.extend(data.REQUIREMENTS['django-2.1'])
 
         requirements.extend(data.REQUIREMENTS['default'])
 

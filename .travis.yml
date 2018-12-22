@@ -35,6 +35,7 @@ install:
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.4' ]]; then export TOX_ENV=py34; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then export TOX_ENV=py35; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then export TOX_ENV=py36; fi"
+  - "if [[ $TRAVIS_PYTHON_VERSION == '3.7' ]]; then export TOX_ENV=py37; fi"
   - "if [[ $TEST != '1' ]]; then export TOX_ENV=$TEST; fi"
 
 # command to run tests, e.g. python setup.py test
