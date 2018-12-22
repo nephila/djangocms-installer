@@ -8,6 +8,7 @@ History
 
 * Added support for django CMS 3.6 (as develop version until release)
 * Added detection of incompatible DJANGO_SETTINGS_MODULE environment variable
+* Added detection of mismatched Django version between currently installed and declared one
 
 1.0.2 (2018-11-21)
 ++++++++++++++++++

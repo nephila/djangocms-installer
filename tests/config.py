@@ -308,7 +308,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         prj_dir])
-        self.assertEqual(error.exception.code, 7)
+        self.assertEqual(error.exception.code, 10)
         self.assertTrue(self.stderr.getvalue().find('DJANGO_SETTINGS_MODULE') > -1)
         self.assertTrue(self.stderr.getvalue().find('some_module.settings') > -1)
 
