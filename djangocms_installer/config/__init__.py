@@ -306,7 +306,7 @@ information.
             requirements.extend(data.REQUIREMENTS['django-1.11'])
         elif django_version == '2.0':
             requirements.extend(data.REQUIREMENTS['django-2.0'])
-        elif django_version == '2.0':
+        elif django_version == '2.1':
             requirements.extend(data.REQUIREMENTS['django-2.1'])
 
         requirements.extend(data.REQUIREMENTS['default'])
