@@ -50,6 +50,8 @@ class BaseTestClass(unittest.TestCase):
         self._remove_project_dir()
         self.stdout = None
         self.stderr = None
+        if 'DJANGO_SETTINGS_MODULE' in os.environ:
+            del os.environ['DJANGO_SETTINGS_MODULE']
         sys.path = self.syspath
 
     def setUp(self):

@@ -246,6 +246,16 @@ information.
         )
         sys.exit(6)
 
+    default_settings = '{}.settings'.format(args.project_name)
+    env_settings = os.environ.get('DJANGO_SETTINGS_MODULE', default_settings)
+    if env_settings != default_settings:
+        sys.stderr.write(
+            '`DJANGO_SETTINGS_MODULE` is currently set to \'{0}\' which is not compatible with '
+            'djangocms installer.\nPlease unset `DJANGO_SETTINGS_MODULE` and re-run the installer '
+            '\n'.format(env_settings)
+        )
+        sys.exit(7)
+
     if not getattr(args, 'requirements_file'):
         requirements = []
 
