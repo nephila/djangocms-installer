@@ -181,6 +181,7 @@ class TestConfig(BaseTestClass):
                         '--i18n=no',
                         '-p'+self.project_dir,
                         'example_prj'])
+        self.assertEqual(error.exception.code, 2)
         if six.PY3:
             self.assertTrue(self.stderr.getvalue().find('--cms-version/-v: invalid choice: \'2.6\'') > -1)
         else:
@@ -196,6 +197,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'test'])
+            self.assertEqual(error.exception.code, 3)
             self.assertTrue(stderr_tmp.getvalue().find('Project name "test" is not a valid app name') > -1)
 
             stderr_tmp = StringIO()
@@ -206,6 +208,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'assert'])
+            self.assertEqual(error.exception.code, 3)
             self.assertTrue(stderr_tmp.getvalue().find('Project name "assert" is not a valid app name') > -1)
 
             stderr_tmp = StringIO()
@@ -216,6 +219,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'values'])
+            self.assertEqual(error.exception.code, 3)
             self.assertTrue(stderr_tmp.getvalue().find('Project name "values" is not a valid app name') > -1)
 
             stderr_tmp = StringIO()
@@ -226,6 +230,7 @@ class TestConfig(BaseTestClass):
                         '--db=postgres://user:pwd@host/dbname',
                         '-p'+self.project_dir,
                         'project-name'])
+            self.assertEqual(error.exception.code, 3)
             self.assertTrue(stderr_tmp.getvalue().find('Project name "project-name" is not a valid app name') > -1)
 
     def test_invalid_project_path(self):
@@ -241,6 +246,7 @@ class TestConfig(BaseTestClass):
                         '-p'+self.project_dir,
                         prj_dir])
                     self.assertEqual(conf_data.project_path, existing_path)
+        self.assertEqual(error.exception.code, 4)
         self.assertTrue(self.stderr.getvalue().find('Path "%s" already exists and is not empty' % self.project_dir) > -1)
 
     def test_invalid_project_dir(self):
@@ -257,6 +263,7 @@ class TestConfig(BaseTestClass):
                         '-p'+self.project_dir,
                         prj_dir])
                     self.assertEqual(conf_data.project_path, existing_path)
+        self.assertEqual(error.exception.code, 4)
         self.assertTrue(self.stderr.getvalue().find('Path "%s" already exists and is not empty' % self.project_dir) > -1)
 
     def test_invalid_project_dir_skip(self):
@@ -286,6 +293,40 @@ class TestConfig(BaseTestClass):
                     '-p'+self.project_dir,
                     prj_dir])
         self.assertFalse(self.stderr.getvalue().find('Path "%s" already exists and is not empty' % self.project_dir) > -1)
+
+    def test_invalid_django_settings_module(self):
+        prj_dir = 'example_prj'
+        existing_path = os.path.join(self.project_dir, '.hidden_file')
+        with open(existing_path, 'w') as f:
+            f.write('')
+        os.environ['DJANGO_SETTINGS_MODULE'] = 'some_module.settings'
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '-p'+self.project_dir,
+                        prj_dir])
+        self.assertEqual(error.exception.code, 7)
+        self.assertTrue(self.stderr.getvalue().find('DJANGO_SETTINGS_MODULE') > -1)
+        self.assertTrue(self.stderr.getvalue().find('some_module.settings') > -1)
+
+    def test_valid_django_settings_module(self):
+        prj_dir = 'example_prj'
+        existing_path = os.path.join(self.project_dir, '.hidden_file')
+        with open(existing_path, 'w') as f:
+            f.write('')
+        os.environ['DJANGO_SETTINGS_MODULE'] = 'example_prj.settings'
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                conf_data = config.parse([
+                    '-q',
+                    '--db=postgres://user:pwd@host/dbname',
+                    '-p'+self.project_dir,
+                    prj_dir])
+        self.assertFalse(self.stderr.getvalue().find('DJANGO_SETTINGS_MODULE') > -1)
+        self.assertFalse(self.stderr.getvalue().find('some_module.settings') > -1)
 
     def test_latest_version(self):
         self.assertEqual(less_than_version('2.4'), '2.5')

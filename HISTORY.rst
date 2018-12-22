@@ -6,7 +6,8 @@ History
 1.1.0 (unreleased)
 ++++++++++++++++++
 
-* Add support for django CMS 3.6 (as develop version until release)
+* Added support for django CMS 3.6 (as develop version until release)
+* Added detection of incompatible DJANGO_SETTINGS_MODULE environment variable
 
 1.0.2 (2018-11-21)
 ++++++++++++++++++
