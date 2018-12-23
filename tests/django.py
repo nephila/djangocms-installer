@@ -7,6 +7,8 @@ import sqlite3
 import sys
 import textwrap
 
+from mock import patch
+
 from djangocms_installer import config, django, install
 
 from .base import IsolatedTestClass, dj_ver, unittest
@@ -185,7 +187,7 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.9',
                                     '--cms-version=3.4', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p' + self.project_dir, 'example_path_16'])
+                                    '-p' + self.project_dir, 'example_path_19'])
 
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -200,12 +202,13 @@ class TestDjango(IsolatedTestClass):
         project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
 
         # checking for django options
-        self.assertEqual(project.settings.MEDIA_ROOT,
-                         os.path.join(config_data.project_directory, 'media'))
+        self.assertEqual(
+            project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, 'media')
+        )
         self.assertEqual(project.settings.MEDIA_URL, '/media/')
 
         self.assertEqual(project.settings.TIME_ZONE, 'Europe/Moscow')
-        self.assertTrue('cmsplugin_filer_image'not  in project.settings.INSTALLED_APPS)
+        self.assertTrue('cmsplugin_filer_image' not in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_file' not in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_folder' not in project.settings.INSTALLED_APPS)
         self.assertTrue('cmsplugin_filer_link' not in project.settings.INSTALLED_APPS)
@@ -296,8 +299,8 @@ class TestDjango(IsolatedTestClass):
             project.settings.MIDDLEWARE
         )
 
-    @unittest.skipIf(sys.version_info[:2] not in ((3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 2.1 only supports python 3.4, 3.5, 3.6 and 3.7')
+    @unittest.skipIf(sys.version_info[:2] not in ((3, 5), (3, 6), (3, 7),),
+                     reason='django 2.1 only supports python 3.5, 3.6 and 3.7')
     def test_patch_django_21_develop(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         params = [
@@ -328,8 +331,8 @@ class TestDjango(IsolatedTestClass):
             project.settings.MIDDLEWARE
         )
 
-    @unittest.skipIf(sys.version_info[:2] not in ((3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 2.1 only supports python 3.4, 3.5, 3.6 and 3.7')
+    @unittest.skipIf(sys.version_info[:2] not in ((3, 4), (3, 5), (3, 6),),
+                     reason='django 2.0 only supports python 3.4, 3.5, 3.6')
     def test_patch_django_20_develop(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         params = [
@@ -558,6 +561,25 @@ class TestDjango(IsolatedTestClass):
         query = project_db.execute('SELECT * FROM cms_cmsplugin')
         row = query.fetchone()
         self.assertTrue('TextPlugin' in row)
+
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
+                     reason='django 1.8 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7,')
+    def test_force_django(self):
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '-q', '-u', '--django-version=1.11',
+                                    '--cms-version=3.4', '--starting-page=yes',
+                                    '-p' + self.project_dir, 'cms_project'])
+        install.requirements(config_data.requirements)
+        install.requirements('django<1.9')
+        django.create_project(config_data)
+        with patch('sys.stdout', self.stdout):
+            with patch('sys.stderr', self.stderr):
+                with self.assertRaises(SystemExit) as error:
+                    django.patch_settings(config_data)
+        self.assertEqual(error.exception.code, 9)
+        self.assertTrue(self.stderr.getvalue().find(
+            'Currently installed Django version 1.8.19 differs from the declared 1.11'
+        ) > -1)
 
 
 class TestBaseDjango(unittest.TestCase):

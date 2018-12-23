@@ -168,18 +168,33 @@ def patch_settings(config_data):
 
     :param config_data: configuration data
     """
+    import django
+    current_django_version = LooseVersion(django.__version__)
+    declared_django_version = LooseVersion(config_data.django_version)
+
+    if not os.path.exists(config_data.settings_path):
+        sys.stderr.write(
+            'Error while creating target project, '
+            'please check the given configuration: {0}\n'.format(config_data.settings_path)
+        )
+        return sys.exit(5)
+
+    if current_django_version.version[:2] != declared_django_version.version[:2]:
+        sys.stderr.write(
+            'Currently installed Django version {} differs from the declared {}. '
+            'Please check the given `--django-version` installer argument, your virtualenv '
+            'configuration and any package forcing a different Django version'
+            '\n'.format(
+                current_django_version, declared_django_version
+            )
+        )
+        return sys.exit(9)
+
     overridden_settings = (
         'MIDDLEWARE_CLASSES', 'MIDDLEWARE', 'INSTALLED_APPS', 'TEMPLATE_LOADERS',
         'TEMPLATE_CONTEXT_PROCESSORS', 'TEMPLATE_DIRS', 'LANGUAGES'
     )
     extra_settings = ''
-
-    if not os.path.exists(config_data.settings_path):
-        sys.stdout.write(
-            'Error while creating target project, '
-            'please check the given configuration: {0}'.format(config_data.settings_path)
-        )
-        return sys.exit(5)
 
     with open(config_data.settings_path, 'r') as fd_original:
         original = fd_original.read()
@@ -227,19 +242,18 @@ STATICFILES_DIRS = (
             'LANGUAGE_CODE = \'en-us\'', 'LANGUAGE_CODE = \'{0}\''.format(config_data.languages[0])
         )
     if config_data.timezone:
-        # This is for Django 1.6 which changed the default timezone
         original = original.replace(
             'TIME_ZONE = \'UTC\'', 'TIME_ZONE = \'{0}\''.format(config_data.timezone)
         )
 
     for item in overridden_settings:
-        if LooseVersion(config_data.django_version) >= LooseVersion('1.9'):
+        if declared_django_version >= LooseVersion('1.9'):
             item_re = re.compile(r'{0} = [^\]]+\]'.format(item), re.DOTALL | re.MULTILINE)
         else:
             item_re = re.compile(r'{0} = [^\)]+\)'.format(item), re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
     # TEMPLATES is special, so custom regexp needed
-    if LooseVersion(config_data.django_version) >= LooseVersion('2.0'):
+    if declared_django_version >= LooseVersion('2.0'):
         item_re = re.compile(r'TEMPLATES = .+\},\n\s+\},\n]$', re.DOTALL | re.MULTILINE)
     else:
         item_re = re.compile(r'TEMPLATES = .+\]$', re.DOTALL | re.MULTILINE)
@@ -284,12 +298,12 @@ def _build_settings(config_data):
     ))
 
     if LooseVersion(config_data.django_version) >= LooseVersion('1.10'):
-        text.append('MIDDLEWARE = (\n{0}{1}\n)'.format(
+        text.append('MIDDLEWARE = [\n{0}{1}\n]'.format(
             spacer, (',\n' + spacer).join(['\'{0}\''.format(var)
                                            for var in vars.MIDDLEWARE_CLASSES])
         ))
     else:
-        text.append('MIDDLEWARE_CLASSES = (\n{0}{1}\n)'.format(
+        text.append('MIDDLEWARE_CLASSES = [\n{0}{1}\n]'.format(
             spacer, (',\n' + spacer).join(["'{0}'".format(var)
                                            for var in vars.MIDDLEWARE_CLASSES])
         ))
@@ -306,7 +320,7 @@ def _build_settings(config_data):
         apps.extend(vars.ALDRYN_APPLICATIONS)
     if config_data.reversion and LooseVersion(config_data.cms_version) < LooseVersion('3.4'):
         apps.extend(vars.REVERSION_APPLICATIONS)
-    text.append('INSTALLED_APPS = (\n{0}{1}\n)'.format(
+    text.append('INSTALLED_APPS = [\n{0}{1}\n]'.format(
         spacer, (',\n' + spacer).join(['\'{0}\''.format(var) for var in apps] +
                                       ['\'{0}\''.format(config_data.project_name)])
     ))

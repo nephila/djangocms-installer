@@ -40,7 +40,7 @@ def parse_config_file(parser, stdin_args):
     config = ConfigParser()
     if not config.read(parsed_args.config_file):
         sys.stderr.write('Config file "{0}" doesn\'t exists\n'.format(parsed_args.config_file))
-        sys.exit(7)  # It isn't used anythere.
+        sys.exit(7)  # It isn't used anywhere.
 
     config_args = _convert_config_to_stdin(config, parser)
     return config_args

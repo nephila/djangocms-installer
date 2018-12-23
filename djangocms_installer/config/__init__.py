@@ -254,7 +254,7 @@ information.
             'djangocms installer.\nPlease unset `DJANGO_SETTINGS_MODULE` and re-run the installer '
             '\n'.format(env_settings)
         )
-        sys.exit(7)
+        sys.exit(10)
 
     if not getattr(args, 'requirements_file'):
         requirements = []
