@@ -11,9 +11,9 @@ from distutils.version import LooseVersion
 import pytz
 import six
 
-from . import data, ini
 from .. import compat, utils
 from ..utils import less_than_version, supported_versions
+from . import data, ini
 from .internal import DbAction, validate_project
 
 

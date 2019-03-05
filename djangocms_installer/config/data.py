@@ -23,19 +23,24 @@ DJANGOCMS_35 = 'django-cms>=3.5,<3.6'
 DJANGOCMS_36 = 'django-cms>=3.6,<3.7'
 
 if sys.version_info >= (3, 4):
-    DJANGOCMS_SUPPORTED = ('3.4', '3.5', 'stable', 'lts', 'develop')
-    DJANGOCMS_STABLE = '3.5'
+    DJANGOCMS_SUPPORTED = ('3.4', '3.5', '3.6', 'stable', 'lts', 'develop')
+    DJANGOCMS_STABLE = '3.6'
     DJANGOCMS_LTS = '3.4'
 else:
-    DJANGOCMS_SUPPORTED = ('3.4', '3.5', 'stable', 'lts', 'develop')
-    DJANGOCMS_STABLE = '3.5'
+    DJANGOCMS_SUPPORTED = ('3.4', '3.5', '3.6', 'stable', 'lts', 'develop')
+    DJANGOCMS_STABLE = '3.6'
     DJANGOCMS_LTS = '3.4'
 DJANGOCMS_DEFAULT = DJANGOCMS_STABLE
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
-if sys.version_info >= (3, 4):
+if sys.version_info >= (3, 5):
+
     DJANGO_SUPPORTED = ('1.8', '1.9', '1.10', '1.11', '2.0', '2.1', 'stable', 'lts')
+    DJANGO_STABLE = '1.11'
+    DJANGO_LTS = '1.11'
+elif sys.version_info >= (3, 4):
+    DJANGO_SUPPORTED = ('1.8', '1.9', '1.10', '1.11', '2.0', 'stable', 'lts')
     DJANGO_STABLE = '1.11'
     DJANGO_LTS = '1.11'
 else:
@@ -66,7 +71,7 @@ VERSION_MATRIX = {
 PACKAGE_MATRIX = {
     '3.4': DJANGOCMS_34,
     '3.5': DJANGOCMS_35,
-    '3.6': DJANGOCMS_DEVELOP,
+    '3.6': DJANGOCMS_36,
 }
 
 REQUIREMENTS = {
@@ -141,7 +146,7 @@ REQUIREMENTS = {
     'plugins-3.5': [
         'djangocms-text-ckeditor>3.6,<3.7',
         'djangocms-link>=2.1,<2.2',
-        'djangocms-style>=2.0,<2.1',
+        'djangocms-snippet>=2.1,<2.2',
         'djangocms-googlemap>=1.1,<1.2',
         'djangocms-snippet>=2.0,<2.1',
         'djangocms-video>=2.0,<2.1',
@@ -150,10 +155,11 @@ REQUIREMENTS = {
         'djangocms-picture>=2.0,<2.1',
     ],
     'plugins-3.6': [
-        'djangocms-text-ckeditor>=3.7',
+        'djangocms-text-ckeditor>=3.7,<3.8',
         'djangocms-link>=2.3',
         'djangocms-style>=2.1',
         'djangocms-googlemap>=1.2',
+        'djangocms-snippet>=2.1,<2.2',
         'djangocms-video>=2.0,<2.1',
         'djangocms-column>=1.9',
         'djangocms-file>=2.2,<3.0',

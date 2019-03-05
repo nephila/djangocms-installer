@@ -11,7 +11,7 @@ from mock import patch
 
 from djangocms_installer import config, django, install
 
-from .base import IsolatedTestClass, dj_ver, unittest
+from .base import IsolatedTestClass, get_latest_django, unittest
 
 
 class TestDjango(IsolatedTestClass):
@@ -30,8 +30,9 @@ class TestDjango(IsolatedTestClass):
     )
 
     def test_create_project(self):
+        dj_version, dj_match = get_latest_django(latest_stable=True)
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=stable', '--django=%s' % dj_ver,
+                                    '--cms-version=stable', '--django=%s' % dj_version,
                                     '-q', '-p' + self.project_dir, 'example_prj'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -369,7 +370,7 @@ class TestDjango(IsolatedTestClass):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
-                                    '--django-version=1.8', '-f', '--no-plugins',
+                                    '--django-version=1.11', '-f', '--no-plugins',
                                     '--cms-version=stable', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
                                     '-p' + self.project_dir, 'example_path_no_plugin'])
@@ -585,8 +586,9 @@ class TestDjango(IsolatedTestClass):
 class TestBaseDjango(unittest.TestCase):
     def test_build_settings(self):
         """Tests django.__init__._build_settings function."""
+        dj_version, dj_match = get_latest_django(latest_stable=True)
         config_data = config.parse(['--db=postgres://user:pwd@host:5432/dbname',
-                                    '--cms-version=stable', '--django=%s' % dj_ver,
+                                    '--cms-version=stable', '--django=%s' % dj_version,
                                     '-q', '-p .', 'example_prj'])
         settings = django._build_settings(config_data)
         self.assertTrue(textwrap.dedent('''

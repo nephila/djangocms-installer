@@ -16,6 +16,10 @@ project.
 
 Refer to `django CMS Tutorial`_ on how to properly setup your first django CMS project.
 
+.. warning:: Version 1.1 will be the last version to support Python 2.7 and Python 3.4 and Django < 1.11.
+             More 1.0.x versions may be released after 1.1 is out in case important bugfixes will
+             be needed.
+
 .. warning:: Version 1.0 dropped support for Python 3.3 and django CMS < 3.4.
              More 0.9.x versions may be released after 1.0 is out in case important bugfixes will
              be needed.

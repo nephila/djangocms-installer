@@ -15,6 +15,10 @@
 import os
 import sys
 
+import sphinx.environment
+from docutils.utils import get_source_line
+
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -23,10 +27,7 @@ import sys
 cwd = os.getcwd()
 parent = os.path.dirname(cwd)
 sys.path.append(parent)
-
-import djangocms_installer
-import sphinx.environment
-from docutils.utils import get_source_line
+import djangocms_installer  # isort:skip
 
 
 def _warn_node(self, msg, node, *args, **kwargs):
