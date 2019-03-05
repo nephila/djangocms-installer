@@ -12,12 +12,6 @@ from copy import copy
 from six import StringIO
 
 
-if sys.version_info < (3, 4):
-    dj_ver = '1.8'
-else:
-    dj_ver = '1.10'
-
-
 SYSTEM_ACTIVATE = os.path.join(os.path.dirname(sys.executable), 'activate_this.py')
 
 
@@ -120,3 +114,19 @@ class IsolatedTestClass(BaseTestClass):
                 print('activating virtualenv', self.virtualenv_dir)
             sys.executable = os.path.join(self.virtualenv_dir, 'bin', 'python')
             os.environ['VIRTUAL_ENV'] = self.virtualenv_dir
+
+
+def get_latest_django(latest_stable=False):
+    if sys.version_info < (3, 4) and not latest_stable:
+        dj_ver = '1.8'
+        match = 'Django<1.9'
+    elif sys.version_info < (3, 4) and latest_stable:
+        dj_ver = '1.11'
+        match = 'Django<2.0'
+    elif sys.version_info < (3, 5):
+        dj_ver = '2.0'
+        match = 'Django<2.1'
+    else:
+        dj_ver = '2.1'
+        match = 'Django<2.2'
+    return dj_ver, match

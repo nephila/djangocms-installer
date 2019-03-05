@@ -4,17 +4,16 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import subprocess
 import sys
+from shutil import rmtree
 from subprocess import CalledProcessError
 from tempfile import mkdtemp
 
 from mock import patch
-from shutil import rmtree
-
 from six import binary_type
 
 from djangocms_installer import config, install, main
 
-from .base import IsolatedTestClass, dj_ver, unittest
+from .base import IsolatedTestClass, get_latest_django, unittest
 
 
 class TestMain(IsolatedTestClass):
@@ -75,6 +74,7 @@ class TestMain(IsolatedTestClass):
                 self.assertTrue(os.path.exists(self.project_dir))
 
     def test_main_invocation(self):
+        dj_version, dj_match = get_latest_django(latest_stable=True)
         base_dir = mkdtemp()
         project_dir = os.path.join(base_dir, 'example_prj')
         original_dir = os.getcwd()
@@ -82,7 +82,7 @@ class TestMain(IsolatedTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--cms-version=stable', '--django=%s' % dj_ver,
+                                       '-len', '--cms-version=stable', '--django=%s' % dj_version,
                                        '-q', '-u', '--verbose',
                                        'example_prj']
                 main.execute()
@@ -122,11 +122,12 @@ class TestMain(IsolatedTestClass):
         rmtree(base_dir)
 
     def test_two_langs_invocation(self):
+        dj_version, dj_match = get_latest_django(latest_stable=True)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
                                        '-len-GB', '-lfr-fr', '--cms-version=stable',
-                                       '--django=%s' % dj_ver,
+                                       '--django=%s' % dj_version,
                                        '-q', '-u', '-p'+self.project_dir,
                                        'example_prj']
                 main.execute()
