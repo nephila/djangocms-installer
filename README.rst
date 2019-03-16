@@ -99,6 +99,13 @@ as python executable, which is the standard virtualenv layout. Other installatio
 might work, but are not officially supported.
 
 
+pipenv support
+--------------
+
+A limited / experimental support to ``pipenv`` is provided.
+
+Check documentation https://djangocms-installer.readthedocs.io/en/latest/usage.html#pipenv-support
+
 Windows support
 ---------------
 

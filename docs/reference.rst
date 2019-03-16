@@ -88,6 +88,8 @@ advanced usage:
 * ``--skip-empty-check``, ``-s``: Skip the check if the project dir contains files or directory;
   in case of error when setting up the project the existing directory will be preserved.
 * ``--delete-project-dir``', ``-c``: Delete project directory on creation failure in :ref:`batch_mode`.
+* ``--pipenv``': Full path to pipenv executable to use ``pipenv`` instead of pip for requirements installation, see :ref:`pipenv_support`.
+* ``--pipenv-opts``': additional options (as a single string passed as is) passed to ``pipenv`` executable in the command line, see :ref:`pipenv_support`.
 
 
 
