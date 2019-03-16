@@ -874,6 +874,8 @@ class TestBaseConfig(unittest.TestCase):
         'no_plugins': False,
         'verbose': False,
         'wizard': False,
+        'pipenv': '',
+        'pipenv_opts': '',
         'delete_project_dir': False,
     })
 

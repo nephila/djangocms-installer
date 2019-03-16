@@ -79,17 +79,24 @@ def check_install(config_data):
         raise EnvironmentError('\n'.join(errors))
 
 
-def requirements(req_file, pip_options='', is_file=False, verbose=False):
-    args = ['install']
-    if not verbose:
+def requirements(
+    req_file, options='', is_file=False, verbose=False, pip_replacement=None
+):
+    args = []
+    if not verbose and not pip_replacement:
         args.append('-q')
-    if pip_options:
-        args.extend([opt for opt in pip_options.split(' ') if opt])
+    elif verbose and pip_replacement:
+        args.append('-v')
+    if options:
+        args.extend([opt for opt in options.split(' ') if opt])
     if is_file:  # pragma: no cover
         args += ['-r', req_file]
     else:
         args.extend(['{0}'.format(package) for package in req_file.split()])
-    cmd = [sys.executable, '-mpip'] + args
+    if pip_replacement:
+        cmd = [pip_replacement] + args
+    else:
+        cmd = [sys.executable, '-mpip'] + args
     if verbose:
         sys.stdout.write('python path: {0}\n'.format(sys.executable))
         sys.stdout.write('packages install command: {0}\n'.format(' '.join(cmd)))

@@ -25,15 +25,21 @@ def execute():
                 'If I am stuck for a long time, please check for connectivity / PyPi issues\n'
             )
             if not config_data.no_deps:
+                if config_data.pipenv:
+                    pip_replacement = config_data.pipenv
+                    options = 'install --dev %s' % config_data.pipenv_options
+                else:
+                    pip_replacement = None
+                    options = 'install %s' % config_data.pip_options
                 if config_data.requirements_file:
                     install.requirements(
-                        config_data.requirements_file, config_data.pip_options, True,
-                        verbose=config_data.verbose
+                        config_data.requirements_file, options, True,
+                        verbose=config_data.verbose, pip_replacement=pip_replacement
                     )
                 else:
                     install.requirements(
-                        config_data.requirements, config_data.pip_options,
-                        verbose=config_data.verbose
+                        config_data.requirements, options,
+                        verbose=config_data.verbose, pip_replacement=pip_replacement
                     )
             sys.stdout.write('Dependencies installed\nCreating the project\n')
             install.check_install(config_data)
@@ -44,7 +50,10 @@ def execute():
                 django.setup_database(config_data)
             if config_data.starting_page:
                 django.load_starting_page(config_data)
-            if not config_data.requirements_file:
+            if (
+                not config_data.requirements_file and
+                not config_data.pipenv
+            ):
                 install.write_requirements(config_data)
             if config_data.aldryn:  # pragma: no cover
                 sys.stdout.write('Project created!\n')

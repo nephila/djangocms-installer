@@ -150,6 +150,12 @@ information.
     parser.add_argument('--utc', dest='utc',
                         action='store_true',
                         default=False, help='Use UTC timezone.')
+    parser.add_argument('--pipenv', dest='pipenv',
+                        action='store',
+                        default='', help='Use pipenv at given path to install dependencies.')
+    parser.add_argument('--pipenv-options', dest='pipenv_options',
+                        action='store',
+                        default='', help='Options passed to pipenv as is.')
 
     if '--utc' in args:
         for action in parser._positionals._actions:
