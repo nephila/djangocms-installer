@@ -156,6 +156,12 @@ information.
     parser.add_argument('--pipenv-options', dest='pipenv_options',
                         action='store',
                         default='', help='Options passed to pipenv as is.')
+    parser.add_argument('--poetry', dest='poetry',
+                        action='store',
+                        default='', help='Use poetry at given path to install dependencies.')
+    parser.add_argument('--poetry-options', dest='poetry_options',
+                        action='store',
+                        default='', help='Options passed to poetry as is.')
 
     if '--utc' in args:
         for action in parser._positionals._actions:

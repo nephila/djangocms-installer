@@ -28,6 +28,9 @@ def execute():
                 if config_data.pipenv:
                     pip_replacement = config_data.pipenv
                     options = 'install --dev %s' % config_data.pipenv_options
+                elif config_data.poetry:
+                    pip_replacement = config_data.poetry
+                    options = 'add %s' % config_data.pipenv_options
                 else:
                     pip_replacement = None
                     options = 'install %s' % config_data.pip_options
@@ -52,7 +55,8 @@ def execute():
                 django.load_starting_page(config_data)
             if (
                 not config_data.requirements_file and
-                not config_data.pipenv
+                not config_data.pipenv and
+                not config_data.poetry
             ):
                 install.write_requirements(config_data)
             if config_data.aldryn:  # pragma: no cover
