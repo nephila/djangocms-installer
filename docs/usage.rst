@@ -165,11 +165,35 @@ You can create the base project with a custom templateset by using the ``--templ
 Be aware that while **djangocms installer** will copy the files for you, it won't update the ``CMS_TEMPLATES`` settings
 parameter, so you'll need to modify that after installation.
 
-.. _complete example: https://github.com/nephila/djangocms-installer/blob/develop/config.ini.sample
-
-
 Bare install
 ------------
 
-You can optionally install just Django and django CMS without any additiona plugin by using the
+You can optionally install just Django and django CMS without any additional plugin by using the
 ``--no-plugins`` option; this will allow you to further customise your installation.
+
+.. _pipenv_support:
+
+pipenv support
+--------------
+
+Provided that you already have `pipenv`_ installed, you can use it to install the dependencies instead of plain pip
+and generate a ``Pipfile`` and ``Pipfile.lock``.
+
+To run provide full path to ``pipenv`` executable via ``--pipenv`` argument.
+
+You can provide additional options via ``--pipenv-opts`` argument.
+
+You **must** create the pipenv virtualenv *before* running ``djangocms-installer`` and ``djangocms-installer`` must be installed within the ``pipenv`` virtualenv.
+
+The currently supported workflow is:
+
+.. code-block:: bash
+
+    $ pipenv --three
+    $ pipenv install djangocms-installer
+    $ pipenv run djangocms mysite
+
+.. warning:: pipenv support is still experimental and **may** not work for all workflows
+
+.. _complete example: https://github.com/nephila/djangocms-installer/blob/develop/config.ini.sample
+.. _pipenv: https://pipenv.readthedocs.io/en/latest/

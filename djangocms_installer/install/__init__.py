@@ -79,17 +79,50 @@ def check_install(config_data):
         raise EnvironmentError('\n'.join(errors))
 
 
-def requirements(req_file, pip_options='', is_file=False, verbose=False):
+def install_packages(config_data):
+    if not config_data.no_deps:
+        if config_data.requirements_file:
+            requirements(
+                config_data.requirements_file, config_data, True,
+                verbose=config_data.verbose
+            )
+        else:
+            requirements(
+                config_data.requirements, config_data,
+                verbose=config_data.verbose
+            )
+
+
+def install_arguments(req_file, options=None, is_file=False, verbose=False):
+    pip_replacement = None
+    cmd_options = ''
+    if options and options.pipenv:
+        pip_replacement = options.pipenv
+        cmd_options = '--dev %s' % options.pipenv_options
+    elif options and options.pip_options:
+        cmd_options = options.pip_options
     args = ['install']
-    if not verbose:
+    if not verbose and not pip_replacement:
         args.append('-q')
-    if pip_options:
-        args.extend([opt for opt in pip_options.split(' ') if opt])
+    elif verbose and pip_replacement:
+        args.append('-v')
+    if cmd_options:
+        args.extend([opt for opt in cmd_options.split(' ') if opt])
     if is_file:  # pragma: no cover
         args += ['-r', req_file]
     else:
         args.extend(['{0}'.format(package) for package in req_file.split()])
-    cmd = [sys.executable, '-mpip'] + args
+    if pip_replacement:
+        cmd = [pip_replacement] + args
+    else:
+        cmd = [sys.executable, '-mpip'] + args
+    return cmd
+
+
+def requirements(
+    req_file, options=None, is_file=False, verbose=False
+):
+    cmd = install_arguments(req_file, options, is_file, verbose)
     if verbose:
         sys.stdout.write('python path: {0}\n'.format(sys.executable))
         sys.stdout.write('packages install command: {0}\n'.format(' '.join(cmd)))

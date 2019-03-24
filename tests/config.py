@@ -11,7 +11,7 @@ from mock import patch
 from six import StringIO, text_type
 from tzlocal import get_localzone
 
-from djangocms_installer import config
+from djangocms_installer import config, install
 from djangocms_installer.config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
@@ -673,6 +673,29 @@ class TestConfig(BaseTestClass):
                 except AttributeError:
                     self.assertEqual(error.exception, 5)
 
+    def test_pip_cmd(self):
+        conf_data = config.parse([
+            '-q', '--pip-options=--something --other-option',
+            '-p'+self.project_dir,
+            'example_prj']
+        )
+        cmd = install.install_arguments(conf_data.requirements, conf_data)
+        self.assertTrue('-mpip' in cmd)
+        self.assertTrue('--something' in cmd)
+        self.assertTrue('--other-option' in cmd)
+
+    def test_pipend_cmd(self):
+        conf_data = config.parse([
+            '-q', '--pipenv=/path/pipenv', '--pipenv-options=--something --other-option',
+            '-p'+self.project_dir,
+            'example_prj']
+        )
+        cmd = install.install_arguments(conf_data.requirements, conf_data)
+        self.assertTrue('/path/pipenv' in cmd)
+        self.assertTrue('--dev' in cmd)
+        self.assertTrue('--something' in cmd)
+        self.assertTrue('--other-option' in cmd)
+
     def test_boostrap(self):
         """
         Verify handling of bootstrap parameter
@@ -874,6 +897,8 @@ class TestBaseConfig(unittest.TestCase):
         'no_plugins': False,
         'verbose': False,
         'wizard': False,
+        'pipenv': '',
+        'pipenv_options': '',
         'delete_project_dir': False,
     })
 

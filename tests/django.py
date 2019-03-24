@@ -339,7 +339,7 @@ class TestDjango(IsolatedTestClass):
         params = [
             '--db=sqlite://localhost/test.db', '--lang=en', '--extra-settings=%s' % extra_path,
             '--django-version=2.0', '-f', '--cms-version=develop', '--timezone=Europe/Moscow',
-            '-q', '-u', '-zno', '--i18n=no', '-p' + self.project_dir,
+            '--verbose', '-u', '-zno', '--i18n=no', '-p' + self.project_dir,
             'example_path_20_develop_settings'
         ]
         config_data = config.parse(params)

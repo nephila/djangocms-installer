@@ -3,6 +3,11 @@
 History
 -------
 
+1.1.1 (unreleased)
+++++++++++++++++++
+
+* Added support for pipenv
+
 1.1.0 (2019-03-05)
 ++++++++++++++++++
 
