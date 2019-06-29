@@ -3,6 +3,11 @@
 History
 -------
 
+1.2.0 (unreleased)
+++++++++++++++++++
+
+* Dropped support for Django < 1.11
+
 1.1.1 (2019-06-29)
 ++++++++++++++++++
 
