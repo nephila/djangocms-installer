@@ -214,7 +214,7 @@ class TestConfig(BaseTestClass):
                         '-p'+self.project_dir,
                         'test'])
             self.assertEqual(error.exception.code, 3)
-            self.assertTrue(stderr_tmp.getvalue().find('Project name "test" is not a valid app name') > -1)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "test" is not valid') > -1)
 
             stderr_tmp = StringIO()
             with patch('sys.stderr', stderr_tmp):
@@ -225,7 +225,7 @@ class TestConfig(BaseTestClass):
                         '-p'+self.project_dir,
                         'assert'])
             self.assertEqual(error.exception.code, 3)
-            self.assertTrue(stderr_tmp.getvalue().find('Project name "assert" is not a valid app name') > -1)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "assert" is not valid') > -1)
 
             stderr_tmp = StringIO()
             with patch('sys.stderr', stderr_tmp):
@@ -236,7 +236,7 @@ class TestConfig(BaseTestClass):
                         '-p'+self.project_dir,
                         'values'])
             self.assertEqual(error.exception.code, 3)
-            self.assertTrue(stderr_tmp.getvalue().find('Project name "values" is not a valid app name') > -1)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "values" is not valid') > -1)
 
             stderr_tmp = StringIO()
             with patch('sys.stderr', stderr_tmp):
@@ -247,7 +247,29 @@ class TestConfig(BaseTestClass):
                         '-p'+self.project_dir,
                         'project-name'])
             self.assertEqual(error.exception.code, 3)
-            self.assertTrue(stderr_tmp.getvalue().find('Project name "project-name" is not a valid app name') > -1)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "project-name" is not valid') > -1)
+
+            stderr_tmp = StringIO()
+            with patch('sys.stderr', stderr_tmp):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '-p'+self.project_dir,
+                        'project.name'])
+            self.assertEqual(error.exception.code, 3)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "project.name" is not valid') > -1)
+
+            stderr_tmp = StringIO()
+            with patch('sys.stderr', stderr_tmp):
+                with self.assertRaises(SystemExit) as error:
+                    conf_data = config.parse([
+                        '-q',
+                        '--db=postgres://user:pwd@host/dbname',
+                        '-p'+self.project_dir,
+                        'project?name'])
+            self.assertEqual(error.exception.code, 3)
+            self.assertTrue(stderr_tmp.getvalue().find('Project name "project?name" is not valid') > -1)
 
     def test_invalid_project_path(self):
         prj_dir = 'example_prj'

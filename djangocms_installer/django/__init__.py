@@ -61,9 +61,7 @@ def create_project(config_data):
         output = subprocess.check_output(cmd_args, stderr=subprocess.STDOUT)
         sys.stdout.write(output.decode('utf-8'))
     except subprocess.CalledProcessError as e:  # pragma: no cover
-        if config_data.verbose:
-            sys.stdout.write(e.output.decode('utf-8'))
-        raise
+        raise RuntimeError(e.output.decode('utf-8'))
 
 
 def _detect_migration_layout(vars, apps):

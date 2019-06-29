@@ -38,6 +38,17 @@ class TestDjango(IsolatedTestClass):
         django.create_project(config_data)
         self.assertTrue(os.path.exists(os.path.join(self.project_dir, 'example_prj')))
 
+    def test_django_admin_errors(self):
+        dj_version, dj_match = get_latest_django(latest_stable=True)
+        config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
+                                    '--cms-version=stable', '--django=%s' % dj_version,
+                                    '-q', '-p' + self.project_dir, 'example_prj'])
+        install.requirements(config_data.requirements)
+        config_data.project_name = 'example.prj'
+        with self.assertRaises(RuntimeError) as e:
+            django.create_project(config_data)
+        self.assertTrue('\'example.prj\' is not a valid project name.' in str(e.exception))
+
     def test_copy_data(self):
         """
         Test correct file copying with different switches
