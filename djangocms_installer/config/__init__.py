@@ -306,13 +306,7 @@ information.
         else:
             requirements.append('Django<{0}'.format(less_than_version(django_version)))
 
-        if django_version == '1.8':
-            requirements.extend(data.REQUIREMENTS['django-1.8'])
-        elif django_version == '1.9':
-            requirements.extend(data.REQUIREMENTS['django-1.9'])
-        elif django_version == '1.10':
-            requirements.extend(data.REQUIREMENTS['django-1.10'])
-        elif django_version == '1.11':
+        if django_version == '1.11':
             requirements.extend(data.REQUIREMENTS['django-1.11'])
         elif django_version == '2.0':
             requirements.extend(data.REQUIREMENTS['django-2.0'])

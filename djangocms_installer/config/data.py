@@ -36,15 +36,15 @@ DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.fo
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 if sys.version_info >= (3, 5):
 
-    DJANGO_SUPPORTED = ('1.8', '1.9', '1.10', '1.11', '2.0', '2.1', 'stable', 'lts')
+    DJANGO_SUPPORTED = ('1.11', '2.0', '2.1', 'stable', 'lts')
     DJANGO_STABLE = '1.11'
     DJANGO_LTS = '1.11'
 elif sys.version_info >= (3, 4):
-    DJANGO_SUPPORTED = ('1.8', '1.9', '1.10', '1.11', '2.0', 'stable', 'lts')
+    DJANGO_SUPPORTED = ('1.11', '2.0', 'stable', 'lts')
     DJANGO_STABLE = '1.11'
     DJANGO_LTS = '1.11'
 else:
-    DJANGO_SUPPORTED = ('1.8', '1.9', '1.10', '1.11', 'stable', 'lts')
+    DJANGO_SUPPORTED = ('1.11', 'stable', 'lts')
     DJANGO_STABLE = '1.11'
     DJANGO_LTS = '1.11'
 DJANGO_DEFAULT = DJANGO_STABLE
@@ -64,8 +64,8 @@ DJANGO_VERSION_MATRIX = {
     'develop': '1.11'
 }
 VERSION_MATRIX = {
-    '3.4': ('1.8', '1.11'),
-    '3.5': ('1.8', '1.11'),
+    '3.4': ('1.11', '1.11'),
+    '3.5': ('1.11', '1.11'),
     '3.6': ('1.11', '2.1'),
 }
 PACKAGE_MATRIX = {
@@ -83,18 +83,6 @@ REQUIREMENTS = {
         'six',
         'pytz',
     ],
-    'django-1.8': [
-        'django-polymorphic<2.0',
-        'django-mptt<0.9',
-    ],
-    'django-1.9': [
-        'django-polymorphic<2.0',
-        'django-mptt<0.9',
-    ],
-    'django-1.10': [
-        'django-polymorphic<2.0',
-        'django-mptt<0.9',
-    ],
     'django-1.11': [
         'django-mptt>0.9',
     ],
@@ -103,15 +91,6 @@ REQUIREMENTS = {
     ],
     'django-2.1': [
         'django-mptt>0.9',
-    ],
-    'reversion-django-1.8': [
-        'django-reversion>=1.10,<1.11',
-    ],
-    'reversion-django-1.9': [
-        'django-reversion>=1.10,<2.0',
-    ],
-    'reversion-django-1.10': [
-        'django-reversion>=2.0,<2.1',
     ],
     'reversion-django-1.11': [
         'django-reversion>=2.0,<2.1',
