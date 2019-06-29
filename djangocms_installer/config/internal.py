@@ -2,12 +2,15 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import keyword
+import re
 import sys
 from argparse import Action
 
 import dj_database_url
 
 from .data import DRIVERS
+
+project_name_rx = re.compile(r'^[a-z0-9_A-Z]+$')
 
 
 class DbAction(Action):
@@ -30,7 +33,7 @@ def validate_project(project_name):
     Check the defined project name against keywords, builtins and existing
     modules to avoid name clashing
     """
-    if '-' in project_name:
+    if not project_name_rx.search(project_name):
         return None
     if keyword.iskeyword(project_name):
         return None

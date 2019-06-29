@@ -76,20 +76,24 @@ PACKAGE_MATRIX = {
 
 REQUIREMENTS = {
     'default': [
-        'django-classy-tags>=0.7',
         'html5lib>=1.0.1',
         'Pillow>=3.0',
-        'django-sekizai>=0.9',
         'six',
         'pytz',
     ],
     'django-1.11': [
+        'django-classy-tags>=0.9',
+        'django-sekizai>=1.0',
         'django-mptt>0.9',
     ],
     'django-2.0': [
+        'django-classy-tags>=0.9',
+        'django-sekizai>=1.0',
         'django-mptt>0.9',
     ],
     'django-2.1': [
+        'django-classy-tags>=0.9',
+        'django-sekizai>=1.0',
         'django-mptt>0.9',
     ],
     'reversion-django-1.11': [
@@ -104,7 +108,7 @@ REQUIREMENTS = {
         'django-treebeard>=4.0,<5.0',
     ],
     'cms-3.6': [
-        'djangocms-admin-style>=1.2,<1.3',
+        'djangocms-admin-style>=1.3,<1.5',
         'django-treebeard>=4.0,<5.0',
     ],
     'cms-master': [
@@ -139,10 +143,10 @@ REQUIREMENTS = {
         'djangocms-style>=2.1',
         'djangocms-googlemap>=1.2',
         'djangocms-snippet>=2.1,<2.2',
-        'djangocms-video>=2.0,<2.1',
+        'djangocms-video>=2.0,<2.2',
         'djangocms-column>=1.9',
         'djangocms-file>=2.2,<3.0',
-        'djangocms-picture>=2.0,<2.1',
+        'djangocms-picture>=2.0,<2.2',
     ],
     'plugins-master': [
         'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
@@ -196,7 +200,7 @@ djangocms installer will install and configure the following plugins:
 """
 
 DRIVERS = {
-    'django.db.backends.postgresql_psycopg2': 'psycopg2',
+    'django.db.backends.postgresql_psycopg2': 'psycopg2<2.8',
     'django.db.backends.postgresql_postgis': 'postgis',
     'django.db.backends.mysql': 'mysqlclient',
     'django.db.backends.sqlite3': '',
