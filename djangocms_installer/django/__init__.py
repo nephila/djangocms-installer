@@ -247,10 +247,7 @@ STATICFILES_DIRS = (
         )
 
     for item in overridden_settings:
-        if declared_django_version >= LooseVersion('1.9'):
-            item_re = re.compile(r'{0} = [^\]]+\]'.format(item), re.DOTALL | re.MULTILINE)
-        else:
-            item_re = re.compile(r'{0} = [^\)]+\)'.format(item), re.DOTALL | re.MULTILINE)
+        item_re = re.compile(r'{0} = [^\]]+\]'.format(item), re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
     # TEMPLATES is special, so custom regexp needed
     if declared_django_version >= LooseVersion('2.0'):
@@ -297,16 +294,10 @@ def _build_settings(config_data):
         dirs="os.path.join(BASE_DIR, '{0}', 'templates'),".format(config_data.project_name)
     ))
 
-    if LooseVersion(config_data.django_version) >= LooseVersion('1.10'):
-        text.append('MIDDLEWARE = [\n{0}{1}\n]'.format(
-            spacer, (',\n' + spacer).join(['\'{0}\''.format(var)
-                                           for var in vars.MIDDLEWARE_CLASSES])
-        ))
-    else:
-        text.append('MIDDLEWARE_CLASSES = [\n{0}{1}\n]'.format(
-            spacer, (',\n' + spacer).join(["'{0}'".format(var)
-                                           for var in vars.MIDDLEWARE_CLASSES])
-        ))
+    text.append('MIDDLEWARE = [\n{0}{1}\n]'.format(
+        spacer, (',\n' + spacer).join(['\'{0}\''.format(var)
+                                       for var in vars.MIDDLEWARE_CLASSES])
+    ))
 
     apps = list(vars.INSTALLED_APPS)
     apps = list(vars.CMS_3_HEAD) + apps

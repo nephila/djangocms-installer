@@ -116,10 +116,13 @@ class IsolatedTestClass(BaseTestClass):
             os.environ['VIRTUAL_ENV'] = self.virtualenv_dir
 
 
-def get_latest_django(latest_stable=False):
-    if sys.version_info < (3, 4) and not latest_stable:
-        dj_ver = '1.8'
-        match = 'Django<1.9'
+def get_latest_django(latest_stable=False, latest_1_x=False):
+    if latest_1_x:
+        dj_ver = '1.11'
+        match = 'Django<2.0'
+    elif sys.version_info < (3, 4) and not latest_stable:
+        dj_ver = '1.11'
+        match = 'Django<2.0'
     elif sys.version_info < (3, 4) and latest_stable:
         dj_ver = '1.11'
         match = 'Django<2.0'

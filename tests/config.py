@@ -116,7 +116,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
         self.assertEqual(conf_data.db_driver, 'psycopg2')
 
-        dj_version = '1.8'
+        dj_version = '1.11'
         cms_version = '3.4'
         conf_data = config.parse([
             '-q',
@@ -367,9 +367,9 @@ class TestConfig(BaseTestClass):
         with self.assertRaises(RuntimeError):
             self.assertEqual(supported_versions('1.9', 'stable'), ('1.9', '3.5'))
             self.assertEqual(supported_versions('1.8', 'stable'), ('1.8', '3.5'))
-        self.assertEqual(supported_versions('1.9', '3.5'), ('1.9', '3.5'))
-        self.assertEqual(supported_versions('1.8', 'lts'), ('1.8', '3.4'))
-        self.assertEqual(supported_versions('1.8.3', 'stable'), (None, '3.6'))
+            self.assertEqual(supported_versions('1.9', '3.5'), ('1.9', '3.5'))
+            self.assertEqual(supported_versions('1.8', 'lts'), ('1.8', '3.4'))
+            self.assertEqual(supported_versions('1.8.3', 'stable'), (None, '3.6'))
 
     def test_requirements(self):
         """
