@@ -171,7 +171,7 @@ information.
     # First of all, check if the project name is valid
     if not validate_project(args.project_name):
         sys.stderr.write(
-            'Project name "{0}" is not a valid app name, or it\'s already defined. '
+            'Project name "{0}" is not valid or it\'s already defined. '
             'Please use only numbers, letters and underscores.\n'.format(args.project_name)
         )
         sys.exit(3)

@@ -3,6 +3,12 @@
 History
 -------
 
+1.1.1 (2019-06-29)
+++++++++++++++++++
+
+* Fixed project name check
+* Pinned psycopg2 version to avoid issues in Python 3.6+
+
 1.1.0 (2019-03-05)
 ++++++++++++++++++
 
