@@ -47,12 +47,17 @@ def create_pages():
                    target=col)
 
     # In order to publish the page there needs to be at least one user
+    try:
+        page.set_as_homepage()
+    except AttributeError:
+        pass
     if User.objects.count() > 0:
+        user = User.objects.first()
         try:
-            publish_page(page, User.objects.all()[0], lang)
+            publish_page(page, user, lang)
         except TypeError:
             # supporting old cms versions
-            publish_page(page, User.objects.all()[0])
+            publish_page(page, user)
 
 
 if __name__ == '__main__':

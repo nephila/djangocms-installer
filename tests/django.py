@@ -8,6 +8,7 @@ import sys
 import textwrap
 
 from mock import patch
+from six import text_type
 
 from djangocms_installer import config, django, install
 
@@ -560,19 +561,51 @@ class TestDjango(IsolatedTestClass):
         django.setup_database(config_data)
         django.load_starting_page(config_data)
         project_db = sqlite3.connect(os.path.join(config_data.project_directory, 'test.db'))
+        project_db.row_factory = sqlite3.Row
 
         # Check loaded data
         query = project_db.execute('SELECT * FROM cms_page')
         row = query.fetchone()
-        self.assertTrue('fullwidth.html' in row)
+        self.assertTrue(row[str('is_home')])
+        self.assertEqual('fullwidth.html', row[str('template')])
 
         query = project_db.execute('SELECT * FROM cms_title')
         row = query.fetchone()
-        self.assertTrue('Home' in row)
+        self.assertEqual('Home', row[str('title')])
 
         query = project_db.execute('SELECT * FROM cms_cmsplugin')
         row = query.fetchone()
-        self.assertTrue('TextPlugin' in row)
+        self.assertEqual('TextPlugin', row[str('plugin_type')])
+
+    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
+                     reason='django 1.11 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7,')
+    def test_starting_page_36(self):
+        config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '-q', '-u', '--django-version=1.11',
+                                    '--cms-version=3.6', '--starting-page=yes',
+                                    '-p' + self.project_dir, 'cms_project'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        django.setup_database(config_data)
+        django.load_starting_page(config_data)
+        project_db = sqlite3.connect(os.path.join(config_data.project_directory, 'test.db'))
+        project_db.row_factory = sqlite3.Row
+
+        # Check loaded data
+        query = project_db.execute('SELECT * FROM cms_page')
+        row = query.fetchone()
+        self.assertTrue(row[str('is_home')])
+        self.assertEqual('fullwidth.html', row[str('template')])
+
+        query = project_db.execute('SELECT * FROM cms_title')
+        row = query.fetchone()
+        self.assertEqual('Home', row[str('title')])
+
+        query = project_db.execute('SELECT * FROM cms_cmsplugin')
+        row = query.fetchone()
+        self.assertEqual('TextPlugin', row[str('plugin_type')])
 
     @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
                      reason='django 1.8 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7,')
