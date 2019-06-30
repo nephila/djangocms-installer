@@ -98,6 +98,23 @@ Warning
 as python executable, which is the standard virtualenv layout. Other installation layouts
 might work, but are not officially supported.
 
+Note on psycopg2 version
+------------------------
+
+Due to Django / psycopg2 2.8 compatibility issue (see `ticket 30331`_ for details),
+``psycopg2<2.8`` is pinned. The issue is fixed in Django 2.2 only, this means we will have to ship this fix
+for a some releases.
+
+Using ``psycopg2<2.8`` lead to some noisy (and misleading) warnings (see `psycopg documentation`_).
+
+If you want to silence the warning add something like::
+
+    import warnings
+    warnings.filterwarnings(
+        'ignore', r'The psycopg2.*release 2\.8', UserWarning, 'psycopg2'
+    )
+
+In your ``manage.py`` and/or ``wsgi.py``
 
 Windows support
 ---------------
@@ -117,6 +134,8 @@ Please check that the ``.py`` extension is associated correctly with Python inte
 .. _version 0.9: https://github.com/nephila/djangocms-installer/tree/release/0.9.x#supported-versions
 .. _django CMS Tutorial: https://django-cms.readthedocs.io/en/latest/introduction/index.html
 .. _installer usage page: http://djangocms-installer.readthedocs.io/en/latest/usage.html
+.. _psycopg documentation: http://initd.org/psycopg/docs/install.html#change-in-binary-packages-between-psycopg-2-7-and-2-8
+.. _ticket 30331: https://code.djangoproject.com/ticket/30331
 
 
 .. |Gitter| image:: https://img.shields.io/badge/GITTER-join%20chat-brightgreen.svg?style=flat-square
