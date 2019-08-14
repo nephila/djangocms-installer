@@ -307,8 +307,6 @@ def _build_settings(config_data):
 
     if config_data.aldryn:  # pragma: no cover
         apps.extend(vars.ALDRYN_APPLICATIONS)
-    if config_data.reversion and LooseVersion(config_data.cms_version) < LooseVersion('3.4'):
-        apps.extend(vars.REVERSION_APPLICATIONS)
     text.append('INSTALLED_APPS = [\n{0}{1}\n]'.format(
         spacer, (',\n' + spacer).join(['\'{0}\''.format(var) for var in apps] +
                                       ['\'{0}\''.format(config_data.project_name)])

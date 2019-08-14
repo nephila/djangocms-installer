@@ -14,35 +14,29 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
 DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.format(
     **bust
 )
-DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.format(
+DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/release/3.7.x.zip?{bust}'.format(
     **bust
 )
-DJANGOCMS_BETA = DJANGOCMS_DEVELOP
-DJANGOCMS_34 = 'django-cms>=3.4,<3.5'
-DJANGOCMS_35 = 'django-cms>=3.5,<3.6'
+DJANGOCMS_BETA = DJANGOCMS_RC
 DJANGOCMS_36 = 'django-cms>=3.6,<3.7'
+DJANGOCMS_37 = 'django-cms>=3.7,<3.8'
 
-if sys.version_info >= (3, 4):
-    DJANGOCMS_SUPPORTED = ('3.4', '3.5', '3.6', 'stable', 'lts', 'develop')
-    DJANGOCMS_STABLE = '3.6'
-    DJANGOCMS_LTS = '3.4'
+if sys.version_info >= (3, 5):
+    DJANGOCMS_SUPPORTED = ('3.6', '3.7', 'stable', 'lts', 'develop', 'rc')
+    DJANGOCMS_STABLE = '3.7'
+    DJANGOCMS_LTS = '3.7'
 else:
-    DJANGOCMS_SUPPORTED = ('3.4', '3.5', '3.6', 'stable', 'lts', 'develop')
-    DJANGOCMS_STABLE = '3.6'
-    DJANGOCMS_LTS = '3.4'
+    DJANGOCMS_SUPPORTED = ('3.6', '3.7', 'stable', 'lts', 'develop', 'rc')
+    DJANGOCMS_STABLE = '3.7'
+    DJANGOCMS_LTS = '3.7'
 DJANGOCMS_DEFAULT = DJANGOCMS_STABLE
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 if sys.version_info >= (3, 5):
-
-    DJANGO_SUPPORTED = ('1.11', '2.0', '2.1', 'stable', 'lts')
-    DJANGO_STABLE = '1.11'
-    DJANGO_LTS = '1.11'
-elif sys.version_info >= (3, 4):
-    DJANGO_SUPPORTED = ('1.11', '2.0', 'stable', 'lts')
-    DJANGO_STABLE = '1.11'
-    DJANGO_LTS = '1.11'
+    DJANGO_SUPPORTED = ('1.11', '2.0', '2.1', '2.2', 'stable', 'lts')
+    DJANGO_STABLE = '2.2'
+    DJANGO_LTS = '2.2'
 else:
     DJANGO_SUPPORTED = ('1.11', 'stable', 'lts')
     DJANGO_STABLE = '1.11'
@@ -52,26 +46,30 @@ DJANGO_DEFAULT = DJANGO_STABLE
 CMS_VERSION_MATRIX = {
     'stable': DJANGOCMS_STABLE,
     'lts': DJANGOCMS_LTS,
-    'rc': '3.6',
-    'beta': '3.6',
-    'develop': '3.6',
+    'rc': DJANGOCMS_RC,
+    'beta': DJANGOCMS_BETA,
+    'develop': DJANGOCMS_DEVELOP,
 }
 DJANGO_VERSION_MATRIX = {
     'stable': DJANGO_STABLE,
     'lts': DJANGO_LTS,
-    'rc': '1.11',
-    'beta': '1.11',
-    'develop': '1.11'
+    'rc': '2.2',
+    'beta': '2.2',
+    'develop': '2.2'
 }
 VERSION_MATRIX = {
-    '3.4': ('1.11', '1.11'),
-    '3.5': ('1.11', '1.11'),
     '3.6': ('1.11', '2.1'),
+    '3.7': ('1.11', '2.2'),
+    DJANGOCMS_BETA: ('1.11', '2.2'),
+    DJANGOCMS_RC: ('1.11', '2.2'),
+    DJANGOCMS_DEVELOP: ('1.11', '2.2'),
 }
 PACKAGE_MATRIX = {
-    '3.4': DJANGOCMS_34,
-    '3.5': DJANGOCMS_35,
     '3.6': DJANGOCMS_36,
+    '3.7': DJANGOCMS_37,
+    DJANGOCMS_RC: DJANGOCMS_RC,
+    DJANGOCMS_BETA: DJANGOCMS_BETA,
+    DJANGOCMS_DEVELOP: DJANGOCMS_DEVELOP,
 }
 
 REQUIREMENTS = {
@@ -96,57 +94,47 @@ REQUIREMENTS = {
         'django-sekizai>=1.0',
         'django-mptt>0.9',
     ],
+    'django-2.2': [
+        'django-classy-tags>=0.9',
+        'django-sekizai>=1.0',
+        'django-mptt>0.9',
+    ],
     'reversion-django-1.11': [
         'django-reversion>=2.0,<2.1',
     ],
-    'cms-3.4': [
-        'djangocms-admin-style>=1.2,<1.3',
-        'django-treebeard>=4.0,<5.0',
-    ],
-    'cms-3.5': [
-        'djangocms-admin-style>=1.2,<1.3',
-        'django-treebeard>=4.0,<5.0',
-    ],
     'cms-3.6': [
-        'djangocms-admin-style>=1.3,<1.5',
+        'djangocms-admin-style>=1.4,<1.5',
+        'django-treebeard>=4.0,<5.0',
+    ],
+    'cms-3.7': [
+        'djangocms-admin-style>=1.4,<1.5',
         'django-treebeard>=4.0,<5.0',
     ],
     'cms-master': [
         'https://github.com/divio/djangocms-admin-style/archive/master.zip?{bust}'.format(**bust),
         'django-treebeard>=4.0,<5.0',
     ],
-    'plugins-3.4': [
-        'djangocms-text-ckeditor>3.6,<3.7',
-        'djangocms-link>=1.8,<2.2',
-        'djangocms-style>=1.7,<2.1',
-        'djangocms-googlemap>=0.5,<1.2',
-        'djangocms-snippet>=1.9,<2.1',
-        'djangocms-video>=2.0,<2.1',
-        'djangocms-column>=1.6,<1.9',
-        'djangocms-file>=2.0,<2.2',
-        'djangocms-picture>=2.0,<2.1',
-    ],
-    'plugins-3.5': [
-        'djangocms-text-ckeditor>3.6,<3.7',
-        'djangocms-link>=2.1,<2.2',
-        'djangocms-snippet>=2.1,<2.2',
-        'djangocms-googlemap>=1.1,<1.2',
-        'djangocms-snippet>=2.0,<2.1',
-        'djangocms-video>=2.0,<2.1',
-        'djangocms-column>=1.7,<1.9',
-        'djangocms-file>=2.0,<2.2',
-        'djangocms-picture>=2.0,<2.1',
-    ],
     'plugins-3.6': [
-        'djangocms-text-ckeditor>=3.7,<3.8',
-        'djangocms-link>=2.3',
-        'djangocms-style>=2.1',
-        'djangocms-googlemap>=1.2',
-        'djangocms-snippet>=2.1,<2.2',
-        'djangocms-video>=2.0,<2.2',
-        'djangocms-column>=1.9',
+        'djangocms-text-ckeditor>=3.7,<3.9',
+        'djangocms-link>=2.3,<2.6',
+        'djangocms-style>=2.2,<2.3',
+        'djangocms-googlemap>=1.3,<1.4',
+        'djangocms-snippet>=2.1,<2.3',
+        'djangocms-video>=2.1,<2.2',
+        'djangocms-column>=1.9,<2.0',
         'djangocms-file>=2.2,<3.0',
-        'djangocms-picture>=2.0,<2.2',
+        'djangocms-picture>=2.3,<2.4',
+    ],
+    'plugins-3.7': [
+        'djangocms-text-ckeditor>=3.7,<3.9',
+        'djangocms-link>=2.5,<2.6',
+        'djangocms-style>=2.2,<2.3',
+        'djangocms-googlemap>=1.3,<1.4',
+        'djangocms-snippet>=2.2,<2.3',
+        'djangocms-video>=2.1,<2.2',
+        'djangocms-column>=1.9,<2.0',
+        'djangocms-file>=2.3,<3.0',
+        'djangocms-picture>=2.3,<2.4',
     ],
     'plugins-master': [
         'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'

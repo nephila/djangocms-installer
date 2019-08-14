@@ -13,6 +13,8 @@ from djangocms_installer import config, django, install
 
 from .base import IsolatedTestClass, get_latest_django, unittest
 
+cms_stable = '3.6'
+
 
 class TestDjango(IsolatedTestClass):
     templates_basic = set(
@@ -32,7 +34,7 @@ class TestDjango(IsolatedTestClass):
     def test_create_project(self):
         dj_version, dj_match = get_latest_django(latest_stable=True)
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=stable', '--django=%s' % dj_version,
+                                    '--cms-version=%s' % cms_stable, '--django=%s' % dj_version,
                                     '-q', '-p' + self.project_dir, 'example_prj'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -41,7 +43,7 @@ class TestDjango(IsolatedTestClass):
     def test_django_admin_errors(self):
         dj_version, dj_match = get_latest_django(latest_stable=True)
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=stable', '--django=%s' % dj_version,
+                                    '--cms-version=%s' % cms_stable, '--django=%s' % dj_version,
                                     '-q', '-p' + self.project_dir, 'example_prj'])
         install.requirements(config_data.requirements)
         config_data.project_name = 'example.prj'
@@ -53,11 +55,11 @@ class TestDjango(IsolatedTestClass):
         """
         Test correct file copying with different switches
         """
-
+        dj_version, dj_match = get_latest_django(latest_stable=True)
         # Basic template
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=stable',
-                                    '-q', '-p' + self.project_dir, 'example_prj'])
+                                    '--cms-version=%s' % cms_stable, '--django=%s' % dj_version,
+                                    '-q', '-p' + self.project_dir, 'test_copy_data_1'])
         os.makedirs(config_data.project_path)
         django.copy_files(config_data)
         starting_page_py = os.path.join(config_data.project_directory, 'starting_page.py')
@@ -72,8 +74,9 @@ class TestDjango(IsolatedTestClass):
         # Bootstrap template
         self._create_project_dir()
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=stable', '--bootstrap=yes',
-                                    '-q', '-p' + self.project_dir, 'example_prj'])
+                                    '--django=%s' % dj_version,
+                                    '--cms-version=%s' % cms_stable, '--bootstrap=yes',
+                                    '-q', '-p' + self.project_dir, 'test_copy_data_2'])
         os.makedirs(config_data.project_path)
         django.copy_files(config_data)
         starting_page_py = os.path.join(config_data.project_directory, 'starting_page.py')
@@ -89,7 +92,8 @@ class TestDjango(IsolatedTestClass):
         self._create_project_dir()
         tpl_path = os.path.join(os.path.dirname(__file__), 'test_templates')
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=stable', '--templates=%s' % tpl_path,
+                                    '--django=%s' % dj_version,
+                                    '--cms-version=%s' % cms_stable, '--templates=%s' % tpl_path,
                                     '-q', '-p' + self.project_dir, 'example_prj'])
         os.makedirs(config_data.project_path)
         django.copy_files(config_data)
@@ -103,7 +107,8 @@ class TestDjango(IsolatedTestClass):
         # Starting page
         self._create_project_dir()
         config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                    '--cms-version=stable', '--starting-page=yes',
+                                    '--django=%s' % dj_version,
+                                    '--cms-version=%s' % cms_stable, '--starting-page=yes',
                                     '-q', '-p' + self.project_dir, 'example_prj'])
         os.makedirs(config_data.project_path)
         django.copy_files(config_data)
@@ -112,34 +117,13 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue(os.path.exists(starting_page_py))
         self.assertTrue(os.path.exists(starting_page_json))
 
-        # Aldryn boilerplate
-        # self._create_project_dir()
-        # config_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-        #                             '--cms-version=stable', '-a',
-        #                             '-q', '-p'+self.project_dir, 'example_prj'])
-        # os.makedirs(config_data.project_path)
-        # django.copy_files(config_data)
-        # private_dir = os.path.join(config_data.project_directory, 'private')
-        # static_js = os.path.join(config_data.project_directory, 'static', 'js', 'base.js')
-        # aldryn_template = os.path.join(config_data.project_directory, 'templates', 'fullwidth.html')
-        # basic_template = os.path.join(config_data.project_path, 'templates', 'fullwidth.html')
-        # boostrap_template = os.path.join(config_data.project_path, 'templates', 'feature.html')
-        # custom_template = os.path.join(config_data.project_path, 'templates', 'left.html')
-        # self.assertFalse(os.path.exists(custom_template))
-        # self.assertFalse(os.path.exists(boostrap_template))
-        # self.assertFalse(os.path.exists(basic_template))
-        # self.assertTrue(os.path.exists(private_dir))
-        # self.assertTrue(os.path.exists(static_js))
-        # self.assertTrue(os.path.exists(aldryn_template))
-
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 1.11 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7')
     def test_patch_111_settings(self):
-        dj_version, dj_match = get_latest_django(latest_stable=True)
+        dj_version, dj_match = get_latest_django(latest_stable=True, latest_1_x=True)
 
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
+                                    '--cms-version=%s' % cms_stable,
                                     '--django-version=%s' % dj_version,
                                     '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
@@ -162,18 +146,16 @@ class TestDjango(IsolatedTestClass):
         self.assertIsNotNone(getattr(project.settings, 'MIDDLEWARE', None))
         self.assertIsNone(getattr(project.settings, 'MIDDLEWARE_CLASSES', None))
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 1.11 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7')
-    def test_patch_111_34_settings(self):
+    def test_patch_111_36_settings(self):
         dj_version, dj_match = get_latest_django(latest_1_x=True)
 
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
                                     '--django-version=%s' % dj_version,
-                                    '--cms-version=3.4', '--timezone=Europe/Moscow',
+                                    '--cms-version=3.6', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p' + self.project_dir, 'example_path_111_34_settings'])
+                                    '-p' + self.project_dir, 'test_patch_111_36_settings'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -195,17 +177,15 @@ class TestDjango(IsolatedTestClass):
         self.assertIsNotNone(getattr(project.settings, 'MIDDLEWARE', None))
         self.assertIsNone(getattr(project.settings, 'MIDDLEWARE_CLASSES', None))
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 1.11 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7')
-    def test_patch_django_111_34(self):
+    def test_patch_django_111_36(self):
         dj_version, dj_match = get_latest_django(latest_1_x=True)
 
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--bootstrap=yes',
                                     '--django-version=%s' % dj_version,
-                                    '--cms-version=3.4', '--timezone=Europe/Moscow',
+                                    '--cms-version=3.6', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p' + self.project_dir, 'example_path_111'])
+                                    '-p' + self.project_dir, 'test_patch_django_111_36'])
 
         install.requirements(config_data.requirements)
         django.create_project(config_data)
@@ -262,8 +242,6 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(len(re.findall('MEDIA_ROOT =', settings)), 1)
         self.assertEqual(len(re.findall('STATICFILES_DIRS', settings)), 1)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 1.11 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7')
     def test_patch_django_111_develop(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
@@ -271,7 +249,39 @@ class TestDjango(IsolatedTestClass):
                                     '--django-version=1.11', '-f',
                                     '--cms-version=develop', '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p' + self.project_dir, 'example_path_111_36_settings'])
+                                    '-p' + self.project_dir, 'test_patch_django_111_develop'])
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name, globals(), locals(), [str('settings')])
+
+        # checking for django options
+        self.assertTrue(project.settings.TEMPLATES)
+        self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
+        self.assertTrue(
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
+            project.settings.MIDDLEWARE
+        )
+        self.assertTrue(
+            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in
+            project.settings.MIDDLEWARE
+        )
+
+    @unittest.skipIf(sys.version_info[:2] not in ((3, 5), (3, 6), (3, 7),),
+                     reason='django 2.1 only supports python 3.5, 3.6 and 3.7')
+    def test_patch_django_22_rc(self):
+        extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
+        params = [
+            '--db=sqlite://localhost/test.db', '--lang=en', '--extra-settings=%s' % extra_path,
+            '--django-version=2.2', '-f', '--cms-version=rc', '--timezone=Europe/Moscow',
+            '-q', '-u', '-zno', '--i18n=no', '-p' + self.project_dir,
+            'test_patch_django_22_rc'
+        ]
+        config_data = config.parse(params)
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -301,7 +311,7 @@ class TestDjango(IsolatedTestClass):
             '--db=sqlite://localhost/test.db', '--lang=en', '--extra-settings=%s' % extra_path,
             '--django-version=2.1', '-f', '--cms-version=develop', '--timezone=Europe/Moscow',
             '-q', '-u', '-zno', '--i18n=no', '-p' + self.project_dir,
-            'example_path_21_develop_settings'
+            'test_patch_django_21_develop'
         ]
         config_data = config.parse(params)
         install.requirements(config_data.requirements)
@@ -325,15 +335,15 @@ class TestDjango(IsolatedTestClass):
             project.settings.MIDDLEWARE
         )
 
-    @unittest.skipIf(sys.version_info[:2] not in ((3, 4), (3, 5), (3, 6),),
-                     reason='django 2.0 only supports python 3.4, 3.5, 3.6')
+    @unittest.skipIf(sys.version_info[:2] not in ((3, 5), (3, 6), (3, 7),),
+                     reason='django 2.0 only supports python 3.5, 3.6 and 3.7')
     def test_patch_django_20_develop(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         params = [
             '--db=sqlite://localhost/test.db', '--lang=en', '--extra-settings=%s' % extra_path,
             '--django-version=2.0', '-f', '--cms-version=develop', '--timezone=Europe/Moscow',
             '-q', '-u', '-zno', '--i18n=no', '-p' + self.project_dir,
-            'example_path_20_develop_settings'
+            'test_patch_django_20_develop'
         ]
         config_data = config.parse(params)
         install.requirements(config_data.requirements)
@@ -357,16 +367,14 @@ class TestDjango(IsolatedTestClass):
             project.settings.MIDDLEWARE
         )
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 1.11 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7,')
     def test_patch_django_111_no_plugins(self):
         extra_path = os.path.join(os.path.dirname(__file__), 'data', 'extra_settings.py')
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en', '--extra-settings=%s' % extra_path,
                                     '--django-version=1.11', '-f', '--no-plugins',
-                                    '--cms-version=stable', '--timezone=Europe/Moscow',
+                                    '--cms-version=%s' % cms_stable, '--timezone=Europe/Moscow',
                                     '-q', '-u', '-zno', '--i18n=no',
-                                    '-p' + self.project_dir, 'example_path_no_plugin'])
+                                    '-p' + self.project_dir, 'test_patch_django_111_no_plugins'])
         install.requirements(config_data.requirements)
         django.create_project(config_data)
         django.patch_settings(config_data)
@@ -398,13 +406,12 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse('cms.plugins.twitter' in project.settings.INSTALLED_APPS)
         self.assertFalse('cms.plugins.video' in project.settings.INSTALLED_APPS)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 1.11 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7,')
     def test_patch(self):
         dj_version, dj_match = get_latest_django(latest_stable=True)
 
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '--lang=en',
+                                    '--cms-version=%s' % cms_stable,
                                     '--django-version=%s' % dj_version,
                                     '--timezone=Europe/Moscow',
                                     '-f', '-q', '-u', '-zno', '--i18n=no',
@@ -486,12 +493,11 @@ class TestDjango(IsolatedTestClass):
         del project
         del (sys.modules["%s.settings" % config_data.project_name])
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 1.111 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7,')
     def test_database_setup_filer(self):
         dj_version, dj_match = get_latest_django(latest_stable=True)
 
         config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--cms-version=%s' % cms_stable,
                                     '-f', '-q', '-u', '--django-version=%s' % dj_version,
                                     '-p' + self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
@@ -531,12 +537,11 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('filer' in row)
         self.assertTrue('image' in row)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 1.8 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7,')
     def test_starting_page(self):
         dj_version, dj_match = get_latest_django(latest_stable=True)
 
         config_data = config.parse(['--db=sqlite://localhost/test.db',
+                                    '--cms-version=%s' % cms_stable,
                                     '-q', '-u', '--django-version=%s' % dj_version,
                                     '--starting-page=yes',
                                     '-p' + self.project_dir, 'cms_project'])
@@ -561,12 +566,10 @@ class TestDjango(IsolatedTestClass):
         row = query.fetchone()
         self.assertTrue('TextPlugin' in row)
 
-    @unittest.skipIf(sys.version_info[:2] not in ((2, 7), (3, 4), (3, 5), (3, 6), (3, 7),),
-                     reason='django 1.8 only supports python 2.7, 3.4, 3.5, 3.6 and 3.7,')
     def test_force_django(self):
         config_data = config.parse(['--db=sqlite://localhost/test.db',
                                     '-q', '-u', '--django-version=1.11',
-                                    '--cms-version=3.4', '--starting-page=yes',
+                                    '--cms-version=3.6', '--starting-page=yes',
                                     '-p' + self.project_dir, 'cms_project'])
         install.requirements(config_data.requirements)
         install.requirements('django<1.9')
@@ -586,7 +589,7 @@ class TestBaseDjango(unittest.TestCase):
         """Tests django.__init__._build_settings function."""
         dj_version, dj_match = get_latest_django(latest_stable=True)
         config_data = config.parse(['--db=postgres://user:pwd@host:5432/dbname',
-                                    '--cms-version=stable', '--django=%s' % dj_version,
+                                    '--cms-version=%s' % cms_stable, '--django=%s' % dj_version,
                                     '-q', '-p .', 'example_prj'])
         settings = django._build_settings(config_data)
         self.assertTrue(textwrap.dedent('''

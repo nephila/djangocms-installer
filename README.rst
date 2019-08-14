@@ -16,12 +16,8 @@ project.
 
 Refer to `django CMS Tutorial`_ on how to properly setup your first django CMS project.
 
-.. warning:: Version 1.1 will be the last version to support Python 2.7 and Python 3.4 and Django < 1.11.
-             More 1.0.x versions may be released after 1.1 is out in case important bugfixes will
-             be needed.
-
-.. warning:: Version 1.0 dropped support for Python 3.3 and django CMS < 3.4.
-             More 0.9.x versions may be released after 1.0 is out in case important bugfixes will
+.. warning:: Version 1.2 dropped support for Python 3.4, django CMS < 3.6 and Django < 1.11.
+             More 1.1.x versions may be released after 1.2 is out in case important bugfixes will
              be needed.
 
 Usage
@@ -73,17 +69,15 @@ Supported versions
 
 The current supported version matrix is the following:
 
-+----------------+-------------+-------------+---------------+---------------+---------------+---------------+
-|                | Django 1.8  | Django 1.9  | Django 1.10   | Django 1.11   | Django 2.0    | Django 2.1    |
-+----------------+-------------+-------------+---------------+---------------+---------------+---------------+
-| django CMS 3.4 | Supported   | Supported   | Supported     | Supported     | Unsupported   | Unsupported   |
-+----------------+-------------+-------------+---------------+---------------+---------------+---------------+
-| django CMS 3.5 | Supported   | Supported   | Supported     | Supported     | Unsupported   | Unsupported   |
-+----------------+-------------+-------------+---------------+---------------+---------------+---------------+
-| django CMS 3.6 | Unsupported | Unsupported | Unsupported   | Supported     | Supported     | Supported     |
-+----------------+-------------+-------------+---------------+---------------+---------------+---------------+
++----------------+-------------+-------------+---------------+--------------+
+|                | Django 1.11 | Django 2.0  | Django 2.1    | Django 2.2   |
++----------------+-------------+-------------+---------------+--------------+
+| django CMS 3.6 | Supported   | Supported   | Supported     | Supported    |
++----------------+-------------+-------------+---------------+--------------+
+| django CMS 3.7 | Supported   | Supported   | Supported     | Supported    |
++----------------+-------------+-------------+---------------+--------------+
 
-See `version 0.9`_ for older Django / django CMS versions support
+See `version 1.1`_ for older Django / django CMS versions support
 
 Any beta and develop version of Django and django CMS, by its very nature,
 it's not supported, while it still may work.
@@ -114,7 +108,7 @@ Please check that the ``.py`` extension is associated correctly with Python inte
     Python.File="C:\Windows\py.exe" "%1" %*
 
 
-.. _version 0.9: https://github.com/nephila/djangocms-installer/tree/release/0.9.x#supported-versions
+.. _version 1.1: https://github.com/nephila/djangocms-installer/tree/release/1.1.x#supported-versions
 .. _django CMS Tutorial: https://django-cms.readthedocs.io/en/latest/introduction/index.html
 .. _installer usage page: http://djangocms-installer.readthedocs.io/en/latest/usage.html
 

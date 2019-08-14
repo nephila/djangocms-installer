@@ -6,7 +6,10 @@ History
 1.2.0 (unreleased)
 ++++++++++++++++++
 
+* Added support for django CMS 3.7 - Django 2.2
 * Dropped support for Django < 1.11
+* Dropped support for Python 3.4
+* Add support for Python 3.7
 
 1.1.1 (2019-06-29)
 ++++++++++++++++++
