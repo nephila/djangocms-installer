@@ -8,6 +8,8 @@ History
 
 * Added support for django CMS 3.7 - Django 2.2
 * Added support for Python 3.7
+* Replaced Bootstrap 3 theme with Bootstrap 4
+* Added djangocms-bootstrap4 package
 * Dropped support for Django < 1.11
 * Dropped support for Python 3.4
 * Dropped support for aldryn-boilerplates
