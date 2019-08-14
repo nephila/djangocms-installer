@@ -216,7 +216,7 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_text_ckeditor' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_admin_style' in project.settings.INSTALLED_APPS)
         self.assertTrue('filer' in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_column' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_bootstrap4' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_file' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_flash' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_googlemap' in project.settings.INSTALLED_APPS)
@@ -454,7 +454,7 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_style' in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_teaser' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
-        self.assertTrue('djangocms_column' in project.settings.INSTALLED_APPS)
+        self.assertTrue('djangocms_bootstrap4' in project.settings.INSTALLED_APPS)
         self.assertTrue(hasattr(project.settings, 'THUMBNAIL_PROCESSORS'))
         self.assertTrue(
             'cms.context_processors.cms_settings' in

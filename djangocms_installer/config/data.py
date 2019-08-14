@@ -120,10 +120,10 @@ REQUIREMENTS = {
         'djangocms-style>=2.2,<2.3',
         'djangocms-googlemap>=1.3,<1.4',
         'djangocms-snippet>=2.1,<2.3',
-        'djangocms-video>=2.1,<2.2',
-        'djangocms-column>=1.9,<2.0',
+        'djangocms-video>=2.1,<2.3',
         'djangocms-file>=2.2,<3.0',
         'djangocms-picture>=2.3,<2.4',
+        'djangocms-bootstrap4>=1.5,<1.6',
     ],
     'plugins-3.7': [
         'djangocms-text-ckeditor>=3.7,<3.9',
@@ -131,10 +131,10 @@ REQUIREMENTS = {
         'djangocms-style>=2.2,<2.3',
         'djangocms-googlemap>=1.3,<1.4',
         'djangocms-snippet>=2.2,<2.3',
-        'djangocms-video>=2.1,<2.2',
-        'djangocms-column>=1.9,<2.0',
+        'djangocms-video>=2.1,<2.3',
         'djangocms-file>=2.3,<3.0',
         'djangocms-picture>=2.3,<2.4',
+        'djangocms-bootstrap4>=1.5,<1.6',
     ],
     'plugins-master': [
         'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
@@ -146,7 +146,7 @@ REQUIREMENTS = {
         'https://github.com/divio/djangocms-snippet/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-picture/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-video/archive/master.zip?{bust}'.format(**bust),
-        'https://github.com/divio/djangocms-column/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-bootstrap4/archive/master.zip?{bust}'.format(**bust),
     ],
     'plugins-basic': [
     ],

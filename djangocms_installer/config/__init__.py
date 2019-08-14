@@ -90,7 +90,7 @@ information.
                         action='store', help='Optional project parent directory')
     parser.add_argument('--bootstrap', dest='bootstrap', action='store',
                         choices=('yes', 'no'),
-                        default='no', help='Use Twitter Bootstrap Theme')
+                        default='no', help='Use Bootstrap 4 Theme')
     parser.add_argument('--templates', dest='templates', action='store',
                         default='no', help='Use custom template set')
     parser.add_argument('--starting-page', dest='starting_page', action='store',

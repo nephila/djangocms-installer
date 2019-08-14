@@ -38,10 +38,10 @@ The following arguments can be overridden in :ref:`wizard_mode`
   times, or as a comma separated list.
   Only language codes supported by Django can be used here;
   refer to `django source`_ for a list of supported codes.
-* ``--django-version``: Django version;  choices: ``1.8|1.9|1.10|1.11|stable|lts``, default: ``stable```
-* ``--cms-version``, ``-v``: django CMS version, choices: ``3.4|3.5|stable|lts``.
+* ``--django-version``: Django version;  choices: ``1.11|2.0|2.1|2.2|stable|lts``, default: ``stable```
+* ``--cms-version``, ``-v``: django CMS version, choices: ``3.6|3.7|stable|lts|rc|develop``.
   default: ``stable``
-* ``--bootstrap``: Use Twitter Bootstrap as theme, choices: ``yes|no``, default: ``no``
+* ``--bootstrap``: Use Bootstrap 4 theme, choices: ``yes|no``, default: ``no``
 * ``--starting-page``: Load a starting page with examples (available for english language only)
   after installation, choices: ``yes|no``, default: ``no``
 * ``--templates``: Use a custom directory as template source; is checked to be a valid path,
