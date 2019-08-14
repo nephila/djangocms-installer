@@ -633,7 +633,6 @@ class TestConfig(BaseTestClass):
             '-p'+self.project_dir,
             'example_prj'])
 
-        print(conf_data.requirements)
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
         self.assertTrue(conf_data.requirements.find('Django<2.0') > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
@@ -732,23 +731,6 @@ class TestConfig(BaseTestClass):
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
         self.assertTrue(conf_data.requirements.find('Django<2.3') > -1)
-
-    def disabled_test_aldryn_compatibility(self):
-        with patch('sys.stdout', self.stdout):
-            with patch('sys.stderr', self.stderr):
-                with self.assertRaises(SystemExit) as error:
-                    conf_data = config.parse([
-                        '-q',
-                        '--db=postgres://user:pwd@host/dbname',
-                        '--cms-version=2.4',
-                        '--django-version=stable',
-                        #'-a',
-                        '-p'+self.project_dir,
-                        'example_prj'])
-                try:
-                    self.assertEqual(error.exception.code, 5)
-                except AttributeError:
-                    self.assertEqual(error.exception, 5)
 
     def test_boostrap(self):
         """
@@ -967,8 +949,10 @@ class TestBaseConfig(unittest.TestCase):
 
     def unused(self, config_data):
         """Remove not configurable keys."""
-        for attr in ('aldryn', 'config_dump', 'config_file', 'db_driver', 'db_parsed',
-                     'project_path', 'settings_path', 'urlconf_path'):
+        for attr in (
+            'config_dump', 'config_file', 'db_driver', 'db_parsed', 'project_path', 'settings_path',
+            'urlconf_path'
+        ):
             delattr(config_data, attr)
         # When `requirements` arg is used then requirements attr isn't set.
         if hasattr(config_data, 'requirements'):
@@ -1047,7 +1031,6 @@ class TestBaseConfig(unittest.TestCase):
             else:
                 setattr(fixture, key, val)  # Change value.
             args = self.args[0:1] + [self.conf(filename)] + self.args[1:]  # Load new config.
-            print(args)
             config_data = config.parse(args)
             self.unused(config_data)
             self.assertEqual(fixture, config_data)  # Check if config value and changed value equals.

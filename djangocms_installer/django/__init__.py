@@ -7,13 +7,11 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
 import textwrap
-import zipfile
 from copy import copy, deepcopy
 from distutils.version import LooseVersion
 
-from six import BytesIO, iteritems
+from six import iteritems
 
 from ..config import data, get_settings
 from ..utils import chdir, format_val
@@ -64,50 +62,6 @@ def create_project(config_data):
         raise RuntimeError(e.output.decode('utf-8'))
 
 
-def _detect_migration_layout(vars, apps):
-    """
-    Detect migrations layout for plugins
-    :param vars: installer settings
-    :param apps: installed applications
-    """
-    DJANGO_MODULES = {}
-
-    for module in vars.MIGRATIONS_CHECK_MODULES:
-        if module in apps:
-            try:
-                mod = __import__('{0}.migrations_django'.format(module))  # NOQA
-                DJANGO_MODULES[module] = '{0}.migrations_django'.format(module)
-            except Exception:
-                pass
-    return DJANGO_MODULES
-
-
-def _install_aldryn(config_data):  # pragma: no cover
-    """
-    Install aldryn boilerplate
-
-    :param config_data: configuration data
-    """
-    import requests
-    media_project = os.path.join(config_data.project_directory, 'dist', 'media')
-    static_main = False
-    static_project = os.path.join(config_data.project_directory, 'dist', 'static')
-    template_target = os.path.join(config_data.project_directory, 'templates')
-    tmpdir = tempfile.mkdtemp()
-    aldrynzip = requests.get(data.ALDRYN_BOILERPLATE)
-    zip_open = zipfile.ZipFile(BytesIO(aldrynzip.content))
-    zip_open.extractall(path=tmpdir)
-    for component in os.listdir(os.path.join(tmpdir, 'aldryn-boilerplate-standard-master')):
-        src = os.path.join(tmpdir, 'aldryn-boilerplate-standard-master', component)
-        dst = os.path.join(config_data.project_directory, component)
-        if os.path.isfile(src):
-            shutil.copy(src, dst)
-        else:
-            shutil.copytree(src, dst)
-    shutil.rmtree(tmpdir)
-    return media_project, static_main, static_project, template_target
-
-
 def copy_files(config_data):
     """
     It's a little rude actually: it just overwrites the django-generated urls.py
@@ -121,19 +75,17 @@ def copy_files(config_data):
         urlconf_path = os.path.join(os.path.dirname(__file__), '../config/urls_noi18n.py')
     share_path = os.path.join(os.path.dirname(__file__), '../share')
     template_path = os.path.join(share_path, 'templates')
-    if config_data.aldryn:  # pragma: no cover
-        media_project, static_main, static_project, template_target = _install_aldryn(config_data)
+
+    media_project = os.path.join(config_data.project_directory, 'media')
+    static_main = os.path.join(config_data.project_path, 'static')
+    static_project = os.path.join(config_data.project_directory, 'static')
+    template_target = os.path.join(config_data.project_path, 'templates')
+    if config_data.templates and os.path.isdir(config_data.templates):
+        template_path = config_data.templates
+    elif config_data.bootstrap:
+        template_path = os.path.join(template_path, 'bootstrap')
     else:
-        media_project = os.path.join(config_data.project_directory, 'media')
-        static_main = os.path.join(config_data.project_path, 'static')
-        static_project = os.path.join(config_data.project_directory, 'static')
-        template_target = os.path.join(config_data.project_path, 'templates')
-        if config_data.templates and os.path.isdir(config_data.templates):
-            template_path = config_data.templates
-        elif config_data.bootstrap:
-            template_path = os.path.join(template_path, 'bootstrap')
-        else:
-            template_path = os.path.join(template_path, 'basic')
+        template_path = os.path.join(template_path, 'basic')
 
     shutil.copy(urlconf_path, config_data.urlconf_path)
     if media_project:
@@ -204,16 +156,10 @@ def patch_settings(config_data):
 
     original = original.replace('# -*- coding: utf-8 -*-\n', '')
 
-    if config_data.aldryn:  # pragma: no cover
-        DATA_DIR = (
-            'DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), \'dist\')\n'
-        )
-        STATICFILES_DIR = 'os.path.join(BASE_DIR, \'static\'),'
-    else:
-        DATA_DIR = 'DATA_DIR = os.path.dirname(os.path.dirname(__file__))\n'
-        STATICFILES_DIR = 'os.path.join(BASE_DIR, \'{0}\', \'static\'),'.format(
-            config_data.project_name
-        )
+    DATA_DIR = 'DATA_DIR = os.path.dirname(os.path.dirname(__file__))\n'
+    STATICFILES_DIR = 'os.path.join(BASE_DIR, \'{0}\', \'static\'),'.format(
+        config_data.project_name
+    )
 
     original = data.DEFAULT_PROJECT_HEADER + DATA_DIR + original
     original += 'MEDIA_URL = \'/media/\'\n'
@@ -305,8 +251,6 @@ def _build_settings(config_data):
     if not config_data.no_plugins:
         apps.extend(vars.FILER_PLUGINS_3)
 
-    if config_data.aldryn:  # pragma: no cover
-        apps.extend(vars.ALDRYN_APPLICATIONS)
     text.append('INSTALLED_APPS = [\n{0}{1}\n]'.format(
         spacer, (',\n' + spacer).join(['\'{0}\''.format(var) for var in apps] +
                                       ['\'{0}\''.format(config_data.project_name)])
@@ -371,14 +315,6 @@ def _build_settings(config_data):
                 {0}
             }}
         }}""").strip().format((',\n' + spacer * 2).join(database)))  # NOQA
-
-    DJANGO_MIGRATION_MODULES = _detect_migration_layout(vars, apps)
-
-    text.append('MIGRATION_MODULES = {{\n{0}{1}\n}}'.format(
-        spacer, (',\n' + spacer).join(
-            ['\'{0}\': \'{1}\''.format(*item) for item in DJANGO_MIGRATION_MODULES.items()]
-        )
-    ))
 
     if config_data.filer:
         text.append('THUMBNAIL_PROCESSORS = (\n{0}{1}\n)'.format(

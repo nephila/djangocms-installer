@@ -221,7 +221,6 @@ information.
     args.languages = [lang.strip().lower() for lang in args.languages]
     if len(args.languages) > 1:
         args.i18n = 'yes'
-    args.aldryn = False
     args.filer = True
 
     # Convert version to numeric format for easier checking
@@ -288,9 +287,6 @@ information.
             elif LooseVersion(cms_version) >= LooseVersion('3.6'):
                 requirements.extend(data.REQUIREMENTS['plugins-3.6'])
             requirements.extend(data.REQUIREMENTS['filer'])
-
-        if args.aldryn:  # pragma: no cover
-            requirements.extend(data.REQUIREMENTS['aldryn'])
 
         # Django version check
         if args.django_version == 'develop':  # pragma: no cover

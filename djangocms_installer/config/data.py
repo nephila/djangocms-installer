@@ -19,7 +19,7 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/release/3.7.x.zip?{b
 )
 DJANGOCMS_BETA = DJANGOCMS_RC
 DJANGOCMS_36 = 'django-cms>=3.6,<3.7'
-DJANGOCMS_37 = 'django-cms>=3.7,<3.8'
+DJANGOCMS_37 = 'django-cms>=3.7rc1'
 
 if sys.version_info >= (3, 5):
     DJANGOCMS_SUPPORTED = ('3.6', '3.7', 'stable', 'lts', 'develop', 'rc')
@@ -207,7 +207,5 @@ STATICFILES_DEFAULT = """STATICFILES_DIRS = (
 BASE_DIR = """
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 """
-
-ALDRYN_BOILERPLATE = 'https://github.com/aldryn/aldryn-boilerplate/archive/master.zip'
 
 VERSION_WARNING = '{0} version of {1} is not supported and it may not work as expected'

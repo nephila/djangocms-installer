@@ -227,10 +227,6 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue('djangocms_teaser' not in project.settings.INSTALLED_APPS)
         self.assertTrue('djangocms_video' in project.settings.INSTALLED_APPS)
         self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
-            project.settings.MIDDLEWARE
-        )
-        self.assertTrue(
             config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in
             project.settings.MIDDLEWARE
         )
@@ -263,10 +259,6 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
         self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
-            project.settings.MIDDLEWARE
-        )
-        self.assertTrue(
             config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in
             project.settings.MIDDLEWARE
         )
@@ -294,10 +286,6 @@ class TestDjango(IsolatedTestClass):
         # checking for django options
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
-        self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
-            project.settings.MIDDLEWARE
-        )
         self.assertTrue(
             config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in
             project.settings.MIDDLEWARE
@@ -327,10 +315,6 @@ class TestDjango(IsolatedTestClass):
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
         self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
-            project.settings.MIDDLEWARE
-        )
-        self.assertTrue(
             config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in
             project.settings.MIDDLEWARE
         )
@@ -358,10 +342,6 @@ class TestDjango(IsolatedTestClass):
         # checking for django options
         self.assertTrue(project.settings.TEMPLATES)
         self.assertFalse(getattr(project.settings, 'TEMPLATES_DIR', False))
-        self.assertTrue(
-            config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD not in
-            project.settings.MIDDLEWARE
-        )
         self.assertTrue(
             config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in
             project.settings.MIDDLEWARE

@@ -46,19 +46,11 @@ def execute():
                 django.load_starting_page(config_data)
             if not config_data.requirements_file:
                 install.write_requirements(config_data)
-            if config_data.aldryn:  # pragma: no cover
-                sys.stdout.write('Project created!\n')
-                sys.stdout.write('aldryn boilerplate requires action before '
-                                 'you can actually run the project.\n'
-                                 'See documentation at '
-                                 'https://aldryn-boilerplate.readthedocs.io/'
-                                 'for more information.\n')
-            else:
-                sys.stdout.write('All done!\n')
-                sys.stdout.write(
-                    'Get into "{0}" directory and type "python manage.py runserver" to start your '
-                    'project\n'.format(os.path.abspath(config_data.project_directory))
-                )
+            sys.stdout.write('All done!\n')
+            sys.stdout.write(
+                'Get into "{0}" directory and type "python manage.py runserver" to start your '
+                'project\n'.format(os.path.abspath(config_data.project_directory))
+            )
     except Exception:
         # Clean up your own mess
         install.cleanup_directory(config_data)

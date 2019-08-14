@@ -64,16 +64,6 @@ TREEBEARD_APPS = (
     'treebeard',
 )
 
-STANDARD_PLUGINS_3 = (
-    'djangocms_file',
-    'djangocms_googlemap',
-    'djangocms_inherit',
-    'djangocms_link',
-    'djangocms_picture',
-    'djangocms_teaser',
-    'djangocms_video',
-)
-
 FILER_PLUGINS_3 = (
     'filer',
     'easy_thumbnails',
@@ -100,10 +90,6 @@ REVERSION_APPLICATIONS = (
 )
 SOUTH_APPLICATIONS = (
     'south',
-)
-
-ALDRYN_APPLICATIONS = (
-    'compressor',
 )
 
 CMS_TEMPLATES = (
@@ -143,31 +129,4 @@ URLCONF = {
 
 }
 
-APPHOOK_RELOAD_APPLICATIONS = [
-    'aldryn_apphook_reload'
-]
-APPHOOK_RELOAD_MIDDLEWARE_CLASS_OLD = 'aldryn_apphook_reload.middleware.ApphookReloadMiddleware'
 APPHOOK_RELOAD_MIDDLEWARE_CLASS = 'cms.middleware.utils.ApphookReloadMiddleware'
-
-MIGRATIONS_CHECK_MODULES = (
-    'cms',
-    'menus',
-    'filer',
-    'cmsplugin_filer_image',
-    'cmsplugin_filer_file',
-    'cmsplugin_filer_folder',
-    'cmsplugin_filer_teaser',
-    'cmsplugin_filer_utils',
-    'cmsplugin_filer_video',
-    'djangocms_text_ckeditor',
-    'djangocms_column',
-    'djangocms_googlemap',
-    'djangocms_inherit',
-    'djangocms_link',
-    'djangocms_style',
-    'djangocms_file',
-    'djangocms_picture',
-    'djangocms_snippet',
-    'djangocms_teaser',
-    'djangocms_video',
-)

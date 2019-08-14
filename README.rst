@@ -16,6 +16,10 @@ project.
 
 Refer to `django CMS Tutorial`_ on how to properly setup your first django CMS project.
 
+.. warning:: For all 1.2 RC django CMS 3.7 rc will be installed by default, **not** latest stable,
+             to ensure a smoother transition. Likewise "3.7", "stable" and "lts" selector will install
+             django CMS 3.7rc1
+
 .. warning:: Version 1.2 dropped support for Python 3.4, django CMS < 3.6 and Django < 1.11.
              More 1.1.x versions may be released after 1.2 is out in case important bugfixes will
              be needed.
