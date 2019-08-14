@@ -24,6 +24,21 @@ Refer to `django CMS Tutorial`_ on how to properly setup your first django CMS p
              More 0.9.x versions may be released after 1.0 is out in case important bugfixes will
              be needed.
 
+.. warning:: Due to some incompatibilities between psycopg2 2.8 and Django 2.1+ we ship with psycopg2 2.7
+             when PostgreSQL database is selected, this in turn trigger an outdated psycopg2 warning. To
+             silence it, add the following to your ``manage.py``:
+
+             .. code-block:: python
+
+                 import os
+                 import sys
+                 import warnings
+
+                 if __name__ == '__main__':
+                     warnings.filterwarnings(
+                         'ignore', r'The psycopg2.*release 2\.8', UserWarning, 'psycopg2')
+                     # ... rest of code ...
+
 Usage
 -----
 
