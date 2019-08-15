@@ -34,7 +34,7 @@ class TestMain(IsolatedTestClass):
         self.assertFalse(stdout.find('django-reversion') > -1)
         self.assertTrue(stdout.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(stdout.find('djangocms-admin-style') > -1)
-        self.assertTrue(stdout.find('djangocms-column') > -1)
+        self.assertTrue(stdout.find('djangocms-bootstrap4') > -1)
         self.assertTrue(stdout.find('djangocms-file') > -1)
         self.assertTrue(stdout.find('djangocms-flash') == -1)
         self.assertTrue(stdout.find('djangocms-googlemap') > -1)

@@ -487,7 +487,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.7,<3.9') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-bootstrap4') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-googlemap') > -1)
@@ -516,7 +516,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('django-filer') > -1)
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') == -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-column') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-bootstrap4') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-flash') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-googlemap') > -1)
@@ -578,7 +578,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-googlemap') > -1)
         self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-snippet') > -1)
         self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-video') > -1)
-        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-column') > -1)
+        self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-bootstrap4') > -1)
         self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
@@ -732,7 +732,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
         self.assertTrue(conf_data.requirements.find('Django<2.3') > -1)
 
-    def test_boostrap(self):
+    def test_bootstrap(self):
         """
         Verify handling of bootstrap parameter
         """
