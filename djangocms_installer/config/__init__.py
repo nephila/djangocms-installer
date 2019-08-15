@@ -221,7 +221,6 @@ information.
     args.languages = [lang.strip().lower() for lang in args.languages]
     if len(args.languages) > 1:
         args.i18n = 'yes'
-    args.aldryn = False
     args.filer = True
 
     # Convert version to numeric format for easier checking
@@ -273,28 +272,21 @@ information.
 
         if args.cms_version in ('rc', 'develop'):
             requirements.extend(data.REQUIREMENTS['cms-master'])
+        elif LooseVersion(cms_version) >= LooseVersion('3.7'):
+            requirements.extend(data.REQUIREMENTS['cms-3.7'])
         elif LooseVersion(cms_version) >= LooseVersion('3.6'):
             requirements.extend(data.REQUIREMENTS['cms-3.6'])
-        elif LooseVersion(cms_version) >= LooseVersion('3.5'):
-            requirements.extend(data.REQUIREMENTS['cms-3.5'])
-        elif LooseVersion(cms_version) >= LooseVersion('3.4'):
-            requirements.extend(data.REQUIREMENTS['cms-3.4'])
 
         if not args.no_db_driver:
             requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.cms_version in ('rc', 'develop'):
                 requirements.extend(data.REQUIREMENTS['plugins-master'])
+            elif LooseVersion(cms_version) >= LooseVersion('3.7'):
+                requirements.extend(data.REQUIREMENTS['plugins-3.7'])
             elif LooseVersion(cms_version) >= LooseVersion('3.6'):
                 requirements.extend(data.REQUIREMENTS['plugins-3.6'])
-            elif LooseVersion(cms_version) >= LooseVersion('3.5'):
-                requirements.extend(data.REQUIREMENTS['plugins-3.5'])
-            elif LooseVersion(cms_version) >= LooseVersion('3.4'):
-                requirements.extend(data.REQUIREMENTS['plugins-3.4'])
             requirements.extend(data.REQUIREMENTS['filer'])
-
-        if args.aldryn:  # pragma: no cover
-            requirements.extend(data.REQUIREMENTS['aldryn'])
 
         # Django version check
         if args.django_version == 'develop':  # pragma: no cover
@@ -306,12 +298,14 @@ information.
         else:
             requirements.append('Django<{0}'.format(less_than_version(django_version)))
 
-        if django_version == '1.11':
-            requirements.extend(data.REQUIREMENTS['django-1.11'])
-        elif django_version == '2.0':
-            requirements.extend(data.REQUIREMENTS['django-2.0'])
+        if django_version == '2.2':
+            requirements.extend(data.REQUIREMENTS['django-2.2'])
         elif django_version == '2.1':
             requirements.extend(data.REQUIREMENTS['django-2.1'])
+        elif django_version == '2.0':
+            requirements.extend(data.REQUIREMENTS['django-2.0'])
+        elif django_version == '1.11':
+            requirements.extend(data.REQUIREMENTS['django-1.11'])
 
         requirements.extend(data.REQUIREMENTS['default'])
 

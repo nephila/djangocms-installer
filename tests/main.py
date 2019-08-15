@@ -22,12 +22,15 @@ class TestMain(IsolatedTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--cms-version=stable', '-R',
-                                       '-q', '-u', '-p'+self.project_dir,
+                                       '-len', '--cms-version=rc', '-R',
+                                       '-q', '-u', '-p' + self.project_dir,
                                        'example_prj']
                 main.execute()
         stdout = self.stdout.getvalue()
-        self.assertTrue(stdout.find('Django<2.0') > -1)
+        if sys.version_info < (3, 5,):
+            self.assertTrue(stdout.find('Django<2.0') > -1)
+        else:
+            self.assertTrue(stdout.find('Django<2.3') > -1)
         self.assertFalse(stdout.find('django-reversion') > -1)
         self.assertTrue(stdout.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(stdout.find('djangocms-admin-style') > -1)
@@ -82,7 +85,7 @@ class TestMain(IsolatedTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len', '--cms-version=stable', '--django=%s' % dj_version,
+                                       '-len', '--cms-version=rc', '--django=%s' % dj_version,
                                        '-q', '-u', '--verbose',
                                        'example_prj']
                 main.execute()
@@ -105,7 +108,7 @@ class TestMain(IsolatedTestClass):
         os.chdir(base_dir)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                sys.argv = ['main'] + ['example_prj']
+                sys.argv = ['main'] + ['--cms-version=rc', 'example_prj']
                 main.execute()
                 self.assertTrue(os.path.exists(os.path.join(project_dir, 'static')))
                 self.assertTrue(os.path.exists(os.path.join(project_dir, 'requirements.txt')))
@@ -126,9 +129,9 @@ class TestMain(IsolatedTestClass):
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
                 sys.argv = ['main'] + ['--db=sqlite://localhost/test.db',
-                                       '-len-GB', '-lfr-fr', '--cms-version=stable',
+                                       '-len-GB', '-lfr-fr', '--cms-version=rc',
                                        '--django=%s' % dj_version,
-                                       '-q', '-u', '-p'+self.project_dir,
+                                       '-q', '-u', '-p' + self.project_dir,
                                        'example_prj']
                 main.execute()
                 # Checking we successfully completed the whole process
@@ -176,7 +179,7 @@ class TestMain(IsolatedTestClass):
         os.chdir(base_dir)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                sys.argv = ['main'] + ['--i18n=yes', 'example_prj']
+                sys.argv = ['main'] + ['--i18n=yes', '--cms-version=rc', 'example_prj']
                 main.execute()
                 self.assertTrue(
                     os.path.exists(
@@ -199,7 +202,7 @@ class TestMain(IsolatedTestClass):
         os.chdir(base_dir)
         with patch('sys.stdout', self.stdout):
             with patch('sys.stderr', self.stderr):
-                sys.argv = ['main'] + ['--i18n=no', 'example_prj']
+                sys.argv = ['main'] + ['--i18n=no', '--cms-version=rc', 'example_prj']
                 main.execute()
                 self.assertTrue(
                     os.path.exists(

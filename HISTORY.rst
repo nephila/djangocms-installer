@@ -6,7 +6,11 @@ History
 1.2.0 (unreleased)
 ++++++++++++++++++
 
+* Added support for django CMS 3.7 - Django 2.2
+* Added support for Python 3.7
 * Dropped support for Django < 1.11
+* Dropped support for Python 3.4
+* Dropped support for aldryn-boilerplates
 
 1.1.1 (2019-06-29)
 ++++++++++++++++++
