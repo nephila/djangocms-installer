@@ -19,7 +19,7 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/release/3.7.x.zip?{b
 )
 DJANGOCMS_BETA = DJANGOCMS_RC
 DJANGOCMS_36 = 'django-cms>=3.6,<3.7'
-DJANGOCMS_37 = 'django-cms>=3.7rc1'
+DJANGOCMS_37 = 'django-cms>=3.7'
 
 if sys.version_info >= (3, 5):
     DJANGOCMS_SUPPORTED = ('3.6', '3.7', 'stable', 'lts', 'develop', 'rc')
