@@ -3,6 +3,11 @@
 History
 -------
 
+1.2.1 (unreleased)
+++++++++++++++++++
+
+* Pinned formtools version on django 1.11 to avoid python 2 issues
+
 1.2.0 (2019-11-04)
 ++++++++++++++++++
 
