@@ -189,7 +189,9 @@ djangocms installer will install and configure the following plugins:
 """
 
 DRIVERS = {
-    'django.db.backends.postgresql_psycopg2': 'psycopg2<2.8',
+    'django.db.backends.postgresql': 'psycopg2',
+    'django.db.backends.postgresql_psycopg2': 'psycopg2',
+    'django.contrib.gis.db.backends.postgis': 'postgis',
     'django.db.backends.postgresql_postgis': 'postgis',
     'django.db.backends.mysql': 'mysqlclient',
     'django.db.backends.sqlite3': '',

@@ -116,6 +116,11 @@ class IsolatedTestClass(BaseTestClass):
 
 
 def get_latest_django(latest_stable=False, latest_1_x=False):
+    """
+    Get latest django version compatible with all the supported django CMS versions.
+
+    Takes into account arguments and python version.
+    """
     if latest_1_x:
         dj_ver = '1.11'
         match = 'Django<2.0'
