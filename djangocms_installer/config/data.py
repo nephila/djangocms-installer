@@ -19,7 +19,7 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/release/3.7.x.zip?{b
 )
 DJANGOCMS_BETA = DJANGOCMS_RC
 DJANGOCMS_36 = 'django-cms>=3.6,<3.7'
-DJANGOCMS_37 = 'django-cms>=3.7'
+DJANGOCMS_37 = 'django-cms>=3.7,<3.8'
 
 if sys.version_info >= (3, 5):
     DJANGOCMS_SUPPORTED = ('3.6', '3.7', 'stable', 'lts', 'develop', 'rc')
@@ -83,6 +83,7 @@ REQUIREMENTS = {
         'django-classy-tags>=0.9',
         'django-sekizai>=1.0',
         'django-mptt>0.9',
+        'django-formtools>=2.1,<2.2',
     ],
     'django-2.0': [
         'django-classy-tags>=0.9',
