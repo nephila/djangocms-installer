@@ -111,7 +111,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.languages, ['en-ca', 'de', 'it'])
         self.assertEqual(conf_data.project_directory, self.project_dir)
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
-        self.assertEqual(conf_data.db_driver, 'psycopg2<2.8')
+        self.assertEqual(conf_data.db_driver, 'psycopg2')
 
         dj_version, dj_match = get_latest_django(latest_stable=True)
         cms_version = 'develop'
@@ -141,7 +141,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
         self.assertEqual(conf_data.project_directory, self.project_dir)
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
-        self.assertEqual(conf_data.db_driver, 'psycopg2<2.8')
+        self.assertEqual(conf_data.db_driver, 'psycopg2')
 
         dj_version = '1.11'
         cms_version = '3.7'
@@ -172,7 +172,7 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.languages, ['en'])
         self.assertEqual(conf_data.project_directory, self.project_dir)
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
-        self.assertEqual(conf_data.db_driver, 'psycopg2<2.8')
+        self.assertEqual(conf_data.db_driver, 'psycopg2')
 
     def test_version_misdj_match(self):
         with self.assertRaises(SystemExit):
@@ -470,6 +470,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
+        self.assertTrue(conf_data.requirements.find('psycopg2<2.8') > -1)
 
         conf_data = config.parse([
             '-q',
@@ -497,6 +498,8 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-style') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-video') > -1)
+        self.assertTrue(conf_data.requirements.find('psycopg2') > -1)
+        self.assertTrue(conf_data.requirements.find('psycopg2<2.8') == -1)
 
         conf_data = config.parse([
             '-q',
@@ -526,6 +529,8 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-style') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-video') > -1)
+        self.assertTrue(conf_data.requirements.find('psycopg2') > -1)
+        self.assertTrue(conf_data.requirements.find('psycopg2<2.8') == -1)
 
         with self.assertRaises(SystemExit):
             dj_version = '1.8'
@@ -684,6 +689,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
         dj_version = '2.1'
+        dj_match = 'Django<2.2'
         requirements_21 = [
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -709,6 +715,7 @@ class TestConfig(BaseTestClass):
             self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') > -1)
             self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)
             self.assertTrue(conf_data.requirements.find('south') == -1)
+            self.assertTrue(conf_data.requirements.find('psycopg2<2.8') > -1)
 
         conf_data = config.parse([
             '-q',

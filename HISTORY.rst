@@ -7,6 +7,8 @@ History
 ++++++++++++++++++
 
 * Pinned formtools version on django 1.11 to avoid python 2 issues
+* Unpinned psycopg2 version for Django 2.2+
+* Support "shorthand" postgres django backend
 
 1.2.0 (2019-11-04)
 ++++++++++++++++++
