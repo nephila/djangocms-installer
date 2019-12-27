@@ -111,6 +111,25 @@ def copy_files(config_data):
                 shutil.copy(filename, os.path.join(config_data.project_path, '..'))
 
 
+def patch_urls(config_data):
+
+    if not os.path.exists(config_data.urlconf_path):
+        sys.stderr.write(
+            'Error while creating target project, '
+            'please check the given urlconf: {0}\n'.format(config_data.urlconf_path)
+        )
+        return sys.exit(5)
+
+    addons_urlconf = os.path.join(os.path.dirname(config_data.urlconf_path), 'urls_addons.py')
+    addons_urls = [
+        "url(r'^', include('%s'))," % url
+        for addon in config_data.addons
+        for url in data.ADDONS[addon]['urls']
+    ]
+    with open(addons_urlconf, 'w') as urlconf_fp:
+        urlconf_fp.write(data.ADDONS_URLCONF % ','.join(addons_urls))
+
+
 def patch_settings(config_data):
     """
     Modify the settings file created by Django injecting the django CMS
@@ -250,6 +269,11 @@ def _build_settings(config_data):
 
     if not config_data.no_plugins:
         apps.extend(vars.FILER_PLUGINS_3)
+
+    if config_data.addons:
+        for addon in config_data.addons:
+            apps.extend(data.ADDONS[addon]['installed_apps'])
+            text.append(data.ADDONS[addon]['settings'])
 
     text.append('INSTALLED_APPS = [\n{0}{1}\n]'.format(
         spacer, (',\n' + spacer).join(['\'{0}\''.format(var) for var in apps] +

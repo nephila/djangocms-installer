@@ -118,6 +118,9 @@ information.
                                            'provided values')
     parser.add_argument('--wizard', '-w', dest='wizard', action='store_true',
                         default=False, help='Run the configuration wizard')
+    parser.add_argument('--addons', '-a', dest='addons', action='append',
+                        choices=list(data.ADDONS.keys()),
+                        default=[], help='Add one of the selected addons')
     parser.add_argument('--verbose', dest='verbose', action='store_true',
                         default=False,
                         help='Be more verbose and don\'t swallow subcommands output')
@@ -301,16 +304,15 @@ information.
         else:
             requirements.append('Django<{0}'.format(less_than_version(django_version)))
 
-        if django_version == '2.2':
-            requirements.extend(data.REQUIREMENTS['django-2.2'])
-        elif django_version == '2.1':
-            requirements.extend(data.REQUIREMENTS['django-2.1'])
-        elif django_version == '2.0':
-            requirements.extend(data.REQUIREMENTS['django-2.0'])
-        elif django_version == '1.11':
-            requirements.extend(data.REQUIREMENTS['django-1.11'])
+        requirements.extend(data.REQUIREMENTS['django-%s' % django_version])
 
         requirements.extend(data.REQUIREMENTS['default'])
+
+        if args.addons:
+            for addon in args.addons:
+                requirements.extend(
+                    data.ADDONS[addon]['requirements']['django-%s' % django_version]
+                )
 
         setattr(args, 'requirements', '\n'.join(requirements).strip())
 
