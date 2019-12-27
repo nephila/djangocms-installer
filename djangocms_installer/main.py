@@ -40,6 +40,7 @@ def execute():
             django.create_project(config_data)
             django.patch_settings(config_data)
             django.copy_files(config_data)
+            django.patch_urls(config_data)
             if not config_data.no_sync:
                 django.setup_database(config_data)
             if config_data.starting_page:

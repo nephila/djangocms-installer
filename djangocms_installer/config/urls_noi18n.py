@@ -16,6 +16,12 @@ urlpatterns = [
         {'sitemaps': {'cmspages': CMSSitemap}}),
 ]
 
+try:
+    from .urls_addons import urlpatterns as addons_urlpatterns
+    urlpatterns.extend(addons_urlpatterns)
+except ImportError:
+    pass
+
 urlpatterns += [
     url(r'^admin/', admin.site.urls),  # NOQA
     url(r'^', include('cms.urls')),

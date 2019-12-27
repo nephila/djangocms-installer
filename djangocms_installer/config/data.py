@@ -159,6 +159,52 @@ REQUIREMENTS = {
     ],
 }
 
+ADDONS = {
+    'blog': {
+        'requirements': {
+            'django-1.11': [
+                'djangocms-blog',
+            ],
+            'django-2.0': [
+                'djangocms-blog',
+            ],
+            'django-2.1': [
+                'djangocms-blog',
+            ],
+            'django-2.2': [
+                'djangocms-blog',
+            ],
+        },
+        'installed_apps': [
+            'aldryn_apphooks_config',
+            'parler',
+            'taggit',
+            'taggit_autosuggest',
+            'meta',
+            'djangocms_blog',
+            'sortedm2m'
+        ],
+        'settings': """
+META_SITE_PROTOCOL = 'http'
+META_USE_SITES = True
+        """,
+        'urls': [
+            'djangocms_blog.taggit_urls'
+        ]
+
+    }
+}
+ADDONS_URLCONF = """
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
+
+from django.conf.urls import include, url
+
+urlpatterns = [
+    %s
+]
+"""
+
 TEMPLATES_1_8 = """
 TEMPLATES = [
     {{
