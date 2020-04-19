@@ -117,23 +117,41 @@ class IsolatedTestClass(BaseTestClass):
 
 def get_latest_django(latest_stable=False, latest_1_x=False):
     """
-    Get latest django version compatible with all the supported django CMS versions.
+    Get latest django version compatible with all the supported django CMS and python versions.
 
     Takes into account arguments and python version.
     """
     if latest_1_x:
         dj_ver = '1.11'
         match = 'Django<2.0'
-    elif sys.version_info < (3, 4) and not latest_stable:
-        dj_ver = '1.11'
-        match = 'Django<2.0'
-    elif sys.version_info < (3, 4) and latest_stable:
+    elif sys.version_info < (3, 4):
         dj_ver = '1.11'
         match = 'Django<2.0'
     elif sys.version_info < (3, 5):
         dj_ver = '2.0'
         match = 'Django<2.1'
+    elif sys.version_info < (3, 6):
+        dj_ver = '2.2'
+        match = 'Django<2.3'
     else:
-        dj_ver = '2.1'
-        match = 'Django<2.2'
+        dj_ver = '3.0'
+        match = 'Django<3.1'
+    return dj_ver, match
+
+
+def get_latest_djangocms(latest_1_x=False):
+    """
+    Get latest django CMS version compatible with all the supported django and python versions.
+
+    Takes into account arguments and python version.
+    """
+    if latest_1_x:
+        dj_ver = '3.7'
+        match = 'django-cms<3.8'
+    elif sys.version_info < (3, 5):
+        dj_ver = '3.7'
+        match = 'django-cms<3.8'
+    else:
+        dj_ver = '3.7'
+        match = 'django-cms<3.8'
     return dj_ver, match

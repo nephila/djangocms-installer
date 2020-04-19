@@ -11,7 +11,7 @@ CONFIGURABLE_OPTIONS = ['--db', '--cms-version', '--django-version', '--i18n',
                         '--permissions', '--bootstrap', '--templates',
                         '--starting-page']
 
-DJANGOCMS_DEVELOP = 'https://github.com/divio/django-cms/archive/develop.zip?{bust}'.format(
+DJANGOCMS_DEVELOP = 'https://github.com/yakky/django-cms/archive/develop.zip?{bust}'.format(
     **bust
 )
 DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/release/3.7.x.zip?{bust}'.format(
@@ -19,7 +19,11 @@ DJANGOCMS_RC = 'https://github.com/divio/django-cms/archive/release/3.7.x.zip?{b
 )
 DJANGOCMS_BETA = DJANGOCMS_RC
 DJANGOCMS_36 = 'django-cms>=3.6,<3.7'
-DJANGOCMS_37 = 'django-cms>=3.7,<3.8'
+
+if sys.version_info > (3, 0):
+    DJANGOCMS_37 = 'django-cms>=3.7,<3.8'
+else:
+    DJANGOCMS_37 = 'django-cms>=3.7,<3.7.2'
 
 if sys.version_info >= (3, 5):
     DJANGOCMS_SUPPORTED = ('3.6', '3.7', 'stable', 'lts', 'develop', 'rc')
@@ -33,7 +37,11 @@ DJANGOCMS_DEFAULT = DJANGOCMS_STABLE
 
 DJANGO_DEVELOP = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
 DJANGO_BETA = 'https://github.com/django/django/archive/master.zip?{bust}'.format(**bust)
-if sys.version_info >= (3, 5):
+if sys.version_info >= (3, 6):
+    DJANGO_SUPPORTED = ('1.11', '2.0', '2.1', '2.2', '3.0', 'stable', 'lts')
+    DJANGO_STABLE = '3.0'
+    DJANGO_LTS = '2.2'
+elif (3, 6) > sys.version_info >= (3, 5):
     DJANGO_SUPPORTED = ('1.11', '2.0', '2.1', '2.2', 'stable', 'lts')
     DJANGO_STABLE = '2.2'
     DJANGO_LTS = '2.2'
@@ -53,16 +61,16 @@ CMS_VERSION_MATRIX = {
 DJANGO_VERSION_MATRIX = {
     'stable': DJANGO_STABLE,
     'lts': DJANGO_LTS,
-    'rc': '2.2',
-    'beta': '2.2',
-    'develop': '2.2'
+    'rc': DJANGO_STABLE,
+    'beta': DJANGO_STABLE,
+    'develop': DJANGO_STABLE
 }
 VERSION_MATRIX = {
     '3.6': ('1.11', '2.1'),
-    '3.7': ('1.11', '2.2'),
-    DJANGOCMS_BETA: ('1.11', '2.2'),
-    DJANGOCMS_RC: ('1.11', '2.2'),
-    DJANGOCMS_DEVELOP: ('1.11', '2.2'),
+    '3.7': ('1.11', '3.0'),
+    DJANGOCMS_BETA: ('1.11', '3.0'),
+    DJANGOCMS_RC: ('1.11', '3.0'),
+    DJANGOCMS_DEVELOP: ('1.11', '2.2', '3.0'),
 }
 PACKAGE_MATRIX = {
     '3.6': DJANGOCMS_36,
@@ -100,6 +108,11 @@ REQUIREMENTS = {
         'django-sekizai>=1.0',
         'django-mptt>0.9',
     ],
+    'django-3.0': [
+        'django-classy-tags>=0.9',
+        'django-sekizai>=1.0',
+        'django-mptt>0.9',
+    ],
     'reversion-django-1.11': [
         'django-reversion>=2.0,<2.1',
     ],
@@ -116,32 +129,35 @@ REQUIREMENTS = {
         'django-treebeard>=4.0,<5.0',
     ],
     'plugins-3.6': [
-        'djangocms-text-ckeditor>=3.7,<3.9',
-        'djangocms-link>=2.3,<2.6',
-        'djangocms-style>=2.2,<2.3',
-        'djangocms-googlemap>=1.3,<1.4',
-        'djangocms-snippet>=2.1,<2.3',
-        'djangocms-video>=2.1,<2.3',
-        'djangocms-file>=2.2,<3.0',
-        'djangocms-picture>=2.3,<2.4',
-        'djangocms-bootstrap4>=1.5,<1.6',
+        'djangocms-text-ckeditor>=3.7,<4.0',
+        'djangocms-link>=2.5,<2.7',
+        'djangocms-icon>=1.4,<1.6',
+        'djangocms-style>=2.2,<2.4',
+        'djangocms-googlemap>=1.3,<1.5',
+        'djangocms-snippet>=2.2,<2.4',
+        'djangocms-video>=2.1,<2.4',
+        'djangocms-file>=2.3,<2.5',
+        'djangocms-picture>=2.3,<2.5',
+        'djangocms-bootstrap4>=1.5,<1.7',
     ],
     'plugins-3.7': [
-        'djangocms-text-ckeditor>=3.7,<3.9',
-        'djangocms-link>=2.5,<2.6',
-        'djangocms-style>=2.2,<2.3',
-        'djangocms-googlemap>=1.3,<1.4',
-        'djangocms-snippet>=2.2,<2.3',
-        'djangocms-video>=2.1,<2.3',
-        'djangocms-file>=2.3,<3.0',
-        'djangocms-picture>=2.3,<2.4',
-        'djangocms-bootstrap4>=1.5,<1.6',
+        'djangocms-text-ckeditor>=3.7,<4.0',
+        'djangocms-link>=2.5,<2.7',
+        'djangocms-icon>=1.4,<1.6',
+        'djangocms-style>=2.2,<2.4',
+        'djangocms-googlemap>=1.3,<1.5',
+        'djangocms-snippet>=2.2,<2.4',
+        'djangocms-video>=2.1,<2.4',
+        'djangocms-file>=2.3,<2.5',
+        'djangocms-picture>=2.3,<2.5',
+        'djangocms-bootstrap4>=1.5,<1.7',
     ],
     'plugins-master': [
         'https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}'
         ''.format(**bust),
         'https://github.com/divio/djangocms-file/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-link/archive/master.zip?{bust}'.format(**bust),
+        'https://github.com/divio/djangocms-icon/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-style/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-googlemap/archive/master.zip?{bust}'.format(**bust),
         'https://github.com/divio/djangocms-snippet/archive/master.zip?{bust}'.format(**bust),
