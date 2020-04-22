@@ -8,10 +8,11 @@ unreleased
 
 * Nothing yet
 
-1.2.2 (unreleased)
+1.2.2 (2020-04-23)
 ++++++++++++++++++
 
 * Added support for Django 3.0
+* Added support for django CMS 3.7.2
 
 1.2.1 (2019-12-27)
 ++++++++++++++++++
