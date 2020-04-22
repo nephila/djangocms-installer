@@ -232,6 +232,7 @@ information.
     except RuntimeError as e:  # pragma: no cover
         sys.stderr.write(compat.unicode(e))
         sys.exit(6)
+
     if django_version is None:  # pragma: no cover
         sys.stderr.write(
             'Please provide a Django supported version: {0}. Only Major.Minor '

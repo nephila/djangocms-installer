@@ -8,6 +8,11 @@ unreleased
 
 * Nothing yet
 
+1.2.2 (unreleased)
+++++++++++++++++++
+
+* Added support for Django 3.0
+
 1.2.1 (2019-12-27)
 ++++++++++++++++++
 

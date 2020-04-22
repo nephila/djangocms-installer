@@ -80,7 +80,7 @@ def check_install(config_data):
 
 
 def requirements(req_file, pip_options='', is_file=False, verbose=False):
-    args = ['install']
+    args = ['install', '--disable-pip-version-check']
     if not verbose:
         args.append('-q')
     if pip_options:

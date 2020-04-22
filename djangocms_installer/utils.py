@@ -76,7 +76,7 @@ def supported_versions(django, cms):
                 cms_version and django_version and
                 not (LooseVersion(VERSION_MATRIX[compat.unicode(cms_version)][0]) <=
                      LooseVersion(compat.unicode(django_version)) <=
-                     LooseVersion(VERSION_MATRIX[compat.unicode(cms_version)][1]))
+                     LooseVersion(VERSION_MATRIX[compat.unicode(cms_version)][-1]))
         ):
             raise RuntimeError(
                 'Django and django CMS versions doesn\'t match: '
