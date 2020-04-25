@@ -117,11 +117,11 @@ REQUIREMENTS = {
         'django-reversion>=2.0,<2.1',
     ],
     'cms-3.6': [
-        'djangocms-admin-style>=1.4,<1.5',
+        'djangocms-admin-style>=1.5,<1.6',
         'django-treebeard>=4.0,<5.0',
     ],
     'cms-3.7': [
-        'djangocms-admin-style>=1.4,<1.5',
+        'djangocms-admin-style>=1.5,<1.6',
         'django-treebeard>=4.0,<5.0',
     ],
     'cms-master': [
