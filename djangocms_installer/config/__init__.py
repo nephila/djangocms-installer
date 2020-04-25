@@ -279,10 +279,7 @@ information.
             requirements.extend(data.REQUIREMENTS['cms-3.6'])
 
         if not args.no_db_driver:
-            if args.db_driver == 'psycopg2' and django_version in ('1.11', '2.0', '2.1'):
-                requirements.append('psycopg2<2.8')
-            else:
-                requirements.append(args.db_driver)
+            requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.cms_version in ('rc', 'develop'):
                 requirements.extend(data.REQUIREMENTS['plugins-master'])

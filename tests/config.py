@@ -18,45 +18,21 @@ from djangocms_installer.config.data import (
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
 
-from .base import BaseTestClass, get_latest_django, unittest
-
-latest_stable_django, latest_stable_django_match = get_latest_django()
+from .base import BaseTestClass, get_stable_django, unittest
 
 
 class TestConfig(BaseTestClass):
 
-    @unittest.skipIf(sys.version_info[0] < 3,
-                     reason='django 2+ only supports python 3')
     def test_default_config(self):
+        dj_version, dj_match = get_stable_django(latest=True)
+
         conf_data = config.parse(['--db=postgres://user:pwd@host/dbname',
                                   '-q', '-p'+self.project_dir, 'example_prj'])
 
         self.assertEqual(conf_data.project_name, 'example_prj')
 
         self.assertEqual(conf_data.cms_version, '3.7')
-        self.assertEqual(conf_data.django_version, latest_stable_django)
-        self.assertEqual(conf_data.i18n, 'yes')
-        self.assertEqual(conf_data.reversion, 'yes')
-        self.assertEqual(conf_data.permissions, 'no')
-        self.assertEqual(conf_data.use_timezone, 'yes')
-        self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
-
-        self.assertEqual(conf_data.no_db_driver, False)
-        self.assertEqual(conf_data.no_deps, False)
-        self.assertEqual(conf_data.no_sync, False)
-        self.assertEqual(conf_data.plugins, False)
-        self.assertEqual(conf_data.requirements_file, None)
-
-    @unittest.skipIf(sys.version_info[0] >= 3,
-                     reason='django 2+ does not supports python 2')
-    def test_default_config_27(self):
-        conf_data = config.parse(['--db=postgres://user:pwd@host/dbname',
-                                  '-q', '-p'+self.project_dir, 'example_prj'])
-
-        self.assertEqual(conf_data.project_name, 'example_prj')
-
-        self.assertEqual(conf_data.cms_version, '3.7')
-        self.assertEqual(conf_data.django_version, '1.11')
+        self.assertEqual(conf_data.django_version, dj_version)
         self.assertEqual(conf_data.i18n, 'yes')
         self.assertEqual(conf_data.reversion, 'yes')
         self.assertEqual(conf_data.permissions, 'no')
@@ -86,36 +62,7 @@ class TestConfig(BaseTestClass):
                 '-p'+self.project_dir,
                 'example_prj'])
 
-        dj_version = '1.11'
-        conf_data = config.parse([
-            '-q',
-            '--db=postgres://user:pwd@host/dbname',
-            '--cms-version=stable',
-            '--django-version={0}'.format(dj_version),
-            '--i18n=no',
-            '--reversion=no',
-            '--permissions=no',
-            '--use-tz=no',
-            '-tEurope/Rome',
-            '-len-CA', '-lde', '-lit',
-            '-p'+self.project_dir,
-            'example_prj'])
-
-        self.assertEqual(conf_data.project_name, 'example_prj')
-
-        self.assertEqual(conf_data.cms_version, '3.7')
-        self.assertEqual(conf_data.django_version, '1.11')
-        self.assertEqual(conf_data.i18n, 'yes')
-        self.assertEqual(conf_data.reversion, 'no')
-        self.assertEqual(conf_data.permissions, 'no')
-        self.assertEqual(conf_data.use_timezone, 'no')
-        self.assertEqual(conf_data.timezone, 'Europe/Rome')
-        self.assertEqual(conf_data.languages, ['en-ca', 'de', 'it'])
-        self.assertEqual(conf_data.project_directory, self.project_dir)
-        self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
-        self.assertEqual(conf_data.db_driver, 'psycopg2')
-
-        dj_version, dj_match = get_latest_django(latest_stable=True)
+        dj_version, dj_match = get_stable_django()
         cms_version = 'develop'
         conf_data = config.parse([
             '-q',
@@ -141,37 +88,6 @@ class TestConfig(BaseTestClass):
         self.assertEqual(conf_data.use_timezone, 'no')
         self.assertEqual(conf_data.timezone, 'Europe/Rome')
         self.assertEqual(conf_data.languages, ['en', 'de', 'it'])
-        self.assertEqual(conf_data.project_directory, self.project_dir)
-        self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
-        self.assertEqual(conf_data.db_driver, 'psycopg2')
-
-        dj_version = '1.11'
-        cms_version = '3.7'
-        conf_data = config.parse([
-            '-q',
-            '--db=postgres://user:pwd@host/dbname',
-            '--cms-version=stable',
-            '--django-version={0}'.format(dj_version),
-            '--cms-version={0}'.format(cms_version),
-            '--i18n=no',
-            '--reversion=no',
-            '--permissions=no',
-            '--use-tz=no',
-            '-tEurope/Rome',
-            '-len',
-            '-p' + self.project_dir,
-            'example_prj'])
-
-        self.assertEqual(conf_data.project_name, 'example_prj')
-
-        self.assertEqual(str(conf_data.cms_version), cms_version)
-        self.assertEqual(str(conf_data.django_version), dj_version)
-        self.assertEqual(conf_data.i18n, 'no')
-        self.assertEqual(conf_data.reversion, 'no')
-        self.assertEqual(conf_data.permissions, 'no')
-        self.assertEqual(conf_data.use_timezone, 'no')
-        self.assertEqual(conf_data.timezone, 'Europe/Rome')
-        self.assertEqual(conf_data.languages, ['en'])
         self.assertEqual(conf_data.project_directory, self.project_dir)
         self.assertEqual(conf_data.db, 'postgres://user:pwd@host/dbname')
         self.assertEqual(conf_data.db_driver, 'psycopg2')
@@ -403,11 +319,13 @@ class TestConfig(BaseTestClass):
     @unittest.skipIf(sys.version_info[0] < 3,
                      reason='django 2+ only supports python 3')
     def test_supported_versions(self):
-        self.assertEqual(supported_versions('stable', 'stable'), (latest_stable_django, '3.7'))
-        self.assertEqual(supported_versions('stable', '3.1.10'), (latest_stable_django, None))
-        self.assertEqual(supported_versions('stable', 'rc'), (latest_stable_django, DJANGOCMS_RC))
-        self.assertEqual(supported_versions('stable', 'beta'), (latest_stable_django, DJANGOCMS_BETA))
-        self.assertEqual(supported_versions('stable', 'develop'), (latest_stable_django, DJANGOCMS_DEVELOP))
+        dj_version, dj_match = get_stable_django(latest=True)
+
+        self.assertEqual(supported_versions('stable', 'stable'), (dj_version, '3.7'))
+        self.assertEqual(supported_versions('stable', '3.1.10'), (dj_version, None))
+        self.assertEqual(supported_versions('stable', 'rc'), (dj_version, DJANGOCMS_RC))
+        self.assertEqual(supported_versions('stable', 'beta'), (dj_version, DJANGOCMS_BETA))
+        self.assertEqual(supported_versions('stable', 'develop'), (dj_version, DJANGOCMS_DEVELOP))
         self.assertEqual(supported_versions('lts', 'rc'), ('2.2', DJANGOCMS_RC))
         self.assertEqual(supported_versions('lts', 'lts'), ('2.2', '3.7'))
 
@@ -423,37 +341,11 @@ class TestConfig(BaseTestClass):
             self.assertEqual(supported_versions('1.8', 'lts'), ('1.8', '3.7'))
             self.assertEqual(supported_versions('1.8.3', 'stable'), (None, '3.6'))
 
-    @unittest.skipIf(sys.version_info[0] >= 3,
-                     reason='django 2+ does not supports python 2')
-    def test_supported_versions_27(self):
-
-        self.assertEqual(supported_versions('stable', 'stable'), ('1.11', '3.7'))
-        self.assertEqual(supported_versions('stable', '3.1.10'), ('1.11', None))
-        self.assertEqual(supported_versions('stable', 'rc'), ('1.11', DJANGOCMS_RC))
-        self.assertEqual(supported_versions('stable', 'beta'), ('1.11', DJANGOCMS_BETA))
-        self.assertEqual(supported_versions('stable', 'develop'), ('1.11', DJANGOCMS_DEVELOP))
-        self.assertEqual(supported_versions('lts', 'rc'), ('1.11', DJANGOCMS_RC))
-        self.assertEqual(supported_versions('lts', 'lts'), ('1.11', '3.7'))
-
-        with self.assertRaises(RuntimeError):
-            supported_versions('stable', '2.4'), ('1.5', '2.4')
-        with self.assertRaises(RuntimeError):
-            supported_versions('1.5', 'stable'), ('1.8', '3.1')
-
-        with self.assertRaises(RuntimeError):
-            self.assertEqual(supported_versions('1.9', 'stable'), ('1.9', '3.5'))
-            self.assertEqual(supported_versions('1.8', 'stable'), ('1.8', '3.5'))
-            self.assertEqual(supported_versions('1.9', '3.5'), ('1.9', '3.5'))
-            self.assertEqual(supported_versions('1.8', 'lts'), ('1.8', '3.7'))
-            self.assertEqual(supported_versions('1.8.3', 'stable'), (None, '3.6'))
-
-    @unittest.skipIf(sys.version_info[0] < 3,
-                     reason='django 2+ only supports python 3')
     def test_requirements(self):
         """
         Test for different configuration and package versions
         """
-        dj_version = '1.11'
+        dj_version, dj_match = get_stable_django(lts=True)
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -463,8 +355,9 @@ class TestConfig(BaseTestClass):
             '-f',
             '-p'+self.project_dir,
             'example_prj'])
+        print(conf_data.requirements)
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<2.0') > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.7,<4.0') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.5') > -1)
@@ -472,20 +365,21 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
-        self.assertTrue(conf_data.requirements.find('psycopg2<2.8') > -1)
+        self.assertTrue(conf_data.requirements.find('psycopg2') > -1)
 
+        dj_version, dj_match = get_stable_django(latest=True)
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
             '--cms-version=stable',
-            '--django-version=stable',
+            '--django-version={}'.format(dj_version),
             '--reversion=yes',
             '-p'+self.project_dir,
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
-        self.assertTrue(conf_data.requirements.find(latest_stable_django_match) > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
@@ -501,21 +395,21 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-video') > -1)
         self.assertTrue(conf_data.requirements.find('psycopg2') > -1)
-        self.assertTrue(conf_data.requirements.find('psycopg2<2.8') == -1)
 
+        dj_version, dj_match = get_stable_django(lts=True)
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
             '--cms-version=develop',
-            '--django-version=lts',
+            '--django-version={}'.format(dj_version),
             '-f',
             '--reversion=yes',
             '-p'+self.project_dir,
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<2.3') > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
@@ -532,7 +426,6 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-video') > -1)
         self.assertTrue(conf_data.requirements.find('psycopg2') > -1)
-        self.assertTrue(conf_data.requirements.find('psycopg2<2.8') == -1)
 
         with self.assertRaises(SystemExit):
             dj_version = '1.8'
@@ -547,7 +440,7 @@ class TestConfig(BaseTestClass):
                 '-p'+self.project_dir,
                 'example_prj'])
 
-        dj_version = '1.11'
+        dj_version, dj_match = get_stable_django(latest=True)
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -560,17 +453,17 @@ class TestConfig(BaseTestClass):
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<2.0') > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
-        self.assertTrue(conf_data.requirements.find('django-mptt') > -1)
         self.assertTrue(conf_data.requirements.find('django-treebeard') > -1)
 
+        dj_version, dj_match = get_stable_django()
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
             '--cms-version=develop',
-            '--django-version=stable',
+            '--django-version={}'.format(dj_version),
             '-f',
             '--reversion=yes',
             '-z=yes',
@@ -578,7 +471,7 @@ class TestConfig(BaseTestClass):
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-        self.assertTrue(conf_data.requirements.find(latest_stable_django_match) > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-link') > -1)
         self.assertTrue(conf_data.requirements.find('https://github.com/divio/djangocms-style') > -1)
@@ -595,7 +488,7 @@ class TestConfig(BaseTestClass):
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
             '--cms-version=3.7',
-            '--django-version=stable',
+            '--django-version={}'.format(dj_version),
             '-f',
             '--reversion=yes',
             '-z=yes',
@@ -603,18 +496,19 @@ class TestConfig(BaseTestClass):
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
-        self.assertTrue(conf_data.requirements.find(latest_stable_django_match) > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.7') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
 
+        dj_version, dj_match = get_stable_django(lts=True)
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--i18n=no',
             '--cms-version=3.7',
-            '--django-version=lts',
+            '--django-version={}'.format(dj_version),
             '-f',
             '--reversion=yes',
             '-z=yes',
@@ -622,13 +516,13 @@ class TestConfig(BaseTestClass):
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<2.3') > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.7') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('pytz') > -1)
 
-        dj_version = '1.11'
+        dj_version, dj_match = get_stable_django(lts=True)
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -641,14 +535,13 @@ class TestConfig(BaseTestClass):
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<2.0') > -1)
-        self.assertFalse(conf_data.requirements.find('django-reversion>=1.10,<1.11') > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
-        dj_version, dj_match = get_latest_django(latest_stable=True)
+        dj_version, dj_match = get_stable_django()
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -669,7 +562,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('djangocms-teaser') == -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
-        dj_version = '1.11'
+        dj_version, dj_match = get_stable_django(lts=True)
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -683,15 +576,14 @@ class TestConfig(BaseTestClass):
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<2.0') > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)
         self.assertTrue(conf_data.requirements.find('south') == -1)
 
-        dj_version = '2.1'
-        dj_match = 'Django<2.2'
+        dj_version, dj_match = get_stable_django(lts=True)
         requirements_21 = [
             '-q',
             '--db=postgres://user:pwd@host/dbname',
@@ -717,30 +609,32 @@ class TestConfig(BaseTestClass):
             self.assertTrue(conf_data.requirements.find('djangocms-admin-style/archive/master.zip') > -1)
             self.assertTrue(conf_data.requirements.find('djangocms-teaser/archive/master.zip') == -1)
             self.assertTrue(conf_data.requirements.find('south') == -1)
-            self.assertTrue(conf_data.requirements.find('psycopg2<2.8') > -1)
+            self.assertTrue(conf_data.requirements.find('psycopg2') > -1)
 
+        dj_version, dj_match = get_stable_django(lts=True)
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--cms-version=lts',
-            '--django-version=lts',
+            '--django-version={}'.format(dj_version),
             '-p'+self.project_dir,
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
-        self.assertTrue(conf_data.requirements.find('Django<2.3') > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
 
+        dj_version, dj_match = get_stable_django(latest=True)
         conf_data = config.parse([
             '-q',
             '--db=postgres://user:pwd@host/dbname',
             '--cms-version=stable',
-            '--django-version=stable',
+            '--django-version={}'.format(dj_version),
             '-p'+self.project_dir,
             'example_prj'])
 
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37)
                         > -1)
-        self.assertTrue(conf_data.requirements.find(latest_stable_django_match) > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
 
     def test_bootstrap(self):
         """
@@ -891,7 +785,8 @@ class TestConfig(BaseTestClass):
 
     def test_show_requirements(self):
         sys.stdout = StringIO()
-        dj_version = '1.11'
+        dj_version, dj_match = get_stable_django()
+
         try:
             conf_data = config.parse([
                 '-q',
@@ -972,6 +867,9 @@ class TestBaseConfig(unittest.TestCase):
                      reason='django 2+ only supports python 3')
     def test_parse_config_file(self, *args):
         """Tests .config.__init__._parse_config_file function."""
+        dj_version, __ = get_stable_django(latest=True)
+        dj_lts_version, __ = get_stable_django(lts=True)
+
         with self.assertRaises(SystemExit) as error:
             config.parse(self.args[0:1] + [self.conf('config-not-exists.ini')] + self.args[1:])
             self.assertEqual(7, error.exception.code)
@@ -983,36 +881,36 @@ class TestBaseConfig(unittest.TestCase):
 
         test_data = [
             ('config-02.ini', None, (
-                ('cms_version', '3.6'),
+                ('cms_version', '3.7'),
                 ('db', 'postgres://user:pwd@host:54321/dbname'),
-                ('django_version', '2.1'),
+                ('django_version', dj_lts_version),
             )),
             ('config-03.ini', None, (
                 ('cms_version', '3.7'),
                 ('i18n', 'no'),
-                ('django_version', latest_stable_django),
+                ('django_version', dj_version),
             )),
             ('config-04.ini', None, (('cms_version', '3.7'), ('use_timezone', 'no'))),
             ('config-05.ini', None, (('cms_version', '3.7'), ('timezone', 'Europe/London'))),
             ('config-06.ini', None, (('cms_version', '3.7'), ('reversion', 'no'))),
-            ('config-07.ini', None, (('cms_version', '3.7'), ('permissions', 'no'), ('django_version', '2.2'))),
+            ('config-07.ini', None, (('cms_version', '3.7'), ('permissions', 'no'), ('django_version', dj_lts_version))),
             ('config-08.ini', None, (
-                ('cms_version', '3.6'),
+                ('cms_version', '3.7'),
                 ('i18n', 'no'),
                 ('languages', ['ru']),
-                ('django_version', '2.1')
+                ('django_version', dj_lts_version)
             )),
             ('config-09.ini', None, (
                 ('cms_version', '3.7'),
                 ('i18n', 'yes'),
                 ('languages', ['en', 'ru']),
-                ('django_version', '2.2')
+                ('django_version', dj_lts_version)
             )),
-            ('config-10.ini', 'django_version', '1.11'),
+            ('config-10.ini', 'django_version', dj_lts_version),
             ('config-11.ini', 'project_directory', '/test/me'),
             ('config-12.ini', None, (
                 ('bootstrap', True),
-                ('django_version', '2.2')
+                ('django_version', dj_lts_version)
             )),
             ('config-13.ini', 'templates', '.'),
             ('config-14.ini', 'starting_page', True),
