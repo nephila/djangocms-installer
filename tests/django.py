@@ -624,3 +624,4 @@ class TestBaseDjango(unittest.TestCase):
                     'USER': 'user'
                 }
             }''').strip() in settings)
+        self.assertTrue('X_FRAME_OPTIONS = \'SAMEORIGIN\'' in settings)
