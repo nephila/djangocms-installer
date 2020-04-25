@@ -305,6 +305,7 @@ def _build_settings(config_data):
         )
     ))
 
+    text.append('X_FRAME_OPTIONS = \'SAMEORIGIN\'')
     text.append('CMS_PERMISSION = {0}'.format(vars.CMS_PERMISSION))
     text.append('CMS_PLACEHOLDER_CONF = {0}'.format(vars.CMS_PLACEHOLDER_CONF))
 
