@@ -10,16 +10,12 @@ import sys
 import textwrap
 from copy import copy, deepcopy
 from distutils.version import LooseVersion
+from shlex import quote as shlex_quote
 
 from six import iteritems
 
 from ..config import data, get_settings
 from ..utils import chdir, format_val
-
-try:
-    from shlex import quote as shlex_quote
-except ImportError:
-    from pipes import quote as shlex_quote
 
 
 def create_project(config_data):
@@ -122,7 +118,7 @@ def patch_settings(config_data):
     current_django_version = LooseVersion(django.__version__)
     declared_django_version = LooseVersion(config_data.django_version)
 
-    if not os.path.exists(config_data.settings_path):
+    if not os.path.exists(config_data.settings_path):  # pragma: no cover
         sys.stderr.write(
             'Error while creating target project, '
             'please check the given configuration: {0}\n'.format(config_data.settings_path)
@@ -194,10 +190,7 @@ STATICFILES_DIRS = (
         item_re = re.compile(r'{0} = [^\]]+\]'.format(item), re.DOTALL | re.MULTILINE)
         original = item_re.sub('', original)
     # TEMPLATES is special, so custom regexp needed
-    if declared_django_version >= LooseVersion('2.0'):
-        item_re = re.compile(r'TEMPLATES = .+\},\n\s+\},\n]$', re.DOTALL | re.MULTILINE)
-    else:
-        item_re = re.compile(r'TEMPLATES = .+\]$', re.DOTALL | re.MULTILINE)
+    item_re = re.compile(r'TEMPLATES = .+\},\n\s+\},\n]$', re.DOTALL | re.MULTILINE)
     original = item_re.sub('', original)
     # DATABASES is a dictionary, so different regexp needed
     item_re = re.compile(r'DATABASES = [^\}]+\}[^\}]+\}', re.DOTALL | re.MULTILINE)
@@ -363,7 +356,7 @@ def setup_database(config_data):
             sys.stdout.write('Creating admin user\n')
             if config_data.noinput:
                 create_user(config_data)
-            else:
+            else:  # pragma: no cover
                 subprocess.check_call(' '.join(
                     [sys.executable, '-W', 'ignore', 'manage.py', 'createsuperuser']
                 ), shell=True, stderr=subprocess.STDOUT)

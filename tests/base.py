@@ -82,12 +82,9 @@ class IsolatedTestClass(BaseTestClass):
         if self.verbose:
             print('deactivating virtualenv', self.virtualenv_dir)
         if os.path.exists(SYSTEM_ACTIVATE):
-            try:
-                execfile(SYSTEM_ACTIVATE, dict(__file__=SYSTEM_ACTIVATE))
-            except NameError:
-                with open(SYSTEM_ACTIVATE) as f:
-                    code = compile(f.read(), SYSTEM_ACTIVATE, 'exec')
-                exec(code, dict(__file__=SYSTEM_ACTIVATE))
+            with open(SYSTEM_ACTIVATE) as f:
+                code = compile(f.read(), SYSTEM_ACTIVATE, 'exec')
+            exec(code, dict(__file__=SYSTEM_ACTIVATE))
             sys.executable = os.path.join(os.path.dirname(SYSTEM_ACTIVATE), 'python')
         super(IsolatedTestClass, self).tearDown()
         modules = copy(sys.modules)
@@ -103,55 +100,41 @@ class IsolatedTestClass(BaseTestClass):
                 self.virtualenv_dir
             ])
             activate_temp = os.path.join(self.virtualenv_dir, 'bin', 'activate_this.py')
-            try:
-                execfile(activate_temp, dict(__file__=activate_temp))
-            except NameError:
-                with open(activate_temp) as f:
-                    code = compile(f.read(), activate_temp, 'exec')
-                exec(code, dict(__file__=activate_temp))
+            with open(activate_temp) as f:
+                code = compile(f.read(), activate_temp, 'exec')
+            exec(code, dict(__file__=activate_temp))
             if self.verbose:
                 print('activating virtualenv', self.virtualenv_dir)
             sys.executable = os.path.join(self.virtualenv_dir, 'bin', 'python')
             os.environ['VIRTUAL_ENV'] = self.virtualenv_dir
 
 
-def get_latest_django(latest_stable=False, latest_1_x=False):
+def get_stable_django(latest=False, lts=False):
     """
-    Get latest django version compatible with all the supported django CMS and python versions.
+    Get django version compatible with all the supported django CMS and python versions.
 
     Takes into account arguments and python version.
+
+    Default to lower common version.
+
+    :param latest: Latest stable version
+    :param lts: Latest lts version
     """
-    if latest_1_x:
-        dj_ver = '1.11'
-        match = 'Django<2.0'
-    elif sys.version_info < (3, 4):
-        dj_ver = '1.11'
-        match = 'Django<2.0'
-    elif sys.version_info < (3, 5):
-        dj_ver = '2.0'
-        match = 'Django<2.1'
-    elif sys.version_info < (3, 6):
-        dj_ver = '2.2'
-        match = 'Django<2.3'
-    else:
+    if latest and not sys.version_info < (3, 6) and not lts:
         dj_ver = '3.0'
         match = 'Django<3.1'
+    else:
+        dj_ver = '2.2'
+        match = 'Django<2.3'
     return dj_ver, match
 
 
-def get_latest_djangocms(latest_1_x=False):
+def get_stable_djangocms():
     """
-    Get latest django CMS version compatible with all the supported django and python versions.
+    Get django CMS version compatible with all the supported django and python versions.
 
     Takes into account arguments and python version.
     """
-    if latest_1_x:
-        dj_ver = '3.7'
-        match = 'django-cms<3.8'
-    elif sys.version_info < (3, 5):
-        dj_ver = '3.7'
-        match = 'django-cms<3.8'
-    else:
-        dj_ver = '3.7'
-        match = 'django-cms<3.8'
+    dj_ver = '3.7'
+    match = 'django-cms<3.8'
     return dj_ver, match

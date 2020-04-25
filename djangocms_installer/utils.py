@@ -102,25 +102,22 @@ def less_than_version(value):
     if len(items) == 1:
         items.append(0)
     items[1] += 1
-    if value == '1.11':
-        return '2.0'
-    else:
-        return '.'.join(map(str, items))
+    return '.'.join(map(str, items))
 
 
 class chdir(object):
     """
     Context manager for changing the current working directory
     """
-    def __init__(self, newPath):
-        self.newPath = newPath
+    def __init__(self, new_path):
+        self.new_path = new_path
 
     def __enter__(self):
-        self.savedPath = os.getcwd()
-        os.chdir(self.newPath)
+        self.saved_path = os.getcwd()
+        os.chdir(self.new_path)
 
     def __exit__(self, etype, value, traceback):
-        os.chdir(self.savedPath)
+        os.chdir(self.saved_path)
 
 
 def format_val(val):

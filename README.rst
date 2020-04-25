@@ -16,28 +16,8 @@ project.
 
 Refer to `django CMS Tutorial`_ on how to properly setup your first django CMS project.
 
-.. warning:: For all 1.2 RC django CMS 3.7 rc will be installed by default, **not** latest stable,
-             to ensure a smoother transition. Likewise "3.7", "stable" and "lts" selector will install
-             django CMS 3.7rc1
-
-.. warning:: Version 1.2 dropped support for Python 3.4, django CMS < 3.6 and Django < 1.11.
-             More 1.1.x versions may be released after 1.2 is out in case important bugfixes will
-             be needed.
-
-.. warning:: Due to some incompatibilities between psycopg2 2.8 and Django 2.1+ we ship with psycopg2 2.7
-             when PostgreSQL database is selected, this in turn trigger an outdated psycopg2 warning. To
-             silence it, add the following to your ``manage.py``:
-
-             .. code-block:: python
-
-                 import os
-                 import sys
-                 import warnings
-
-                 if __name__ == '__main__':
-                     warnings.filterwarnings(
-                         'ignore', r'The psycopg2.*release 2\.8', UserWarning, 'psycopg2')
-                     # ... rest of code ...
+.. warning:: Version 2.0 dropped support for Python 2.7, django CMS < 3.7 and Django < 2.2.
+             More 1.2.x versions may be released after 1.2 is out in case important bugfixes will be needed.
 
 Usage
 -----
@@ -88,15 +68,13 @@ Supported versions
 
 The current supported version matrix is the following:
 
-+----------------+-------------+-------------+---------------+--------------+--------------+
-|                | Django 1.11 | Django 2.0  | Django 2.1    | Django 2.2   | Django 3.0   |
-+----------------+-------------+-------------+---------------+--------------+--------------+
-| django CMS 3.6 | Supported   | Supported   | Supported     | Supported    | Supported    |
-+----------------+-------------+-------------+---------------+--------------+--------------+
-| django CMS 3.7 | Supported   | Supported   | Supported     | Supported    | Supported    |
-+----------------+-------------+-------------+---------------+--------------+--------------+
++----------------+--------------+--------------+
+|                |  Django 2.2  | Django 3.0   |
++----------------+--------------+--------------+
+| django CMS 3.7 | Supported    | Supported    |
++----------------+--------------+--------------+
 
-See `version 1.1`_ for older Django / django CMS versions support
+See `version 1.2`_ for older Django / django CMS versions support
 
 Any beta and develop version of Django and django CMS, by its very nature,
 it's not supported, while it still may work.
@@ -127,7 +105,7 @@ Please check that the ``.py`` extension is associated correctly with Python inte
     Python.File="C:\Windows\py.exe" "%1" %*
 
 
-.. _version 1.1: https://github.com/nephila/djangocms-installer/tree/release/1.1.x#supported-versions
+.. _version 1.2: https://github.com/nephila/djangocms-installer/tree/release/1.2.x#supported-versions
 .. _django CMS Tutorial: https://django-cms.readthedocs.io/en/latest/introduction/index.html
 .. _installer usage page: http://djangocms-installer.readthedocs.io/en/latest/usage.html
 
