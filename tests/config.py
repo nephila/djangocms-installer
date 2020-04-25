@@ -467,7 +467,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find('Django<2.0') > -1)
         self.assertFalse(conf_data.requirements.find('django-reversion') > -1)
         self.assertTrue(conf_data.requirements.find('djangocms-text-ckeditor>=3.7,<4.0') > -1)
-        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.4') > -1)
+        self.assertTrue(conf_data.requirements.find('djangocms-admin-style>=1.5') > -1)
         self.assertTrue(conf_data.requirements.find('django-filer') > -1)
         self.assertTrue(conf_data.requirements.find('cmsplugin-filer') == -1)
         self.assertTrue(conf_data.requirements.find('djangocms-file') > -1)
