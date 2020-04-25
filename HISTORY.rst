@@ -3,10 +3,11 @@
 History
 -------
 
-unreleased
+1.2.3 (2020-04-23)
 ++++++++++++++++++
 
-* Nothing yet
+* Fixed support for staticfiles
+* Fixed X_FRAME_OPTIONS default
 
 1.2.2 (2020-04-23)
 ++++++++++++++++++
