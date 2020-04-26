@@ -4,3 +4,4 @@ tox
 mock
 pillow
 coverage>=5
+coveralls>=2

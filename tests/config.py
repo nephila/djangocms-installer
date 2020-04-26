@@ -334,7 +334,6 @@ class TestConfig(BaseTestClass):
                 "example_prj",
             ]
         )
-        print(conf_data.requirements)
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find("django-reversion") > -1)
