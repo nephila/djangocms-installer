@@ -156,6 +156,7 @@ class TestMain(IsolatedTestClass):
 
     def test_two_langs_invocation(self):
         dj_version, dj_match = get_stable_django()
+
         with patch("sys.stdout", self.stdout):
             with patch("sys.stderr", self.stderr):
                 sys.argv = ["main"] + [

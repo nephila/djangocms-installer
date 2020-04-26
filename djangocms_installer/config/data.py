@@ -21,29 +21,22 @@ CONFIGURABLE_OPTIONS = [
 DJANGOCMS_DEVELOP = "https://github.com/yakky/django-cms/archive/develop.zip?{bust}".format(**bust)
 DJANGOCMS_RC = "https://github.com/divio/django-cms/archive/release/3.7.x.zip?{bust}".format(**bust)
 DJANGOCMS_BETA = DJANGOCMS_RC
-DJANGOCMS_36 = "django-cms>=3.6,<3.7"
-
 DJANGOCMS_37 = "django-cms>=3.7,<3.8"
 
-if sys.version_info >= (3, 5):
-    DJANGOCMS_SUPPORTED = ("3.7", "stable", "lts", "develop", "rc")
-    DJANGOCMS_STABLE = "3.7"
-    DJANGOCMS_LTS = "3.7"
-else:
-    DJANGOCMS_SUPPORTED = ("3.7", "stable", "lts", "develop", "rc")
-    DJANGOCMS_STABLE = "3.7"
-    DJANGOCMS_LTS = "3.7"
+DJANGOCMS_SUPPORTED = ("3.7", "stable", "lts", "develop", "rc")
+DJANGOCMS_STABLE = "3.7"
+DJANGOCMS_LTS = "3.7"
 DJANGOCMS_DEFAULT = DJANGOCMS_STABLE
 
 DJANGO_DEVELOP = "https://github.com/django/django/archive/master.zip?{bust}".format(**bust)
 DJANGO_BETA = "https://github.com/django/django/archive/master.zip?{bust}".format(**bust)
-if sys.version_info < (3, 6):
-    DJANGO_SUPPORTED = ("2.2", "stable", "lts")
-    DJANGO_STABLE = "2.2"
-    DJANGO_LTS = "2.2"
-else:
+if sys.version_info >= (3, 6):
     DJANGO_SUPPORTED = ("2.2", "3.0", "stable", "lts")
     DJANGO_STABLE = "3.0"
+    DJANGO_LTS = "2.2"
+else:
+    DJANGO_SUPPORTED = ("2.2", "stable", "lts")
+    DJANGO_STABLE = "2.2"
     DJANGO_LTS = "2.2"
 
 DJANGO_DEFAULT = DJANGO_STABLE

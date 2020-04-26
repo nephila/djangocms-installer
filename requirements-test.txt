@@ -3,4 +3,4 @@ flake8
 tox
 mock
 pillow
-coverage<5.0
+coverage>=5

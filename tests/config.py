@@ -334,6 +334,7 @@ class TestConfig(BaseTestClass):
                 "example_prj",
             ]
         )
+        print(conf_data.requirements)
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find("django-reversion") > -1)
@@ -887,19 +888,19 @@ class TestBaseConfig(unittest.TestCase):
                     ("django_version", dj_lts_version),
                 ),
             ),
-            ("config-03.ini", None, (("cms_version", "3.7"), ("i18n", "no"), ("django_version", dj_version),),),
+            ("config-03.ini", None, (("cms_version", "3.7"), ("i18n", "no"), ("django_version", dj_version),)),
             ("config-04.ini", None, (("cms_version", "3.7"), ("use_timezone", "no"))),
-            ("config-05.ini", None, (("cms_version", "3.7"), ("timezone", "Europe/London")),),
+            ("config-05.ini", None, (("cms_version", "3.7"), ("timezone", "Europe/London"))),
             ("config-06.ini", None, (("cms_version", "3.7"), ("reversion", "no"))),
             (
                 "config-07.ini",
                 None,
-                (("cms_version", "3.7"), ("permissions", "no"), ("django_version", dj_lts_version),),
+                (("cms_version", "3.7"), ("permissions", "no"), ("django_version", dj_lts_version)),
             ),
             (
                 "config-08.ini",
                 None,
-                (("cms_version", "3.7"), ("i18n", "no"), ("languages", ["ru"]), ("django_version", dj_lts_version),),
+                (("cms_version", "3.7"), ("i18n", "no"), ("languages", ["ru"]), ("django_version", dj_lts_version)),
             ),
             (
                 "config-09.ini",
@@ -913,7 +914,7 @@ class TestBaseConfig(unittest.TestCase):
             ),
             ("config-10.ini", "django_version", dj_lts_version),
             ("config-11.ini", "project_directory", "/test/me"),
-            ("config-12.ini", None, (("bootstrap", True), ("django_version", dj_lts_version)),),
+            ("config-12.ini", None, (("bootstrap", True), ("django_version", dj_lts_version))),
             ("config-13.ini", "templates", "."),
             ("config-14.ini", "starting_page", True),
             ("config-15.ini", "plugins", True),

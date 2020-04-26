@@ -81,14 +81,11 @@ class IsolatedTestClass(BaseTestClass):
         if self.verbose:
             print("deactivating virtualenv", self.virtualenv_dir)
         if os.path.exists(SYSTEM_ACTIVATE):
-            try:
-                execfile(SYSTEM_ACTIVATE, dict(__file__=SYSTEM_ACTIVATE))
-            except NameError:
-                with open(SYSTEM_ACTIVATE) as f:
-                    code = compile(f.read(), SYSTEM_ACTIVATE, "exec")
-                # fmt: off
-                exec(code, dict(__file__=SYSTEM_ACTIVATE))
-                # fmt: on
+            with open(SYSTEM_ACTIVATE) as f:
+                code = compile(f.read(), SYSTEM_ACTIVATE, "exec")
+            # fmt: off
+            exec(code, dict(__file__=SYSTEM_ACTIVATE))
+            # fmt: on
             sys.executable = os.path.join(os.path.dirname(SYSTEM_ACTIVATE), "python")
         super().tearDown()
         modules = copy(sys.modules)
@@ -103,14 +100,11 @@ class IsolatedTestClass(BaseTestClass):
                 ["virtualenv", "--always-copy", "-q", "--python=%s" % sys.executable, self.virtualenv_dir]
             )
             activate_temp = os.path.join(self.virtualenv_dir, "bin", "activate_this.py")
-            try:
-                execfile(activate_temp, dict(__file__=activate_temp))
-            except NameError:
-                with open(activate_temp) as f:
-                    code = compile(f.read(), activate_temp, "exec")
-                # fmt: off
-                exec(code, dict(__file__=activate_temp))
-                # fmt: on
+            with open(activate_temp) as f:
+                code = compile(f.read(), activate_temp, "exec")
+            # fmt: off
+            exec(code, dict(__file__=activate_temp))
+            # fmt: on
             if self.verbose:
                 print("activating virtualenv", self.virtualenv_dir)
             sys.executable = os.path.join(self.virtualenv_dir, "bin", "python")
