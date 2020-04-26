@@ -505,7 +505,7 @@ class TestDjango(IsolatedTestClass):
         # basic urlconf check
         self.assertTrue("cms.urls" in urlconf)
         self.assertTrue("static(settings.MEDIA_URL" in urlconf)
-        self.assertTrue("static(settings.STATIC_URLS" in urlconf)
+        self.assertTrue("static(settings.STATIC_URL" in urlconf)
 
         sys.path.remove(config_data.project_directory)
         del project

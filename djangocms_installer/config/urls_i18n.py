@@ -17,8 +17,5 @@ urlpatterns += i18n_patterns(path("admin/", admin.site.urls), path("", include("
 
 # This is only needed when using runserver.
 if settings.DEBUG:
-    urlpatterns = (
-        urlpatterns
-        + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-        + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    )
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
