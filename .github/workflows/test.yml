@@ -20,17 +20,17 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-lint-${{ hashFiles('requirements.txt') }}
+        key: ${{ runner.os }}-lint-pip-${{ hashFiles('requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-pip-lint-
+          ${{ runner.os }}-lint-pip-
           ${{ runner.os }}-
     - name: Cache tox
       uses: actions/cache@v1
       with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-tox-lint-${{ hashFiles('requirements.txt') }}
+        path: ~/.tox
+        key: ${{ runner.os }}-lint-tox-${{ hashFiles('requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-tox-lint-
+          ${{ runner.os }}-lint-tox-
           ${{ runner.os }}-
     - name: Install dependencies
       run: |
@@ -62,7 +62,7 @@ jobs:
     - name: Cache tox
       uses: actions/cache@v1
       with:
-        path: ~/.cache/pip
+        path: ~/.tox
         key: ${{ runner.os }}-tox-${{ hashFiles('requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-tox-
