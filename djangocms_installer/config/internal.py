@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function, unicode_literals
-
 import keyword
 import re
 import sys
@@ -10,22 +7,23 @@ import dj_database_url
 
 from .data import DRIVERS
 
-project_name_rx = re.compile(r'^[a-z0-9_A-Z]+$')
+project_name_rx = re.compile(r"^[a-z0-9_A-Z]+$")
 
 
 class DbAction(Action):
-
     def __call__(self, parser, namespace, values, option_string):
         parsed = dj_database_url.parse(values)
-        if parsed.get('ENGINE', None):
-            if DRIVERS[parsed['ENGINE']] == 'postgis':
-                sys.stdout.write('postgis installation is not supported at the moment.\n'
-                                 'You need to install and configure the backend.\n')
+        if parsed.get("ENGINE", None):
+            if DRIVERS[parsed["ENGINE"]] == "postgis":
+                sys.stdout.write(
+                    "postgis installation is not supported at the moment.\n"
+                    "You need to install and configure the backend.\n"
+                )
             setattr(namespace, self.dest, values)
-            setattr(namespace, '{0}_parsed'.format(self.dest), parsed)
-            setattr(namespace, '{0}_driver'.format(self.dest), DRIVERS[parsed['ENGINE']])
+            setattr(namespace, "{}_parsed".format(self.dest), parsed)
+            setattr(namespace, "{}_driver".format(self.dest), DRIVERS[parsed["ENGINE"]])
         else:
-            raise ValueError('Database URL not recognized, try again')
+            raise ValueError("Database URL not recognized, try again")
 
 
 def validate_project(project_name):

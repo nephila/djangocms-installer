@@ -99,16 +99,40 @@ Pull Request Guidelines
 Before you submit a pull request, check that it meets these guidelines:
 
 1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put
-   your new functionality into a function with a docstring, and add the
-   feature to the list in README.rst.
-3. The pull request should work for Python 2.6, 2.7, and 3.3, and for PyPy. Check
-   https://travis-ci.org/nephila/djangocms-installer/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+2. If the pull request adds functionality, the docs should be updated.
+   Documentation must be added in ``docs`` directory, and must include usage
+   information for the end user.
+   In case of public API method, add extended docstrings with full parameters
+   description and usage example.
+3. Add a changes file in ``changes`` directory describing the contribution in
+   one line. It will be added automatically to the history file upon release.
+   File must be named as ``<issue-number>.<type>`` with type being:
 
-Tips
-----
+    * ``.feature``: For new features.
+    * ``.bugfix``: For bug fixes.
+    * ``.doc``: For documentation improvement.
+    * ``.removal``: For deprecation or removal of public API.
+    * ``.misc``: For general issues.
 
-To run a subset of tests::
+   Check `towncrier`_ documentation for more details.
 
-	$ python setup.py test -s tests.main
+4. The pull request should work for all python / django / django CMS versions
+   declared in tox.ini.
+   Check the CI and make sure that the tests pass for all supported versions.
+
+Release a version
+-----------------
+
+#. Merge ``develop`` on ``master`` branch
+#. Bump release via task: ``inv tag-release (major|minor|patch)``
+#. Update changelog via towncrier: ``towncrier --yes``
+#. Commit changelog with ``git commit --amend`` to merge with bumpversion commit
+#. Create tag ``git tag <version>``
+#. Push tag to github
+#. Publish the release from the tags page
+#. If pipeline succeeds, push ``master``
+#. Merge ``master`` back on ``develop``
+#. Bump developement version via task: ``inv tag-dev -l (major|minor|patch)``
+#. Push ``develop``
+
+.. _towncrier: https://pypi.org/project/towncrier/#news-fragments
