@@ -6,7 +6,6 @@ python:
   - 3.7
   - 3.6
   - 3.5
-  - 2.7
 
 env:
 
@@ -28,8 +27,7 @@ before_install:
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
-  - pip install -U setuptools tox virtualenv coveralls
-  - "if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then export TOX_ENV=py27; fi"
+  - pip install -U setuptools tox virtualenv coveralls>=2
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then export TOX_ENV=py35; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then export TOX_ENV=py36; fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == '3.7' ]]; then export TOX_ENV=py37; fi"
@@ -40,17 +38,12 @@ install:
 script: COMMAND='coverage run --source=djangocms_installer' tox -e$TOX_ENV
 
 after_success:
+  - coverage report -m
   - codecov
   - coveralls
 
 matrix:
   exclude:
-  - python: 2.7
-    env: TEST='pep8'
-  - python: 2.7
-    env: TEST='isort'
-  - python: 2.7
-    env: TEST='docs'
   - python: 3.5
     env: TEST='pep8'
   - python: 3.5

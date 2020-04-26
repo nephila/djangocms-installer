@@ -275,21 +275,14 @@ information.
             requirements.extend(data.REQUIREMENTS['cms-master'])
         elif LooseVersion(cms_version) >= LooseVersion('3.7'):
             requirements.extend(data.REQUIREMENTS['cms-3.7'])
-        elif LooseVersion(cms_version) >= LooseVersion('3.6'):
-            requirements.extend(data.REQUIREMENTS['cms-3.6'])
 
         if not args.no_db_driver:
-            if args.db_driver == 'psycopg2' and django_version in ('1.11', '2.0', '2.1'):
-                requirements.append('psycopg2<2.8')
-            else:
-                requirements.append(args.db_driver)
+            requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.cms_version in ('rc', 'develop'):
                 requirements.extend(data.REQUIREMENTS['plugins-master'])
             elif LooseVersion(cms_version) >= LooseVersion('3.7'):
                 requirements.extend(data.REQUIREMENTS['plugins-3.7'])
-            elif LooseVersion(cms_version) >= LooseVersion('3.6'):
-                requirements.extend(data.REQUIREMENTS['plugins-3.6'])
             requirements.extend(data.REQUIREMENTS['filer'])
 
         # Django version check
@@ -304,12 +297,8 @@ information.
 
         if django_version == '2.2':
             requirements.extend(data.REQUIREMENTS['django-2.2'])
-        elif django_version == '2.1':
-            requirements.extend(data.REQUIREMENTS['django-2.1'])
-        elif django_version == '2.0':
-            requirements.extend(data.REQUIREMENTS['django-2.0'])
-        elif django_version == '1.11':
-            requirements.extend(data.REQUIREMENTS['django-1.11'])
+        elif django_version == '3.0':
+            requirements.extend(data.REQUIREMENTS['django-3.0'])
 
         requirements.extend(data.REQUIREMENTS['default'])
 

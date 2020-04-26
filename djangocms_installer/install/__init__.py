@@ -97,7 +97,7 @@ def requirements(req_file, pip_options='', is_file=False, verbose=False):
         subprocess.check_output(['python', '-msite'], stderr=subprocess.STDOUT)
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
         sys.stdout.write(output.decode('utf-8'))
-    except Exception as e:
+    except Exception as e:  # pragma: no cover
         logger.error('cmd : %s :%s' % (e.cmd, e.output))
         raise
 
@@ -124,7 +124,7 @@ def cleanup_directory(config_data):
     """
     if os.path.exists(config_data.project_directory):
         choice = False
-        if config_data.noinput is False and not config_data.verbose:
+        if config_data.noinput is False and not config_data.verbose:  # pragma: no cover
             choice = query_yes_no(
                 'The installation failed.\n'
                 'Do you want to clean up by removing {0}?\n'
