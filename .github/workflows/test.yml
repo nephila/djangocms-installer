@@ -45,8 +45,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8, 3.7, 3.6, 3.5]
-        django: [30, 22]
-        cms: [no, 37]
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
@@ -75,7 +73,7 @@ jobs:
         python -m pip install --upgrade pip setuptools tox>=1.8 coveralls>=2 codecov coverage
     - name: Test with tox
       env:
-        TOX_ENV: ${{ format('{{py{0}-django{1}-cms{2}}}', matrix.python-version, matrix.django, matrix.cms) }}
+        TOX_ENV: ${{ format('{{py{0}}}', matrix.python-version) }}
         COMMAND: coverage run
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: |
