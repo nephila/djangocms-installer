@@ -316,9 +316,7 @@ information.
         sys.exit(3)
 
     # Checking the given path
-    setattr(
-        args, "project_path", os.path.join(args.project_directory, args.project_name).strip(),
-    )
+    args.project_path = os.path.join(args.project_directory, args.project_name).strip()
     if not args.skip_project_dir_check:
         if os.path.exists(args.project_directory) and [
             path for path in os.listdir(args.project_directory) if not path.startswith(".")
@@ -392,7 +390,7 @@ information.
         )
         sys.exit(10)
 
-    if not getattr(args, "requirements_file"):
+    if not args.requirements_file:
         requirements = []
 
         # django CMS version check
@@ -438,17 +436,13 @@ information.
 
         requirements.extend(data.REQUIREMENTS["default"])
 
-        setattr(args, "requirements", "\n".join(requirements).strip())
+        args.requirements = "\n".join(requirements).strip()
 
     # Convenient shortcuts
-    setattr(args, "cms_version", cms_version)
-    setattr(args, "django_version", django_version)
-    setattr(
-        args, "settings_path", os.path.join(args.project_directory, args.project_name, "settings.py").strip(),
-    )
-    setattr(
-        args, "urlconf_path", os.path.join(args.project_directory, args.project_name, "urls.py").strip(),
-    )
+    args.cms_version = cms_version
+    args.django_version = django_version
+    args.settings_path = os.path.join(args.project_directory, args.project_name, "settings.py").strip()
+    args.urlconf_path = os.path.join(args.project_directory, args.project_name, "urls.py").strip()
 
     if args.config_dump:
         ini.dump_config_file(args.config_dump, args, parser)

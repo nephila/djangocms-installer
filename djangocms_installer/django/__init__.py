@@ -148,8 +148,8 @@ def patch_settings(config_data):
 
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
 
-    DATA_DIR = "DATA_DIR = os.path.dirname(os.path.dirname(__file__))\n"
-    STATICFILES_DIR = "os.path.join(BASE_DIR, '{}', 'static'),".format(config_data.project_name)
+    DATA_DIR = "DATA_DIR = os.path.dirname(os.path.dirname(__file__))\n"  # noqa
+    STATICFILES_DIR = "os.path.join(BASE_DIR, '{}', 'static'),".format(config_data.project_name)  # noqa
 
     original = data.DEFAULT_PROJECT_HEADER + DATA_DIR + original
     original += "MEDIA_URL = '/media/'\n"
@@ -208,17 +208,17 @@ def _build_settings(config_data):
     """
     spacer = "    "
     text = []
-    vars = get_settings()
+    settings_data = get_settings()
 
-    vars.MIDDLEWARE_CLASSES.insert(0, vars.APPHOOK_RELOAD_MIDDLEWARE_CLASS)
+    settings_data.MIDDLEWARE_CLASSES.insert(0, settings_data.APPHOOK_RELOAD_MIDDLEWARE_CLASS)
 
-    processors = vars.TEMPLATE_CONTEXT_PROCESSORS + vars.TEMPLATE_CONTEXT_PROCESSORS_3
+    processors = settings_data.TEMPLATE_CONTEXT_PROCESSORS + settings_data.TEMPLATE_CONTEXT_PROCESSORS_3
     text.append(
         data.TEMPLATES_1_8.format(
             loaders=(",\n" + spacer * 4).join(
                 [
                     "'{}'".format(var)
-                    for var in vars.TEMPLATE_LOADERS
+                    for var in settings_data.TEMPLATE_LOADERS
                     if (LooseVersion(config_data.django_version) < LooseVersion("2.0") or "eggs" not in var)
                 ]
             ),
@@ -229,17 +229,17 @@ def _build_settings(config_data):
 
     text.append(
         "MIDDLEWARE = [\n{}{}\n]".format(
-            spacer, (",\n" + spacer).join(["'{}'".format(var) for var in vars.MIDDLEWARE_CLASSES]),
+            spacer, (",\n" + spacer).join(["'{}'".format(var) for var in settings_data.MIDDLEWARE_CLASSES]),
         )
     )
 
-    apps = list(vars.INSTALLED_APPS)
-    apps = list(vars.CMS_3_HEAD) + apps
-    apps.extend(vars.TREEBEARD_APPS)
-    apps.extend(vars.CMS_3_APPLICATIONS)
+    apps = list(settings_data.INSTALLED_APPS)
+    apps = list(settings_data.CMS_3_HEAD) + apps
+    apps.extend(settings_data.TREEBEARD_APPS)
+    apps.extend(settings_data.CMS_3_APPLICATIONS)
 
     if not config_data.no_plugins:
-        apps.extend(vars.FILER_PLUGINS_3)
+        apps.extend(settings_data.FILER_PLUGINS_3)
 
     text.append(
         "INSTALLED_APPS = [\n{}{}\n]".format(
@@ -256,7 +256,7 @@ def _build_settings(config_data):
         )
     )
 
-    cms_langs = deepcopy(vars.CMS_LANGUAGES)
+    cms_langs = deepcopy(settings_data.CMS_LANGUAGES)
     for lang in config_data.languages:
         lang_dict = {"code": lang, "name": lang}
         lang_dict.update(copy(cms_langs["default"]))
@@ -295,13 +295,13 @@ def _build_settings(config_data):
         "CMS_TEMPLATES = (\n{0}{1}\n{0}{2}\n)".format(
             spacer,
             "## Customize this",
-            (",\n" + spacer).join(["('{}', '{}')".format(*item) for item in getattr(vars, cms_templates)]),
+            (",\n" + spacer).join(["('{}', '{}')".format(*item) for item in getattr(settings_data, cms_templates)]),
         )
     )
 
     text.append("X_FRAME_OPTIONS = 'SAMEORIGIN'")
-    text.append("CMS_PERMISSION = {}".format(vars.CMS_PERMISSION))
-    text.append("CMS_PLACEHOLDER_CONF = {}".format(vars.CMS_PLACEHOLDER_CONF))
+    text.append("CMS_PERMISSION = {}".format(settings_data.CMS_PERMISSION))
+    text.append("CMS_PLACEHOLDER_CONF = {}".format(settings_data.CMS_PLACEHOLDER_CONF))
 
     database = [
         "'{}': {}".format(key, format_val(val))
@@ -323,7 +323,7 @@ def _build_settings(config_data):
     if config_data.filer:
         text.append(
             "THUMBNAIL_PROCESSORS = (\n{}{}\n)".format(
-                spacer, (",\n" + spacer).join(["'{}'".format(var) for var in vars.THUMBNAIL_PROCESSORS]),
+                spacer, (",\n" + spacer).join(["'{}'".format(var) for var in settings_data.THUMBNAIL_PROCESSORS]),
             )
         )
     return "\n\n".join(text)
@@ -341,7 +341,7 @@ def setup_database(config_data):
         env["PYTHONPATH"] = str(os.pathsep.join(map(shlex_quote, sys.path)))
         commands = []
 
-        commands.append([sys.executable, "-W", "ignore", "manage.py", "migrate"],)
+        commands.append([sys.executable, "-W", "ignore", "manage.py", "migrate"])
 
         if config_data.verbose:
             sys.stdout.write("Database setup commands: {}\n".format(", ".join([" ".join(cmd) for cmd in commands])))

@@ -1,12 +1,7 @@
 import sys
+from configparser import ConfigParser
 
 from .data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX
-
-try:
-    from configparser import ConfigParser  # Python 3.
-except ImportError:
-    from ConfigParser import ConfigParser  # Python 2.
-
 
 SECTION = "djangocms_installer"
 
@@ -67,7 +62,7 @@ def dump_config_file(filename, args, parser=None):
             keyp = action.option_strings[0]
             option_name = keyp.lstrip("-")
             option_value = getattr(args, action.dest)
-            if any([i for i in keys_empty_values_not_pass if i in action.option_strings]):
+            if any(i for i in keys_empty_values_not_pass if i in action.option_strings):
                 if action.dest == "languages":
                     if len(option_value) == 1 and option_value[0] == "en":
                         config.set(SECTION, option_name, "")
@@ -117,7 +112,7 @@ def _convert_config_to_stdin(config, parser):
                     args.append(keyp)
             except ValueError:
                 args.extend([keyp, val])  # Pass it as is to get the error from ArgumentParser.
-        elif any([i for i in keys_empty_values_not_pass if i in action.option_strings]):
+        elif any(i for i in keys_empty_values_not_pass if i in action.option_strings):
             # Some keys with empty values shouldn't be passed into args to use their defaults
             # from ArgumentParser.
             if val != "":

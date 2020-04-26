@@ -103,7 +103,7 @@ def less_than_version(value):
     return ".".join(map(str, items))
 
 
-class chdir:
+class chdir:  # noqa
     """
     Context manager for changing the current working directory
     """
