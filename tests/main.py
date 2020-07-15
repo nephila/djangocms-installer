@@ -4,8 +4,7 @@ import sys
 from shutil import rmtree
 from subprocess import CalledProcessError
 from tempfile import mkdtemp
-
-from mock import patch
+from unittest.mock import patch
 
 from djangocms_installer import config, install, main
 

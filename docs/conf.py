@@ -56,7 +56,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "django CMS Installer"
-copyright = "2013, Iacopo Spalletti"
+copyright = "2013, Iacopo Spalletti"  # noqa
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

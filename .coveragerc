@@ -1,20 +1,34 @@
 [run]
-source = djangocms_installer
 branch = True
+source = djangocms_installer
 omit =
     djangocms_installer/share/*
     djangocms_installer/__main__.py
-    djangocms_installer/main.py
     djangocms_installer/compat.py
     djangocms_installer/config/urls_i18n.py
     djangocms_installer/config/urls_noi18n.py
     djangocms_installer/config/settings.py
-    tests/*
 
 [report]
+omit = *migrations*,*tests*,*test_utils*
+# Regexes for lines to exclude from consideration
 exclude_lines =
+    # Have to re-enable the standard pragma
     pragma: no cover
+
+    # Don't complain about missing debug-only code:
     def __repr__
+    if self\.debug
+
+    # Don't complain if tests don't hit defensive assertion code:
     raise AssertionError
     raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run:
+    if 0:
     if __name__ == .__main__.:
+
+ignore_errors = True
+
+[html]
+directory = coverage_html

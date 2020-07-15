@@ -3,8 +3,7 @@ import re
 import sqlite3
 import sys
 import textwrap
-
-from mock import patch
+from unittest.mock import patch
 
 from djangocms_installer import config, django, install
 

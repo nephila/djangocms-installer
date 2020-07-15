@@ -2,8 +2,8 @@ import json
 
 
 def create_pages():
+    from cms.api import add_plugin, create_page, publish_page
     from cms.models import Placeholder
-    from cms.api import create_page, add_plugin, publish_page
     from django.conf import settings
     from django.contrib.auth.models import User
     from django.utils.translation import ugettext_lazy as _

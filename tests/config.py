@@ -2,8 +2,8 @@ import copy
 import os
 import sys
 from argparse import Namespace
+from unittest.mock import patch
 
-from mock import patch
 from six import StringIO
 from tzlocal import get_localzone
 
@@ -959,7 +959,7 @@ class TestBaseConfig(unittest.TestCase):
         self.assertTrue(os.path.isfile(self.config_not_exists))
 
         fixture = copy.copy(self.config_fixture)
-        setattr(fixture, "timezone", get_localzone().zone)
+        fixture.timezone = get_localzone().zone
         # Load dumped config.
         args = self.args[0:1] + [self.config_not_exists] + self.args[1:]
         config_data = config.parse(args)
