@@ -2,7 +2,7 @@ import subprocess
 
 
 def clean(value):
-    if value:
+    if value and isinstance(value, str):
         return value.strip()
     else:
         return value

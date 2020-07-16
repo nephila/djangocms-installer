@@ -3,7 +3,6 @@ import sys
 from decimal import Decimal, InvalidOperation
 from distutils.version import LooseVersion
 
-from . import compat
 from .config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX, VERSION_MATRIX
 
 
@@ -33,7 +32,7 @@ def query_yes_no(question, default=None):  # pragma: no cover
 
     while True:
         sys.stdout.write(question + prompt)
-        choice = compat.input().lower()
+        choice = input().lower()
 
         if default is not None and choice == "":
             return valid[default]

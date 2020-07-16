@@ -7,7 +7,7 @@ from distutils.version import LooseVersion
 
 import pytz
 
-from .. import compat, utils
+from .. import compat
 from ..utils import less_than_version, supported_versions
 from . import data, ini
 from .internal import DbAction, validate_project
@@ -482,8 +482,7 @@ def _manage_args(parser, args):
         choices = default = ""
         input_value = getattr(args, action.dest)
         new_val = None
-        # cannot count this until we find a way to test input
-        if not args.noinput:  # pragma: no cover
+        if not args.noinput:
             if action.choices:
                 choices = " (choices: {})".format(", ".join(action.choices))
             if input_value:
@@ -494,10 +493,7 @@ def _manage_args(parser, args):
 
             while not new_val:
                 prompt = "{}{}{}: ".format(action.help, choices, default)
-                if action.choices in ("yes", "no"):
-                    new_val = utils.query_yes_no(prompt)
-                else:
-                    new_val = compat.input(prompt)
+                new_val = input(prompt)
                 new_val = compat.clean(new_val)
                 if not new_val and input_value:
                     new_val = input_value
@@ -509,7 +505,7 @@ def _manage_args(parser, args):
                     action(parser, args, new_val, action.option_strings)
                     new_val = getattr(args, action.dest)
         else:
-            if not input_value and action.required:
+            if not input_value and action.required:  # pragma: no cover
                 raise ValueError("Option {} is required when in no-input mode".format(action.dest))
             new_val = input_value
             if action.dest == "db":
@@ -518,6 +514,6 @@ def _manage_args(parser, args):
         if action.dest == "templates" and (new_val == "no" or not os.path.isdir(new_val)):
             new_val = False
         if action.dest in ("bootstrap", "starting_page"):
-            new_val = new_val == "yes"
+            new_val = new_val is True or new_val == "yes"
         setattr(args, action.dest, new_val)
     return args

@@ -1,6 +1,7 @@
 import copy
 import os
 import sys
+import tempfile
 from argparse import Namespace
 from unittest.mock import patch
 
@@ -8,13 +9,7 @@ from six import StringIO
 from tzlocal import get_localzone
 
 from djangocms_installer import config
-from djangocms_installer.config.data import (
-    CMS_VERSION_MATRIX,
-    DJANGO_VERSION_MATRIX,
-    DJANGOCMS_BETA,
-    DJANGOCMS_DEVELOP,
-    DJANGOCMS_RC,
-)
+from djangocms_installer.config import data
 from djangocms_installer.install import check_install
 from djangocms_installer.utils import less_than_version, supported_versions
 
@@ -90,7 +85,38 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(conf_data.project_name, "example_prj")
 
-        self.assertEqual(str(conf_data.cms_version), DJANGOCMS_DEVELOP)
+        self.assertEqual(str(conf_data.cms_version), data.DJANGOCMS_DEVELOP)
+        self.assertEqual(str(conf_data.django_version), dj_version)
+        self.assertEqual(conf_data.i18n, "yes")
+        self.assertEqual(conf_data.reversion, "no")
+        self.assertEqual(conf_data.permissions, "no")
+        self.assertEqual(conf_data.use_timezone, "no")
+        self.assertEqual(conf_data.timezone, "Europe/Rome")
+        self.assertEqual(conf_data.languages, ["en", "de", "it"])
+        self.assertEqual(conf_data.project_directory, self.project_dir)
+        self.assertEqual(conf_data.db, "postgres://user:pwd@host/dbname")
+        self.assertEqual(conf_data.db_driver, "psycopg2")
+
+        conf_data = config.parse(
+            [
+                "-q",
+                "--db=postgres://user:pwd@host/dbname",
+                "--django-version={}".format(dj_version),
+                "--cms-version={}".format(cms_version),
+                "--i18n=no",
+                "--reversion=no",
+                "--permissions=no",
+                "--use-tz=no",
+                "-tEurope/Rome",
+                "-len,de,it",
+                "-p" + self.project_dir,
+                "example_prj",
+            ]
+        )
+
+        self.assertEqual(conf_data.project_name, "example_prj")
+
+        self.assertEqual(str(conf_data.cms_version), data.DJANGOCMS_DEVELOP)
         self.assertEqual(str(conf_data.django_version), dj_version)
         self.assertEqual(conf_data.i18n, "yes")
         self.assertEqual(conf_data.reversion, "no")
@@ -129,6 +155,48 @@ class TestConfig(BaseTestClass):
         )
 
         self.assertEqual(conf_data.languages, ["en", "de", "it"])
+
+    def test_cli_config_missing_param(self):
+        with patch("sys.stdout", self.stdout):
+            with patch("sys.stderr", self.stderr):
+                with self.assertRaises(SystemExit) as e:
+                    conf_data = config.parse(["-q"])
+                    self.assertEqual(conf_data.languages, ["en"])
+        self.assertEqual(e.exception.code, 2)
+
+    def test_cli_config_input(self):
+        templates = tempfile.mkdtemp()
+        prj_dir = "param_w_input"
+        user_input = [
+            "sqlite://localhost/project.db",  # db
+            "stable",  # cms_version
+            "stable",  # django_version
+            "yes",  # i18n
+            "",  # reversion
+            "en",  # languages
+            "",  # timezone
+            "yes",  # use_timezone
+            "yes",  # permissions
+            "yes",  # bootstrap
+            "not_exist",  # templates
+            templates,  # templates
+            "yes",  # starting_page
+        ]
+        with patch("builtins.input", side_effect=user_input):
+            conf_data = config.parse(["-w", "-t=Europe/Rome", "-len", "-lde", "-eno", prj_dir])
+        self.assertEqual(conf_data.languages, ["en"])
+        self.assertEqual(conf_data.use_timezone, "yes")
+        self.assertEqual(conf_data.timezone, "Europe/Rome")
+        self.assertEqual(conf_data.permissions, "yes")
+        self.assertEqual(conf_data.i18n, "yes")
+        self.assertEqual(conf_data.django_version, data.DJANGO_STABLE)
+        self.assertEqual(conf_data.cms_version, data.DJANGOCMS_STABLE)
+        self.assertEqual(conf_data.db, "sqlite://localhost/project.db")
+        self.assertEqual(conf_data.bootstrap, True)
+        self.assertEqual(conf_data.reversion, "no")
+        self.assertEqual(conf_data.starting_page, True)
+        self.assertEqual(conf_data.templates, templates)
+        self.assertEqual(conf_data.templates, templates)
 
     def test_cli_config_comma_languages_with_space(self):
         conf_data = config.parse(
@@ -213,13 +281,13 @@ class TestConfig(BaseTestClass):
             with patch("sys.stderr", self.stderr):
                 with self.assertRaises(SystemExit) as error:
                     conf_data = config.parse(
-                        ["-q", "--db=postgres://user:pwd@host/dbname", "-p" + self.project_dir, prj_dir]
+                        ["-q", "--db=postgres://user:pwd@host/dbname", "-p" + self.project_dir, prj_dir, "-s"]
                     )
                     self.assertEqual(conf_data.project_path, existing_path)
         self.assertEqual(error.exception.code, 4)
-        self.assertTrue(
-            self.stderr.getvalue().find('Path "%s" already exists and is not empty' % self.project_dir) > -1
-        )
+        out = self.stderr.getvalue()
+        expected = 'Path "{}/{}" already exists, please choose a different one'.format(self.project_dir, prj_dir)
+        self.assertTrue(out.find(expected) > -1)
 
     def test_invalid_project_dir(self):
         prj_dir = "example_prj"
@@ -299,10 +367,10 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(supported_versions("stable", "stable"), (dj_version, "3.7"))
         self.assertEqual(supported_versions("stable", "3.1.10"), (dj_version, None))
-        self.assertEqual(supported_versions("stable", "rc"), (dj_version, DJANGOCMS_RC))
-        self.assertEqual(supported_versions("stable", "beta"), (dj_version, DJANGOCMS_BETA))
-        self.assertEqual(supported_versions("stable", "develop"), (dj_version, DJANGOCMS_DEVELOP))
-        self.assertEqual(supported_versions("lts", "rc"), ("2.2", DJANGOCMS_RC))
+        self.assertEqual(supported_versions("stable", "rc"), (dj_version, data.DJANGOCMS_RC))
+        self.assertEqual(supported_versions("stable", "beta"), (dj_version, data.DJANGOCMS_BETA))
+        self.assertEqual(supported_versions("stable", "develop"), (dj_version, data.DJANGOCMS_DEVELOP))
+        self.assertEqual(supported_versions("lts", "rc"), ("2.2", data.DJANGOCMS_RC))
         self.assertEqual(supported_versions("lts", "lts"), ("2.2", "3.7"))
 
         with self.assertRaises(RuntimeError):
@@ -797,11 +865,11 @@ class TestBaseConfig(unittest.TestCase):
     base_dir = os.path.dirname(os.path.dirname(__file__))
     config_dir = os.path.join(base_dir, "tests/fixtures/configs")
     args = ["--config-file", "-s", "-q", "example_prj"]
-    django_version = DJANGO_VERSION_MATRIX["stable"]
+    django_version = data.DJANGO_VERSION_MATRIX["stable"]
     config_fixture = Namespace(
         **{
             "bootstrap": False,
-            "cms_version": CMS_VERSION_MATRIX["stable"],
+            "cms_version": data.CMS_VERSION_MATRIX["stable"],
             "db": "sqlite://localhost/project.db",
             "django_version": django_version,
             "dump_reqs": False,
