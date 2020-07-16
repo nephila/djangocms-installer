@@ -2,7 +2,7 @@
 django CMS Installer
 ====================
 
-|Gitter| |PyPiVersion| |PyVersion| |Status| |TestCoverage| |CodeClimate| |License|
+|Gitter| |PyPiVersion| |PyVersion| |GAStatus| |TestCoverage| |CodeClimate| |License|
 
 Command to easily bootstrap django CMS projects
 
@@ -122,9 +122,9 @@ Please check that the ``.py`` extension is associated correctly with Python inte
     :target: https://pypi.python.org/pypi/djangocms-installer
     :alt: Python versions
 
-.. |Status| image:: https://img.shields.io/travis/nephila/djangocms-installer.svg?style=flat-square
-    :target: https://travis-ci.org/nephila/djangocms-installer
-    :alt: Latest Travis CI build status
+.. |GAStatus| image:: https://github.com/nephila/djangocms-installer/workflows/Tox%20tests/badge.svg
+    :target: https://github.com/nephila/django-app-helper
+    :alt: Latest CI build status
 
 .. |TestCoverage| image:: https://img.shields.io/coveralls/nephila/djangocms-installer/master.svg?style=flat-square
     :target: https://coveralls.io/r/nephila/djangocms-installer?branch=master

@@ -1,6 +1,6 @@
-============
+############
 Contributing
-============
+############
 
 Contributions are welcome, and they are greatly appreciated! Every
 little bit helps, and credit will always be given.
@@ -8,10 +8,10 @@ little bit helps, and credit will always be given.
 You can contribute in many ways:
 
 Types of Contributions
-----------------------
+**********************
 
 Report Bugs
-~~~~~~~~~~~
+===========
 
 Report bugs at https://github.com/nephila/djangocms-installer/issues.
 
@@ -22,26 +22,26 @@ If you are reporting a bug, please include:
 * Detailed steps to reproduce the bug.
 
 Fix Bugs
-~~~~~~~~
+========
 
 Look through the GitHub issues for bugs. Anything tagged with "bug"
 is open to whoever wants to implement it.
 
 Implement Features
-~~~~~~~~~~~~~~~~~~
+==================
 
 Look through the GitHub issues for features. Anything tagged with "feature"
 is open to whoever wants to implement it.
 
 Write Documentation
-~~~~~~~~~~~~~~~~~~~
+===================
 
-django CMS Installer could always use more documentation, whether as part of the
-official django CMS Installer docs, in docstrings, or even on the web in blog posts,
+djangocms-installer could always use more documentation, whether as part of the
+official djangocms-installer docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Submit Feedback
-~~~~~~~~~~~~~~~
+===============
 
 The best way to send feedback is to file an issue at https://github.com/nephila/djangocms-installer/issues.
 
@@ -52,25 +52,24 @@ If you are proposing a feature:
 * Remember that this is a volunteer-driven project, and that contributions
   are welcome :)
 
+************
 Get Started!
-------------
+************
 
-Ready to contribute? Here's how to set up `djangocms-installer` for local development.
+Ready to contribute? Here's how to set up ``djangocms-installer`` for local development.
 
-1. Fork the `djangocms-installer` repo on GitHub.
+1. Fork the ``djangocms-installer`` repo on GitHub.
 2. Clone your fork locally::
 
     $ git clone git@github.com:your_name_here/djangocms-installer.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper
+   installed, this is how you set up your fork for local development::
 
     $ mkvirtualenv djangocms-installer
     $ cd djangocms-installer/
-    $ python setup.py develop
     $ pip install -r requirements-test.txt
-
-the last one is to get the requirements including testing and development
-tools installed.
+    $ pip install -e .
 
 4. Create a branch for local development::
 
@@ -81,9 +80,9 @@ Now you can make your changes locally.
 5. When you're done making changes, check that your changes pass flake8 and the
 tests, including testing other Python versions with tox::
 
-    $ flake8 djangocms-installer tests
-    $ python setup.py test
     $ tox
+
+To get tox, pip install it into your virtualenv.
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -93,22 +92,74 @@ tests, including testing other Python versions with tox::
 
 7. Submit a pull request through the GitHub website.
 
+Development tips
+----------------
+
+This project allows you to use `pre-commit <https://pre-commit.com/>`_ to ensure an easy compliance
+to the project code styles.
+
+If you want to use it, install it globally (for example with ``pip3 install --user precommit``,
+but check `installation instruction <https://pre-commit.com/#install>`.
+When first cloning the project ensure you install the git hooks by running ``pre-commit install``.
+
+From now on every commit will be checked against our code style.
+
+Check also the available tox environments with ``tox -l``: the ones not marked with a python version number are tools
+to help you work on the project buy checking / formatting code style, running docs etc.
+
+Testing tips
+----------------
+You can test your project using any specific combination of python, django and django cms.
+
+For example ``tox -epy3.7-django30-cms37`` runs the tests on python 3.7, Django 3.0 and django CMS 3.7.
+
 Pull Request Guidelines
------------------------
+=======================
 
 Before you submit a pull request, check that it meets these guidelines:
 
-1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put
-   your new functionality into a function with a docstring, and add the
-   feature to the list in README.rst.
-3. The pull request should work for Python 2.6, 2.7, and 3.3, and for PyPy. Check
-   https://travis-ci.org/nephila/djangocms-installer/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+#. Pull request must be named with the following naming scheme:
 
-Tips
-----
+   ``<type>/(<optional-task-type>-)<number>-description``
 
-To run a subset of tests::
+   See below for available types.
 
-	$ python setup.py test -s tests.main
+#. The pull request should include tests.
+#. If the pull request adds functionality, the docs should be updated.
+   Documentation must be added in ``docs`` directory, and must include usage
+   information for the end user.
+   In case of public API method, add extended docstrings with full parameters
+   description and usage example.
+#. Add a changes file in ``changes`` directory describing the contribution in
+   one line. It will be added automatically to the history file upon release.
+   File must be named as ``<issue-number>.<type>`` with type being:
+
+   * ``.feature``: For new features.
+   * ``.bugfix``: For bug fixes.
+   * ``.doc``: For documentation improvement.
+   * ``.removal``: For deprecation or removal of public API.
+   * ``.misc``: For general issues.
+
+   Check `towncrier`_ documentation for more details.
+
+#. The pull request should work for all python / django / django CMS versions
+   declared in tox.ini.
+   Check the CI and make sure that the tests pass for all supported versions.
+
+Release a version
+=================
+
+#. Update authors file
+#. Merge ``develop`` on ``master`` branch
+#. Bump release via task: ``inv tag-release (major|minor|patch)``
+#. Update changelog via towncrier: ``towncrier --yes``
+#. Commit changelog with ``git commit --amend`` to merge with bumpversion commit
+#. Create tag ``git tag <version>``
+#. Push tag to github
+#. Publish the release from the tags page
+#. If pipeline succeeds, push ``master``
+#. Merge ``master`` back on ``develop``
+#. Bump developement version via task: ``inv tag-dev -l (major|minor|patch)``
+#. Push ``develop``
+
+.. _towncrier: https://pypi.org/project/towncrier/#news-fragments

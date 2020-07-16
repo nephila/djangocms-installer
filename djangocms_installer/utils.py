@@ -1,14 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function, unicode_literals
-
 import os
 import sys
 from decimal import Decimal, InvalidOperation
 from distutils.version import LooseVersion
 
-from six import text_type
-
-from . import compat
 from .config.data import CMS_VERSION_MATRIX, DJANGO_VERSION_MATRIX, VERSION_MATRIX
 
 
@@ -26,21 +20,21 @@ def query_yes_no(question, default=None):  # pragma: no cover
     Code borrowed from cookiecutter
     https://github.com/audreyr/cookiecutter/blob/master/cookiecutter/prompt.py
     """
-    valid = {'yes': True, 'y': True, 'ye': True, 'no': False, 'n': False}
+    valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
     if default is None:
-        prompt = ' [y/n] '
-    elif default == 'yes':
-        prompt = ' [Y/n] '
-    elif default == 'no':
-        prompt = ' [y/N] '
+        prompt = " [y/n] "
+    elif default == "yes":
+        prompt = " [Y/n] "
+    elif default == "no":
+        prompt = " [y/N] "
     else:
-        raise ValueError('invalid default answer: "{0}"'.format(default))
+        raise ValueError('invalid default answer: "{}"'.format(default))
 
     while True:
         sys.stdout.write(question + prompt)
-        choice = compat.input().lower()
+        choice = input().lower()
 
-        if default is not None and choice == '':
+        if default is not None and choice == "":
             return valid[default]
         elif choice in valid:
             return valid[choice]
@@ -73,23 +67,26 @@ def supported_versions(django, cms):
 
     try:
         if (
-                cms_version and django_version and
-                not (LooseVersion(VERSION_MATRIX[compat.unicode(cms_version)][0]) <=
-                     LooseVersion(compat.unicode(django_version)) <=
-                     LooseVersion(VERSION_MATRIX[compat.unicode(cms_version)][-1]))
+            cms_version
+            and django_version
+            and not (
+                LooseVersion(VERSION_MATRIX[str(cms_version)][0])
+                <= LooseVersion(str(django_version))
+                <= LooseVersion(VERSION_MATRIX[str(cms_version)][-1])
+            )
         ):
             raise RuntimeError(
-                'Django and django CMS versions doesn\'t match: '
-                'Django {0} is not supported by django CMS {1}'.format(django_version, cms_version)
+                "Django and django CMS versions doesn't match: "
+                "Django {} is not supported by django CMS {}".format(django_version, cms_version)
             )
     except KeyError:
         raise RuntimeError(
-            'Django and django CMS versions doesn\'t match: '
-            'Django {0} is not supported by django CMS {1}'.format(django_version, cms_version)
+            "Django and django CMS versions doesn't match: "
+            "Django {} is not supported by django CMS {}".format(django_version, cms_version)
         )
     return (
-        compat.unicode(django_version) if django_version else django_version,
-        compat.unicode(cms_version) if cms_version else cms_version
+        str(django_version) if django_version else django_version,
+        str(cms_version) if cms_version else cms_version,
     )
 
 
@@ -98,17 +95,18 @@ def less_than_version(value):
     Converts the current version to the next one for inserting into requirements
     in the ' < version' format
     """
-    items = list(map(int, str(value).split('.')))
+    items = list(map(int, str(value).split(".")))
     if len(items) == 1:
         items.append(0)
     items[1] += 1
-    return '.'.join(map(str, items))
+    return ".".join(map(str, items))
 
 
-class chdir(object):
+class chdir:  # noqa
     """
     Context manager for changing the current working directory
     """
+
     def __init__(self, new_path):
         self.new_path = new_path
 
@@ -126,8 +124,8 @@ def format_val(val):
     :param val: any value
     :return: formatted string
     """
-    val = text_type(val)
+    val = str(val)
     if val.isdigit():
         return int(val)
     else:
-        return '\'{0}\''.format(val)
+        return "'{}'".format(val)
