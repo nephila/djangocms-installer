@@ -41,7 +41,6 @@ class TestMain(IsolatedTestClass):
         self.assertTrue(stdout.find("djangocms-link") > -1)
         self.assertTrue(stdout.find("djangocms-picture") > -1)
         self.assertTrue(stdout.find("djangocms-style") > -1)
-        self.assertTrue(stdout.find("djangocms-snippet") > -1)
         self.assertTrue(stdout.find("cmsplugin-filer") == -1)
         self.assertTrue(stdout.find("djangocms-teaser") == -1)
         self.assertTrue(stdout.find("djangocms-video") > -1)

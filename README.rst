@@ -16,7 +16,7 @@ project.
 
 Refer to `django CMS Tutorial`_ on how to properly setup your first django CMS project.
 
-.. warning:: Version 2.0 dropped support for Python 2.7, django CMS < 3.7 and Django < 2.2.
+.. warning:: Version 2.0 dropped support for Python 2.7, 3.5, django CMS < 3.7 and Django < 2.2.
              More 1.2.x versions may be released after 1.2 is out in case important bugfixes will be needed.
 
 Usage
@@ -68,11 +68,13 @@ Supported versions
 
 The current supported version matrix is the following:
 
-+----------------+--------------+--------------+
-|                |  Django 2.2  | Django 3.0   |
-+----------------+--------------+--------------+
-| django CMS 3.7 | Supported    | Supported    |
-+----------------+--------------+--------------+
++----------------+--------------+--------------+---------------+
+|                |  Django 2.2  | Django 3.0   | Django 3.1    |
++----------------+--------------+--------------+---------------+
+| django CMS 3.7 | Supported    | Supported    | Not supported |
++----------------+--------------+--------------+---------------+
+| django CMS 3.8 | Supported    | Supported    | Supported     |
++----------------+--------------+--------------+---------------+
 
 See `version 1.2`_ for older Django / django CMS versions support
 
@@ -93,7 +95,7 @@ might work, but are not officially supported.
 Windows support
 ---------------
 
-The installer is tested on Windows 7 with Python versions 3.4.2 and 2.7.8 installed using
+The installer is tested on Windows 10 with Python version 3.8.6 installed using
 official MSI packages available at http://python.org.
 
 Please check that the ``.py`` extension is associated correctly with Python interpreter::

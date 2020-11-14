@@ -433,6 +433,8 @@ information.
             requirements.extend(data.REQUIREMENTS["django-2.2"])
         elif django_version == "3.0":
             requirements.extend(data.REQUIREMENTS["django-3.0"])
+        elif django_version == "3.1":
+            requirements.extend(data.REQUIREMENTS["django-3.1"])
 
         requirements.extend(data.REQUIREMENTS["default"])
 
