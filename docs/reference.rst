@@ -50,7 +50,7 @@ The following arguments can be overridden in :ref:`wizard_mode`
 .. note:: Django ``stable`` keyword is expanded to latest released Django version supported by django CMS
 .. note:: Django ``lts`` keyword is expanded to latest released Django LTS supported by django CMS
 .. note:: django-cms ``stable`` keyword is expanded to latest released django-cms version
-.. note:: django-cms ``lts`` keyword is expanded to latest released django-cms LTS version
+.. note:: django-cms ``lts`` keyword is expanded to latest released django-cms LTS version, or latest stable if LTS is not supported
 .. warning:: if an unsupported combination of Django and django CMS version is selected, the
              wizard exits reporting the error.
 

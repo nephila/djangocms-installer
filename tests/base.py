@@ -123,8 +123,8 @@ def get_stable_django(latest=False, lts=False):
     :param lts: Latest lts version
     """
     if latest and not sys.version_info < (3, 6) and not lts:
-        dj_ver = "3.0"
-        match = "Django<3.1"
+        dj_ver = "3.1"
+        match = "Django<3.2"
     else:
         dj_ver = "2.2"
         match = "Django<2.3"
@@ -137,6 +137,6 @@ def get_stable_djangocms():
 
     Takes into account arguments and python version.
     """
-    dj_ver = "3.7"
-    match = "django-cms<3.8"
+    dj_ver = "3.8"
+    match = "django-cms<3.9"
     return dj_ver, match

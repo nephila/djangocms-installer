@@ -17,8 +17,8 @@ Libraries you would want to check:
 
 The actual package name may vary depending on the platform / distribution you
 are using; you should make sure you have the library headers file installed
-(mostly contained in package with `-dev` in its name: e.g. `libjpeg-dev` for
-`libjpeg` library).
+(mostly contained in package with ``-dev`` in its name: e.g. ``libjpeg-dev`` for
+``libjpeg`` library).
 
 Examples
 ^^^^^^^^

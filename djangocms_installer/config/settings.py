@@ -79,7 +79,6 @@ FILER_PLUGINS_3 = (
     "djangocms_link",
     "djangocms_picture",
     "djangocms_style",
-    "djangocms_snippet",
     "djangocms_googlemap",
     "djangocms_video",
 )

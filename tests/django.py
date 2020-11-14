@@ -256,19 +256,13 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(len(re.findall("MEDIA_ROOT =", settings)), 1)
         self.assertEqual(len(re.findall("STATICFILES_DIRS", settings)), 1)
 
-    @unittest.skipIf(
-        sys.version_info[:2] not in ((3, 6), (3, 7), (3, 8),),
-        reason="django 3.0 only supports python 3.6, 3.7 and 3.8",
-    )
     def test_patch_django_30_develop(self):
-        dj_version, dj_match = get_stable_django(latest=True)
-
         extra_path = os.path.join(os.path.dirname(__file__), "data", "extra_settings.py")
         params = [
             "--db=sqlite://localhost/test.db",
             "--lang=en",
             "--extra-settings=%s" % extra_path,
-            "--django-version=%s" % dj_version,
+            "--django-version=3.0",
             "-f",
             "--cms-version=develop",
             "--timezone=Europe/Moscow",
@@ -294,7 +288,7 @@ class TestDjango(IsolatedTestClass):
         self.assertFalse(getattr(project.settings, "TEMPLATES_DIR", False))
         self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in project.settings.MIDDLEWARE)
 
-    def test_patch_django_22_rc(self):
+    def test_patch_django_22_38(self):
         dj_version, dj_match = get_stable_django(lts=True)
 
         extra_path = os.path.join(os.path.dirname(__file__), "data", "extra_settings.py")
@@ -304,14 +298,48 @@ class TestDjango(IsolatedTestClass):
             "--extra-settings=%s" % extra_path,
             "--django-version=%s" % dj_version,
             "-f",
-            "--cms-version=rc",
+            "--cms-version=3.8",
             "--timezone=Europe/Moscow",
             "-q",
             "-u",
             "-zno",
             "--i18n=no",
             "-p" + self.project_dir,
-            "test_patch_django_22_rc",
+            "test_patch_django_22_38",
+        ]
+        config_data = config.parse(params)
+        install.requirements(config_data.requirements)
+        django.create_project(config_data)
+        django.patch_settings(config_data)
+        django.copy_files(config_data)
+        # settings is importable even in non django environment
+        sys.path.append(config_data.project_directory)
+
+        project = __import__(config_data.project_name, globals(), locals(), ["settings"])
+
+        # checking for django options
+        self.assertTrue(project.settings.TEMPLATES)
+        self.assertFalse(getattr(project.settings, "TEMPLATES_DIR", False))
+        self.assertTrue(config.get_settings().APPHOOK_RELOAD_MIDDLEWARE_CLASS in project.settings.MIDDLEWARE)
+
+    def test_patch_django_31_38(self):
+        dj_version, dj_match = get_stable_django(lts=True)
+
+        extra_path = os.path.join(os.path.dirname(__file__), "data", "extra_settings.py")
+        params = [
+            "--db=sqlite://localhost/test.db",
+            "--lang=en",
+            "--extra-settings=%s" % extra_path,
+            "--django-version=3.1",
+            "-f",
+            "--cms-version=3.8",
+            "--timezone=Europe/Moscow",
+            "-q",
+            "-u",
+            "-zno",
+            "--i18n=no",
+            "-p" + self.project_dir,
+            "test_patch_django_22_38",
         ]
         config_data = config.parse(params)
         install.requirements(config_data.requirements)

@@ -1,4 +1,3 @@
-import sys
 import time
 
 bust = {"bust": time.time()}
@@ -22,22 +21,18 @@ DJANGOCMS_DEVELOP = "https://github.com/yakky/django-cms/archive/develop.zip?{bu
 DJANGOCMS_RC = "https://github.com/divio/django-cms/archive/release/3.7.x.zip?{bust}".format(**bust)
 DJANGOCMS_BETA = DJANGOCMS_RC
 DJANGOCMS_37 = "django-cms>=3.7,<3.8"
+DJANGOCMS_38 = "django-cms>=3.8,<3.9"
 
-DJANGOCMS_SUPPORTED = ("3.7", "stable", "lts", "develop", "rc")
-DJANGOCMS_STABLE = "3.7"
-DJANGOCMS_LTS = "3.7"
+DJANGOCMS_SUPPORTED = ("3.8", "3.7", "stable", "lts", "develop")
+DJANGOCMS_STABLE = "3.8"
+DJANGOCMS_LTS = "3.8"
 DJANGOCMS_DEFAULT = DJANGOCMS_STABLE
 
 DJANGO_DEVELOP = "https://github.com/django/django/archive/master.zip?{bust}".format(**bust)
 DJANGO_BETA = "https://github.com/django/django/archive/master.zip?{bust}".format(**bust)
-if sys.version_info >= (3, 6):
-    DJANGO_SUPPORTED = ("2.2", "3.0", "stable", "lts")
-    DJANGO_STABLE = "3.0"
-    DJANGO_LTS = "2.2"
-else:
-    DJANGO_SUPPORTED = ("2.2", "stable", "lts")
-    DJANGO_STABLE = "2.2"
-    DJANGO_LTS = "2.2"
+DJANGO_SUPPORTED = ("3.1", "3.0", "2.2", "stable", "lts")
+DJANGO_STABLE = "3.1"
+DJANGO_LTS = "2.2"
 
 DJANGO_DEFAULT = DJANGO_STABLE
 
@@ -57,12 +52,14 @@ DJANGO_VERSION_MATRIX = {
 }
 VERSION_MATRIX = {
     "3.7": ("2.2", "3.0"),
-    DJANGOCMS_BETA: ("2.2", "3.0"),
-    DJANGOCMS_RC: ("2.2", "3.0"),
-    DJANGOCMS_DEVELOP: ("2.2", "3.0"),
+    "3.8": ("2.2", "3.0", "3.1"),
+    DJANGOCMS_BETA: ("2.2", "3.1"),
+    DJANGOCMS_RC: ("2.2", "3.1"),
+    DJANGOCMS_DEVELOP: ("2.2", "3.1"),
 }
 PACKAGE_MATRIX = {
     "3.7": DJANGOCMS_37,
+    "3.8": DJANGOCMS_38,
     DJANGOCMS_RC: DJANGOCMS_RC,
     DJANGOCMS_BETA: DJANGOCMS_BETA,
     DJANGOCMS_DEVELOP: DJANGOCMS_DEVELOP,
@@ -72,22 +69,34 @@ REQUIREMENTS = {
     "default": ["html5lib>=1.0.1", "Pillow>=3.0", "six", "pytz"],
     "django-2.2": ["django-classy-tags>=0.9", "django-sekizai>=1.0", "django-mptt>0.9"],
     "django-3.0": ["django-classy-tags>=0.9", "django-sekizai>=1.0", "django-mptt>0.9"],
-    "cms-3.7": ["djangocms-admin-style>=1.5,<1.6", "django-treebeard>=4.0,<5.0"],
+    "django-3.1": ["django-classy-tags>=2.0", "django-sekizai>=2.0", "django-mptt>0.9"],
+    "cms-3.7": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<5.0"],
+    "cms-3.8": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<5.0"],
     "cms-master": [
         "https://github.com/divio/djangocms-admin-style/archive/master.zip?{bust}".format(**bust),
         "django-treebeard>=4.0,<5.0",
     ],
     "plugins-3.7": [
-        "djangocms-text-ckeditor>=3.7,<4.0",
-        "djangocms-link>=2.5,<2.7",
-        "djangocms-icon>=1.4,<1.6",
-        "djangocms-style>=2.2,<2.4",
-        "djangocms-googlemap>=1.3,<1.5",
-        "djangocms-snippet>=2.2,<2.4",
-        "djangocms-video>=2.1,<2.4",
-        "djangocms-file>=2.3,<2.5",
-        "djangocms-picture>=2.3,<2.5",
-        "djangocms-bootstrap4>=1.5,<1.7",
+        "djangocms-text-ckeditor>=4.0,<5.0",
+        "djangocms-link>=3.0,<4.0",
+        "djangocms-icon>=2.0,<3.0",
+        "djangocms-style>=3.0,<4.0",
+        "djangocms-googlemap>=2.0,<3.0",
+        "djangocms-video>=3.0,<4.0",
+        "djangocms-file>=3.0,<4.0",
+        "djangocms-picture>=3.0,<4.0",
+        "djangocms-bootstrap4>=2.0,<3.0",
+    ],
+    "plugins-3.8": [
+        "djangocms-text-ckeditor>=4.0,<5.0",
+        "djangocms-link>=3.0,<4.0",
+        "djangocms-icon>=2.0,<3.0",
+        "djangocms-style>=3.0,<4.0",
+        "djangocms-googlemap>=2.0,<3.0",
+        "djangocms-video>=3.0,<4.0",
+        "djangocms-file>=3.0,<4.0",
+        "djangocms-picture>=3.0,<4.0",
+        "djangocms-bootstrap4>=2.0,<3.0",
     ],
     "plugins-master": [
         "https://github.com/divio/djangocms-text-ckeditor/archive/master.zip?{bust}" "".format(**bust),
@@ -130,7 +139,6 @@ djangocms installer will install and configure the following plugins:
  * djangocms-file (File plugin)
  * djangocms-picture (Image plugin)
  * djangocms-style (Style plugin)
- * djangocms-snippet (Snippet plugin)
  * djangocms-googlemap (GoogleMap plugin)
  * djangocms-video (Video plugin)
 """

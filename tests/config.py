@@ -26,7 +26,7 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(conf_data.project_name, "example_prj")
 
-        self.assertEqual(conf_data.cms_version, "3.7")
+        self.assertEqual(conf_data.cms_version, "3.8")
         self.assertEqual(conf_data.django_version, dj_version)
         self.assertEqual(conf_data.i18n, "yes")
         self.assertEqual(conf_data.reversion, "yes")
@@ -361,17 +361,15 @@ class TestConfig(BaseTestClass):
         self.assertEqual(less_than_version("3"), "3.1")
         self.assertEqual(less_than_version("3.0.1"), "3.1.1")
 
-    @unittest.skipIf(sys.version_info[0] < 3, reason="django 2+ only supports python 3")
     def test_supported_versions(self):
         dj_version, dj_match = get_stable_django(latest=True)
 
-        self.assertEqual(supported_versions("stable", "stable"), (dj_version, "3.7"))
+        self.assertEqual(supported_versions("stable", "stable"), (dj_version, "3.8"))
         self.assertEqual(supported_versions("stable", "3.1.10"), (dj_version, None))
-        self.assertEqual(supported_versions("stable", "rc"), (dj_version, data.DJANGOCMS_RC))
         self.assertEqual(supported_versions("stable", "beta"), (dj_version, data.DJANGOCMS_BETA))
         self.assertEqual(supported_versions("stable", "develop"), (dj_version, data.DJANGOCMS_DEVELOP))
-        self.assertEqual(supported_versions("lts", "rc"), ("2.2", data.DJANGOCMS_RC))
-        self.assertEqual(supported_versions("lts", "lts"), ("2.2", "3.7"))
+        self.assertEqual(supported_versions("lts", "stable"), ("2.2", "3.8"))
+        self.assertEqual(supported_versions("lts", "lts"), ("2.2", "3.8"))
 
         with self.assertRaises(RuntimeError):
             supported_versions("stable", "2.4"), ("1.5", "2.4")
@@ -405,8 +403,8 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find("django-reversion") > -1)
-        self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor>=3.7,<4.0") > -1)
-        self.assertTrue(conf_data.requirements.find("djangocms-admin-style>=1.5") > -1)
+        self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor>=4.0") > -1)
+        self.assertTrue(conf_data.requirements.find("djangocms-admin-style>=2.0") > -1)
         self.assertTrue(conf_data.requirements.find("django-filer") > -1)
         self.assertTrue(conf_data.requirements.find("cmsplugin-filer") == -1)
         self.assertTrue(conf_data.requirements.find("djangocms-file") > -1)
@@ -427,12 +425,12 @@ class TestConfig(BaseTestClass):
             ]
         )
 
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_38) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find("django-reversion") > -1)
         self.assertTrue(conf_data.requirements.find("cmsplugin-filer") == -1)
         self.assertTrue(conf_data.requirements.find("djangocms-admin-style") > -1)
-        self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor>=3.7,<4.0") > -1)
+        self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor>=4.0") > -1)
         self.assertTrue(conf_data.requirements.find("djangocms-bootstrap4") > -1)
         self.assertTrue(conf_data.requirements.find("djangocms-file") > -1)
         self.assertTrue(conf_data.requirements.find("djangocms-flash") == -1)
@@ -562,7 +560,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find("django-reversion") > -1)
-        self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor>=3.7") > -1)
+        self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor>=4.0") > -1)
         self.assertTrue(conf_data.requirements.find("djangocms-admin-style") > -1)
         self.assertTrue(conf_data.requirements.find("pytz") > -1)
 
@@ -585,7 +583,7 @@ class TestConfig(BaseTestClass):
         self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find("django-reversion") > -1)
-        self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor>=3.7") > -1)
+        self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor>=4.0") > -1)
         self.assertTrue(conf_data.requirements.find("djangocms-admin-style") > -1)
         self.assertTrue(conf_data.requirements.find("pytz") > -1)
 
@@ -672,20 +670,17 @@ class TestConfig(BaseTestClass):
             "-p" + self.project_dir,
             "example_prj",
         ]
-        if sys.version_info < (3, 5,):
-            with self.assertRaises(SystemExit):
-                conf_data = config.parse(requirements_21)
-        else:
-            conf_data = config.parse(requirements_21)
 
-            self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
-            self.assertTrue(conf_data.requirements.find(dj_match) > -1)
-            self.assertFalse(conf_data.requirements.find("django-reversion") > -1)
-            self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor") == -1)
-            self.assertTrue(conf_data.requirements.find("djangocms-admin-style/archive/master.zip") > -1)
-            self.assertTrue(conf_data.requirements.find("djangocms-teaser/archive/master.zip") == -1)
-            self.assertTrue(conf_data.requirements.find("south") == -1)
-            self.assertTrue(conf_data.requirements.find("psycopg2") > -1)
+        conf_data = config.parse(requirements_21)
+
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_DEVELOP) > -1)
+        self.assertTrue(conf_data.requirements.find(dj_match) > -1)
+        self.assertFalse(conf_data.requirements.find("django-reversion") > -1)
+        self.assertTrue(conf_data.requirements.find("djangocms-text-ckeditor") == -1)
+        self.assertTrue(conf_data.requirements.find("djangocms-admin-style/archive/master.zip") > -1)
+        self.assertTrue(conf_data.requirements.find("djangocms-teaser/archive/master.zip") == -1)
+        self.assertTrue(conf_data.requirements.find("south") == -1)
+        self.assertTrue(conf_data.requirements.find("psycopg2") > -1)
 
         dj_version, dj_match = get_stable_django(lts=True)
         conf_data = config.parse(
@@ -699,7 +694,7 @@ class TestConfig(BaseTestClass):
             ]
         )
 
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_38) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
 
         dj_version, dj_match = get_stable_django(latest=True)
@@ -714,7 +709,7 @@ class TestConfig(BaseTestClass):
             ]
         )
 
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_37) > -1)
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_38) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
 
     def test_bootstrap(self):
@@ -930,7 +925,6 @@ class TestBaseConfig(unittest.TestCase):
         if hasattr(config_data, "requirements"):
             delattr(config_data, "requirements")
 
-    @unittest.skipIf(sys.version_info[0] < 3, reason="django 2+ only supports python 3")
     def test_parse_config_file(self, *args):
         """Tests .config.__init__._parse_config_file function."""
         dj_version, __ = get_stable_django(latest=True)
@@ -955,14 +949,14 @@ class TestBaseConfig(unittest.TestCase):
                     ("django_version", dj_lts_version),
                 ),
             ),
-            ("config-03.ini", None, (("cms_version", "3.7"), ("i18n", "no"), ("django_version", dj_version),)),
-            ("config-04.ini", None, (("cms_version", "3.7"), ("use_timezone", "no"))),
-            ("config-05.ini", None, (("cms_version", "3.7"), ("timezone", "Europe/London"))),
-            ("config-06.ini", None, (("cms_version", "3.7"), ("reversion", "no"))),
+            ("config-03.ini", None, (("cms_version", "3.8"), ("i18n", "no"), ("django_version", dj_version),)),
+            ("config-04.ini", None, (("cms_version", "3.8"), ("use_timezone", "no"))),
+            ("config-05.ini", None, (("cms_version", "3.8"), ("timezone", "Europe/London"))),
+            ("config-06.ini", None, (("cms_version", "3.8"), ("reversion", "no"))),
             (
                 "config-07.ini",
                 None,
-                (("cms_version", "3.7"), ("permissions", "no"), ("django_version", dj_lts_version)),
+                (("cms_version", "3.8"), ("permissions", "no"), ("django_version", dj_lts_version)),
             ),
             (
                 "config-08.ini",
@@ -973,14 +967,14 @@ class TestBaseConfig(unittest.TestCase):
                 "config-09.ini",
                 None,
                 (
-                    ("cms_version", "3.7"),
+                    ("cms_version", "3.8"),
                     ("i18n", "yes"),
                     ("languages", ["en", "ru"]),
                     ("django_version", dj_lts_version),
                 ),
             ),
             ("config-10.ini", "django_version", dj_lts_version),
-            ("config-11.ini", "project_directory", "/test/me"),
+            ("config-11.ini", None, (("project_directory", "/test/me"), ("cms_version", "3.7"))),
             ("config-12.ini", None, (("bootstrap", True), ("django_version", dj_lts_version))),
             ("config-13.ini", "templates", "."),
             ("config-14.ini", "starting_page", True),
