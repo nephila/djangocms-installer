@@ -949,7 +949,15 @@ class TestBaseConfig(unittest.TestCase):
                     ("django_version", dj_lts_version),
                 ),
             ),
-            ("config-03.ini", None, (("cms_version", "3.8"), ("i18n", "no"), ("django_version", dj_version),)),
+            (
+                "config-03.ini",
+                None,
+                (
+                    ("cms_version", "3.8"),
+                    ("i18n", "no"),
+                    ("django_version", dj_version),
+                ),
+            ),
             ("config-04.ini", None, (("cms_version", "3.8"), ("use_timezone", "no"))),
             ("config-05.ini", None, (("cms_version", "3.8"), ("timezone", "Europe/London"))),
             ("config-06.ini", None, (("cms_version", "3.8"), ("reversion", "no"))),
