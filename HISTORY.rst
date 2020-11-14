@@ -6,110 +6,121 @@ History
 
 .. towncrier release notes start
 
+2.0.0 (2020-11-15)
+===================
+
+Features
+--------
+
+- Move to Github Actions (#362)
+- Adopt modern packaging layout (#363)
+- Reformat with black (#364)
+- Add support for Django 3.1 / django CMS 3.8 (#376)
+- Update pre-commit repos (#377)
 
 1.2.3 (2020-04-23)
 ===================
 
-* Fixed support for staticfiles
-* Fixed X_FRAME_OPTIONS default
+* Fix support for staticfiles
+* Fix X_FRAME_OPTIONS default
 
 1.2.2 (2020-04-23)
 ===================
 
-* Added support for Django 3.0
-* Added support for django CMS 3.7.2
+* Add support for Django 3.0
+* Add support for django CMS 3.7.2
 
 1.2.1 (2019-12-27)
 ===================
 
-* Pinned formtools version on django 1.11 to avoid python 2 issues
-* Unpinned psycopg2 version for Django 2.2+
-* Added support for "shorthand" postgres django backend
+* Pin formtools version on django 1.11 to avoid python 2 issues
+* Unpin psycopg2 version for Django 2.2+
+* Add support for "shorthand" postgres django backend
 
 1.2.0 (2019-11-04)
 ===================
 
-* Added support for django CMS 3.7 - Django 2.2
-* Added support for Python 3.7
+* Add support for django CMS 3.7 - Django 2.2
+* Add support for Python 3.7
 * Replaced Bootstrap 3 theme with Bootstrap 4
-* Added djangocms-bootstrap4 package
-* Dropped support for Django < 1.11
-* Dropped support for Python 3.4
-* Dropped support for aldryn-boilerplates
+* Add djangocms-bootstrap4 package
+* Drop support for Django < 1.11
+* Drop support for Python 3.4
+* Drop support for aldryn-boilerplates
 
 1.1.1 (2019-06-29)
 ===================
 
-* Fixed project name check
-* Pinned psycopg2 version to avoid issues in Python 3.6+
+* Fix project name check
+* Pin psycopg2 version to avoid issues in Python 3.6+
 
 1.1.0 (2019-03-05)
 ===================
 
-* Added support for django CMS 3.6
-* Added detection of incompatible DJANGO_SETTINGS_MODULE environment variable
-* Added detection of mismatched Django version between currently installed and declared one
+* Add support for django CMS 3.6
+* Add detection of incompatible DJANGO_SETTINGS_MODULE environment variable
+* Add detection of mismatched Django version between currently installed and declared one
 
 1.0.2 (2018-11-21)
 ===================
 
-* Bumped html5lib / djangocms-text-ckeditor version
+* Bump html5lib / djangocms-text-ckeditor version
 
 1.0.1 (2018-06-03)
 ===================
 
-* Pinned django-polymorphic version to fix issues with django < 1.11
-* Pinned djangocms core plugins versions
+* Pin django-polymorphic version to fix issues with django < 1.11
+* Pin djangocms core plugins versions
 
 1.0.0 (2018-02-01)
 ===================
 
-* Dropped cmsplugin-filer in favor of core plugins which now use filer
-* Added django CMS 3.5
+* Drop cmsplugin-filer in favor of core plugins which now use filer
+* Add django CMS 3.5
 
 0.9.8 (2018-01-10)
 ===================
 
-* Raised more informative messages on command failures
-* Fixed tests for django CMS develop
+* Raise more informative messages on command failures
+* Fix tests for django CMS develop
 
 0.9.7 (2017-07-15)
 ===================
 
-* Improved django-admin invocation to support more python environments layouts
+* Improve django-admin invocation to support more python environments layouts
 
 0.9.6 (2017-03-12)
 ===================
 
-* Added more Django 1.10 fixes / cleanups
-* Added python 3.6 compatibility
+* Add more Django 1.10 fixes / cleanups
+* Add python 3.6 compatibility
 
 0.9.5 (2017-02-16)
 ===================
 
-* Added more Django 1.10 fixes / cleanups
+* Add more Django 1.10 fixes / cleanups
 
 0.9.4 (2017-01-03)
 ===================
 
-* Added support for Django 1.10
-* Added 'lts' keyword (it's now the default instead of 'stable')
+* Add support for Django 1.10
+* Add 'lts' keyword (it's now the default instead of 'stable')
 
 0.9.3 (2016-11-16)
 ===================
 
-* Fixed issue with create_user command
+* Fix issue with create_user command
 
 0.9.2 (2016-11-12)
 ===================
 
-* Fixed search 'django-admin.py'
-* Improved error reporting during package installation
+* Fix search 'django-admin.py'
+* Improve error reporting during package installation
 
 0.9.1 (2016-10-02)
 ===================
 
-* Fixed issue with -p parameter
+* Fix issue with -p parameter
 
 0.9.0 (2016-09-15)
 ===================
@@ -131,12 +142,12 @@ History
 * Disable permission by default
 
 0.8.12 (2016-08-27)
-===================+
+====================
 
 * Pin plugins versions
 
 0.8.11 (2016-07-15)
-===================+
+====================
 
 * Better plugins version pinning
 * Move sitemaps to non-language prefix url
@@ -144,7 +155,7 @@ History
 * Pin html5lib version
 
 0.8.10 (2016-05-28)
-===================+
+====================
 
 * Add support for django CMS 3.3 final
 
@@ -263,8 +274,8 @@ History
 0.7.2 (2015-02-08)
 ===================
 
-* Fixed Windows compatibility issues
-* Fixed python 3 compatibility issues
+* Fix Windows compatibility issues
+* Fix python 3 compatibility issues
 * Add a flag to skip the project directory emptiness check
 
 0.7.1 (2015-01-15)
@@ -277,10 +288,10 @@ History
 0.7.0 (2015-01-10)
 ===================
 
-* Improved support for Django 1.7 and django CMS develop (3.1)
+* Improve support for Django 1.7 and django CMS develop (3.1)
 * Totally new test strategy
 * Reverted -I parameter to install packages
-* Improved support for cleanup after failure
+* Improve support for cleanup after failure
 
 0.6.0 (2014-11-30)
 ===================
@@ -395,7 +406,7 @@ History
 0.1.1 (2013-10-20)
 ===================
 
-* Improved documentation on how to fix installation in case of missing libraries.
+* Improve documentation on how to fix installation in case of missing libraries.
 
 0.1.0 (2013-10-19)
 ===================

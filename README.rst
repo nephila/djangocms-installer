@@ -8,8 +8,9 @@ Command to easily bootstrap django CMS projects
 
 * Free software: BSD license
 
+************
 Features
---------
+************
 
 ``djangocms-installer`` is a console wizard to help bootstrapping a django CMS
 project.
@@ -19,8 +20,9 @@ Refer to `django CMS Tutorial`_ on how to properly setup your first django CMS p
 .. warning:: Version 2.0 dropped support for Python 2.7, 3.5, django CMS < 3.7 and Django < 2.2.
              More 1.2.x versions may be released after 1.2 is out in case important bugfixes will be needed.
 
+************
 Usage
------
+************
 
 To create your first django CMS project run::
 
@@ -40,13 +42,15 @@ and enjoy your first django CMS project.
 
 More at `django CMS Tutorial`_ and `installer usage page`_
 
+**************
 Documentation
--------------
+**************
 
 For detailed information see https://djangocms-installer.readthedocs.io
 
+************************************************
 Preliminary checks and system libraries
----------------------------------------
+************************************************
 
 While this wizard try to handle most of the things for you, it doesn't check for
 all the proper native (non python) libraries to be installed.
@@ -63,8 +67,9 @@ Libraries you would want to check:
 
 For additional information, check https://djangocms-installer.readthedocs.io/en/latest/libraries.html
 
+******************
 Supported versions
-------------------
+******************
 
 The current supported version matrix is the following:
 
@@ -84,16 +89,18 @@ it's not supported, while it still may work.
 ``djangocms-installer`` tries to support beta versions of django CMS when they
 are be considered sufficiently stable by the upstream project.
 
+*******
 Warning
--------
+*******
 
 ``djangocms-installer`` assumes that ``django-admin.py`` is installed in the same directory
 as python executable, which is the standard virtualenv layout. Other installation layouts
 might work, but are not officially supported.
 
 
+***************
 Windows support
----------------
+***************
 
 The installer is tested on Windows 10 with Python version 3.8.6 installed using
 official MSI packages available at http://python.org.
