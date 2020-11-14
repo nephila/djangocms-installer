@@ -175,7 +175,8 @@ STATICFILES_DIRS = (
 
     if config_data.languages:
         original = original.replace(
-            "LANGUAGE_CODE = 'en-us'", "LANGUAGE_CODE = '{}'".format(config_data.languages[0]),
+            "LANGUAGE_CODE = 'en-us'",
+            "LANGUAGE_CODE = '{}'".format(config_data.languages[0]),
         )
     if config_data.timezone:
         original = original.replace("TIME_ZONE = 'UTC'", "TIME_ZONE = '{}'".format(config_data.timezone))
@@ -229,7 +230,8 @@ def _build_settings(config_data):
 
     text.append(
         "MIDDLEWARE = [\n{}{}\n]".format(
-            spacer, (",\n" + spacer).join(["'{}'".format(var) for var in settings_data.MIDDLEWARE_CLASSES]),
+            spacer,
+            (",\n" + spacer).join(["'{}'".format(var) for var in settings_data.MIDDLEWARE_CLASSES]),
         )
     )
 
@@ -323,7 +325,8 @@ def _build_settings(config_data):
     if config_data.filer:
         text.append(
             "THUMBNAIL_PROCESSORS = (\n{}{}\n)".format(
-                spacer, (",\n" + spacer).join(["'{}'".format(var) for var in settings_data.THUMBNAIL_PROCESSORS]),
+                spacer,
+                (",\n" + spacer).join(["'{}'".format(var) for var in settings_data.THUMBNAIL_PROCESSORS]),
             )
         )
     return "\n\n".join(text)

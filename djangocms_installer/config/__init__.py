@@ -157,7 +157,11 @@ information.
         help="Use Bootstrap 4 Theme",
     )
     parser.add_argument(
-        "--templates", dest="templates", action="store", default="no", help="Use custom template set",
+        "--templates",
+        dest="templates",
+        action="store",
+        default="no",
+        help="Use custom template set",
     )
     parser.add_argument(
         "--starting-page",
@@ -202,7 +206,12 @@ information.
         help="Don't run the configuration wizard, just use the " "provided values",
     )
     parser.add_argument(
-        "--wizard", "-w", dest="wizard", action="store_true", default=False, help="Run the configuration wizard",
+        "--wizard",
+        "-w",
+        dest="wizard",
+        action="store_true",
+        default=False,
+        help="Run the configuration wizard",
     )
     parser.add_argument(
         "--verbose",
@@ -236,7 +245,11 @@ information.
         help="Don't install package dependencies",
     )
     parser.add_argument(
-        "--no-plugins", dest="no_plugins", action="store_true", default=False, help="Don't install plugins",
+        "--no-plugins",
+        dest="no_plugins",
+        action="store_true",
+        default=False,
+        help="Don't install plugins",
     )
     parser.add_argument(
         "--no-db-driver",
@@ -254,7 +267,12 @@ information.
         help="Don't run syncdb / migrate after bootstrapping",
     )
     parser.add_argument(
-        "--no-user", "-u", dest="no_user", action="store_true", default=False, help="Don't create the admin user",
+        "--no-user",
+        "-u",
+        dest="no_user",
+        action="store_true",
+        default=False,
+        help="Don't create the admin user",
     )
     parser.add_argument(
         "--template",
@@ -287,7 +305,11 @@ information.
         help="Delete project directory on creation failure.",
     )
     parser.add_argument(
-        "--utc", dest="utc", action="store_true", default=False, help="Use UTC timezone.",
+        "--utc",
+        dest="utc",
+        action="store_true",
+        default=False,
+        help="Use UTC timezone.",
     )
 
     if "--utc" in args:

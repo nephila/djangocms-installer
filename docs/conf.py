@@ -199,7 +199,13 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "djangocms_installer.tex", "django CMS Installer Documentation", "Iacopo Spalletti", "manual",),
+    (
+        "index",
+        "djangocms_installer.tex",
+        "django CMS Installer Documentation",
+        "Iacopo Spalletti",
+        "manual",
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -227,7 +233,15 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [("index", "djangocms_installer", "django CMS Installer Documentation", ["Iacopo Spalletti"], 1,)]
+man_pages = [
+    (
+        "index",
+        "djangocms_installer",
+        "django CMS Installer Documentation",
+        ["Iacopo Spalletti"],
+        1,
+    )
+]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False

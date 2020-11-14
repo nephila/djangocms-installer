@@ -180,7 +180,8 @@ class TestDjango(IsolatedTestClass):
 
         # checking for django options
         self.assertEqual(
-            project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, "media"),
+            project.settings.MEDIA_ROOT,
+            os.path.join(config_data.project_directory, "media"),
         )
         self.assertEqual(project.settings.MEDIA_URL, "/media/")
 
@@ -222,7 +223,8 @@ class TestDjango(IsolatedTestClass):
 
         # checking for django options
         self.assertEqual(
-            project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, "media"),
+            project.settings.MEDIA_ROOT,
+            os.path.join(config_data.project_directory, "media"),
         )
         self.assertEqual(project.settings.MEDIA_URL, "/media/")
 
@@ -482,7 +484,8 @@ class TestDjango(IsolatedTestClass):
         self.assertEqual(project.settings.TIME_ZONE, "Europe/Moscow")
         self.assertEqual(project.settings.LANGUAGE_CODE, "en")
         self.assertTrue(
-            project.settings.MEDIA_ROOT, os.path.join(config_data.project_directory, "media"),
+            project.settings.MEDIA_ROOT,
+            os.path.join(config_data.project_directory, "media"),
         )
         self.assertEqual(project.settings.MEDIA_URL, "/media/")
         #
