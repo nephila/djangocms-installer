@@ -91,7 +91,10 @@ def requirements(req_file, pip_options="", is_file=False, verbose=False):
         sys.stdout.write("python path: {}\n".format(sys.executable))
         sys.stdout.write("packages install command: {}\n".format(" ".join(cmd)))
     try:
-        subprocess.check_output(["python", "-msite"], stderr=subprocess.STDOUT)
+        try:
+            subprocess.check_output(["python", "-msite"], stderr=subprocess.STDOUT)
+        except FileNotFoundError:
+            subprocess.check_output(["python3", "-msite"], stderr=subprocess.STDOUT)
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
         sys.stdout.write(output.decode("utf-8"))
     except Exception as e:  # pragma: no cover
