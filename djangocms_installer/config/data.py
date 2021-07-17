@@ -74,12 +74,12 @@ REQUIREMENTS = {
     "django-3.0": ["django-classy-tags>=0.9", "django-sekizai>=1.0", "django-mptt>0.9"],
     "django-3.1": ["django-classy-tags>=2.0", "django-sekizai>=2.0", "django-mptt>0.9"],
     "django-3.2": ["django-classy-tags>=2.0", "django-sekizai>=2.0", "django-mptt>0.9"],
-    "cms-3.7": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<5.0"],
-    "cms-3.8": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<5.0"],
-    "cms-3.9": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<5.0"],
+    "cms-3.7": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<4.4"],
+    "cms-3.8": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<4.4"],
+    "cms-3.9": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<4.6"],
     "cms-master": [
         "https://github.com/divio/djangocms-admin-style/archive/master.zip?{bust}".format(**bust),
-        "django-treebeard>=4.0,<5.0",
+        "django-treebeard>=4.0,<4.6",
     ],
     "plugins-3.7": [
         "djangocms-text-ckeditor>=4.0,<5.0",
