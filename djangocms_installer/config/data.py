@@ -18,13 +18,14 @@ CONFIGURABLE_OPTIONS = [
 ]
 
 DJANGOCMS_DEVELOP = "https://github.com/yakky/django-cms/archive/develop.zip?{bust}".format(**bust)
-DJANGOCMS_RC = "https://github.com/divio/django-cms/archive/release/3.7.x.zip?{bust}".format(**bust)
+DJANGOCMS_RC = "https://github.com/divio/django-cms/archive/release/3.9.x.zip?{bust}".format(**bust)
 DJANGOCMS_BETA = DJANGOCMS_RC
 DJANGOCMS_37 = "django-cms>=3.7,<3.8"
 DJANGOCMS_38 = "django-cms>=3.8,<3.9"
+DJANGOCMS_39 = "django-cms>=3.9,<3.10"
 
-DJANGOCMS_SUPPORTED = ("3.8", "3.7", "stable", "lts", "develop")
-DJANGOCMS_STABLE = "3.8"
+DJANGOCMS_SUPPORTED = ("3.9", "3.8", "3.7", "stable", "lts", "develop")
+DJANGOCMS_STABLE = "3.9"
 DJANGOCMS_LTS = "3.8"
 DJANGOCMS_DEFAULT = DJANGOCMS_STABLE
 
@@ -53,13 +54,15 @@ DJANGO_VERSION_MATRIX = {
 VERSION_MATRIX = {
     "3.7": ("2.2", "3.0"),
     "3.8": ("2.2", "3.0", "3.1"),
-    DJANGOCMS_BETA: ("2.2", "3.1"),
-    DJANGOCMS_RC: ("2.2", "3.1"),
-    DJANGOCMS_DEVELOP: ("2.2", "3.1"),
+    "3.9": ("2.2", "3.0", "3.1", "3.2"),
+    DJANGOCMS_BETA: ("2.2", "3.1", "3.2"),
+    DJANGOCMS_RC: ("2.2", "3.1", "3.2"),
+    DJANGOCMS_DEVELOP: ("2.2", "3.1", "3.2"),
 }
 PACKAGE_MATRIX = {
     "3.7": DJANGOCMS_37,
     "3.8": DJANGOCMS_38,
+    "3.9": DJANGOCMS_39,
     DJANGOCMS_RC: DJANGOCMS_RC,
     DJANGOCMS_BETA: DJANGOCMS_BETA,
     DJANGOCMS_DEVELOP: DJANGOCMS_DEVELOP,
@@ -70,8 +73,10 @@ REQUIREMENTS = {
     "django-2.2": ["django-classy-tags>=0.9", "django-sekizai>=1.0", "django-mptt>0.9"],
     "django-3.0": ["django-classy-tags>=0.9", "django-sekizai>=1.0", "django-mptt>0.9"],
     "django-3.1": ["django-classy-tags>=2.0", "django-sekizai>=2.0", "django-mptt>0.9"],
+    "django-3.2": ["django-classy-tags>=2.0", "django-sekizai>=2.0", "django-mptt>0.9"],
     "cms-3.7": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<5.0"],
     "cms-3.8": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<5.0"],
+    "cms-3.9": ["djangocms-admin-style>=2.0,<3.0", "django-treebeard>=4.0,<5.0"],
     "cms-master": [
         "https://github.com/divio/djangocms-admin-style/archive/master.zip?{bust}".format(**bust),
         "django-treebeard>=4.0,<5.0",
@@ -88,6 +93,17 @@ REQUIREMENTS = {
         "djangocms-bootstrap4>=2.0,<3.0",
     ],
     "plugins-3.8": [
+        "djangocms-text-ckeditor>=4.0,<5.0",
+        "djangocms-link>=3.0,<4.0",
+        "djangocms-icon>=2.0,<3.0",
+        "djangocms-style>=3.0,<4.0",
+        "djangocms-googlemap>=2.0,<3.0",
+        "djangocms-video>=3.0,<4.0",
+        "djangocms-file>=3.0,<4.0",
+        "djangocms-picture>=3.0,<4.0",
+        "djangocms-bootstrap4>=2.0,<3.0",
+    ],
+    "plugins-3.9": [
         "djangocms-text-ckeditor>=4.0,<5.0",
         "djangocms-link>=3.0,<4.0",
         "djangocms-icon>=2.0,<3.0",
