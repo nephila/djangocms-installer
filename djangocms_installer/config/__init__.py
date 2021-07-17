@@ -429,6 +429,10 @@ information.
 
         if args.cms_version in ("rc", "develop"):
             requirements.extend(data.REQUIREMENTS["cms-master"])
+        elif LooseVersion(cms_version) >= LooseVersion("3.9"):
+            requirements.extend(data.REQUIREMENTS["cms-3.9"])
+        elif LooseVersion(cms_version) >= LooseVersion("3.8"):
+            requirements.extend(data.REQUIREMENTS["cms-3.8"])
         elif LooseVersion(cms_version) >= LooseVersion("3.7"):
             requirements.extend(data.REQUIREMENTS["cms-3.7"])
 
@@ -437,7 +441,11 @@ information.
         if not args.no_plugins:
             if args.cms_version in ("rc", "develop"):
                 requirements.extend(data.REQUIREMENTS["plugins-master"])
-            elif LooseVersion(cms_version) >= LooseVersion("3.7"):
+            elif LooseVersion(cms_version) >= LooseVersion("3.9"):
+                requirements.extend(data.REQUIREMENTS["plugins-3.9"])
+            elif LooseVersion(cms_version) >= LooseVersion("3.8"):
+                requirements.extend(data.REQUIREMENTS["plugins-3.8"])
+            elif LooseVersion(cms_version) >= LooseVersion("3.7")   :
                 requirements.extend(data.REQUIREMENTS["plugins-3.7"])
             requirements.extend(data.REQUIREMENTS["filer"])
 
@@ -457,6 +465,8 @@ information.
             requirements.extend(data.REQUIREMENTS["django-3.0"])
         elif django_version == "3.1":
             requirements.extend(data.REQUIREMENTS["django-3.1"])
+        elif django_version == "3.2":
+            requirements.extend(data.REQUIREMENTS["django-3.2"])
 
         requirements.extend(data.REQUIREMENTS["default"])
 

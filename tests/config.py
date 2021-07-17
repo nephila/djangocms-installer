@@ -26,7 +26,7 @@ class TestConfig(BaseTestClass):
 
         self.assertEqual(conf_data.project_name, "example_prj")
 
-        self.assertEqual(conf_data.cms_version, "3.8")
+        self.assertEqual(conf_data.cms_version, "3.9")
         self.assertEqual(conf_data.django_version, dj_version)
         self.assertEqual(conf_data.i18n, "yes")
         self.assertEqual(conf_data.reversion, "yes")
@@ -364,11 +364,11 @@ class TestConfig(BaseTestClass):
     def test_supported_versions(self):
         dj_version, dj_match = get_stable_django(latest=True)
 
-        self.assertEqual(supported_versions("stable", "stable"), (dj_version, "3.8"))
+        self.assertEqual(supported_versions("stable", "stable"), (dj_version, "3.9"))
         self.assertEqual(supported_versions("stable", "3.1.10"), (dj_version, None))
         self.assertEqual(supported_versions("stable", "beta"), (dj_version, data.DJANGOCMS_BETA))
         self.assertEqual(supported_versions("stable", "develop"), (dj_version, data.DJANGOCMS_DEVELOP))
-        self.assertEqual(supported_versions("lts", "stable"), ("2.2", "3.8"))
+        self.assertEqual(supported_versions("lts", "stable"), ("2.2", "3.9"))
         self.assertEqual(supported_versions("lts", "lts"), ("2.2", "3.8"))
 
         with self.assertRaises(RuntimeError):
@@ -425,7 +425,7 @@ class TestConfig(BaseTestClass):
             ]
         )
 
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_38) > -1)
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_39) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
         self.assertFalse(conf_data.requirements.find("django-reversion") > -1)
         self.assertTrue(conf_data.requirements.find("cmsplugin-filer") == -1)
@@ -709,7 +709,7 @@ class TestConfig(BaseTestClass):
             ]
         )
 
-        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_38) > -1)
+        self.assertTrue(conf_data.requirements.find(config.data.DJANGOCMS_39) > -1)
         self.assertTrue(conf_data.requirements.find(dj_match) > -1)
 
     def test_bootstrap(self):
@@ -953,18 +953,18 @@ class TestBaseConfig(unittest.TestCase):
                 "config-03.ini",
                 None,
                 (
-                    ("cms_version", "3.8"),
+                    ("cms_version", "3.9"),
                     ("i18n", "no"),
                     ("django_version", dj_version),
                 ),
             ),
-            ("config-04.ini", None, (("cms_version", "3.8"), ("use_timezone", "no"))),
-            ("config-05.ini", None, (("cms_version", "3.8"), ("timezone", "Europe/London"))),
-            ("config-06.ini", None, (("cms_version", "3.8"), ("reversion", "no"))),
+            ("config-04.ini", None, (("cms_version", "3.9"), ("use_timezone", "no"))),
+            ("config-05.ini", None, (("cms_version", "3.9"), ("timezone", "Europe/London"))),
+            ("config-06.ini", None, (("cms_version", "3.9"), ("reversion", "no"))),
             (
                 "config-07.ini",
                 None,
-                (("cms_version", "3.8"), ("permissions", "no"), ("django_version", dj_lts_version)),
+                (("cms_version", "3.9"), ("permissions", "no"), ("django_version", dj_lts_version)),
             ),
             (
                 "config-08.ini",
