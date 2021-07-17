@@ -429,24 +429,24 @@ information.
 
         if args.cms_version in ("rc", "develop"):
             requirements.extend(data.REQUIREMENTS["cms-master"])
-        elif LooseVersion(cms_version) >= LooseVersion("3.7"):
-            requirements.extend(data.REQUIREMENTS["cms-3.7"])
-        elif LooseVersion(cms_version) >= LooseVersion("3.8"):
-            requirements.extend(data.REQUIREMENTS["cms-3.8"])
         elif LooseVersion(cms_version) >= LooseVersion("3.9"):
             requirements.extend(data.REQUIREMENTS["cms-3.9"])
+        elif LooseVersion(cms_version) >= LooseVersion("3.8"):
+            requirements.extend(data.REQUIREMENTS["cms-3.8"])
+        elif LooseVersion(cms_version) >= LooseVersion("3.7"):
+            requirements.extend(data.REQUIREMENTS["cms-3.7"])
 
         if not args.no_db_driver:
             requirements.append(args.db_driver)
         if not args.no_plugins:
             if args.cms_version in ("rc", "develop"):
                 requirements.extend(data.REQUIREMENTS["plugins-master"])
-            elif LooseVersion(cms_version) >= LooseVersion("3.7"):
-                requirements.extend(data.REQUIREMENTS["plugins-3.7"])
-            elif LooseVersion(cms_version) >= LooseVersion("3.8"):
-                requirements.extend(data.REQUIREMENTS["plugins-3.8"])
             elif LooseVersion(cms_version) >= LooseVersion("3.9"):
                 requirements.extend(data.REQUIREMENTS["plugins-3.9"])
+            elif LooseVersion(cms_version) >= LooseVersion("3.8"):
+                requirements.extend(data.REQUIREMENTS["plugins-3.8"])
+            elif LooseVersion(cms_version) >= LooseVersion("3.7")   :
+                requirements.extend(data.REQUIREMENTS["plugins-3.7"])
             requirements.extend(data.REQUIREMENTS["filer"])
 
         # Django version check
