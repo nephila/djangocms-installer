@@ -5,7 +5,7 @@ import tempfile
 from argparse import Namespace
 from unittest.mock import patch
 
-from six import StringIO
+from io import StringIO
 from tzlocal import get_localzone
 
 from djangocms_installer import config
