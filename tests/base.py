@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from copy import copy
 
-from six import StringIO
+from io import StringIO
 
 SYSTEM_ACTIVATE = os.path.join(os.path.dirname(sys.executable), "activate_this.py")
 

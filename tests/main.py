@@ -148,7 +148,7 @@ class TestMain(IsolatedTestClass):
             out = subprocess.check_output(
                 ["sqlite3", "project.db", 'SELECT COUNT(*) FROM auth_user WHERE username="admin"']
             )
-            self.assertEqual(bytes(out), bytes(b"1\n"))
+            self.assertEqual(bytes(out), b"1\n")
         os.chdir(original_dir)
         rmtree(base_dir)
 

@@ -676,9 +676,7 @@ class TestBaseDjango(unittest.TestCase):
             ]
         )
         settings = django._build_settings(config_data)
-        self.assertTrue(
-            textwrap.dedent(
-                """
+        self.assertTrue(textwrap.dedent("""
             DATABASES = {
                 'default': {
                     'CONN_MAX_AGE': 0,
@@ -689,8 +687,5 @@ class TestBaseDjango(unittest.TestCase):
                     'PORT': 5432,
                     'USER': 'user'
                 }
-            }"""
-            ).strip()
-            in settings
-        )
+            }""").strip() in settings)
         self.assertTrue("X_FRAME_OPTIONS = 'SAMEORIGIN'" in settings)
