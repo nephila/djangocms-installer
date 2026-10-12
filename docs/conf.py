@@ -24,7 +24,6 @@ parent = os.path.dirname(cwd)
 sys.path.append(parent)
 import djangocms_installer  # isort:skip  # noqa
 
-
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
