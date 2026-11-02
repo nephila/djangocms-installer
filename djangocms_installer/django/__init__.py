@@ -159,9 +159,7 @@ def patch_settings(config_data):
 STATICFILES_DIRS = (
     {}
 )
-""".format(
-        STATICFILES_DIR
-    )
+""".format(STATICFILES_DIR)
     original = original.replace("# -*- coding: utf-8 -*-\n", "")
 
     # I18N
@@ -309,18 +307,12 @@ def _build_settings(config_data):
         "'{}': {}".format(key, format_val(val))
         for key, val in sorted(config_data.db_parsed.items(), key=lambda x: x[0])
     ]  # NOQA
-    text.append(
-        textwrap.dedent(
-            """
+    text.append(textwrap.dedent("""
         DATABASES = {{
             'default': {{
                 {0}
             }}
-        }}"""
-        )
-        .strip()
-        .format((",\n" + spacer * 2).join(database))
-    )  # NOQA
+        }}""").strip().format((",\n" + spacer * 2).join(database)))  # NOQA
 
     if config_data.filer:
         text.append(
